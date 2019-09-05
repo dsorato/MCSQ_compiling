@@ -1,0 +1,4 @@
+PGHOST="127.0.0.1"
+PGDATABASE="ESS"
+PGUSER="postgres"
+PGPASSWORD="ess"
