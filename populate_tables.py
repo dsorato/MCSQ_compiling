@@ -1,6 +1,7 @@
 from survey import *
 from module import *
 from itemtype import *
+from document import *
 from base import *
 
 def write_survey_table():
@@ -35,3 +36,12 @@ def update_itemtype_table():
 	session.execute(update(ItemType, values={ItemType.itemtypeisresponse:True}).where(ItemType.itemtype.ilike('response%')))
 	session.commit()
 	session.close()
+
+def write_source_documents(parameters):
+	session = session_factory()
+	item = Document(parameters[0], parameters[1], parameters[2], parameters[3], parameters[4], parameters[5], parameters[6])
+	session.add(item)
+	session.commit()
+
+	session.close()
+

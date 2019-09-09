@@ -2,40 +2,11 @@
 #Author: Danielly Sorato
 #Before running the script, install pandas
 import pandas as pd
-from itertools import groupby
 from populate_tables import *
+from extract_information import *
+from module_enum import *
 import os
 import re	
-
-def get_item_type(item_type_unique):
-	item_types = []
-	for item in item_type_unique:
-		if type(item) is str:
-			if len(item.split()) <= 2:
-				item_types.append(item)
-
-	return item_types
-
-def get_module_name(module_unique):
-	module_names = []
-	for item in module_unique:
-		if type(item) is str:
-			name = re.findall("[A-Z] -", item)
-			if name:
-				module_names.append(item)
-
-	return module_names
-
-def get_code(a):
-	first = a.split('_')[0]
-	second = a.split('_')[1]
-
-	return first+'_'+second
-
-def group_by_prefix(translations_list):
-	groups = [list(i) for j, i in groupby(translations_list, lambda a: get_code(a))]
-
-	return groups
 
 
 def remove_html_tags(text):
@@ -74,10 +45,10 @@ def main():
 	item_types = get_item_type(item_type_unique)
 
 
-	write_survey_table()
-	write_module_table(module_names)
-	write_itemtype_table(item_types)
-	update_itemtype_table()
+	# write_survey_table()
+	# write_module_table(module_names)
+	# write_itemtype_table(item_types)
+	# update_itemtype_table()
 
 
 	df_text = data.drop(['doc_id', 'module', 'item_type'], axis=1)
@@ -91,11 +62,28 @@ def main():
 
 	for item in groups:
 		dfName = get_code(item[0])
-		dfNew = df_metadata.append(data[item])
+		dfNew = df_metadata.append(data[item], sort=False)
 		dfs[dfName] = dfNew
 
-	for k, v in enumerate(dfs.items()):
-		print(k,v)
+	# for k, v in enumerate(dfs.items()):
+	# 	print(k,v)
+
+
+	module_enum = ModuleEnum()
+
+
+	old = 'old'
+	for index, row in data.iterrows():
+		if old != row['doc_id']:
+			print('oi')
+			old = row['doc_id']
+			parameters = [row['doc_id'], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
+			write_source_documents(parameters)
+		else:
+			pass
+			
+	
+	
 
 
 if __name__ == "__main__":
