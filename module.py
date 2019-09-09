@@ -1,4 +1,5 @@
 from base import Base
+from sqlalchemy import Column, String, Boolean, Integer, Sequence, ForeignKey
 
 class Module(Base):
     __tablename__ = 'module'

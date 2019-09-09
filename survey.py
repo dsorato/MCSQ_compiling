@@ -1,4 +1,5 @@
 from base import Base
+from sqlalchemy import Column, String, Boolean, Integer, Sequence, ForeignKey
 
 class Survey(Base):
     __tablename__ = 'survey'

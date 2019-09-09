@@ -68,58 +68,34 @@ def main():
 	df_metadata = data[['doc_id', 'module', 'item_type']]
 	module_unique = data.module.unique()
 	module_names = get_module_name(module_unique)
+	module_names.append('No module')
 
 	item_type_unique = data.item_type.unique()
 	item_types = get_item_type(item_type_unique)
 
 
-	#write_survey_table()
-	#write_module_table(module_names)
-	#write_itemtype_table(item_types)
-	#update_itemtype_table()
+	write_survey_table()
+	write_module_table(module_names)
+	write_itemtype_table(item_types)
+	update_itemtype_table()
 
 
-	
+	df_text = data.drop(['doc_id', 'module', 'item_type'], axis=1)
+	translations = []
+	for col in df_text.columns:
+		translations.append(col)
 
-	# df_text = data.drop(['doc_id', 'module', 'item_type'], axis=1)
-	# translations = []
-	# for col in df_text.columns:
-	# 	translations.append(col)
+	groups = group_by_prefix(translations)
 
-	# groups = group_by_prefix(translations)
+	dfs = dict()
 
-	# dfs = dict()
+	for item in groups:
+		dfName = get_code(item[0])
+		dfNew = df_metadata.append(data[item])
+		dfs[dfName] = dfNew
 
-	# for item in groups:
-	# 	dfName = get_code(item[0])
-	# 	dfNew = data[item]
-	# 	dfs[dfName] = dfNew
-
-	# for k, v in enumerate(dfs.items()):
-	# 	print(k,v)
-
-
-	# write_module_table
-    
-    
-
-
-
-
-	# df_test = data['FRE_BE']
-	# for item in df_test:
-	# 	if not isinstance(item, float):
-	# 		clean_text = remove_html_tags(item)
-	# 		print(clean_text)
-
-	# db = DBConnection()
-	# connection = db.connect()
-
-	# sql_command = "SELECT * FROM {}.{};".format(str("public"), str("Survey"))
-	# print (sql_command)
-	# write_survey_metadata(connection)
-	# data = pd.read_sql(sql_command, connection)
-	# print(data)
+	for k, v in enumerate(dfs.items()):
+		print(k,v)
 
 
 if __name__ == "__main__":
