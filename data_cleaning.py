@@ -5,6 +5,7 @@ import pandas as pd
 from populate_tables import *
 from extract_information import *
 from module_enum import *
+from itemtype_enum import *
 import os
 import re	
 
@@ -43,7 +44,7 @@ def main():
 
 	item_type_unique = data.item_type.unique()
 	item_types = get_item_type(item_type_unique)
-
+	item_types.append('No type')
 
 	# write_survey_table()
 	# write_module_table(module_names)
@@ -63,12 +64,14 @@ def main():
 	dfNames = []
 	for item in groups:
 		dfName = get_code(item[0])
-		dfNames.append(dfName)
-		dfNew = pd.concat([df_metadata, data[item]], axis=1)
-		dfs[dfName] = dfNew
+		if dfName not in dfNames:
+			dfNames.append(dfName)
+			dfNew = pd.concat([df_metadata, data[item]], axis=1)
+			dfs[dfName] = dfNew
 
 
 	module_enum = ModuleEnum()
+	itemtype_enum = ItemTypeEnum()
 
 
 	old = 'old'
@@ -76,9 +79,9 @@ def main():
 		if type(row['module']) is str:
 			if old != row['doc_id']:
 				old = row['doc_id']
-				#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-				parameters = [row['doc_id'], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
-				write_document_table(parameters)
+				#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+				parameters_document = [row['doc_id'], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
+				write_document_table(parameters_document)
 			
 	old = 'old'
 	for name in dfNames:
@@ -90,20 +93,14 @@ def main():
 						if old != row[column_id]:
 							old = row[column_id]
 							#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-							parameters = [row[column_id], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', name, True]
-							print(parameters)
-							write_document_table(parameters)
+							parameters_document = [row[column_id], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', name, True]
+							write_document_table(parameters_document)
 
-	# for k,v in enumerate(dfs.items()):
-	# 	for index, row in v.iterrows():
-	# 		if old != row['doc_id']:
-	# 			print('******')
-	# 			print(v)
-	# 			print('******')
-		# 		old = row['doc_id']
-		# 		parameters = [row['doc_id'], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', True]
-		# 	else:
-		# 		pass
+	for index, row in data.iterrows():
+		if type(row['ENG_GB']) is str:
+			if len(row['ENG_GB']) > 1:
+				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), remove_html_tags(row['ENG_GB']), False, '', '', '', '', '', False] 
+				write_document_item_table(parameters_document_item)
 
 
 if __name__ == "__main__":

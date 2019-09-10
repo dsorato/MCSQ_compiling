@@ -44,6 +44,31 @@ def get_module_enum(module_name, enum):
 	return enum_number
 
 
+def get_item_type_enum(item_type_name, enum):
+	if type(item_type_name) is str:
+		item_type_name = item_type_name.strip()
+		if item_type_name == "Fill":
+			enum_number = enum.fill
+		elif item_type_name == "Question":
+			enum_number = enum.question
+		elif item_type_name == "QInstruction":
+			enum_number = enum.qinstruction
+		elif item_type_name == "QText":
+			enum_number = enum.qtext
+		elif item_type_name == "TranslatorNote":
+			enum_number = enum.translatornote
+		elif item_type_name == "Response":
+			enum_number = enum.response
+		elif item_type_name == "Response option":
+			enum_number = enum.responseoption
+		else:
+			enum_number = enum.notype
+	else:
+		enum_number = enum.notype
+
+	return enum_number
+
+
 def get_code(a):
 	first = a.split('_')[0]
 	second = a.split('_')[1]
