@@ -60,13 +60,12 @@ def main():
 
 	dfs = dict()
 
+	dfNames = []
 	for item in groups:
 		dfName = get_code(item[0])
-		dfNew = df_metadata.append(data[item], sort=False)
+		dfNames.append(dfName)
+		dfNew = pd.concat([df_metadata, data[item]], axis=1)
 		dfs[dfName] = dfNew
-
-	# for k, v in enumerate(dfs.items()):
-	# 	print(k,v)
 
 
 	module_enum = ModuleEnum()
@@ -74,16 +73,37 @@ def main():
 
 	old = 'old'
 	for index, row in data.iterrows():
-		if old != row['doc_id']:
-			print('oi')
-			old = row['doc_id']
-			parameters = [row['doc_id'], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
-			write_source_documents(parameters)
-		else:
-			pass
+		if type(row['module']) is str:
+			if old != row['doc_id']:
+				old = row['doc_id']
+				#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+				parameters = [row['doc_id'], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
+				write_document_table(parameters)
 			
-	
-	
+	old = 'old'
+	for name in dfNames:
+		for index, row in dfs[name].iterrows():
+			if type(row['module']) is str:
+					columns = dfs[name].columns
+					column_id = get_id_column_name(columns)
+					if column_id != '':
+						if old != row[column_id]:
+							old = row[column_id]
+							#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+							parameters = [row[column_id], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', name, True]
+							print(parameters)
+							write_document_table(parameters)
+
+	# for k,v in enumerate(dfs.items()):
+	# 	for index, row in v.iterrows():
+	# 		if old != row['doc_id']:
+	# 			print('******')
+	# 			print(v)
+	# 			print('******')
+		# 		old = row['doc_id']
+		# 		parameters = [row['doc_id'], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', True]
+		# 	else:
+		# 		pass
 
 
 if __name__ == "__main__":

@@ -54,3 +54,11 @@ def group_by_prefix(translations_list):
 	groups = [list(i) for j, i in groupby(translations_list, lambda a: get_code(a))]
 
 	return groups
+
+def get_id_column_name(columns):
+	column_id = ''
+	for c in columns:
+		if 'id' in c.lower() and c != 'doc_id':
+			column_id = c
+	
+	return column_id

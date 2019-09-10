@@ -37,11 +37,12 @@ def update_itemtype_table():
 	session.commit()
 	session.close()
 
-def write_source_documents(parameters):
+def write_document_table(parameters):
 	session = session_factory()
 	item = Document(parameters[0], parameters[1], parameters[2], parameters[3], parameters[4], parameters[5], parameters[6])
 	session.add(item)
 	session.commit()
 
 	session.close()
+
 
