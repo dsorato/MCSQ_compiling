@@ -9,29 +9,29 @@ from itemtype_enum import *
 import os
 import re	
 
-#@params: 0=documentid, 1=itemtypeid, 3=text, 4=morethanonetranslation, 5=translation2, 6=translation3, 7=translationadjudication, 
-#8=translationverification, 9=translationdescription, 10=translationupdated
+#@params: 0=documentid, 1=itemtypeid, 2=text, 3=morethanonetranslation, 4=translation2, 5=translation3, 6=translationadjudication, 
+#7=translationverification, 8=translationdescription, 9=translationupdated
 def edit_params(params):
-	params[3] = remove_html_tags(params[3])
-	if translation2 != '':
-		params[4] = True
-		params[5] = remove_html_tags(params[5])
-		if adjudication != '' and verification != '':
+	params[2] = remove_html_tags(params[2])
+	if params[4] != '':
+		params[3] = True
+		params[4] = remove_html_tags(params[4])
+		if params[6] != '' and params[7] != '':
+			params[6] = remove_html_tags(params[6])
 			params[7] = remove_html_tags(params[7])
-			params[8] = remove_html_tags(params[8])
-		elif verification == '' and adjudication != '':
+		elif params[7] == '' and params[6] != '':
+			params[6] = remove_html_tags(params[6])
+		elif params[7] != '' and params[6] == '':
 			params[7] = remove_html_tags(params[7])
-		elif verification != '' and adjudication == '':
-			params[8] = remove_html_tags(params[8])
 
 	else:
-		if adjudication != '' and verification != '':
+		if params[6] != '' and params[7] != '':
+			params[6] = remove_html_tags(params[6])
 			params[7] = remove_html_tags(params[7])
-			params[8] = remove_html_tags(params[8])
-		elif verification == '' and adjudication != '':
+		elif params[7] == '' and params[6] != '':
+			params[6] = remove_html_tags(params[6])
+		elif params[7] != '' and params[6] == '':
 			params[7] = remove_html_tags(params[7])
-		elif verification != '' and adjudication == '':
-			params[8] = remove_html_tags(params[8])
 
 	return params
 
@@ -48,7 +48,8 @@ def lowercase(text):
 def main():
 	#change directory to round 8 folder and read csv
 	os.chdir('/home/upf/workspace/ESS/round8')
-	data = pd.read_csv('ess_r8.csv')
+	data = pd.read_excel('tmt_ess_r8_2016v1withFRECH.xlsx')
+	#data = pd.read_csv('ess_r8.csv')
 
 	#delete unwanted elements in dataset
 	print('Deleting columns there are at least 90 per cent empty')
@@ -108,25 +109,39 @@ def main():
 	# 			#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
 	# 			parameters_document = [row['doc_id'], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
 	# 			write_document_table(parameters_document)
+	# 	else:
+	# 		if old != row['doc_id']:
+	# 			old = row['doc_id']
+	# 			#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+	# 			parameters_document = [row['doc_id'], 1, 10, row['doc_id'], 'ENG_GB', 'ENG_GB', False]
+	# 			write_document_table(parameters_document)
 			
 	# old = 'old'
 	# for name in dfNames:
 	# 	for index, row in dfs[name].iterrows():
+	# 		columns = dfs[name].columns
+	# 		column_id = get_id_column_name(columns)
 	# 		if type(row['module']) is str:
-	# 				columns = dfs[name].columns
-	# 				column_id = get_id_column_name(columns)
-	# 				if column_id != '':
-	# 					if old != row[column_id]:
-	# 						old = row[column_id]
-	# 						#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-	# 						parameters_document = [row[column_id], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', name, True]
-	# 						write_document_table(parameters_document)
+	# 			if column_id != '':
+	# 				if old != row[column_id]:
+	# 					old = row[column_id]
+	# 					#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+	# 					parameters_document = [row[column_id], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', name, True]
+	# 					write_document_table(parameters_document)
+	# 		else:
+	# 			if column_id != '':
+	# 				if old != row[column_id]:
+	# 					old = row[column_id]
+	# 					#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+	# 					parameters_document = [row[column_id], 1, 10, row['doc_id'], 'ENG_GB', name, True]
+	# 					write_document_table(parameters_document)
 
-	# for index, row in data.iterrows():
-	# 	if type(row['ENG_GB']) is str:
-	# 		if len(row['ENG_GB']) > 1:
-	# 			parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), remove_html_tags(row['ENG_GB']), False, '', '', '', '', '', False] 
-	# 			write_document_item_table(parameters_document_item)
+
+	for index, row in data.iterrows():
+		if type(row['ENG_GB']) is str:
+			if len(row['ENG_GB']) > 1:
+				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), remove_html_tags(row['ENG_GB']), False, '', '', '', '', '', False] 
+				write_document_item_table(parameters_document_item)
 
 	for name in dfNames:
 		if name != 'ENG_GB':
@@ -151,18 +166,19 @@ def main():
 				columns = dfs[name].columns
 				column_id = get_id_column_name(columns)
 				if column_id != '':
-					if translation1 != '':
+					if translation1 != '' and type(translation1) is str:
 						parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-						translation1, False, translation2, translation3, adjudication, verification, '', False]
+						row[translation1], False, row[translation2], row[translation3], row[adjudication], row[verification], '', False]
 						print(parameters_document_item)
 						edit_params(parameters_document_item)
-						write_document_table(parameters_document_item)
+						write_document_item_table(parameters_document_item)
 					else:
-						parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-						row[name], False, translation2, translation3, adjudication, verification, '', False]
-						print(parameters_document_item)
-						edit_params(parameters_document_item)
-						write_document_table(parameters_document_item)
+						if type(row[name]) is str:
+							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+							row[name], False, row[translation2], row[translation3], row[adjudication], row[verification], '', False]
+							print(parameters_document_item)
+							edit_params(parameters_document_item)
+							write_document_item_table(parameters_document_item)
 
 if __name__ == "__main__":
 	print("Executing data cleaning script for ESS")
