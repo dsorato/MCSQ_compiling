@@ -12,6 +12,13 @@ def write_survey_table():
 	session.commit()
 	session.close()
 
+def write_evs_survey_table():
+	session = session_factory()
+	ess_r8 = Survey("EVS", 5, 2017, 'unknown')
+	session.add(ess_r8)
+	session.commit()
+	session.close()
+
 
 def write_module_table(module_names):
 	session = session_factory()

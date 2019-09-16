@@ -57,8 +57,8 @@ def lowercase(text):
 
 def main():
 	#change directory to round 8 folder and read csv
-	os.chdir('/home/upf/workspace/ESS/round8')
-	data = pd.read_excel('tmt_ess_r8_2016v1.xlsx')
+	os.chdir('/home/upf/workspace/PCSQ/clean_and_populate')
+	data = pd.read_excel('data/tmt_ess_r8_2016v1.xlsx')
 	#data = pd.read_csv('ess_r8.csv')
 
 	#delete unwanted elements in dataset

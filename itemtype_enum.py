@@ -9,3 +9,6 @@ class ItemTypeEnum():
     response = 6
     responseoption = 7
     notype = 8
+    iwer = 9
+    header = 10
+    qcodinginstruction = 11

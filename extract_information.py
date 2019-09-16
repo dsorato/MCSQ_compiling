@@ -22,15 +22,15 @@ def get_module_name(module_unique):
 
 def get_module_enum(module_name, enum):
 	module_name = module_name.strip()
-	if module_name == "A - MEDIA USE":
+	if module_name == "A - MEDIA USE" or module_name == 'A':
 		enum_number = enum.a
-	elif module_name == "B - POLITICS":
+	elif module_name == "B - POLITICS" or module_name == 'B':
 		enum_number = enum.b
-	elif module_name == "C - SUBJECTIVE WELLBEING":
+	elif module_name == "C - SUBJECTIVE WELLBEING" or module_name == 'C':
 		enum_number = enum.c
-	elif module_name == "D - CLIMATE":
+	elif module_name == "D - CLIMATE" or module_name == 'D':
 		enum_number = enum.d
-	elif module_name == "E - WELFARE":
+	elif module_name == "E - WELFARE" or module_name == 'E':
 		enum_number = enum.e
 	elif module_name == "F - SOCIO-DEMOGRAPHICS":
 		enum_number = enum.f
@@ -61,6 +61,12 @@ def get_item_type_enum(item_type_name, enum):
 			enum_number = enum.response
 		elif item_type_name == "Response option":
 			enum_number = enum.responseoption
+		elif item_type_name == "IWER":
+			enum_number = enum.iwer
+		elif item_type_name == "Header":
+			enum_number = enum.header
+		elif item_type_name == "QCodingInstruction":
+			enum_number = enum.qcodinginstruction
 		else:
 			enum_number = enum.notype
 	else:
@@ -70,8 +76,11 @@ def get_item_type_enum(item_type_name, enum):
 
 
 def get_code(a):
-	first = a.split('_')[0]
-	second = a.split('_')[1]
+	if 'CentERdatanese'.lower() in a.lower():
+		return 'CentERdatanese'
+	else:
+		first = a.split('_')[0]
+		second = a.split('_')[1]
 
 	return first+'_'+second
 
