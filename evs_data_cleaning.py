@@ -1,6 +1,9 @@
 import pandas as pd
 from populate_tables import *
+from retrieve_from_table import *
 from extract_information import *
+from module_enum import *
+from itemtype_enum import *
 import numpy as np
 import os
 import re
@@ -39,11 +42,32 @@ def main():
 			dfNames.append(dfName)
 			dfNew = data[item]
 			dfs[dfName] = dfNew
+	
+	item_type_unique = data.item_type.unique()
+	new_item_types = find_additional_item_types(item_type_unique)
+	new_type_names = get_item_type(new_item_types)
 
-	module_unique = df_metadata.module.unique()
-	item_type_unique = df_metadata.item_type.unique()
-	print(module_unique)
-	print(item_type_unique)
+	# write_survey_table("EVS", 5, 2017, 'unknown')
+	# write_itemtype_table(new_type_names)
+
+	module_enum = ModuleEnum()
+	itemtype_enum = ItemTypeEnum()
+
+	old = 'old'
+	for index, row in data.iterrows():
+		if type(row['module']) is str:
+			if old != row['doc_id']:
+				old = row['doc_id']
+				#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+				parameters_document = [row['doc_id'], 2, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
+				write_document_table(parameters_document)
+		else:
+			if old != row['doc_id']:
+				old = row['doc_id']
+				#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+				parameters_document = [row['doc_id'], 2, 10, row['doc_id'], 'ENG_GB', 'ENG_GB', False]
+				write_document_table(parameters_document)
+	
 
 if __name__ == "__main__":
 	print("Executing data cleaning script for EVS")

@@ -5,17 +5,10 @@ from document import *
 from documentitem import *
 from base import *
 
-def write_survey_table():
+def write_survey_table(survey, waveround, year, mode):
 	session = session_factory()
-	ess_r8 = Survey("ESS", 8, 2016, 'unknown')
-	session.add(ess_r8)
-	session.commit()
-	session.close()
-
-def write_evs_survey_table():
-	session = session_factory()
-	ess_r8 = Survey("EVS", 5, 2017, 'unknown')
-	session.add(ess_r8)
+	item = Survey(survey, waveround, year, mode)
+	session.add(item)
 	session.commit()
 	session.close()
 
@@ -38,6 +31,7 @@ def write_itemtype_table(type_names):
 		session.commit()
 
 	session.close()
+
 
 def update_itemtype_table():
 	session = session_factory()

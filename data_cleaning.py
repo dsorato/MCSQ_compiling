@@ -83,10 +83,10 @@ def main():
 	item_types = get_item_type(item_type_unique)
 	item_types.append('No type')
 
-	# write_survey_table()
-	# write_module_table(module_names)
-	# write_itemtype_table(item_types)
-	# update_itemtype_table()
+	write_survey_table("ESS", 8, 2016, 'unknown')
+	write_module_table(module_names)
+	write_itemtype_table(item_types)
+	update_itemtype_table()
 
 
 	df_text = data.drop(['doc_id', 'module', 'item_type'], axis=1)
