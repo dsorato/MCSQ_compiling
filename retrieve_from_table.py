@@ -5,7 +5,9 @@ from document import *
 from documentitem import *
 from base import *
 
-
+def get_document_item_id(documentid):
+	documentitemid = 0
+	session = session_factory()
 
 def find_additional_item_types(evs_item_types):
 	itemtypes_in_table = []

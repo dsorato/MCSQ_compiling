@@ -96,3 +96,20 @@ def get_id_column_name(columns):
 			column_id = c
 	
 	return column_id
+
+
+def get_generic_module_name(module_names):
+	new_names = []
+	for module in module_names:
+		name = module.split('-')
+		name[0] = name[0].strip()
+		if len(name) == 3:
+			aux = [name[1], name[2]]
+			name[1] = ' '.join(aux)
+			name[1].strip()
+			name.remove(name[2])
+		if len(name) == 2:
+			name[1] = name[1].strip()
+		new_names.append(name[0])
+
+	return new_names
