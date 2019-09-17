@@ -3,12 +3,21 @@
 #Before running the script, install pandas
 import pandas as pd
 from populate_tables import *
+from retrieve_from_table import *
 from extract_information import *
 from module_enum import *
 from itemtype_enum import *
 import numpy as np
 import os
 import re
+
+def check_if_itemname(row):
+	itemname = False
+	if type(row['item_name']) is str and row['item_name'] != '-':
+		itemname = True
+
+	return itemname
+
 
 def check_if_param_is_nan(params):
 	isnan = False
@@ -68,13 +77,13 @@ def main():
 	print('Deleted columns: ', cols_to_delete)
 
 	print('Deleting unwanted columns')
-	data = data.drop(['parent_type', 'parent', 'item_name'], axis=1)
+	data = data.drop(['parent_type', 'parent'], axis=1)
 
 	print('Remaining columns:')
 	for col in data.columns:
 		print(col)
 
-	df_metadata = data[['doc_id', 'module', 'item_type']]
+	df_metadata = data[['doc_id', 'module', 'item_type', 'item_name']]
 	module_unique = data.module.unique()
 	module_names = get_module_name(module_unique)
 	module_names.append('No module')
@@ -84,10 +93,10 @@ def main():
 	item_types = get_item_type(item_type_unique)
 	item_types.append('No type')
 
-	# write_survey_table("ESS", 8, 2016, 'unknown')
-	# write_module_table(module_names)
-	# write_itemtype_table(item_types)
-	# update_itemtype_table()
+	write_survey_table("ESS", 8, 2016, 'unknown')
+	write_module_table(module_names)
+	write_itemtype_table(item_types)
+	update_itemtype_table()
 
 
 	df_text = data.drop(['doc_id', 'module', 'item_type'], axis=1)
@@ -154,11 +163,17 @@ def main():
 			if len(row['ENG_GB']) > 1:
 				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), remove_html_tags(row['ENG_GB']), False, '', '', '', '', '', False] 
 				write_document_item_table(parameters_document_item)
+			else:
+				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), '', False, '', '', '', '', '', False] 
+				write_document_item_table(parameters_document_item)
+			if check_if_itemname(row) == True:
+				documentitemid = get_document_item_id()
+				write_item_name_table(documentitemid, row['item_name'])
+
 
 	#write to DocumentItem table translated documents items
 	for name in dfNames:
 		if name != 'ENG_GB':
-			print(dfs[name].columns)
 			verification = ''
 			adjudication = ''
 			translation1 = ''
@@ -209,6 +224,7 @@ def main():
 							edit_params(parameters_document_item)
 							print(parameters_document_item)
 							write_document_item_table(parameters_document_item)
+
 					else:
 						if type(row[name]) is str:
 							if verification != '' and adjudication != '' and translation2 != '':

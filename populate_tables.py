@@ -1,6 +1,7 @@
 from survey import *
 from module import *
 from itemtype import *
+from itemname import *
 from document import *
 from documentitem import *
 from base import *
@@ -55,5 +56,14 @@ def write_document_item_table(parameters):
 	session.commit()
 
 	session.close()
+
+def write_item_name_table(documentitemid, itemname):
+	session = session_factory()
+	item = ItemName(documentitemid, itemname)
+	session.add(item)
+	session.commit()
+
+	session.close()
+
 
 

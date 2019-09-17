@@ -1,12 +1,13 @@
 from base import Base
-from sqlalchemy import Column, String, Boolean, Integer, Sequence, ForeignKey
+from sqlalchemy import Column, String, Integer, Sequence, ForeignKey
+from sqlalchemy.orm import relationship, backref
 
-class ItemType(Base):
-    __tablename__ = 'itemtypename'
+class ItemName(Base):
+    __tablename__ = 'itemname'
 
-    documentitemid = Column(Integer, ForeignKey('documentitem.documentitemid'))
+    documentitemid = Column(Integer, ForeignKey('documentitem.documentitemid'), primary_key=True)
     itemname = Column(String)
-    documentitem = relationship("DocumentItem", backref="itemtypename")
+    documentitem = relationship("DocumentItem", backref="itemname")
 
 
     def __init__(self, documentitemid, itemname):
