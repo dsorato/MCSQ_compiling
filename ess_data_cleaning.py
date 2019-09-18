@@ -56,7 +56,9 @@ def edit_params(params):
 
 
 def remove_html_tags(text):
-	text = re.sub("<.*?>", "", text)
+	if type(text) is str:
+		text = unicode(text, "utf-8")
+		text = re.sub("<.*?>", "", text)
 
 	return text
 

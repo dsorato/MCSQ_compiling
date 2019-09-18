@@ -1,5 +1,6 @@
 import pandas as pd
 from populate_tables import *
+from ess_data_cleaning import *
 from retrieve_from_table import *
 from extract_information import *
 from module_enum import *
@@ -90,6 +91,48 @@ def main():
 							#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
 							parameters_document = [row[column_id], 2, 10, row['doc_id'], 'ENG_GB', name, True]
 							write_document_table(parameters_document)
+
+	#write to DocumentItem table source language documents items
+	for index, row in data.iterrows():
+		if type(row['generic description']) is str:
+			if len(row['generic description']) > 1:
+				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), remove_html_tags(row['generic description']), False, '', '', '', '', '', False] 
+				write_document_item_table(parameters_document_item)
+			else:
+				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), '', False, '', '', '', '', '', False] 
+				write_document_item_table(parameters_document_item)
+			if check_if_itemname(row) == True:
+				documentitemid = get_document_item_id()
+				write_item_name_table(documentitemid, row['item_name'])
+
+	#write to DocumentItem table translated documents items
+	for name in dfNames:
+		if ('ENG' in name or 'RUS' in name or 'GER' in name or 'FR' in name or 'FRE' in name) and (name != 'ENG_GB'):
+			review = ''
+			review2 = ''
+			for c in dfs[name].columns:
+				if 'review' in c.lower():
+					review = c
+				if 'review2' in c.lower():
+					review2 = c
+			for index, row in dfs[name].iterrows():
+				columns = dfs[name].columns
+				column_id = get_id_column_name(columns)
+				if column_id != '':
+					if review != '' and type(review) is str:
+						if review2 != '' and type(review2) is str:
+							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+							row[review], False, row[review2], '', '', '', '', False]
+						else:
+							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+							row[review], False, '', '', '', '', '', False]
+
+						if check_if_param_is_nan(parameters_document_item) == False:
+							edit_params(parameters_document_item)
+							print(parameters_document_item)
+							write_document_item_table(parameters_document_item)
+
+
 	
 
 if __name__ == "__main__":
