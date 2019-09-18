@@ -41,57 +41,55 @@ def main():
 		dfNames.append(dfName)
 		dfNew = pd.concat([df_metadata, data[item]], axis=1)
 		dfs[dfName] = dfNew
-
-	print(dfNames)
 	
 	item_type_unique = data.item_type.unique()
 	new_item_types = find_additional_item_types(item_type_unique)
 	new_type_names = get_item_type(new_item_types)
 
-	# write_survey_table("EVS", 5, 2017, 'unknown')
-	# write_itemtype_table(new_type_names)
+	write_survey_table("EVS", 5, 2017, 'unknown')
+	write_itemtype_table(new_type_names)
 
 	module_enum = ModuleEnum()
 	itemtype_enum = ItemTypeEnum()
 
-	# #write to Document table source language documents
-	# old = 'old'
-	# for index, row in data.iterrows():
-	# 	if type(row['module']) is str:
-	# 		if old != row['doc_id']:
-	# 			old = row['doc_id']
-	# 			#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-	# 			parameters_document = [row['doc_id'], 2, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
-	# 			write_document_table(parameters_document)
-	# 	else:
-	# 		if old != row['doc_id']:
-	# 			old = row['doc_id']
-	# 			#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-	# 			parameters_document = [row['doc_id'], 2, 10, row['doc_id'], 'ENG_GB', 'ENG_GB', False]
-	# 			write_document_table(parameters_document)
+
+	#write to Document table source language documents
+	old = 'old'
+	for index, row in data.iterrows():
+		if type(row['module']) is str:
+			if old != row['doc_id']:
+				old = row['doc_id']
+				#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+				parameters_document = [row['doc_id'], 2, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
+				write_document_table(parameters_document)
+		else:
+			if old != row['doc_id']:
+				old = row['doc_id']
+				#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+				parameters_document = [row['doc_id'], 2, 10, row['doc_id'], 'ENG_GB', 'ENG_GB', False]
+				write_document_table(parameters_document)
 
 	#write to Document table translated documents
-	# old = 'old'
-	# for name in dfNames:
-	# 	for index, row in dfs[name].iterrows():
-	# 		columns = dfs[name].columns
-	# 		print(columns)
-	# 		column_id = get_id_column_name(columns)
-	# 		print(column_id)
-			# if type(row['module']) is str:
-			# 	if column_id != '':
-			# 		if old != row[column_id]:
-			# 			old = row[column_id]
-			# 			#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-			# 			parameters_document = [row[column_id], 2, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', name, True]
-			# 			write_document_table(parameters_document)
-			# else:
-			# 	if column_id != '':
-			# 		if old != row[column_id]:
-			# 			old = row[column_id]
-			# 			#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-			# 			parameters_document = [row[column_id], 2, 10, row['doc_id'], 'ENG_GB', name, True]
-			# 			write_document_table(parameters_document)
+	old = 'old'
+	for name in dfNames:
+		for index, row in dfs[name].iterrows():
+			columns = dfs[name].columns
+			column_id = get_id_column_name(columns)
+			if ('ENG' in name or 'RUS' in name or 'GER' in name or 'FR' in name or 'FRE' in name) and (name != 'ENG_GB'):
+				if type(row['module']) is str:
+					if column_id != '':
+						if old != row[column_id]:
+							old = row[column_id]
+							#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+							parameters_document = [row[column_id], 2, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', name, True]
+							write_document_table(parameters_document)
+				else:
+					if column_id != '':
+						if old != row[column_id]:
+							old = row[column_id]
+							#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+							parameters_document = [row[column_id], 2, 10, row['doc_id'], 'ENG_GB', name, True]
+							write_document_table(parameters_document)
 	
 
 if __name__ == "__main__":

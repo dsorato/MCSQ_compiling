@@ -92,7 +92,7 @@ def group_by_prefix(translations_list):
 def get_id_column_name(columns):
 	column_id = ''
 	for c in columns:
-		if 'id' in c.lower() and c != 'doc_id':
+		if 'id' in c.lower() and c != 'doc_id' and c != 'generic description id':
 			column_id = c
 	
 	return column_id
