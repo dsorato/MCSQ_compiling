@@ -11,10 +11,11 @@ import numpy as np
 import os
 import re
 
-def check_if_itemname(row):
-	itemname = False
-	if type(row) is str and row != '-':
-		itemname = True
+def check_if_itemname(value, dict_item_names):
+	itemname = None
+	if type(value) is str and value in dict_item_names:
+		itemname = dict_item_names[value]
+
 
 	return itemname
 
@@ -29,10 +30,11 @@ def check_if_param_is_nan(params):
 	return isnan 	
 
 #@params: 0=documentid, 1=itemtypeid, 2=text, 3=morethanonetranslation, 4=translation2, 5=translation3, 6=translationadjudication, 
-#7=translationverification, 8=translationdescription, 9=translationupdated
-def edit_params(params):
+#7=translationverification, 8=translationdescription, 9=translationupdated, 10=itemnameid
+def edit_params(params, dict_item_names):
+	params[10] = check_if_itemname(params[10], dict_item_names)
 	params[2] = remove_html_tags(params[2])
-	if params[4] != '' and type(params[4]):
+	if params[4] != '':
 		params[3] = True
 		params[4] = remove_html_tags(params[4])
 		if params[6] != '' and params[7] != '':
@@ -56,6 +58,7 @@ def edit_params(params):
 
 
 def remove_html_tags(text):
+	print('before', text)
 	if type(text) is str:
 		text = re.sub("<.*?>", "", text)
 		text = re.sub("’", "'", text)
@@ -63,6 +66,7 @@ def remove_html_tags(text):
 		text = " ".join(text.split())
 		text = text.strip()
 
+	print('after', text)
 
 	return text
 
@@ -99,11 +103,16 @@ def main():
 	item_types = get_item_type(item_type_unique)
 	item_types.append('No type')
 
-	write_survey_table("ESS", 8, 2016, 'unknown')
-	write_module_table(module_names)
-	write_itemtype_table(item_types)
-	update_itemtype_table()
+	item_name_unique = data.item_name.unique()
+	item_names = get_item_name(item_name_unique)
 
+	# write_survey_table("ESS", 8, 2016, 'unknown')
+	# write_module_table(module_names)
+	# write_itemtype_table(item_types)
+	# update_itemtype_table()
+	# write_item_name_table(item_names)
+
+	dict_item_names = get_item_name_as_dict()
 
 	df_text = data.drop(['doc_id', 'module', 'item_type'], axis=1)
 	translations = []
@@ -126,145 +135,142 @@ def main():
 	itemtype_enum = ItemTypeEnum()
 
 
-	#write to Document table source language documents
-	old = 'old'
-	for index, row in data.iterrows():
-		if type(row['module']) is str:
-			if old != row['doc_id']:
-				old = row['doc_id']
-				#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-				parameters_document = [row['doc_id'], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
-				write_document_table(parameters_document)
-		else:
-			if old != row['doc_id']:
-				old = row['doc_id']
-				#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-				parameters_document = [row['doc_id'], 1, 10, row['doc_id'], 'ENG_GB', 'ENG_GB', False]
-				write_document_table(parameters_document)
+	# #write to Document table source language documents
+	# old = 'old'
+	# for index, row in data.iterrows():
+	# 	if type(row['module']) is str:
+	# 		if old != row['doc_id']:
+	# 			old = row['doc_id']
+	# 			#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+	# 			parameters_document = [row['doc_id'], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
+	# 			write_document_table(parameters_document)
+	# 	else:
+	# 		if old != row['doc_id']:
+	# 			old = row['doc_id']
+	# 			#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+	# 			parameters_document = [row['doc_id'], 1, 10, row['doc_id'], 'ENG_GB', 'ENG_GB', False]
+	# 			write_document_table(parameters_document)
 
-	#write to Document table translated documents		
-	old = 'old'
-	for name in dfNames:
-		for index, row in dfs[name].iterrows():
-			columns = dfs[name].columns
-			column_id = get_id_column_name(columns)
-			if type(row['module']) is str:
-				if column_id != '':
-					if old != row[column_id]:
-						old = row[column_id]
-						#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-						parameters_document = [row[column_id], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', name, True]
-						write_document_table(parameters_document)
-			else:
-				if column_id != '':
-					if old != row[column_id]:
-						old = row[column_id]
-						#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-						parameters_document = [row[column_id], 1, 10, row['doc_id'], 'ENG_GB', name, True]
-						write_document_table(parameters_document)
+	# #write to Document table translated documents		
+	# old = 'old'
+	# for name in dfNames:
+	# 	for index, row in dfs[name].iterrows():
+	# 		columns = dfs[name].columns
+	# 		column_id = get_id_column_name(columns)
+	# 		if type(row['module']) is str:
+	# 			if column_id != '':
+	# 				if old != row[column_id]:
+	# 					old = row[column_id]
+	# 					#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+	# 					parameters_document = [row[column_id], 1, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', name, True]
+	# 					write_document_table(parameters_document)
+	# 		else:
+	# 			if column_id != '':
+	# 				if old != row[column_id]:
+	# 					old = row[column_id]
+	# 					#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+	# 					parameters_document = [row[column_id], 1, 10, row['doc_id'], 'ENG_GB', name, True]
+	# 					write_document_table(parameters_document)
 
 
 	#write to DocumentItem table source language documents items
 	for index, row in data.iterrows():
-		if type(row['ENG_GB']) is str:
-			if len(row['ENG_GB']) > 1:
-				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), remove_html_tags(row['ENG_GB']), False, '', '', '', '', '', False] 
-				write_document_item_table(parameters_document_item)
-			else:
-				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), '', False, '', '', '', '', '', False] 
-				write_document_item_table(parameters_document_item)
-			if check_if_itemname(row['item_name']) == True:
-				itemnames_in_table = find_additional_item_names()
-				if row['item_name'] not in itemnames_in_table: 
-					documentitemid = get_document_item_id()
-					write_item_name_table(documentitemid, row['item_name'])
+		if type(row['ENG_GB']) is str and row['ENG_GB'] != '-':
+			parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), row['ENG_GB'], False, '', '', '', '', '', False, row['item_name']]
+			edit_params(parameters_document_item, dict_item_names)
+			write_document_item_table(parameters_document_item)
+		else:
+			parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), '', False, '', '', '', '', '', False,row['item_name']] 
+			edit_params(parameters_document_item, dict_item_names)
+			write_document_item_table(parameters_document_item)
 
 
-	#write to DocumentItem table translated documents items
-	for name in dfNames:
-		if name != 'ENG_GB':
-			verification = ''
-			adjudication = ''
-			translation1 = ''
-			translation2 = ''
-			translation3 = ''
-			for c in dfs[name].columns:
-				if 'verification' in c.lower():
-					verification = c
-				if 'adjudication' in c.lower():
-					adjudication = c
-				if 'translation1' in c.lower():
-					translation1 = c
-				if 'translation2' in c.lower():
-					translation2 = c
-				if 'translation3' in c.lower():
-					translation3 = c
-			for index, row in dfs[name].iterrows():
-				columns = dfs[name].columns
-				column_id = get_id_column_name(columns)
-				if column_id != '':
-					if translation1 != '' and type(translation1) is str:
-						if verification != '' and adjudication != '' and translation2 != '':
-							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-							row[translation1], False, row[translation2], translation3, row[adjudication], row[verification], '', False]
-						if verification == '' and adjudication != '' and translation2 != '':
-							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-							row[translation1], False, row[translation2], translation3, row[adjudication], verification, '', False]
-						if verification == '' and adjudication == '' and translation2 != '':
-							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-							row[translation1], False, row[translation2], translation3, adjudication, verification, '', False]
-						if verification != '' and adjudication == '' and translation2 != '':
-							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-							row[translation1], False, row[translation2], translation3, adjudication, row[verification], '', False]
-						if verification != '' and adjudication == '' and translation2 == '':
-							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-							row[translation1], False, translation2, translation3, adjudication, row[verification], '', False]
-						if verification != '' and adjudication != '' and translation2 == '':
-							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-							row[translation1], False, translation2, translation3, row[adjudication], row[verification], '', False]
-						if verification == '' and adjudication != '' and translation2 == '':
-							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-							row[translation1], False, translation2, translation3, row[adjudication], verification, '', False]
-						if verification == '' and adjudication == '' and translation2 == '':
-							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-							row[translation1], False, translation2, translation3, adjudication, verification, '', False]
 
-						if check_if_param_is_nan(parameters_document_item) == False:
-							edit_params(parameters_document_item)
-							print(parameters_document_item)
-							write_document_item_table(parameters_document_item)
+	# #write to DocumentItem table translated documents items
+	# for name in dfNames:
+	# 	if name != 'ENG_GB':
+	# 		verification = ''
+	# 		adjudication = ''
+	# 		translation1 = ''
+	# 		translation2 = ''
+	# 		translation3 = ''
+	# 		for c in dfs[name].columns:
+	# 			if 'verification' in c.lower():
+	# 				verification = c
+	# 			if 'adjudication' in c.lower():
+	# 				adjudication = c
+	# 			if 'translation1' in c.lower():
+	# 				translation1 = c
+	# 			if 'translation2' in c.lower():
+	# 				translation2 = c
+	# 			if 'translation3' in c.lower():
+	# 				translation3 = c
+	# 		for index, row in dfs[name].iterrows():
+	# 			columns = dfs[name].columns
+	# 			column_id = get_id_column_name(columns)
+	# 			if column_id != '':
+	# 				if translation1 != '' and type(translation1) is str:
+	# 					if verification != '' and adjudication != '' and translation2 != '':
+	# 						parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 						row[translation1], False, row[translation2], translation3, row[adjudication], row[verification], '', False, row['item_name']]
+	# 					if verification == '' and adjudication != '' and translation2 != '':
+	# 						parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 						row[translation1], False, row[translation2], translation3, row[adjudication], verification, '', False, row['item_name']]
+	# 					if verification == '' and adjudication == '' and translation2 != '':
+	# 						parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 						row[translation1], False, row[translation2], translation3, adjudication, verification, '', False, row['item_name']]
+	# 					if verification != '' and adjudication == '' and translation2 != '':
+	# 						parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 						row[translation1], False, row[translation2], translation3, adjudication, row[verification], '', False, row['item_name']]
+	# 					if verification != '' and adjudication == '' and translation2 == '':
+	# 						parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 						row[translation1], False, translation2, translation3, adjudication, row[verification], '', False, row['item_name']]
+	# 					if verification != '' and adjudication != '' and translation2 == '':
+	# 						parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 						row[translation1], False, translation2, translation3, row[adjudication], row[verification], '', False, row['item_name']]
+	# 					if verification == '' and adjudication != '' and translation2 == '':
+	# 						parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 						row[translation1], False, translation2, translation3, row[adjudication], verification, '', False, row['item_name']]
+	# 					if verification == '' and adjudication == '' and translation2 == '':
+	# 						parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 						row[translation1], False, translation2, translation3, adjudication, verification, '', False, row['item_name']]
 
-					else:
-						if type(row[name]) is str:
-							if verification != '' and adjudication != '' and translation2 != '':
-								parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-								row[name], False, row[translation2], translation3, row[adjudication], row[verification], '', False]
-							if verification == '' and adjudication != '' and translation2 != '':
-								parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-								row[name], False, row[translation2], translation3, row[adjudication], verification, '', False]
-							if verification == '' and adjudication == '' and translation2 != '':
-								parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-								row[name], False, row[translation2], translation3, adjudication, verification, '', False]
-							if verification != '' and adjudication == '' and translation2 != '':
-								parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-								row[name], False, row[translation2], translation3, adjudication, row[verification], '', False]
-							if verification != '' and adjudication == '' and translation2 == '':
-								parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-								row[name], False, translation2, translation3, adjudication, row[verification], '', False]
-							if verification != '' and adjudication != '' and translation2 == '':
-								parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-								row[name], False, translation2, translation3, row[adjudication], row[verification], '', False]
-							if verification == '' and adjudication != '' and translation2 == '':
-								parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-								row[name], False, translation2, translation3, row[adjudication], verification, '', False]
-							if verification == '' and adjudication == '' and translation2 == '':
-								parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-								row[name], False, translation2, translation3, adjudication, verification, '', False]
+	# 					if check_if_param_is_nan(parameters_document_item) == False:
+	# 						edit_params(parameters_document_item, dict_item_names)
+	# 						print(parameters_document_item)
+	# 						write_document_item_table(parameters_document_item)
+
+	# 				else:
+	# 					if type(row[name]) is str:
+	# 						if verification != '' and adjudication != '' and translation2 != '':
+	# 							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 							row[name], False, row[translation2], translation3, row[adjudication], row[verification], '', False, row['item_name']]
+	# 						if verification == '' and adjudication != '' and translation2 != '':
+	# 							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 							row[name], False, row[translation2], translation3, row[adjudication], verification, '', False, row['item_name']]
+	# 						if verification == '' and adjudication == '' and translation2 != '':
+	# 							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 							row[name], False, row[translation2], translation3, adjudication, verification, '', False, row['item_name']]
+	# 						if verification != '' and adjudication == '' and translation2 != '':
+	# 							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 							row[name], False, row[translation2], translation3, adjudication, row[verification], '', False, row['item_name']]
+	# 						if verification != '' and adjudication == '' and translation2 == '':
+	# 							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 							row[name], False, translation2, translation3, adjudication, row[verification], '', False, row['item_name']]
+	# 						if verification != '' and adjudication != '' and translation2 == '':
+	# 							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 							row[name], False, translation2, translation3, row[adjudication], row[verification], '', False, row['item_name']]
+	# 						if verification == '' and adjudication != '' and translation2 == '':
+	# 							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 							row[name], False, translation2, translation3, row[adjudication], verification, '', False, row['item_name']]
+	# 						if verification == '' and adjudication == '' and translation2 == '':
+	# 							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
+	# 							row[name], False, translation2, translation3, adjudication, verification, '', False, row['item_name']]
 							
-							if check_if_param_is_nan(parameters_document_item) == False:
-								edit_params(parameters_document_item)
-								print(parameters_document_item)
-								write_document_item_table(parameters_document_item)
+	# 						if check_if_param_is_nan(parameters_document_item) == False:
+	# 							edit_params(parameters_document_item, dict_item_names)
+	# 							print(parameters_document_item)
+	# 							write_document_item_table(parameters_document_item)
 
 if __name__ == "__main__":
 	print("Executing data cleaning script for ESS")

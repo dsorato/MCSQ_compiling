@@ -17,6 +17,18 @@ def get_document_item_id():
 	
 	return documentitemid
 
+
+def get_item_name_as_dict():
+	dict_item_name = {}
+	session = session_factory()
+	results = session.query(ItemName).all()
+	for item in results:
+		dict_item_name[item.itemname] = item.itemnameid
+	
+	return dict_item_name
+
+
+
 def find_additional_item_types(candidate_item_types):
 	itemtypes_in_table = []
 	session = session_factory()

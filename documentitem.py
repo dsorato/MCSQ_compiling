@@ -18,11 +18,13 @@ class DocumentItem(Base):
     translationverification = Column(String)
     translationdescription = Column(String)
     translationupdated = Column(Boolean)
+    itemnameid = Column(Integer, ForeignKey('itemname.itemnameid'))
     document = relationship("Document", backref=backref("documentitem", uselist=False))
     itemtype = relationship("ItemType", backref="documentitem")
+    itemname = relationship("ItemName", backref="documentitem")
 
     def __init__(self, documentid, itemtypeid, text, morethanonetranslation, translation2, translation3, translationadjudication, 
-        translationverification, translationdescription, translationupdated):
+        translationverification, translationdescription, translationupdated, itemnameid):
         self.documentid = documentid
         self.itemtypeid = itemtypeid
         self.text = text
@@ -33,4 +35,5 @@ class DocumentItem(Base):
         self.translationverification = translationverification
         self.translationdescription = translationdescription
         self.translationupdated = translationupdated
+        self.itemnameid = itemnameid
         
