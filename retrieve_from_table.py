@@ -42,7 +42,7 @@ def find_additional_item_types(candidate_item_types):
 	return new_types
 
 
-def find_additional_item_names():
+def find_additional_item_names(candidate_item_names):
 	itemnames_in_table = []
 	session = session_factory()
 	m = Base.metadata
@@ -52,7 +52,7 @@ def find_additional_item_names():
 		results = session.query(ItemName).all()
 		for item in results:
 			itemnames_in_table.append(item.itemname) 
-
+	new_names = set(candidate_item_names) - set(itemnames_in_table)
 	session.close()
 
-	return itemnames_in_table
+	return new_names

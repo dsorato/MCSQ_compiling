@@ -45,13 +45,19 @@ def main():
 	
 	item_type_unique = data.item_type.unique()
 	new_item_types = find_additional_item_types(item_type_unique)
-	new_type_names = get_item_type(new_item_types)
+	new_types = get_item_type(new_item_types)
+
+	item_name_unique = data.item_name2.unique()
+	new_item_names= find_additional_item_names(item_name_unique)
+	new_names = get_item_name(new_item_names)
 
 	write_survey_table("EVS", 5, 2017, 'unknown')
-	write_itemtype_table(new_type_names)
+	write_itemtype_table(new_types)
+	write_item_name_table(new_names)
 
 	module_enum = ModuleEnum()
 	itemtype_enum = ItemTypeEnum()
+	dict_item_names = get_item_name_as_dict()
 
 
 	#write to Document table source language documents
@@ -97,16 +103,13 @@ def main():
 	for index, row in data.iterrows():
 		if type(row['generic description']) is str:
 			if len(row['generic description']) > 1:
-				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), remove_html_tags(row['generic description']), False, '', '', '', '', '', False] 
+				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), remove_html_tags(row['generic description']), False, '', '', '', '', '', False, row['item_name2']] 
+				edit_params(parameters_document_item, dict_item_names)
 				write_document_item_table(parameters_document_item)
 			else:
-				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), '', False, '', '', '', '', '', False] 
+				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), '', False, '', '', '', '', '', False, row['item_name2']] 
+				edit_params(parameters_document_item, dict_item_names)
 				write_document_item_table(parameters_document_item)
-			if check_if_itemname(row['item_name2']) == True:
-				itemnames_in_table = find_additional_item_names()
-				if row['item_name2'] not in itemnames_in_table: 
-					documentitemid = get_document_item_id()
-					write_item_name_table(documentitemid, row['item_name2'])
 
 	#write to DocumentItem table translated documents items
 	for name in dfNames:
@@ -131,10 +134,10 @@ def main():
 							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
 							row[review], False, '', '', '', '', '', False]
 
-						if check_if_param_is_nan(parameters_document_item) == False:
-							edit_params(parameters_document_item)
-							print(parameters_document_item)
-							write_document_item_table(parameters_document_item)
+						#if check_if_param_is_nan(parameters_document_item) == False:
+						edit_params(parameters_document_item)
+						print(parameters_document_item)
+						write_document_item_table(parameters_document_item)
 
 
 	
