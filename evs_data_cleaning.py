@@ -51,70 +51,69 @@ def main():
 	new_item_names= find_additional_item_names(item_name_unique)
 	new_names = get_item_name(new_item_names)
 
-	write_survey_table("EVS", 5, 2017, 'unknown')
-	write_itemtype_table(new_types)
-	write_item_name_table(new_names)
+	# write_survey_table("EVS", 5, 2017, 'unknown')
+	# write_itemtype_table(new_types)
+	# write_item_name_table(new_names)
 
 	module_enum = ModuleEnum()
 	itemtype_enum = ItemTypeEnum()
 	dict_item_names = get_item_name_as_dict()
 
 
-	#write to Document table source language documents
-	old = 'old'
-	for index, row in data.iterrows():
-		if type(row['module']) is str:
-			if old != row['doc_id']:
-				old = row['doc_id']
-				#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-				parameters_document = [row['doc_id'], 2, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
-				write_document_table(parameters_document)
-		else:
-			if old != row['doc_id']:
-				old = row['doc_id']
-				#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-				parameters_document = [row['doc_id'], 2, 10, row['doc_id'], 'ENG_GB', 'ENG_GB', False]
-				write_document_table(parameters_document)
+	# #write to Document table source language documents
+	# old = 'old'
+	# for index, row in data.iterrows():
+	# 	if type(row['module']) is str:
+	# 		if old != row['doc_id']:
+	# 			old = row['doc_id']
+	# 			#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+	# 			parameters_document = [row['doc_id'], 2, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
+	# 			write_document_table(parameters_document)
+	# 	else:
+	# 		if old != row['doc_id']:
+	# 			old = row['doc_id']
+	# 			#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+	# 			parameters_document = [row['doc_id'], 2, 10, row['doc_id'], 'ENG_GB', 'ENG_GB', False]
+	# 			write_document_table(parameters_document)
 
-	#write to Document table translated documents
-	old = 'old'
-	for name in dfNames:
-		for index, row in dfs[name].iterrows():
-			columns = dfs[name].columns
-			column_id = get_id_column_name(columns)
-			if ('ENG' in name or 'RUS' in name or 'GER' in name or 'FR' in name or 'FRE' in name) and (name != 'ENG_GB'):
-				if type(row['module']) is str:
-					if column_id != '':
-						if old != row[column_id]:
-							old = row[column_id]
-							#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-							parameters_document = [row[column_id], 2, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', name, True]
-							write_document_table(parameters_document)
-				else:
-					if column_id != '':
-						if old != row[column_id]:
-							old = row[column_id]
-							#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-							parameters_document = [row[column_id], 2, 10, row['doc_id'], 'ENG_GB', name, True]
-							write_document_table(parameters_document)
+	# #write to Document table translated documents
+	# old = 'old'
+	# for name in dfNames:
+	# 	for index, row in dfs[name].iterrows():
+	# 		columns = dfs[name].columns
+	# 		column_id = get_id_column_name(columns)
+	# 		if ('ENG' in name or 'RUS' in name or 'GER' in name or 'FR' in name or 'FRE' in name) and (name != 'ENG_GB'):
+	# 			if type(row['module']) is str:
+	# 				if column_id != '':
+	# 					if old != row[column_id]:
+	# 						old = row[column_id]
+	# 						#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+	# 						parameters_document = [row[column_id], 2, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', name, True]
+	# 						write_document_table(parameters_document)
+	# 			else:
+	# 				if column_id != '':
+	# 					if old != row[column_id]:
+	# 						old = row[column_id]
+	# 						#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
+	# 						parameters_document = [row[column_id], 2, 10, row['doc_id'], 'ENG_GB', name, True]
+	# 						write_document_table(parameters_document)
 
 
-	#write to DocumentItem table source language documents items
-	for index, row in data.iterrows():
-		if type(row['generic description']) is str:
-			if len(row['generic description']) > 1:
-				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), remove_html_tags(row['generic description']), False, '', '', '', '', '', False, row['item_name2']] 
-				edit_params(parameters_document_item, dict_item_names)
-				write_document_item_table(parameters_document_item)
-			else:
-				parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), '', False, '', '', '', '', '', False, row['item_name2']] 
-				edit_params(parameters_document_item, dict_item_names)
-				write_document_item_table(parameters_document_item)
+	# #write to DocumentItem table source language documents items
+	# for index, row in data.iterrows():
+	# 	if type(row['generic description']) is str:
+	# 		if len(row['generic description']) > 1:
+	# 			parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), remove_html_tags(row['generic description']), False, '', '', '', '', '', False, row['item_name2']] 
+	# 			edit_params(parameters_document_item, dict_item_names)
+	# 			write_document_item_table(parameters_document_item)
+	# 		else:
+	# 			parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), '', False, '', '', '', '', '', False, row['item_name2']] 
+	# 			edit_params(parameters_document_item, dict_item_names)
+	# 			write_document_item_table(parameters_document_item)
 
 	#write to DocumentItem table translated documents items
 	for name in dfNames:
-		if 'RUS' in name:
-		#if ('ENG' in name or 'RUS' in name or 'GER' in name or 'FR' in name or 'FRE' in name) and (name != 'ENG_GB'):
+		if ('ENG' in name or 'RUS' in name or 'GER' in name or 'FR' in name or 'FRE' in name) and (name != 'ENG_GB'):
 			review = ''
 			review2 = ''
 			for c in dfs[name].columns:
@@ -129,13 +128,13 @@ def main():
 					if review != '' and type(review) is str:
 						if review2 != '' and type(review2) is str:
 							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-							row[review], False, row[review2], '', '', '', '', False]
+							row[review], False, row[review2], '', '', '', '', False, row['item_name2']]
 						else:
 							parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-							row[review], False, '', '', '', '', '', False]
+							row[review], False, '', '', '', '', '', False, row['item_name2']]
 
 						#if check_if_param_is_nan(parameters_document_item) == False:
-						edit_params(parameters_document_item)
+						edit_params(parameters_document_item, dict_item_names)
 						print(parameters_document_item)
 						write_document_item_table(parameters_document_item)
 
