@@ -103,7 +103,7 @@ def main():
 	item_name_unique = data.item_name.unique()
 	item_names = get_item_name(item_name_unique)
 
-	write_survey_table("ESS", 8, 2016, 'unknown')
+	write_survey_table("ESS", 8, 2016)
 	write_module_table(module_names)
 	write_itemtype_table(item_types)
 	update_itemtype_table()

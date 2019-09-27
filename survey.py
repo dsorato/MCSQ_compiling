@@ -9,10 +9,8 @@ class Survey(Base):
     study = Column(String)
     waveorround = Column(Integer)
     year = Column(Integer)
-    surveymode = Column(String)
 
-    def __init__(self, study, waveorround, year, surveymode):
+    def __init__(self, study, waveorround, year):
         self.study = study
         self.waveorround = waveorround
         self.year = year
-        self.surveymode = surveymode

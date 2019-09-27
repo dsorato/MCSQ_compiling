@@ -6,9 +6,9 @@ from document import *
 from documentitem import *
 from base import *
 
-def write_survey_table(survey, waveround, year, mode):
+def write_survey_table(survey, waveround, year):
 	session = session_factory()
-	item = Survey(survey, waveround, year, mode)
+	item = Survey(survey, waveround, year)
 	session.add(item)
 	session.commit()
 	session.close()
