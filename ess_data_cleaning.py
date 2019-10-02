@@ -2,6 +2,7 @@
 #Author: Danielly Sorato
 #Before running the script, install pandas
 import pandas as pd
+import numpy as np
 from populate_tables import *
 from retrieve_from_table import *
 from extract_information import *
@@ -129,14 +130,30 @@ def main():
 		dfNew = pd.concat([df_metadata, data[item]], axis=1)
 		dfs[dfName] = dfNew
 
-
+	dfsScales = dict()
+	dfNamesScales = []
 	for name in dfNames:
 		prefix = name.split('_')[0]
 		if name != 'item_name' and prefix == 'GER' or prefix == 'RUS' or prefix == 'FRE' or prefix == 'ENG':
+			dfNamesScales.append(name)
 			working_df = dfs[name]
 			is_response_option = working_df['item_type']=='Response option'
 			response_options = working_df[is_response_option]
-			print(response_options)
+			if name == 'RUS_RU':
+				print('oi')
+				response_options_mod = response_options.dropna(how='any', subset=['RUS_RU_Verification'])
+			elif name == 'RUS_LT':
+				print('oii')
+				response_options_mod = response_options.dropna(how='any', subset=['RUS_LT_Verification'])
+			else:
+				print('oiii')
+				response_options_mod = response_options.dropna(how='any', subset=[name])
+			dfsScales[name] = response_options_mod
+	
+
+	for k, v in list(dfsScales.items()):
+		print('******')
+		print(k, v)
 
 
 
