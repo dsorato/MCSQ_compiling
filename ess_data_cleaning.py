@@ -62,7 +62,7 @@ def remove_html_tags(text):
 	if type(text) is str:
 		text = re.sub("<.*?>", "", text)
 		text = re.sub("’", "'", text)
-		text = re.sub("[^a-zA-Z'а-яА-Я.?!(),:;¿¡/\"’\[\]0-9\-]+", "		",text)
+		text = re.sub("[^a-zA-Z'а-яА-Я.?!(),`àâçéèêëîïôûùüÿñæœ:;¿¡/\"’\[\]0-9\-]+", "		",text)
 		text = " ".join(text.split())
 		text = text.strip()
 
@@ -139,21 +139,37 @@ def main():
 			working_df = dfs[name]
 			is_response_option = working_df['item_type']=='Response option'
 			response_options = working_df[is_response_option]
+			columns = response_options.columns
+			print(columns)
 			if name == 'RUS_RU':
-				print('oi')
-				response_options_mod = response_options.dropna(how='any', subset=['RUS_RU_Verification'])
+				response_options_mod = response_options.dropna(how='any', subset=['RUS_RU_ReviewAdjudication'])
 			elif name == 'RUS_LT':
-				print('oii')
-				response_options_mod = response_options.dropna(how='any', subset=['RUS_LT_Verification'])
+				response_options_mod = response_options.dropna(how='any', subset=['RUS_LT_ReviewAdjudication'])
 			else:
-				print('oiii')
 				response_options_mod = response_options.dropna(how='any', subset=[name])
 			dfsScales[name] = response_options_mod
 	
 
-	for k, v in list(dfsScales.items()):
-		print('******')
-		print(k, v)
+	df = dfsScales['FRE_FR']
+	old_id = 'old'
+	scales_list = []
+	aux_list = []
+	for index, row in df.iterrows():
+		new_id = row['doc_id']
+		if old_id != new_id:
+			same_scale = df.loc[df['doc_id'] == new_id]
+			for index, row in same_scale.iterrows():
+				# aux_list.append(row['FRE_FR'])
+				aux_list.append(remove_html_tags(row['FRE_FR']))
+			if aux_list not in scales_list:
+				scales_list.append(aux_list)
+		old_id = row['doc_id']
+		aux_list = []
+
+
+	for item in scales_list:
+		print('*****')
+		print(item)
 
 
 
