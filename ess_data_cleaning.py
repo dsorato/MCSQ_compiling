@@ -12,6 +12,7 @@ import numpy as np
 import os
 import re
 
+
 def check_if_itemname(value, dict_item_names):
 	itemname = None
 	if type(value) is str and value in dict_item_names:
@@ -19,6 +20,15 @@ def check_if_itemname(value, dict_item_names):
 
 
 	return itemname
+
+def check_if_scale_in_list(alist, asublist):
+	scale_in_list = False
+	for item in alist:
+		if set(item) == set(asublist):
+			scale_in_list = True
+			break
+
+	return scale_in_list
 
 
 def check_if_param_is_nan(params):
@@ -62,7 +72,7 @@ def remove_html_tags(text):
 	if type(text) is str:
 		text = re.sub("<.*?>", "", text)
 		text = re.sub("’", "'", text)
-		text = re.sub("[^a-zA-Z'а-яА-Я.?!(),`àâçéèêëîïôûùüÿñæœ:;¿¡/\"’\[\]0-9\-]+", "		",text)
+		text = re.sub("[^a-zA-Z'а-яА-Я.?!(),öäüÖÄÜß`àâçéèêëîïôûùüÿñæœ:;¿¡/\"’\[\]0-9\-]+", "		",text)
 		text = " ".join(text.split())
 		text = text.strip()
 
@@ -150,22 +160,34 @@ def main():
 			dfsScales[name] = response_options_mod
 	
 
-	df = dfsScales['FRE_FR']
+	#We know when doc items are from same scale because they have the same doc_id
 	old_id = 'old'
 	scales_list = []
 	aux_list = []
-	for index, row in df.iterrows():
-		new_id = row['doc_id']
-		if old_id != new_id:
-			same_scale = df.loc[df['doc_id'] == new_id]
-			for index, row in same_scale.iterrows():
-				# aux_list.append(row['FRE_FR'])
-				aux_list.append(remove_html_tags(row['FRE_FR']))
-			if aux_list not in scales_list:
-				scales_list.append(aux_list)
-		old_id = row['doc_id']
-		aux_list = []
+	aux_language_country_list = []
+	for name in dfNamesScales:
+		df = dfsScales[name]
+		#position 0 of language country list is always the Language and Country information
+		aux_language_country_list.append([name])
+		for index, row in df.iterrows():
+			new_id = row['doc_id']
+			if old_id != new_id:
+				same_scale = df.loc[df['doc_id'] == new_id]
+				for index, row in same_scale.iterrows():
+					if name == 'RUS_RU':
+						aux_list.append(remove_html_tags(row['RUS_RU_ReviewAdjudication']))
+					elif name == 'RUS_LT':
+						aux_list.append(remove_html_tags(row['RUS_LT_ReviewAdjudication']))
+					else:
+						aux_list.append(remove_html_tags(row[name]))
 
+				if check_if_scale_in_list(aux_language_country_list, aux_list) == False:
+					aux_language_country_list.append(aux_list)
+
+			old_id = row['doc_id']
+			aux_list = []
+		scales_list.append(aux_language_country_list)
+		aux_language_country_list = []
 
 	for item in scales_list:
 		print('*****')
