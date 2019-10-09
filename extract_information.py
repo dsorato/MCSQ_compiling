@@ -1,6 +1,43 @@
 import re
 from itertools import groupby
+import pandas as pd
 
+main_languages_prefix = ['GER', 'ENG', 'FRE', 'RUS']
+
+def split_response_options_by_language_country(dfs_names, dfs_by_language_country):
+	#Create a dictionary of dataframes (dfs_scales_by_language_country) with only response options for each language/country in the file
+	dfs_scales_by_language_country = dict()
+	dfs_scales_names = []
+	for name in dfs_names:
+		prefix = name.split('_')[0]
+		#for now, we consider only ENG, GER, FRE and RUS
+		if name != 'item_name' and prefix in main_languages_prefix:
+			dfs_scales_names.append(name)
+			working_df = dfs_by_language_country[name]
+			is_response_option = working_df['item_type']=='Response option'
+			response_options = working_df[is_response_option]
+			if name == 'RUS_RU':
+				response_options_mod = response_options.dropna(how='any', subset=['RUS_RU_ReviewAdjudication'])
+			elif name == 'RUS_LT':
+				response_options_mod = response_options.dropna(how='any', subset=['RUS_LT_ReviewAdjudication'])
+			else:
+				response_options_mod = response_options.dropna(how='any', subset=[name])
+			dfs_scales_by_language_country[name] = response_options_mod
+
+	return dfs_scales_names, dfs_scales_by_language_country
+
+
+def split_data_by_language_country(groups, df_metadata, data):
+	#Create a dictionary of dataframes (dfs_by_language_country) for each language/country in the file
+	dfs_by_language_country = dict()
+	dfs_names = []
+	for item in groups:
+		df_name = get_code(item[0])
+		dfs_names.append(df_name)
+		df_new = pd.concat([df_metadata, data[item]], axis=1)
+		dfs_by_language_country[df_name] = df_new
+
+	return dfs_names, dfs_by_language_country
 
 def get_item_name(item_name_unique):
 	item_names = []

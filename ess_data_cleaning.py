@@ -12,13 +12,6 @@ import numpy as np
 import os
 import re
 
-main_languages_prefix = ['GER', 'ENG', 'FRE', 'RUS']
-
-
-def sublist(lst1, lst2):
-   ls1 = [element for element in lst1 if element in lst2]
-   ls2 = [element for element in lst2 if element in lst1]
-   return ls1 == ls2
 
 def check_if_itemname(value, dict_item_names):
 	itemname = None
@@ -129,77 +122,64 @@ def main():
 	#this is a workaround because there are several wrong values for item names
 	item_names = get_item_name(item_name_unique)
 
-	write_survey_table("ESS", 8, 2016)
-	write_module_table(module_names)
-	write_item_name_table(item_names)
-	write_itemtype_table(item_types)
-	update_itemtype_table()
+	# write_survey_table("ESS", 8, 2016)
+	# write_module_table(module_names)
+	# write_item_name_table(item_names)
+	# write_itemtype_table(item_types)
+	# update_itemtype_table()
 	
 
-	# df_text = data.drop(['doc_id', 'module', 'item_type'], axis=1)
-	# translations = []
-	# for col in df_text.columns:
-	# 	translations.append(col)
+	df_text = data.drop(['doc_id', 'module', 'item_type'], axis=1)
+	translations = []
+	for col in df_text.columns:
+		translations.append(col)
 
-	# groups = group_by_prefix(translations)
+	groups = group_by_prefix(translations)
+	split_data = split_data_by_language_country(groups, df_metadata, data)
+	#a list of the dataframes names
+	dfs_names = split_data[0]
+	#a dictionary with dataframes separeted by language/country
+	dfs_by_language_country = split_data[1]
 
-	# #We create a dictionary of dataframes for each language in the file
-	# dfs = dict()
-	# dfNames = []
-	# for item in groups:
-	# 	dfName = get_code(item[0])
-	# 	dfNames.append(dfName)
-	# 	dfNew = pd.concat([df_metadata, data[item]], axis=1)
-	# 	dfs[dfName] = dfNew
+	split_data_for_scales = split_response_options_by_language_country(dfs_names, dfs_by_language_country)
+	#a list of the dataframes names
+	dfs_scales_names = split_data_for_scales[0]
+	#a dictionary with dataframes with only response options separeted by language/country
+	dfs_scales_by_language_country = split_data_for_scales[1]
 
-	# #We create a dictionary of dataframes with only response options for each language in the file
-	# dfsScales = dict()
-	# dfNamesScales = []
-	# for name in dfNames:
-	# 	prefix = name.split('_')[0]
-	# 	if name != 'item_name' and prefix in main_languages_prefix:
-	# 		dfNamesScales.append(name)
-	# 		working_df = dfs[name]
-	# 		is_response_option = working_df['item_type']=='Response option'
-	# 		response_options = working_df[is_response_option]
-	# 		if name == 'RUS_RU':
-	# 			response_options_mod = response_options.dropna(how='any', subset=['RUS_RU_ReviewAdjudication'])
-	# 		elif name == 'RUS_LT':
-	# 			response_options_mod = response_options.dropna(how='any', subset=['RUS_LT_ReviewAdjudication'])
-	# 		else:
-	# 			response_options_mod = response_options.dropna(how='any', subset=[name])
-	# 		dfsScales[name] = response_options_mod
-	
+	#We know when doc items are from same scale because they have the same doc_id
+	old_id = 'old'
+	scales_list = []
+	aux_list = []
+	aux_language_country_list = []
+	for name in dfs_scales_names:
+		df = dfs_scales_by_language_country[name]
+		#position 0 of language country list is always the Language and Country information
+		aux_language_country_list.append([name])
+		for index, row in df.iterrows():
+			new_id = row['doc_id']
+			if old_id != new_id:
+				same_scale = df.loc[df['doc_id'] == new_id]
+				for index, row in same_scale.iterrows():
+					if name == 'RUS_RU':
+						aux_list.append(remove_html_tags(row['RUS_RU_ReviewAdjudication']))
+					elif name == 'RUS_LT':
+						aux_list.append(remove_html_tags(row['RUS_LT_ReviewAdjudication']))
+					else:
+						aux_list.append(remove_html_tags(row[name]))
 
-	# #We know when doc items are from same scale because they have the same doc_id
-	# old_id = 'old'
-	# scales_list = []
-	# aux_list = []
-	# aux_language_country_list = []
-	# for name in dfNamesScales:
-	# 	df = dfsScales[name]
-	# 	#position 0 of language country list is always the Language and Country information
-	# 	aux_language_country_list.append([name])
-	# 	for index, row in df.iterrows():
-	# 		new_id = row['doc_id']
-	# 		if old_id != new_id:
-	# 			same_scale = df.loc[df['doc_id'] == new_id]
-	# 			for index, row in same_scale.iterrows():
-	# 				if name == 'RUS_RU':
-	# 					aux_list.append(remove_html_tags(row['RUS_RU_ReviewAdjudication']))
-	# 				elif name == 'RUS_LT':
-	# 					aux_list.append(remove_html_tags(row['RUS_LT_ReviewAdjudication']))
-	# 				else:
-	# 					aux_list.append(remove_html_tags(row[name]))
+				if check_if_scale_in_list(aux_language_country_list, aux_list) == False:
+					aux_language_country_list.append(aux_list)
 
-	# 			if check_if_scale_in_list(aux_language_country_list, aux_list) == False:
-	# 				aux_language_country_list.append(aux_list)
+			old_id = row['doc_id']
+			aux_list = []
+		#scales_list contains all the scales in the file, separated by language
+		scales_list.append(aux_language_country_list)
+		aux_language_country_list = []
 
-	# 		old_id = row['doc_id']
-	# 		aux_list = []
-	# 	#scales_list contains all the scales in the file, separated by language
-	# 	scales_list.append(aux_language_country_list)
-	# 	aux_language_country_list = []
+	for item in scales_list:
+		print('****')
+		print(item)
 
 	# module_enum = ModuleEnum()
 	# itemtype_enum = ItemTypeEnum()
