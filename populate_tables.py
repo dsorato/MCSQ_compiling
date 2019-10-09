@@ -4,6 +4,10 @@ from itemtype import *
 from itemname import *
 from document import *
 from documentitem import *
+from scale import *
+from stimuli import *
+from textitem import *
+from textitemdraft import *
 from base import *
 
 def write_survey_table(survey, waveround, year):

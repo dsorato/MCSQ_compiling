@@ -1,11 +1,11 @@
 from base import Base
 from sqlalchemy import Column, String, Integer, Sequence, ForeignKey
 
-class Scale(Base):
-    __tablename__ = 'scale'
+class Stimuli(Base):
+    __tablename__ = 'stimuli'
 
     # emits CREATE SEQUENCE + INTEGER
-    scaleid = Column(Integer, Sequence('scale_id_seq'), primary_key=True)
+    stimuliid = Column(Integer, Sequence('stimuli_id_seq'), primary_key=True)
     languagecountry = Column(String)
 
 
