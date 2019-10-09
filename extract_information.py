@@ -7,7 +7,6 @@ def get_item_name(item_name_unique):
 	for item in item_name_unique:
 		if type(item) is str:
 			split_item = item.split(' ')
-			#this is a workaround because there are several wrong values for item names
 			if (re.findall("[a-zA-Z]\d{1}", item) or len(split_item) == 1) and item != '-':
 				item_names.append(item)
 

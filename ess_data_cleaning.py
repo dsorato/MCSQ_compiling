@@ -109,16 +109,24 @@ def main():
 		print(col) 
 
 	df_metadata = data[['doc_id', 'module', 'item_type', 'item_name']]
+	#get only unique values in module column
 	module_unique = data.module.unique()
 	module_names = get_module_name(module_unique)
+	#some items dont have module, so lets add this possibility
 	module_names.append('No module')
+	#get a generic module name that will be suitable for all surveys. E.g., "A" instead of "A - MEDIA USE"
 	module_names = get_generic_module_name(module_names)
 
+	#get only unique values in item_type column
 	item_type_unique = data.item_type.unique()
+	#this is a workaround because there are several wrong values for item types
 	item_types = get_item_type(item_type_unique)
+	#some items dont have an item type, so lets add this possibility
 	item_types.append('No type')
 
+	#get only unique values in item_name column
 	item_name_unique = data.item_name.unique()
+	#this is a workaround because there are several wrong values for item names
 	item_names = get_item_name(item_name_unique)
 
 	write_survey_table("ESS", 8, 2016)
@@ -127,7 +135,6 @@ def main():
 	write_itemtype_table(item_types)
 	update_itemtype_table()
 	
-
 
 	# df_text = data.drop(['doc_id', 'module', 'item_type'], axis=1)
 	# translations = []
