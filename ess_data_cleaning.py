@@ -149,6 +149,7 @@ def main():
 
 	#We know when doc items are from same scale because they have the same doc_id
 	old_id = 'old'
+	df_unique_scales = pd.DataFrame(columns=['doc_id', 'languagecountry','text'])
 	scales_list = []
 	aux_list = []
 	aux_language_country_list = []
@@ -160,6 +161,7 @@ def main():
 			new_id = row['doc_id']
 			if old_id != new_id:
 				same_scale = df.loc[df['doc_id'] == new_id]
+				print(same_scale)
 				for index, row in same_scale.iterrows():
 					if name == 'RUS_RU':
 						aux_list.append(remove_html_tags(row['RUS_RU_ReviewAdjudication']))
@@ -177,9 +179,9 @@ def main():
 		scales_list.append(aux_language_country_list)
 		aux_language_country_list = []
 
-	for item in scales_list:
-		print('****')
-		print(item)
+	# for item in scales_list:
+	# 	print('****')
+	# 	print(item)
 
 	# module_enum = ModuleEnum()
 	# itemtype_enum = ItemTypeEnum()
