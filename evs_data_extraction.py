@@ -1,17 +1,31 @@
 import pandas as pd
 from populate_tables import *
-# from extract_information import *
-# from module_enum import *
-# from itemtype_enum import *
+import nltk.data
 import numpy as np
 import sys
 import os
 import re
 
+initial_sufix = 0
 
-def get_survey_info_and_populate_table(filename):
-	surveyid = filename.replace('.xlsx', '')
-	split_items = surveyid.split('_')
+def update_item_id(survey_id):
+	global initial_sufix
+	prefix = survey_id+'_'
+	item_id = prefix+str(initial_sufix)
+	initial_sufix = initial_sufix + 1
+
+	return survey_item_id
+
+def remove_trailing(clean):
+	without_trailing = []
+	for item in clean:
+		item = item.rstrip()
+		without_trailing.append(item)
+
+	return without_trailing
+
+def get_survey_info_and_populate_table(survey_id):
+	split_items = survey_id.split('_')
 
 	study = split_items[0]
 	wave_round = split_items[3]
@@ -20,118 +34,70 @@ def get_survey_info_and_populate_table(filename):
 
 	write_survey_table(surveyid, study, wave_round, int(year), country_language)
 
+def extract_constant(constants, a_constant):
+	filtered_constants_df = constants[constants['Code'] == a_constant]
+	print(filtered_constants_df.Translated)
+	# if pd.notna(filtered_constants_df.Translation):
+	# 	ret = filtered_constants_df.Translation
+	# else:
+	# 	ret = filtered_constants_df.TranslatableElement
+
+	# print(ret)
+
+	return ret
+
 
 
 def main(filename):
+	sentence_splitter_prefix = 'tokenizers/punkt/'
+
+	if 'ENG' in filename:
+		sentence_splitter_suffix = 'english.pickle'
+	if 'FRE' in filename:
+		sentence_splitter_suffix = 'french.pickle'
+	if 'GER' in filename:
+		sentence_splitter_suffix = 'german.pickle'
+
 	constants = pd.read_excel(open('data/'+str(filename), 'rb'), sheet_name='Constants')
+	#dropping unecessary information
+	constants = constants.drop(['QuestionElement', 'PAPI', 'CAPI', 'CAWI', 'MAIL'], axis=1)
+
 	questionnaire = pd.read_excel(open('data/'+str(filename), 'rb'), sheet_name='Questionnaire')
 	answer_types = pd.read_excel(open('data/'+str(filename), 'rb'), sheet_name='Questionnaire')
 
-	#populate survey table
-	get_survey_info_and_populate_table(filename)
+	# #populate survey table
+	# survey_id = filename.replace('.xlsx', '')
+	# get_survey_info_and_populate_table(survey_id)
 	
-	#populate module table
-	list_unique_modules = questionnaire.Module.unique()
-	list_unique_modules = ['No module' if isinstance(x, float) else x for x in list_unique_modules]
-	write_module_table(list_unique_modules)
+	# #populate module table
+	# list_unique_modules = questionnaire.Module.unique()
+	# list_unique_modules = ['No module' if isinstance(x, float) else x for x in list_unique_modules]
+	# write_module_table(list_unique_modules)
+
+	df_survey_item = pd.DataFrame(columns=['survey_itemid', 'surveyid', 'moduleid', 'country_language', 'item_is_source'])
+
+	#put everything in df_survey_item to attribute survey_item IDs and then extract using item_type
+	for index, row in questionnaire.iterrows(): 
+		if pd.isna(row['Translated']):
+			if pd.notna(row['TranslatableElement']) and row['QuestionElement'] == 'Constant':
+				survey_item = row['TranslatableElement']
+				extract_constant(constants, survey_item)
+				
+			if pd.notna(row['TranslatableElement']) and row['QuestionElement'] == 'AnswerType':
+				survey_item = row['TranslatableElement']
+				# print(survey_item)
+
+		else:
+			if pd.notna(row['TranslatableElement']) and row['QuestionElement'] == 'Constant':
+				survey_item = row['Translated']
+				# print(survey_item)
+			if pd.notna(row['TranslatableElement']) and row['QuestionElement'] == 'AnswerType':
+				survey_item = row['Translated']
+				# print(survey_item)
+			
 
 
-	
 
-
-	# write_itemtype_table(new_types)
-	# write_item_name_table(new_names)
-
-	# item_type_unique = data.item_type.unique()
-	# new_item_types = find_additional_item_types(item_type_unique)
-	# new_types = get_item_type(new_item_types)
-
-	# item_name_unique = data.item_name2.unique()
-	# new_item_names= find_additional_item_names(item_name_unique)
-	# new_names = get_item_name(new_item_names)
-
-	# module_enum = ModuleEnum()
-	# itemtype_enum = ItemTypeEnum()
-	# dict_item_names = get_item_name_as_dict()
-
-
-	# #write to Document table source language documents
-	# old = 'old'
-	# for index, row in data.iterrows():
-	# 	if type(row['module']) is str:
-	# 		if old != row['doc_id']:
-	# 			old = row['doc_id']
-	# 			#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-	# 			parameters_document = [row['doc_id'], 2, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', 'ENG_GB', False]
-	# 			write_document_table(parameters_document)
-	# 	else:
-	# 		if old != row['doc_id']:
-	# 			old = row['doc_id']
-	# 			#@params=documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-	# 			parameters_document = [row['doc_id'], 2, 10, row['doc_id'], 'ENG_GB', 'ENG_GB', False]
-	# 			write_document_table(parameters_document)
-
-	# #write to Document table translated documents
-	# old = 'old'
-	# for name in dfNames:
-	# 	for index, row in dfs[name].iterrows():
-	# 		columns = dfs[name].columns
-	# 		column_id = get_id_column_name(columns)
-	# 		if ('ENG' in name or 'RUS' in name or 'GER' in name or 'FR' in name or 'FRE' in name) and (name != 'ENG_GB'):
-	# 			if type(row['module']) is str:
-	# 				if column_id != '':
-	# 					if old != row[column_id]:
-	# 						old = row[column_id]
-	# 						#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-	# 						parameters_document = [row[column_id], 2, get_module_enum(row['module'], module_enum), row['doc_id'], 'ENG_GB', name, True]
-	# 						write_document_table(parameters_document)
-	# 			else:
-	# 				if column_id != '':
-	# 					if old != row[column_id]:
-	# 						old = row[column_id]
-	# 						#documentid, surveyid, moduleid, sourcedocumentid, sourcecountrylanguage, countrylanguage, documentistranslation
-	# 						parameters_document = [row[column_id], 2, 10, row['doc_id'], 'ENG_GB', name, True]
-	# 						write_document_table(parameters_document)
-
-
-	# #write to DocumentItem table source language documents items
-	# for index, row in data.iterrows():
-	# 	if type(row['generic description']) is str:
-	# 		if len(row['generic description']) > 1:
-	# 			parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), remove_html_tags(row['generic description']), False, '', '', '', '', '', False, row['item_name2']] 
-	# 			edit_params(parameters_document_item, dict_item_names)
-	# 			write_document_item_table(parameters_document_item)
-	# 		else:
-	# 			parameters_document_item = [row['doc_id'], get_item_type_enum(row['item_type'], itemtype_enum), '', False, '', '', '', '', '', False, row['item_name2']] 
-	# 			edit_params(parameters_document_item, dict_item_names)
-	# 			write_document_item_table(parameters_document_item)
-
-	#write to DocumentItem table translated documents items
-	# for name in dfNames:
-	# 	if ('ENG' in name or 'RUS' in name or 'GER' in name or 'FR' in name or 'FRE' in name) and (name != 'ENG_GB'):
-	# 		review = ''
-	# 		review2 = ''
-	# 		for c in dfs[name].columns:
-	# 			if 'review' in c.lower():
-	# 				review = c
-	# 			if 'review2' in c.lower():
-	# 				review2 = c
-	# 		for index, row in dfs[name].iterrows():
-	# 			columns = dfs[name].columns
-	# 			column_id = get_id_column_name(columns)
-	# 			if column_id != '':
-	# 				if review != '' and type(review) is str:
-	# 					if review2 != '' and type(review2) is str:
-	# 						parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-	# 						row[review], False, row[review2], '', '', '', '', False, row['item_name2']]
-	# 					else:
-	# 						parameters_document_item = [row[column_id], get_item_type_enum(row['item_type'], itemtype_enum), 
-	# 						row[review], False, '', '', '', '', '', False, row['item_name2']]
-
-	# 					#if check_if_param_is_nan(parameters_document_item) == False:
-	# 					edit_params(parameters_document_item, dict_item_names)
-	# 					print(parameters_document_item)
-	# 					write_document_item_table(parameters_document_item)
 
 
 	
