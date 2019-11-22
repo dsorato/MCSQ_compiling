@@ -16,7 +16,7 @@ def get_survey_last_record():
 	last_survey_id = session.query(Survey).order_by(Survey.surveyid.desc()).first()
 	session.close()
 
-	return last_survey_id
+	return last_survey_id.surveyid
 
 
 def write_module_table(module_names):
