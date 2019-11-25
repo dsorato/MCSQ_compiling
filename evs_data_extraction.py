@@ -54,7 +54,7 @@ def extract_answer_types(answer_types, a_answer_type):
 
 	else:
 		if filtered_answer_types_df.empty:
-			pass
+			ret = ''
 		else:
 			translated_cells = iter(filtered_answer_types_df.Translated)
 			translated_cells = list(translated_cells)
@@ -72,6 +72,8 @@ def extract_answer_types(answer_types, a_answer_type):
 
 			
 			answer_types_dict[a_answer_type] = clean_text_ret
+
+	return ret
 
 def extract_constant(constants, a_constant):
 	filtered_constants_df = constants[constants['Code'] == a_constant]
@@ -172,10 +174,33 @@ def main(filename):
 						'moduleid': row['Module'], 'item_type': decide_item_type(constant, row), 'item_name': check_item_name(row)}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 
-			# #item is a answer
-			# elif pd.notna(row['TranslatableElement']) and (row['QuestionElement'] == 'AnswerType' or row['TranslatableElement'] in answer_constants):
-			# 	survey_item = row['TranslatableElement']
-			# 	extract_answer_types(answer_types, survey_item)
+			#item is a answer. A answer can be only type ANSWER
+			elif pd.notna(row['TranslatableElement']) and (row['QuestionElement'] == 'AnswerType' or row['QuestionElement'] == 'Answer' or 
+				row['TranslatableElement'] in answer_constants):
+				answer = row['TranslatableElement']
+				print('********************', answer)
+				if answer in answer_constants:
+					survey_item = extract_constant(constants, answer)
+					if survey_item == '':
+						pass
+					else:
+						data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(survey_item), 'surveyid': survey_last_id, 
+						'moduleid': row['Module'], 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+						df_survey_item = df_survey_item.append(data, ignore_index = True)
+				elif row['QuestionElement'] == 'Answer':
+					data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(answer), 'surveyid': survey_last_id, 
+					'moduleid': row['Module'], 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+					df_survey_item = df_survey_item.append(data, ignore_index = True)
+				else:
+					survey_item = extract_answer_types(answer_types, survey_item)
+					if survey_item == '':
+						pass
+					else:
+						for item in survey_item:
+							data = {"survey_itemid": update_item_id(survey_last_id), 'text': item, 'surveyid': survey_last_id, 
+							'moduleid': row['Module'], 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+							df_survey_item = df_survey_item.append(data, ignore_index = True)
+
 			# else:
 			# 	if pd.notna(row['TranslatableElement']):
 			# 		survey_item = clean_text(row['TranslatableElement'])
@@ -194,13 +219,36 @@ def main(filename):
 				if survey_item == '':
 					pass
 				else:
-					data = {"survey_itemid": update_item_id(survey_last_id), 'text': survey_item, 'surveyid': survey_last_id, 
+					data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(survey_item), 'surveyid': survey_last_id, 
 					'moduleid': row['Module'], 'item_type':  decide_item_type(constant, row), 'item_name': check_item_name(row)}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
-				
-			# elif pd.notna(row['Translated']) and (row['QuestionElement'] == 'AnswerType' or row['Translated'] in answer_constants):
-			# 	survey_item = row['Translated']
-			# 	extract_answer_types(answer_types, survey_item)
+			
+			#item is a answer. A answer can be only type ANSWER				
+			elif pd.notna(row['Translated']) and (row['QuestionElement'] == 'AnswerType' or row['QuestionElement'] == 'Answer' or 
+				row['Translated'] in answer_constants):
+				answer = row['Translated']
+				print('********************', answer)
+				if answer in answer_constants:
+					survey_item = extract_constant(constants, answer)
+					if survey_item == '':
+						pass
+					else:
+						data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(survey_item), 'surveyid': survey_last_id, 
+						'moduleid': row['Module'], 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+						df_survey_item = df_survey_item.append(data, ignore_index = True)
+				elif row['QuestionElement'] == 'Answer':
+					data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(answer), 'surveyid': survey_last_id, 
+					'moduleid': row['Module'], 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+					df_survey_item = df_survey_item.append(data, ignore_index = True)
+				else:
+					survey_item = extract_answer_types(answer_types, survey_item)
+					if survey_item == '':
+						pass
+					else:
+						for item in survey_item:
+							data = {"survey_itemid": update_item_id(survey_last_id), 'text': item, 'surveyid': survey_last_id, 
+							'moduleid': row['Module'], 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+							df_survey_item = df_survey_item.append(data, ignore_index = True)
 			# else:
 			# 	if pd.notna(row['Translated']):
 			# 		survey_item = clean_text(row['Translated'])
