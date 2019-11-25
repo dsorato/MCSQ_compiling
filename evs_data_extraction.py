@@ -16,6 +16,9 @@ def clean_text(text):
 	text = re.sub("…", "...", text)
 	text = re.sub("’", "'", text)
 	text = re.sub("\.\.\.\.\.\.\.\.\.\.\.\.\.", "", text)
+	tags = re.compile(r'<.*?>')
+	text = tags.sub('', text)
+	text = text.rstrip()
 
 
 	return text
@@ -44,7 +47,7 @@ def get_survey_info_and_populate_table(survey_id):
 	year = split_items[-1]
 	country_language = split_items[1]+'_'+split_items[2]
 
-	write_survey_table(surveyid, study, wave_round, int(year), country_language)
+	write_survey_table(survey_id, study, wave_round, int(year), country_language)
 
 def extract_answer_types(answer_types, a_answer_type):
 	filtered_answer_types_df = answer_types[answer_types['Code'] == a_answer_type]
@@ -117,15 +120,32 @@ def check_item_name(row):
 
 	return ret
 
-def decide_item_type(constant, row):
+def decide_item_type_other(row):
+	if 'CodInstruction' in str(row['QuestionElement']):
+		item_type = 'INSTRUCTION'
+	elif ('INTRO' or 'SECTION') in str(row['QuestionName']):
+		item_type = 'INTRO'
+	else:
+		item_type = 'REQUEST'
+
+	return item_type
+
+def decide_item_type_constant(constant, row):
 	if constant in instruction_constants:
 		item_type = 'INSTRUCTION'
 	else:
 		item_type = check_question_name(row['QuestionName'])
 
 	return item_type
+					
+def decide_module(module_dict, row_module):
+	if isinstance(row_module, float):
+		module = module_dict['No module']
+	else:
+		module = module_dict[row_module]
 
-						
+	return module
+
 
 
 def main(filename):
@@ -138,6 +158,9 @@ def main(filename):
 	if 'GER' in filename:
 		sentence_splitter_suffix = 'german.pickle'
 
+	sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
+	tokenizer = nltk.data.load(sentence_splitter)
+
 	constants = pd.read_excel(open('data/'+str(filename), 'rb'), sheet_name='Constants')
 	#dropping unecessary information
 	constants = constants.drop(['QuestionElement', 'PAPI', 'CAPI', 'CAWI', 'MAIL'], axis=1)
@@ -146,22 +169,24 @@ def main(filename):
 
 	answer_types = pd.read_excel(open('data/'+str(filename), 'rb'), sheet_name='AnswerTypes')
 
-	# #populate survey table
-	# survey_id = filename.replace('.xlsx', '')
-	# get_survey_info_and_populate_table(survey_id)
+	#populate survey table
+	survey_id = filename.replace('.xlsx', '')
+	get_survey_info_and_populate_table(survey_id)
 	
-	# #populate module table
-	# list_unique_modules = questionnaire.Module.unique()
-	# list_unique_modules = ['No module' if isinstance(x, float) else x for x in list_unique_modules]
-	# write_module_table(list_unique_modules)
+	#populate module table
+	list_unique_modules = questionnaire.Module.unique()
+	list_unique_modules = ['No module' if isinstance(x, float) else x for x in list_unique_modules]
+	write_module_table(list_unique_modules)
 
 	survey_last_id = get_survey_last_record()
+	module_dict = get_module_table_as_dict()
 
 	df_survey_item = pd.DataFrame(columns=['survey_itemid', 'text', 'surveyid', 'moduleid', 'item_type', 'item_name'])
 
 	#put everything in df_survey_item to attribute survey_item IDs and then extract using item_type
 	for index, row in questionnaire.iterrows(): 
-		#case 1: Translated row is null
+
+		#case 1: Translated row is null = we only have the source text
 		if pd.isna(row['Translated']):
 			#item is a constant. A constant can be type: INSTRUCTION, INTRO or REQUEST
 			if pd.notna(row['TranslatableElement']) and row['QuestionElement'] == 'Constant' and row['TranslatableElement'] not in answer_constants:
@@ -171,25 +196,24 @@ def main(filename):
 					pass
 				else:
 					data = {"survey_itemid": update_item_id(survey_last_id), 'text': survey_item, 'surveyid': survey_last_id, 
-						'moduleid': row['Module'], 'item_type': decide_item_type(constant, row), 'item_name': check_item_name(row)}
+						'moduleid': decide_module(module_dict, row['Module']), 'item_type': decide_item_type_constant(constant, row), 'item_name': check_item_name(row)}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 
 			#item is a answer. A answer can be only type ANSWER
 			elif pd.notna(row['TranslatableElement']) and (row['QuestionElement'] == 'AnswerType' or row['QuestionElement'] == 'Answer' or 
 				row['TranslatableElement'] in answer_constants):
 				answer = row['TranslatableElement']
-				print('********************', answer)
 				if answer in answer_constants:
 					survey_item = extract_constant(constants, answer)
 					if survey_item == '':
 						pass
 					else:
 						data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(survey_item), 'surveyid': survey_last_id, 
-						'moduleid': row['Module'], 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+						'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 				elif row['QuestionElement'] == 'Answer':
 					data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(answer), 'surveyid': survey_last_id, 
-					'moduleid': row['Module'], 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+					'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 				else:
 					survey_item = extract_answer_types(answer_types, survey_item)
@@ -198,19 +222,22 @@ def main(filename):
 					else:
 						for item in survey_item:
 							data = {"survey_itemid": update_item_id(survey_last_id), 'text': item, 'surveyid': survey_last_id, 
-							'moduleid': row['Module'], 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+							'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
 
-			# else:
-			# 	if pd.notna(row['TranslatableElement']):
-			# 		survey_item = clean_text(row['TranslatableElement'])
-			# 		data = {"survey_itemid": update_item_id(survey_last_id), 'text': survey_item, 'surveyid': survey_last_id, 
-			# 		'moduleid': row['Module'], 'item_type': check_question_name(row['QuestionName']), 'item_name': check_item_name(row)}
-			# 		df_survey_item = df_survey_item.append(data, ignore_index = True)
+			#item type can be INTRO, INSTUCTION or REQUEST
+			else:
+				if pd.notna(row['TranslatableElement']):
+					survey_item = clean_text(row['TranslatableElement'])
+					split_into_sentences = tokenizer.tokenize(survey_item)
+					for item in split_into_sentences:
+						data = {"survey_itemid": update_item_id(survey_last_id), 'text': item, 'surveyid': survey_last_id, 
+						'moduleid': decide_module(module_dict, row['Module']), 'item_type': decide_item_type_other(row), 'item_name': check_item_name(row)}
+						df_survey_item = df_survey_item.append(data, ignore_index = True)
 		
 
 
-		#case 2: Translated row is not null
+		#case 2: Translated row is not null = We have the tranlated text
 		else:
 			#item is a constant. A constant can be type: INSTRUCTION, INTRO or REQUEST
 			if pd.notna(row['Translated']) and row['QuestionElement'] == 'Constant' and row['Translated'] not in answer_constants:
@@ -220,25 +247,24 @@ def main(filename):
 					pass
 				else:
 					data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(survey_item), 'surveyid': survey_last_id, 
-					'moduleid': row['Module'], 'item_type':  decide_item_type(constant, row), 'item_name': check_item_name(row)}
+					'moduleid': decide_module(module_dict, row['Module']), 'item_type':  decide_item_type_constant(constant, row), 'item_name': check_item_name(row)}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 			
 			#item is a answer. A answer can be only type ANSWER				
 			elif pd.notna(row['Translated']) and (row['QuestionElement'] == 'AnswerType' or row['QuestionElement'] == 'Answer' or 
 				row['Translated'] in answer_constants):
 				answer = row['Translated']
-				print('********************', answer)
 				if answer in answer_constants:
 					survey_item = extract_constant(constants, answer)
 					if survey_item == '':
 						pass
 					else:
 						data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(survey_item), 'surveyid': survey_last_id, 
-						'moduleid': row['Module'], 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+						'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 				elif row['QuestionElement'] == 'Answer':
 					data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(answer), 'surveyid': survey_last_id, 
-					'moduleid': row['Module'], 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+					'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 				else:
 					survey_item = extract_answer_types(answer_types, survey_item)
@@ -247,30 +273,34 @@ def main(filename):
 					else:
 						for item in survey_item:
 							data = {"survey_itemid": update_item_id(survey_last_id), 'text': item, 'surveyid': survey_last_id, 
-							'moduleid': row['Module'], 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+							'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
-			# else:
-			# 	if pd.notna(row['Translated']):
-			# 		survey_item = clean_text(row['Translated'])
-			# 		data = {"survey_itemid": update_item_id(survey_last_id), 'text': survey_item, 'surveyid': survey_last_id, 
-			# 		'moduleid': row['Module'], 'item_type': check_question_name(row['QuestionName']), 'item_name': check_item_name(row)}
-			# 		df_survey_item = df_survey_item.append(data, ignore_index = True)
+			
+			# item type can be INTRO, INSTUCTION or REQUEST
+			else:
+				if pd.notna(row['Translated']):
+					survey_item = clean_text(row['Translated'])
+					split_into_sentences = tokenizer.tokenize(survey_item)
+					for item in split_into_sentences:
+						data = {"survey_itemid": update_item_id(survey_last_id), 'text': item, 'surveyid': survey_last_id, 
+						'moduleid': decide_module(module_dict, row['Module']), 'item_type': decide_item_type_other(row), 
+						'item_name': check_item_name(row)}
+						df_survey_item = df_survey_item.append(data, ignore_index = True)
 			
 
-
-
-	# for k, v in list(constants_dict.items()):
-	# 	print(k,v)
-
-	# print('*********')
-
-	# for k, v in list(answer_types_dict.items()):
-	# 	print(k,v)
-
-	# print('*********')
+	filename_without_extension = filename.replace('.xlsx', '')
+	split_items = filename_without_extension.split('_')
+	country_language = split_items[1]+'_'+split_items[2]
 
 	for index, row in df_survey_item.iterrows():
 		print(row)
+		survey_itemid = row['survey_itemid']
+		surveyid = row['surveyid']
+		moduleid = row['moduleid']
+		item_name = row['item_name']
+		item_type = row['item_type']
+		write_survey_item_table(survey_itemid, surveyid, moduleid, country_language, False, item_name, item_type)
+		
 
 	
 

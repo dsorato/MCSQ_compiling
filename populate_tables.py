@@ -1,5 +1,6 @@
 from DB.base import *
 from DB.survey import *
+from DB.survey_item import *
 from DB.module import *
 
 
@@ -7,6 +8,13 @@ from DB.module import *
 def write_survey_table(surveyid, study, wave_round, year, country_language):
 	session = session_factory()
 	item = Survey(surveyid, study, wave_round, year, country_language)
+	session.add(item)
+	session.commit()
+	session.close()
+
+def write_survey_item_table(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type):
+	session = session_factory()
+	item = Survey_item(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type)
 	session.add(item)
 	session.commit()
 	session.close()
@@ -29,6 +37,14 @@ def write_module_table(module_names):
 			session.commit()
 
 	session.close()
+
+def get_module_table_as_dict():
+	module_dict = dict()
+	session = session_factory()
+	for m in session.query(Module).all():
+		module_dict[m.module_name] = m.moduleid
+	
+	return module_dict
 
 
 # def write_itemtype_table(type_names):
