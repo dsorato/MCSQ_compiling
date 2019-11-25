@@ -9,6 +9,8 @@ import re
 initial_sufix = 0
 constants_dict = dict()
 answer_types_dict = dict()
+instruction_constants = ['ASKALL','C_CERT','INT_INS','R_LINE','R_ONLY','SHOWC','CHECK_APP','GO_TO','SKIP_MSG']
+answer_constants = ['DK', 'DKext', 'NA','NAext','NAP','OTHER','DK_cawi_mail','DKext_cawi_mail','NA_cawi_mail','NAext_cawi_mail','WOULD_NOT_MIND']
 
 def clean_text(text):
 	text = re.sub("…", "...", text)
@@ -79,7 +81,7 @@ def extract_constant(constants, a_constant):
 
 	else:
 		if filtered_constants_df.empty:
-			pass
+			ret = ''
 		else:
 			translated_cell = iter(filtered_constants_df.Translated)
 			translated_cell = list(translated_cell)[0]
@@ -93,6 +95,8 @@ def extract_constant(constants, a_constant):
 			ret = clean_text(ret)
 			constants_dict[a_constant] = ret
 
+	return ret
+
 def check_question_name(question_name):
 	ret = ''
 	if isinstance(question_name, str):
@@ -102,6 +106,24 @@ def check_question_name(question_name):
 			ret =  'REQUEST'
 
 	return ret
+
+def check_item_name(row):
+	if isinstance(row['VariableName'], str):
+		ret = row['VariableName']
+	else:
+		ret =  row['QuestionName'] 
+
+	return ret
+
+def decide_item_type(constant, row):
+	if constant in instruction_constants:
+		item_type = 'INSTRUCTION'
+	else:
+		item_type = check_question_name(row['QuestionName'])
+
+	return item_type
+
+						
 
 
 def main(filename):
@@ -139,52 +161,68 @@ def main(filename):
 	for index, row in questionnaire.iterrows(): 
 		#case 1: Translated row is null
 		if pd.isna(row['Translated']):
-			if pd.notna(row['TranslatableElement']) and row['QuestionElement'] == 'Constant':
-				survey_item = row['TranslatableElement']
-				extract_constant(constants, survey_item)
-				
-			elif pd.notna(row['TranslatableElement']) and row['QuestionElement'] == 'AnswerType':
-				survey_item = row['TranslatableElement']
-				extract_answer_types(answer_types, survey_item)
-			else:
-				if pd.notna(row['TranslatableElement']):
-					survey_item = clean_text(row['TranslatableElement'])
+			#item is a constant. A constant can be type: INSTRUCTION, INTRO or REQUEST
+			if pd.notna(row['TranslatableElement']) and row['QuestionElement'] == 'Constant' and row['TranslatableElement'] not in answer_constants:
+				constant = row['TranslatableElement']
+				survey_item = extract_constant(constants, constant)
+				if survey_item == '':
+					pass
+				else:
 					data = {"survey_itemid": update_item_id(survey_last_id), 'text': survey_item, 'surveyid': survey_last_id, 
-					'moduleid': row['Module'], 'item_type': check_question_name(row['QuestionName']), 'item_name': row['QuestionElement']}
+						'moduleid': row['Module'], 'item_type': decide_item_type(constant, row), 'item_name': check_item_name(row)}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
+
+			# #item is a answer
+			# elif pd.notna(row['TranslatableElement']) and (row['QuestionElement'] == 'AnswerType' or row['TranslatableElement'] in answer_constants):
+			# 	survey_item = row['TranslatableElement']
+			# 	extract_answer_types(answer_types, survey_item)
+			# else:
+			# 	if pd.notna(row['TranslatableElement']):
+			# 		survey_item = clean_text(row['TranslatableElement'])
+			# 		data = {"survey_itemid": update_item_id(survey_last_id), 'text': survey_item, 'surveyid': survey_last_id, 
+			# 		'moduleid': row['Module'], 'item_type': check_question_name(row['QuestionName']), 'item_name': check_item_name(row)}
+			# 		df_survey_item = df_survey_item.append(data, ignore_index = True)
 		
 
 
 		#case 2: Translated row is not null
 		else:
-			if pd.notna(row['Translated']) and row['QuestionElement'] == 'Constant':
-				survey_item = row['Translated']
-				extract_constant(constants, survey_item)
-				
-			elif pd.notna(row['Translated']) and row['QuestionElement'] == 'AnswerType':
-				survey_item = row['Translated']
-				extract_answer_types(answer_types, survey_item)
-			else:
-				if pd.notna(row['Translated']):
-					survey_item = clean_text(row['Translated'])
+			#item is a constant. A constant can be type: INSTRUCTION, INTRO or REQUEST
+			if pd.notna(row['Translated']) and row['QuestionElement'] == 'Constant' and row['Translated'] not in answer_constants:
+				constant = row['Translated']
+				survey_item = extract_constant(constants, constant)
+				if survey_item == '':
+					pass
+				else:
 					data = {"survey_itemid": update_item_id(survey_last_id), 'text': survey_item, 'surveyid': survey_last_id, 
-					'moduleid': row['Module'], 'item_type': check_question_name(row['QuestionName']), 'item_name': row['QuestionElement']}
+					'moduleid': row['Module'], 'item_type':  decide_item_type(constant, row), 'item_name': check_item_name(row)}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
+				
+			# elif pd.notna(row['Translated']) and (row['QuestionElement'] == 'AnswerType' or row['Translated'] in answer_constants):
+			# 	survey_item = row['Translated']
+			# 	extract_answer_types(answer_types, survey_item)
+			# else:
+			# 	if pd.notna(row['Translated']):
+			# 		survey_item = clean_text(row['Translated'])
+			# 		data = {"survey_itemid": update_item_id(survey_last_id), 'text': survey_item, 'surveyid': survey_last_id, 
+			# 		'moduleid': row['Module'], 'item_type': check_question_name(row['QuestionName']), 'item_name': check_item_name(row)}
+			# 		df_survey_item = df_survey_item.append(data, ignore_index = True)
 			
 
 
 
-	for k, v in list(constants_dict.items()):
-		print(k,v)
+	# for k, v in list(constants_dict.items()):
+	# 	print(k,v)
 
-	print('*********')
+	# print('*********')
 
-	for k, v in list(answer_types_dict.items()):
-		print(k,v)
+	# for k, v in list(answer_types_dict.items()):
+	# 	print(k,v)
 
-	print('*********')
+	# print('*********')
 
-	print(df_survey_item)
+	for index, row in df_survey_item.iterrows():
+		print(row)
 
 	
 
