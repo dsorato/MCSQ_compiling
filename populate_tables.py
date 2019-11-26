@@ -2,7 +2,36 @@ from DB.base import *
 from DB.survey import *
 from DB.survey_item import *
 from DB.module import *
+from DB.introduction import *
+from DB.instruction import *
+from DB.answer import *
+from DB.request import *
 
+def write_request_table(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
+	session = session_factory()
+	item = Request(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
+	session.add(item)
+	session.commit()
+
+def write_answer_table(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
+	session = session_factory()
+	item = Answer(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
+	session.add(item)
+	session.commit()
+
+def write_introduction_table(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
+	session = session_factory()
+	item = Introduction(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
+	session.add(item)
+	session.commit()
+	session.close()
+
+def write_instruction_table(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
+	session = session_factory()
+	item = Instruction(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
+	session.add(item)
+	session.commit()
+	session.close()
 
 
 def write_survey_table(surveyid, study, wave_round, year, country_language):

@@ -15,7 +15,7 @@ answer_constants = ['DK', 'DKext', 'NA','NAext','NAP','OTHER','DK_cawi_mail','DK
 def clean_text(text):
 	text = re.sub("…", "...", text)
 	text = re.sub("’", "'", text)
-	text = re.sub("\.\.\.\.\.\.\.\.\.\.\.\.\.", "", text)
+	text = re.sub("[.]{4,}", "", text)
 	tags = re.compile(r'<.*?>')
 	text = tags.sub('', text)
 	text = text.rstrip()
@@ -146,6 +146,46 @@ def decide_module(module_dict, row_module):
 
 	return module
 
+def populate_introduction_table(df_survey_item):
+	filtered_introduction_df = df_survey_item[df_survey_item['item_type'] == 'INTRO']
+	for index, row in filtered_introduction_df.iterrows():
+		print(row)
+		survey_itemid = row['survey_itemid']
+		final_text = row['text']
+		item_name = row['item_name']
+		item_type = row['item_type']
+		write_introduction_table(survey_itemid, final_text, '', '', '', '', item_name, item_type)
+
+def populate_instruction_table(df_survey_item):
+	filtered_instruction_df = df_survey_item[df_survey_item['item_type'] == 'INSTRUCTION']
+	for index, row in filtered_instruction_df.iterrows():
+		print(row)
+		survey_itemid = row['survey_itemid']
+		final_text = row['text']
+		item_name = row['item_name']
+		item_type = row['item_type']
+		write_instruction_table(survey_itemid, final_text, '', '', '', '', item_name, item_type)
+
+def populate_answer_table(df_survey_item):
+	filtered_answer_df = df_survey_item[df_survey_item['item_type'] == 'ANSWER']
+	for index, row in filtered_answer_df.iterrows():
+		print(row)
+		survey_itemid = row['survey_itemid']
+		final_text = row['text']
+		item_name = row['item_name']
+		item_type = row['item_type']
+		write_answer_table(survey_itemid, final_text, '', '', '', '', item_name, item_type)
+
+def populate_request_table(df_survey_item):
+	filtered_request_df = df_survey_item[df_survey_item['item_type'] == 'REQUEST']
+	for index, row in filtered_request_df.iterrows():
+		print(row)
+		survey_itemid = row['survey_itemid']
+		final_text = row['text']
+		item_name = row['item_name']
+		item_type = row['item_type']
+		write_request_table(survey_itemid, final_text, '', '', '', '', item_name, item_type)
+
 
 
 def main(filename):
@@ -225,7 +265,7 @@ def main(filename):
 							'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
 
-			#item type can be INTRO, INSTUCTION or REQUEST
+			#item type can be INTRO, INSTRUCTION or REQUEST
 			else:
 				if pd.notna(row['TranslatableElement']):
 					survey_item = clean_text(row['TranslatableElement'])
@@ -276,7 +316,7 @@ def main(filename):
 							'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
 			
-			# item type can be INTRO, INSTUCTION or REQUEST
+			# item type can be INTRO, INSTRUCTION or REQUEST
 			else:
 				if pd.notna(row['Translated']):
 					survey_item = clean_text(row['Translated'])
@@ -292,14 +332,26 @@ def main(filename):
 	split_items = filename_without_extension.split('_')
 	country_language = split_items[1]+'_'+split_items[2]
 
+	#populate survey item table
 	for index, row in df_survey_item.iterrows():
-		print(row)
 		survey_itemid = row['survey_itemid']
 		surveyid = row['surveyid']
 		moduleid = row['moduleid']
 		item_name = row['item_name']
 		item_type = row['item_type']
 		write_survey_item_table(survey_itemid, surveyid, moduleid, country_language, False, item_name, item_type)
+
+	#populate introduction table
+	populate_introduction_table(df_survey_item)
+
+	#populate instruction table
+	populate_instruction_table(df_survey_item)
+
+	#populate answer table
+	populate_answer_table(df_survey_item)
+
+	#populate request table
+	populate_request_table(df_survey_item)
 		
 
 	

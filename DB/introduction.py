@@ -1,4 +1,4 @@
-from base import Base
+from DB.base import Base
 from sqlalchemy import Column, String, Boolean, Integer, Sequence, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
@@ -18,7 +18,7 @@ class Introduction(Base):
 
     survey_item = relationship("Survey_item", backref=backref("introduction", uselist=False))
 
-    def __init__(self, survey_itemid):
+    def __init__(self, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
         self.survey_itemid = survey_itemid
         self.final_text = final_text
         self.translation_1 = translation_1
