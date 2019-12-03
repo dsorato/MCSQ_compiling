@@ -174,7 +174,11 @@ def populate_answer_table(df_survey_item):
 		final_text = row['text']
 		item_name = row['item_name']
 		item_type = row['item_type']
-		write_answer_table(survey_itemid, final_text, '', '', '', '', item_name, item_type)
+		if isinstance(row['item_value'], float):
+			item_value = 0
+		else:
+			item_value = int(row['item_value'])
+		write_answer_table(survey_itemid, final_text, '', '', '', '', item_name, item_type, item_value)
 
 def populate_request_table(df_survey_item):
 	filtered_request_df = df_survey_item[df_survey_item['item_type'] == 'REQUEST']
@@ -221,7 +225,7 @@ def main(filename):
 	survey_last_id = get_survey_last_record()
 	module_dict = get_module_table_as_dict()
 
-	df_survey_item = pd.DataFrame(columns=['survey_itemid', 'text', 'surveyid', 'moduleid', 'item_type', 'item_name'])
+	df_survey_item = pd.DataFrame(columns=['survey_itemid', 'text', 'surveyid', 'moduleid', 'item_type', 'item_name', 'item_value', 'item_is_source'])
 
 	#put everything in df_survey_item to attribute survey_item IDs and then extract using item_type
 	for index, row in questionnaire.iterrows(): 
@@ -236,7 +240,8 @@ def main(filename):
 					pass
 				else:
 					data = {"survey_itemid": update_item_id(survey_last_id), 'text': survey_item, 'surveyid': survey_last_id, 
-						'moduleid': decide_module(module_dict, row['Module']), 'item_type': decide_item_type_constant(constant, row), 'item_name': check_item_name(row)}
+						'moduleid': decide_module(module_dict, row['Module']), 'item_type': decide_item_type_constant(constant, row), 'item_name': check_item_name(row),
+						'item_value': row['QuestionElementNr'], 'item_is_source': True}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 
 			#item is a answer. A answer can be only type ANSWER
@@ -249,11 +254,13 @@ def main(filename):
 						pass
 					else:
 						data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(survey_item), 'surveyid': survey_last_id, 
-						'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+						'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row),
+						'item_value': row['QuestionElementNr'],'item_is_source': True}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 				elif row['QuestionElement'] == 'Answer':
 					data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(answer), 'surveyid': survey_last_id, 
-					'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+					'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row),
+					'item_value': row['QuestionElementNr'],'item_is_source': True}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 				else:
 					survey_item = extract_answer_types(answer_types, survey_item)
@@ -262,7 +269,8 @@ def main(filename):
 					else:
 						for item in survey_item:
 							data = {"survey_itemid": update_item_id(survey_last_id), 'text': item, 'surveyid': survey_last_id, 
-							'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+							'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row),
+							'item_value': row['QuestionElementNr'],'item_is_source': True}
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
 
 			#item type can be INTRO, INSTRUCTION or REQUEST
@@ -272,7 +280,8 @@ def main(filename):
 					split_into_sentences = tokenizer.tokenize(survey_item)
 					for item in split_into_sentences:
 						data = {"survey_itemid": update_item_id(survey_last_id), 'text': item, 'surveyid': survey_last_id, 
-						'moduleid': decide_module(module_dict, row['Module']), 'item_type': decide_item_type_other(row), 'item_name': check_item_name(row)}
+						'moduleid': decide_module(module_dict, row['Module']), 'item_type': decide_item_type_other(row), 'item_name': check_item_name(row),
+						'item_value': row['QuestionElementNr'],'item_is_source': True}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 		
 
@@ -287,7 +296,8 @@ def main(filename):
 					pass
 				else:
 					data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(survey_item), 'surveyid': survey_last_id, 
-					'moduleid': decide_module(module_dict, row['Module']), 'item_type':  decide_item_type_constant(constant, row), 'item_name': check_item_name(row)}
+					'moduleid': decide_module(module_dict, row['Module']), 'item_type':  decide_item_type_constant(constant, row), 'item_name': check_item_name(row),
+					'item_value': row['QuestionElementNr'],'item_is_source': False}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 			
 			#item is a answer. A answer can be only type ANSWER				
@@ -300,11 +310,13 @@ def main(filename):
 						pass
 					else:
 						data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(survey_item), 'surveyid': survey_last_id, 
-						'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+						'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row),
+						'item_value': row['QuestionElementNr'],'item_is_source': False}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 				elif row['QuestionElement'] == 'Answer':
 					data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(answer), 'surveyid': survey_last_id, 
-					'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+					'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row),
+					'item_value': row['QuestionElementNr'],'item_is_source': False}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 				else:
 					survey_item = extract_answer_types(answer_types, survey_item)
@@ -313,7 +325,8 @@ def main(filename):
 					else:
 						for item in survey_item:
 							data = {"survey_itemid": update_item_id(survey_last_id), 'text': item, 'surveyid': survey_last_id, 
-							'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row)}
+							'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row),
+							'item_value': row['QuestionElementNr'],'item_is_source': False}
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
 			
 			# item type can be INTRO, INSTRUCTION or REQUEST
@@ -324,7 +337,7 @@ def main(filename):
 					for item in split_into_sentences:
 						data = {"survey_itemid": update_item_id(survey_last_id), 'text': item, 'surveyid': survey_last_id, 
 						'moduleid': decide_module(module_dict, row['Module']), 'item_type': decide_item_type_other(row), 
-						'item_name': check_item_name(row)}
+						'item_name': check_item_name(row),'item_value': row['QuestionElementNr'], 'item_is_source': False}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 			
 
@@ -339,7 +352,8 @@ def main(filename):
 		moduleid = row['moduleid']
 		item_name = row['item_name']
 		item_type = row['item_type']
-		write_survey_item_table(survey_itemid, surveyid, moduleid, country_language, False, item_name, item_type)
+		item_is_source = row['item_is_source']
+		write_survey_item_table(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type)
 
 	#populate introduction table
 	populate_introduction_table(df_survey_item)

@@ -15,11 +15,12 @@ class Answer(Base):
     adjudication = Column(String)
     item_name = Column(String)
     item_type = Column(String)
+    item_value = Column(Integer)
 
 
     survey_item = relationship("Survey_item", backref=backref("answer", uselist=False))
 
-    def __init__(self, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
+    def __init__(self, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value):
         self.survey_itemid = survey_itemid
         self.final_text = final_text
         self.translation_1 = translation_1
@@ -28,3 +29,4 @@ class Answer(Base):
         self.adjudication = adjudication
         self.item_name = item_name
         self.item_type = item_type
+        self.item_value = item_value
