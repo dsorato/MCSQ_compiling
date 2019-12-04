@@ -1,0 +1,1523 @@
+,survey_itemid,item_type,item_name,item_value,text,item_is_source
+0,EVS_FRE_FR_R04_2008_0,REQUEST,Q14,,"Reporter sur votre: VOTRE CODE ENQUETEUR, VOTRE NOM , la date d'interview et le numéro d'interview:",False
+1,EVS_FRE_FR_R04_2008_1,REQUEST,Q14,,Numéro d'interview,False
+2,EVS_FRE_FR_R04_2008_2,INTRO,v1,,"NOUS COMMENÇONS AVEC QUELQUES QUESTIONS SUR LA VIE EN GÉNÉRAL, LES LOISIRS",False
+3,EVS_FRE_FR_R04_2008_3,INSTRUCTION,v1,,MONTERER CARTE 1,False
+4,EVS_FRE_FR_R04_2008_4,REQUEST,v1,,"Pour chacune des choses suivantes, pouvez-vous me dire si, dans votre vie, cela est très important, assez important, peu important ou pas important du tout ?",False
+5,EVS_FRE_FR_R04_2008_5,REQUEST,Q1.A,,Travail,False
+6,EVS_FRE_FR_R04_2008_6,ANSWER,v1,1,Très important,False
+7,EVS_FRE_FR_R04_2008_7,ANSWER,v1,2,Assez important,False
+8,EVS_FRE_FR_R04_2008_8,ANSWER,v1,3,Pas très important,False
+9,EVS_FRE_FR_R04_2008_9,ANSWER,v1,4,Pas important du tout,False
+10,EVS_FRE_FR_R04_2008_10,ANSWER,v1,8,NSP,False
+11,EVS_FRE_FR_R04_2008_11,ANSWER,v1,9,SR,False
+12,EVS_FRE_FR_R04_2008_12,REQUEST,Q2,,"Quand vous êtes entre amis, vous arrive-t-il souvent, de temps en temps ou jamais de discuter politique ?",False
+13,EVS_FRE_FR_R04_2008_13,ANSWER,Q2,1,Souvent,False
+14,EVS_FRE_FR_R04_2008_14,ANSWER,Q2,2,De temps en temps,False
+15,EVS_FRE_FR_R04_2008_15,ANSWER,Q2,3,Jamais,False
+16,EVS_FRE_FR_R04_2008_16,ANSWER,Q2,8,NSP (Spontané),False
+17,EVS_FRE_FR_R04_2008_17,ANSWER,Q2,9,SR (Spontané),False
+18,EVS_FRE_FR_R04_2008_18,INSTRUCTION,Q3,,MONTRER CARTE 3,False
+19,EVS_FRE_FR_R04_2008_19,REQUEST,Q3,,"Tout bien considéré, diriez-vous que vous êtes...",False
+20,EVS_FRE_FR_R04_2008_20,ANSWER,Q3,1,...très heureux,False
+21,EVS_FRE_FR_R04_2008_21,ANSWER,Q3,2,...assez heureux,False
+22,EVS_FRE_FR_R04_2008_22,ANSWER,Q3,3,...pas très heureux,False
+23,EVS_FRE_FR_R04_2008_23,ANSWER,Q3,4,...pas heureux du tout,False
+24,EVS_FRE_FR_R04_2008_24,ANSWER,Q3,8,NSP (Spontané),False
+25,EVS_FRE_FR_R04_2008_25,ANSWER,Q3,9,SR (Spontané),False
+26,EVS_FRE_FR_R04_2008_26,INSTRUCTION,Q4,,MONTERER CARTE 4,False
+27,EVS_FRE_FR_R04_2008_27,REQUEST,Q4,,"Dans l'ensemble, comment décririez-vous votre état de santé en ce moment?",False
+28,EVS_FRE_FR_R04_2008_28,REQUEST,Q4,,Diriez-vous qu'il est...,False
+29,EVS_FRE_FR_R04_2008_29,ANSWER,Q4,1,... très bon,False
+30,EVS_FRE_FR_R04_2008_30,ANSWER,Q4,2,... bon,False
+31,EVS_FRE_FR_R04_2008_31,ANSWER,Q4,3,... acceptable,False
+32,EVS_FRE_FR_R04_2008_32,ANSWER,Q4,4,... plutôt mauvais,False
+33,EVS_FRE_FR_R04_2008_33,ANSWER,Q4,5,... très mauvais,False
+34,EVS_FRE_FR_R04_2008_34,ANSWER,Q4,8,"NSP (Spontané, ne rien suggérer)",False
+35,EVS_FRE_FR_R04_2008_35,ANSWER,Q4,9,"SR (Spontané, ne rien suggérer)",False
+36,EVS_FRE_FR_R04_2008_36,INSTRUCTION,Q5a,,MONTRER CARTE 5.a - PLUSIEURS REPONSES POSSIBLES,False
+37,EVS_FRE_FR_R04_2008_37,REQUEST,Q5a,,Veuillez lire attentivement cette liste d'organisations et activités bénévoles et me dire s'il y en a dont vous faites partie et si oui lesquelles ?,False
+38,EVS_FRE_FR_R04_2008_38,REQUEST,Q5a.A,,"Organisations charitables s'occupant d'aide sociale pour les personnes âgées, les handicapés, les gens dans la misère.",False
+39,EVS_FRE_FR_R04_2008_39,ANSWER,Q5a,1,Cité,False
+40,EVS_FRE_FR_R04_2008_40,ANSWER,Q5a,2,Pas cité,False
+41,EVS_FRE_FR_R04_2008_41,ANSWER,Q5a,8,NSP,False
+42,EVS_FRE_FR_R04_2008_42,ANSWER,Q5a,9,SR,False
+43,EVS_FRE_FR_R04_2008_43,INSTRUCTION,Q5b,,MONTRER CARTE 5.b - PLUSIEURS REPONSES POSSIBLES,False
+44,EVS_FRE_FR_R04_2008_44,REQUEST,Q5b,,Et y en a t-il pour lesquelles en ce moment vous faites du travail bénévole non rémunéré ?,False
+45,EVS_FRE_FR_R04_2008_45,REQUEST,Q5b.A,,"Organisations charitables s'occupant d'aide sociale pour les personnes âgées, les handicapés, les gens dans la misère.",False
+46,EVS_FRE_FR_R04_2008_46,ANSWER,Q5b,1,Cité,False
+47,EVS_FRE_FR_R04_2008_47,ANSWER,Q5b,2,Pas cité,False
+48,EVS_FRE_FR_R04_2008_48,ANSWER,Q5b,8,NSP,False
+49,EVS_FRE_FR_R04_2008_49,ANSWER,Q5b,9,SR,False
+50,EVS_FRE_FR_R04_2008_50,INSTRUCTION,Q6,,MONTRER CARTE 6 - PLUSIEURS REPONSES POSSIBLES,False
+51,EVS_FRE_FR_R04_2008_51,REQUEST,Q6,,Sur cette liste figurent différentes catégories de gens.,False
+52,EVS_FRE_FR_R04_2008_52,REQUEST,Q6,,Voulez-vous m'indiquer s'il y en a que vous n'aimeriez pas avoir comme voisins?,False
+53,EVS_FRE_FR_R04_2008_53,REQUEST,Q6.A,,Des gens qui ont un casier judiciaire.,False
+54,EVS_FRE_FR_R04_2008_54,ANSWER,Q6,1,Cité,False
+55,EVS_FRE_FR_R04_2008_55,ANSWER,Q6,2,Pas cité,False
+56,EVS_FRE_FR_R04_2008_56,ANSWER,Q6,8,NSP,False
+57,EVS_FRE_FR_R04_2008_57,ANSWER,Q6,9,SR,False
+58,EVS_FRE_FR_R04_2008_58,REQUEST,Q7,,"D'une manière générale, diriez-vous qu'on peut faire confiance à la plupart des gens ou qu'on n'est jamais assez prudent quand on a affaire aux autres ?",False
+59,EVS_FRE_FR_R04_2008_59,ANSWER,Q7,1,On peut faire confiance à la plupart des gens,False
+60,EVS_FRE_FR_R04_2008_60,ANSWER,Q7,2,On n'est jamais assez prudent quand on a affaire aux autres,False
+61,EVS_FRE_FR_R04_2008_61,ANSWER,Q7,8,NSP,False
+62,EVS_FRE_FR_R04_2008_62,ANSWER,Q7,9,S.R.,False
+63,EVS_FRE_FR_R04_2008_63,INSTRUCTION,Q8,,Montrer carte 8,False
+64,EVS_FRE_FR_R04_2008_64,REQUEST,Q8,,"D'une manière générale, sur cette échelle de 1 à 10, diriez-vous que la plupart des gens cherchent à profiter de vous quand ils le peuvent ou qu'ils font leur possible pour se conduire correctement?",False
+65,EVS_FRE_FR_R04_2008_65,REQUEST,Q8,,Utilisez cette carte pour préciser votre réponse.,False
+66,EVS_FRE_FR_R04_2008_66,REQUEST,Q8,,Si votre opinion est proche de la phrase (Enquêteur : montrer la phrase au dessus du 1) vous me donnerez la note 1 et si votre opinion est proche de la phrase (Enquêteur : montrer la phrase au dessus du 10) vous me donnerez la note 10.,False
+67,EVS_FRE_FR_R04_2008_67,REQUEST,Q8,,Les notes intermédiaires vous serviront à nuancer votre jugement.,False
+68,EVS_FRE_FR_R04_2008_68,ANSWER,Q8,1,La plupart des gens cherchent à tirer profit de vous,False
+69,EVS_FRE_FR_R04_2008_69,ANSWER,Q8,10,La plupart des gens font leur possible pour se conduire correctement,False
+70,EVS_FRE_FR_R04_2008_70,ANSWER,Q8,88,NSP,False
+71,EVS_FRE_FR_R04_2008_71,ANSWER,Q8,99,SR,False
+72,EVS_FRE_FR_R04_2008_72,INSTRUCTION,Q9,,Montrer carte 9,False
+73,EVS_FRE_FR_R04_2008_73,REQUEST,Q9,,Diriez-vous que la plupart du temps les gens essaient de rendre service ou qu'ils s'occupent surtout d'eux-mêmes ?,False
+74,EVS_FRE_FR_R04_2008_74,REQUEST,Q9,,Utilisez cette carte pour préciser votre réponse.,False
+75,EVS_FRE_FR_R04_2008_75,REQUEST,Q9,,(Si votre opinion est proche de la phrase (Enquêteur : montrer la phrase au dessus du 1) vous me donnerez la note 1 et si votre opinion est proche de la phrase (Enquêteur : montrer la phrase au dessus du 10) vous me donnerez la note 10.,False
+76,EVS_FRE_FR_R04_2008_76,REQUEST,Q9,,Les notes intermédiaires vous serviront à nuancer votre jugement.),False
+77,EVS_FRE_FR_R04_2008_77,ANSWER,Q9,1,Les gens s'occupent surtout d'eux-mêmes,False
+78,EVS_FRE_FR_R04_2008_78,ANSWER,Q9,10,Les gens essaient de rendre service,False
+79,EVS_FRE_FR_R04_2008_79,ANSWER,Q9,88,NSP,False
+80,EVS_FRE_FR_R04_2008_80,ANSWER,Q9,99,SR,False
+81,EVS_FRE_FR_R04_2008_81,INSTRUCTION,Q10,,MONTERER CARTE 10,False
+82,EVS_FRE_FR_R04_2008_82,REQUEST,Q10,,Certaines personnes pensent qu'elles ont complètement leur libre arbitre et le contrôle de la manière dont leur vie se déroule.,False
+83,EVS_FRE_FR_R04_2008_83,REQUEST,Q10,,D'autres pensent qu'elles n'ont aucun pouvoir réel sur ce qui leur arrive.,False
+84,EVS_FRE_FR_R04_2008_84,REQUEST,Q10,,"A l'aide cette échelle, indiquez-moi dans quelle mesure vous vous sentez libre du choix et du contrôle de la manière dont se déroule votre vie.",False
+85,EVS_FRE_FR_R04_2008_85,ANSWER,Q10,1,Pas du tout,False
+86,EVS_FRE_FR_R04_2008_86,ANSWER,Q10,10,Tout à fait,False
+87,EVS_FRE_FR_R04_2008_87,ANSWER,Q10,88,NSP,False
+88,EVS_FRE_FR_R04_2008_88,ANSWER,Q10,99,SR,False
+89,EVS_FRE_FR_R04_2008_89,INSTRUCTION,Q11,,MONTRER CARTE 11,False
+90,EVS_FRE_FR_R04_2008_90,REQUEST,Q11,,"Tout bien considéré, à quel point êtes-vous satisfait ou pas satisfait de la vie que vous menez en ce moment ?",False
+91,EVS_FRE_FR_R04_2008_91,REQUEST,Q11,,Veuillez utiliser cette carte pour préciser votre réponse.,False
+92,EVS_FRE_FR_R04_2008_92,ANSWER,Q11,1,Pas du tout satisfait,False
+93,EVS_FRE_FR_R04_2008_93,ANSWER,Q11,10,Tout à fait satisfait,False
+94,EVS_FRE_FR_R04_2008_94,ANSWER,Q11,88,NSP,False
+95,EVS_FRE_FR_R04_2008_95,ANSWER,Q11,99,SR,False
+96,EVS_FRE_FR_R04_2008_96,ANSWER,f67,0,consistent,False
+97,EVS_FRE_FR_R04_2008_97,ANSWER,f67,1,inconsistent,False
+98,EVS_FRE_FR_R04_2008_98,INSTRUCTION,Q12,,MONTRER CARTE 12 - UNE SEULE REPONSE,False
+99,EVS_FRE_FR_R04_2008_99,REQUEST,Q12,,"Pourquoi y a-t-il, à votre avis, dans ce pays, des gens qui vivent dans le besoin?",False
+100,EVS_FRE_FR_R04_2008_100,REQUEST,Q12,,Voici quatre explications possibles.,False
+101,EVS_FRE_FR_R04_2008_101,REQUEST,Q12,,Quelle est la plus importante à votre avis?,False
+102,EVS_FRE_FR_R04_2008_102,ANSWER,Q12,1,A.,False
+103,EVS_FRE_FR_R04_2008_103,ANSWER,Q12,1,C'est parce qu'ils n'ont pas eu de chance,False
+104,EVS_FRE_FR_R04_2008_104,ANSWER,Q12,2,B.  C'est par paresse ou mauvaise volonté,False
+105,EVS_FRE_FR_R04_2008_105,ANSWER,Q12,3,C.,False
+106,EVS_FRE_FR_R04_2008_106,ANSWER,Q12,3,C'est parce qu'il y a beaucoup d'injustice dans notre société,False
+107,EVS_FRE_FR_R04_2008_107,ANSWER,Q12,4,D.,False
+108,EVS_FRE_FR_R04_2008_108,ANSWER,Q12,4,C'est inévitable avec l'évolution du monde moderne,False
+109,EVS_FRE_FR_R04_2008_109,ANSWER,Q12,5,Aucune de ces explications,False
+110,EVS_FRE_FR_R04_2008_110,ANSWER,Q12,8,NSP,False
+111,EVS_FRE_FR_R04_2008_111,ANSWER,Q12,9,SR,False
+112,EVS_FRE_FR_R04_2008_112,INSTRUCTION,Q13,,LAISSER CARTE 12 - UNE SEULE REPONSE,False
+113,EVS_FRE_FR_R04_2008_113,REQUEST,Q13,,Quelle est celle qui vient en deuxième ?,False
+114,EVS_FRE_FR_R04_2008_114,ANSWER,Q13,1,A.,False
+115,EVS_FRE_FR_R04_2008_115,ANSWER,Q13,1,C'est parce qu'ils n'ont pas eu de chance,False
+116,EVS_FRE_FR_R04_2008_116,ANSWER,Q13,2,B.  C'est par paresse ou mauvaise volonté,False
+117,EVS_FRE_FR_R04_2008_117,ANSWER,Q13,3,C.,False
+118,EVS_FRE_FR_R04_2008_118,ANSWER,Q13,3,C'est parce qu'il y a beaucoup d'injustice dans notre société,False
+119,EVS_FRE_FR_R04_2008_119,ANSWER,Q13,4,D.,False
+120,EVS_FRE_FR_R04_2008_120,ANSWER,Q13,4,C'est inévitable avec l'évolution du monde moderne,False
+121,EVS_FRE_FR_R04_2008_121,ANSWER,Q13,5,Aucune de ces explications (Spontané),False
+122,EVS_FRE_FR_R04_2008_122,ANSWER,Q13,8,NSP,False
+123,EVS_FRE_FR_R04_2008_123,ANSWER,Q13,9,SR,False
+124,EVS_FRE_FR_R04_2008_124,INSTRUCTION,Q14,,MONTRER CARTE 14 - PLUSIEURS REPONSES POSSIBLES,False
+125,EVS_FRE_FR_R04_2008_125,REQUEST,Q14,,Voici sur cette carte quelques traits qui peuvent être considérés comme importants pour un emploi ou une activité professionnelle.,False
+126,EVS_FRE_FR_R04_2008_126,REQUEST,Q14,,"Pour vous personnellement, quels sont ceux qui vous paraissent importants ?",False
+127,EVS_FRE_FR_R04_2008_127,REQUEST,Q14.A,,On gagne bien sa vie,False
+128,EVS_FRE_FR_R04_2008_128,ANSWER,Q14,1,Cité,False
+129,EVS_FRE_FR_R04_2008_129,ANSWER,Q14,2,Pas cité,False
+130,EVS_FRE_FR_R04_2008_130,ANSWER,Q14,8,NSP,False
+131,EVS_FRE_FR_R04_2008_131,ANSWER,Q14,9,SR,False
+132,EVS_FRE_FR_R04_2008_132,REQUEST,Q15,,Avez-vous une activité professionnelle rémunérée ?,False
+133,EVS_FRE_FR_R04_2008_133,ANSWER,Q15,1,Oui,False
+134,EVS_FRE_FR_R04_2008_134,ANSWER,Q15,2,Non,False
+135,EVS_FRE_FR_R04_2008_135,ANSWER,Q15,8,NSP (Spontané),False
+136,EVS_FRE_FR_R04_2008_136,ANSWER,Q15,9,S.R.,False
+137,EVS_FRE_FR_R04_2008_137,ANSWER,Q15,9,(Spontané),False
+138,EVS_FRE_FR_R04_2008_138,INSTRUCTION,Q16,,MONTRER CARTE 16,False
+139,EVS_FRE_FR_R04_2008_139,REQUEST,Q16,,"D'une manière générale, dans quelle mesure êtes-vous satisfait ou pas satisfait de votre travail?",False
+140,EVS_FRE_FR_R04_2008_140,ANSWER,Q16,1,Pas du tout,False
+141,EVS_FRE_FR_R04_2008_141,ANSWER,Q16,10,Tout à fait,False
+142,EVS_FRE_FR_R04_2008_142,ANSWER,Q16,77,NAP,False
+143,EVS_FRE_FR_R04_2008_143,ANSWER,Q16,88,NSP,False
+144,EVS_FRE_FR_R04_2008_144,ANSWER,Q16,99,SR,False
+145,EVS_FRE_FR_R04_2008_145,INSTRUCTION,Q17,,MONTRER CARTE 17,False
+146,EVS_FRE_FR_R04_2008_146,REQUEST,Q17,,Dans quelle mesure êtes-vous libre de prendre des décisions dans votre travail actuel ?,False
+147,EVS_FRE_FR_R04_2008_147,REQUEST,Q17,,Voulez-vous utiliser cette carte pour préciser la liberté de décision que vous avez le sentiment d'avoir ?,False
+148,EVS_FRE_FR_R04_2008_148,ANSWER,Q17,1,Pas du tout,False
+149,EVS_FRE_FR_R04_2008_149,ANSWER,Q17,10,Tout à fait,False
+150,EVS_FRE_FR_R04_2008_150,ANSWER,Q17,77,NAP,False
+151,EVS_FRE_FR_R04_2008_151,ANSWER,Q17,88,NSP,False
+152,EVS_FRE_FR_R04_2008_152,ANSWER,Q17,99,SR,False
+153,EVS_FRE_FR_R04_2008_153,INTRO,Q18,,DEMANDER A TOUS,False
+154,EVS_FRE_FR_R04_2008_154,INSTRUCTION,Q18,,MONTRER CARTE 18,False
+155,EVS_FRE_FR_R04_2008_155,REQUEST,Q18,,Etes-vous d'accord ou pas avec les phrases suivantes ?,False
+156,EVS_FRE_FR_R04_2008_156,REQUEST,Q18.A,,"Pour développer pleinement ses capacités, il faut avoir un travail",False
+157,EVS_FRE_FR_R04_2008_157,ANSWER,Q18,1,Tout à fait d'accord,False
+158,EVS_FRE_FR_R04_2008_158,ANSWER,Q18,2,Plutôt d'accord,False
+159,EVS_FRE_FR_R04_2008_159,ANSWER,Q18,3,Ni d'accord ni pas d'accord,False
+160,EVS_FRE_FR_R04_2008_160,ANSWER,Q18,4,Plutôt pas d'accord,False
+161,EVS_FRE_FR_R04_2008_161,ANSWER,Q18,5,Pas du tout d'accord,False
+162,EVS_FRE_FR_R04_2008_162,ANSWER,Q18,8,NSP,False
+163,EVS_FRE_FR_R04_2008_163,ANSWER,Q18,9,SR,False
+164,EVS_FRE_FR_R04_2008_164,INSTRUCTION,Q19,,Montrer carte 19,False
+165,EVS_FRE_FR_R04_2008_165,REQUEST,Q19,,Je vais vous présenter quelques aspects des loisirs que les gens jugent importants.,False
+166,EVS_FRE_FR_R04_2008_166,REQUEST,Q19,,Nous entendons par loisir le temps qui n'est pas passé dans un travail rémunéré ou dans le travail à la maison..,False
+167,EVS_FRE_FR_R04_2008_167,REQUEST,Q19,,"A votre avis, est-ce important ou pas...",False
+168,EVS_FRE_FR_R04_2008_168,REQUEST,Q19.A,,de rencontrer des gens sympathiques,False
+169,EVS_FRE_FR_R04_2008_169,ANSWER,Q19,1,très important,False
+170,EVS_FRE_FR_R04_2008_170,ANSWER,Q19,2,assez important,False
+171,EVS_FRE_FR_R04_2008_171,ANSWER,Q19,3,pas très important,False
+172,EVS_FRE_FR_R04_2008_172,ANSWER,Q19,4,pas important du tout,False
+173,EVS_FRE_FR_R04_2008_173,ANSWER,Q19,8,NSP,False
+174,EVS_FRE_FR_R04_2008_174,ANSWER,Q19,9,SR,False
+175,EVS_FRE_FR_R04_2008_175,INSTRUCTION,Q20,,MONTRER CARTE 20 - UNE SEULE REPONSE,False
+176,EVS_FRE_FR_R04_2008_176,REQUEST,Q20,,Les gens ont des points de vue différents au sujet des instructions relatives au travail.,False
+177,EVS_FRE_FR_R04_2008_177,REQUEST,Q20,,"Les uns disent que l'on doit suivre les instructions données par les supérieurs, même si on n'est pas complètement d'accord.",False
+178,EVS_FRE_FR_R04_2008_178,REQUEST,Q20,,Les autres disent que l'on est tenu de suivre les instructions de son supérieur seulement si l'on est convaincu que ses instructions sont justifiées.,False
+179,EVS_FRE_FR_R04_2008_179,REQUEST,Q20,,Avec lequel de ces points de vue êtes-vous d'accord ?,False
+180,EVS_FRE_FR_R04_2008_180,ANSWER,Q20,1,A  On doit suivre les instructions,False
+181,EVS_FRE_FR_R04_2008_181,ANSWER,Q20,2,B  On doit être convaincu d'abord,False
+182,EVS_FRE_FR_R04_2008_182,ANSWER,Q20,3,C  Cela dépend,False
+183,EVS_FRE_FR_R04_2008_183,ANSWER,Q20,8,NSP (Spontané),False
+184,EVS_FRE_FR_R04_2008_184,ANSWER,Q20,9,S.R.,False
+185,EVS_FRE_FR_R04_2008_185,ANSWER,Q20,9,(Spontané),False
+186,EVS_FRE_FR_R04_2008_186,REQUEST,Q21,,Etes-vous d'accord ou pas d'accord avec les affirmations suivantes?,False
+187,EVS_FRE_FR_R04_2008_187,REQUEST,Q21.A,,"Quand les emplois sont rares, les employeurs devraient embaucher en priorité des Français",False
+188,EVS_FRE_FR_R04_2008_188,ANSWER,Q21,1,D'accord,False
+189,EVS_FRE_FR_R04_2008_189,ANSWER,Q21,2,Pas d'accord,False
+190,EVS_FRE_FR_R04_2008_190,ANSWER,Q21,3,Ni l'un ni l'autre (Spontané),False
+191,EVS_FRE_FR_R04_2008_191,ANSWER,Q21,8,NSP,False
+192,EVS_FRE_FR_R04_2008_192,ANSWER,Q21,9,SR,False
+193,EVS_FRE_FR_R04_2008_193,INTRO,v104,,JE VAIS MAINTENANT VOUS POSER QUELQUES QUESTIONS SUR LE SENS DE LA VIE.,False
+194,EVS_FRE_FR_R04_2008_194,INSTRUCTION,v104,,MONTRER CARTE 22 - UNE SEULE REPONSE,False
+195,EVS_FRE_FR_R04_2008_195,REQUEST,v104,,Sur cette liste figurent trois opinions que l'on entend parfois quand les gens discutent du bien et du mal.,False
+196,EVS_FRE_FR_R04_2008_196,REQUEST,v104,,Laquelle correspond le mieux à votre point de vue?,False
+197,EVS_FRE_FR_R04_2008_197,ANSWER,v104,1,A.,False
+198,EVS_FRE_FR_R04_2008_198,ANSWER,v104,1,Il y a des lignes directrices parfaitement claires pour savoir ce qui est bien et ce qui est mal.,False
+199,EVS_FRE_FR_R04_2008_199,ANSWER,v104,1,"Elles s'appliquent toujours, quelles que soient les circonstances",False
+200,EVS_FRE_FR_R04_2008_200,ANSWER,v104,2,B. Il y a des lignes directrices parfaitement claires pour savoir ce qui est bien et ce qui est mal.,False
+201,EVS_FRE_FR_R04_2008_201,ANSWER,v104,2,"Cependant, des circonstances spéciales justifient parfois de s'écarter de ces lignes directrices.",False
+202,EVS_FRE_FR_R04_2008_202,ANSWER,v104,3,C.,False
+203,EVS_FRE_FR_R04_2008_203,ANSWER,v104,3,Il ne peut jamais y avoir de lignes directrices parfaitement claires pour savoir ce qui est le bien et ce qui est le mal.,False
+204,EVS_FRE_FR_R04_2008_204,ANSWER,v104,3,Cela dépend entièrement des circonstances.,False
+205,EVS_FRE_FR_R04_2008_205,ANSWER,v104,8,NSP (Spontané),False
+206,EVS_FRE_FR_R04_2008_206,ANSWER,v104,9,S.R.,False
+207,EVS_FRE_FR_R04_2008_207,ANSWER,v104,9,(Spontané),False
+208,EVS_FRE_FR_R04_2008_208,REQUEST,Q23,,Considérez-vous que vous appartenez à une religion ?,False
+209,EVS_FRE_FR_R04_2008_209,ANSWER,Q23,1,Oui,False
+210,EVS_FRE_FR_R04_2008_210,ANSWER,Q23,2,Non,False
+211,EVS_FRE_FR_R04_2008_211,ANSWER,Q23,8,NSP (Spontané),False
+212,EVS_FRE_FR_R04_2008_212,ANSWER,Q23,9,SR (Spontané),False
+213,EVS_FRE_FR_R04_2008_213,INTRO,v106_cs,,[Q23.,False
+214,EVS_FRE_FR_R04_2008_214,INTRO,v106_cs,,Considérez-vous que vous appartenez à une religion ?],False
+215,EVS_FRE_FR_R04_2008_215,INSTRUCTION,v106_cs,,MONTRER CARTE 23a,False
+216,EVS_FRE_FR_R04_2008_216,REQUEST,v106_cs,,Laquelle ?,False
+217,EVS_FRE_FR_R04_2008_217,ANSWER,v106_cs,1,A.,False
+218,EVS_FRE_FR_R04_2008_218,ANSWER,v106_cs,1,Catholique,False
+219,EVS_FRE_FR_R04_2008_219,ANSWER,v106_cs,2,B. Protestante,False
+220,EVS_FRE_FR_R04_2008_220,ANSWER,v106_cs,3,C.,False
+221,EVS_FRE_FR_R04_2008_221,ANSWER,v106_cs,3,Juive,False
+222,EVS_FRE_FR_R04_2008_222,ANSWER,v106_cs,4,D.,False
+223,EVS_FRE_FR_R04_2008_223,ANSWER,v106_cs,4,Musulmane,False
+224,EVS_FRE_FR_R04_2008_224,ANSWER,v106_cs,5,E. Hindoue,False
+225,EVS_FRE_FR_R04_2008_225,ANSWER,v106_cs,6,F. Bouddhiste,False
+226,EVS_FRE_FR_R04_2008_226,ANSWER,v106_cs,7,G. Orthodoxe,False
+227,EVS_FRE_FR_R04_2008_227,ANSWER,v106_cs,8,Une autre religion (Laquelle?),False
+228,EVS_FRE_FR_R04_2008_228,ANSWER,v106_cs,77,Ne s'applique pas,False
+229,EVS_FRE_FR_R04_2008_229,ANSWER,v106_cs,88,NSP (Spontané),False
+230,EVS_FRE_FR_R04_2008_230,ANSWER,v106_cs,99,S.R.,False
+231,EVS_FRE_FR_R04_2008_231,ANSWER,v106_cs,99,(Spontané),False
+232,EVS_FRE_FR_R04_2008_232,INSTRUCTION,Q24,,"SI LE RÉPONDANT APPARTIENT DÉJÀ À UNE RELIGION (Q23=1), DEMANDER :",False
+233,EVS_FRE_FR_R04_2008_233,REQUEST,Q24,,Avez-vous appartenu à une autre religion ?,False
+234,EVS_FRE_FR_R04_2008_234,INSTRUCTION,Q24,,"SI LE REPONDANT N'APPARTIENT PAS A UNE RELIGION (Q23=2), DEMANDER :",False
+235,EVS_FRE_FR_R04_2008_235,REQUEST,Q24,,Avez-vous appartenu à une religion ?,False
+236,EVS_FRE_FR_R04_2008_236,ANSWER,Q24,1,Oui,False
+237,EVS_FRE_FR_R04_2008_237,ANSWER,Q24,2,Non,False
+238,EVS_FRE_FR_R04_2008_238,ANSWER,Q24,8,NSP (Spontané),False
+239,EVS_FRE_FR_R04_2008_239,ANSWER,Q24,9,SR (Spontané),False
+240,EVS_FRE_FR_R04_2008_240,INTRO,v108_cs,,[Q24.,False
+241,EVS_FRE_FR_R04_2008_241,INTRO,v108_cs,,Avez-vous appartenu à une (autre) religion ?],False
+242,EVS_FRE_FR_R04_2008_242,INSTRUCTION,v108_cs,,MONTRER CARTE Q24A,False
+243,EVS_FRE_FR_R04_2008_243,REQUEST,v108_cs,,Laquelle ?,False
+244,EVS_FRE_FR_R04_2008_244,ANSWER,v108_cs,1,A.,False
+245,EVS_FRE_FR_R04_2008_245,ANSWER,v108_cs,1,Catholique,False
+246,EVS_FRE_FR_R04_2008_246,ANSWER,v108_cs,2,B. Protestante,False
+247,EVS_FRE_FR_R04_2008_247,ANSWER,v108_cs,3,C.,False
+248,EVS_FRE_FR_R04_2008_248,ANSWER,v108_cs,3,Juive,False
+249,EVS_FRE_FR_R04_2008_249,ANSWER,v108_cs,4,D.,False
+250,EVS_FRE_FR_R04_2008_250,ANSWER,v108_cs,4,Musulmane,False
+251,EVS_FRE_FR_R04_2008_251,ANSWER,v108_cs,5,E. Hindoue,False
+252,EVS_FRE_FR_R04_2008_252,ANSWER,v108_cs,6,F. Bouddhiste,False
+253,EVS_FRE_FR_R04_2008_253,ANSWER,v108_cs,7,G. Orthodoxe,False
+254,EVS_FRE_FR_R04_2008_254,ANSWER,v108_cs,8,Une autre religion (Laquelle?),False
+255,EVS_FRE_FR_R04_2008_255,ANSWER,v108_cs,77,Ne s'applique pas,False
+256,EVS_FRE_FR_R04_2008_256,ANSWER,v108_cs,88,NSP (Spontané),False
+257,EVS_FRE_FR_R04_2008_257,ANSWER,v108_cs,99,S.R.,False
+258,EVS_FRE_FR_R04_2008_258,ANSWER,v108_cs,99,(Spontané),False
+259,EVS_FRE_FR_R04_2008_259,INTRO,Q25,,DEMANDER À TOUS,False
+260,EVS_FRE_FR_R04_2008_260,INSTRUCTION,Q25,,MONTRER CARTE 25,False
+261,EVS_FRE_FR_R04_2008_261,REQUEST,Q25,,"En dehors des mariages, des enterrements et des baptêmes, tous les combien assistez-vous à un service religieux ?",False
+262,EVS_FRE_FR_R04_2008_262,ANSWER,Q25,1,Plus d'une fois par semaine,False
+263,EVS_FRE_FR_R04_2008_263,ANSWER,Q25,2,Une fois par semaine,False
+264,EVS_FRE_FR_R04_2008_264,ANSWER,Q25,3,Une fois par mois,False
+265,EVS_FRE_FR_R04_2008_265,ANSWER,Q25,4,Seulement pour quelques fêtes religieuses,False
+266,EVS_FRE_FR_R04_2008_266,ANSWER,Q25,5,Une fois par an,False
+267,EVS_FRE_FR_R04_2008_267,ANSWER,Q25,6,Moins souvent,False
+268,EVS_FRE_FR_R04_2008_268,ANSWER,Q25,7,Jamais ou pratiquement jamais,False
+269,EVS_FRE_FR_R04_2008_269,ANSWER,Q25,8,NSP (Spontané),False
+270,EVS_FRE_FR_R04_2008_270,ANSWER,Q25,9,S.R.,False
+271,EVS_FRE_FR_R04_2008_271,ANSWER,Q25,9,(Spontané),False
+272,EVS_FRE_FR_R04_2008_272,INSTRUCTION,Q26,,MONTRER CARTE 26,False
+273,EVS_FRE_FR_R04_2008_273,REQUEST,Q26,,"Et lorsque vous aviez douze ans, en dehors des mariages, des enterrements et des baptêmes, tous les combien assistiez-vous à un service religieux ?",False
+274,EVS_FRE_FR_R04_2008_274,ANSWER,Q26,1,Plus d'une fois par semaine,False
+275,EVS_FRE_FR_R04_2008_275,ANSWER,Q26,2,Une fois par semaine,False
+276,EVS_FRE_FR_R04_2008_276,ANSWER,Q26,3,Une fois par mois,False
+277,EVS_FRE_FR_R04_2008_277,ANSWER,Q26,4,Seulement pour quelques fêtes religieuses,False
+278,EVS_FRE_FR_R04_2008_278,ANSWER,Q26,5,Une fois par an,False
+279,EVS_FRE_FR_R04_2008_279,ANSWER,Q26,6,Moins souvent,False
+280,EVS_FRE_FR_R04_2008_280,ANSWER,Q26,7,Jamais ou pratiquement jamais,False
+281,EVS_FRE_FR_R04_2008_281,ANSWER,Q26,8,NSP (Spontané),False
+282,EVS_FRE_FR_R04_2008_282,ANSWER,Q26,9,S.R.,False
+283,EVS_FRE_FR_R04_2008_283,ANSWER,Q26,9,(Spontané),False
+284,EVS_FRE_FR_R04_2008_284,REQUEST,Q27,,Pensez-vous qu'il est important d'avoir une cérémonie religieuse pour l'un ou l'autre de ces événements ?,False
+285,EVS_FRE_FR_R04_2008_285,REQUEST,Q27.A,,Naissance,False
+286,EVS_FRE_FR_R04_2008_286,ANSWER,Q27,1,Oui,False
+287,EVS_FRE_FR_R04_2008_287,ANSWER,Q27,2,Non,False
+288,EVS_FRE_FR_R04_2008_288,ANSWER,Q27,8,NSP,False
+289,EVS_FRE_FR_R04_2008_289,ANSWER,Q27,9,SR,False
+290,EVS_FRE_FR_R04_2008_290,REQUEST,Q28,,"Indépendamment du fait que vous êtes pratiquant ou non, diriez-vous que vous êtes quelqu'un de religieux, de non religieux ou un athée convaincu ?",False
+291,EVS_FRE_FR_R04_2008_291,ANSWER,Q28,1,... quelqu'un de religieux,False
+292,EVS_FRE_FR_R04_2008_292,ANSWER,Q28,2,non religieux,False
+293,EVS_FRE_FR_R04_2008_293,ANSWER,Q28,3,un athée convaincu,False
+294,EVS_FRE_FR_R04_2008_294,ANSWER,Q28,8,NSP (Spontané),False
+295,EVS_FRE_FR_R04_2008_295,ANSWER,Q28,9,S.R.,False
+296,EVS_FRE_FR_R04_2008_296,ANSWER,Q28,9,(Spontané),False
+297,EVS_FRE_FR_R04_2008_297,INSTRUCTION,Q29,,A CEUX QUI APPARTIENNENT À UNE RELIGION OU UNE COMMUNAUTÉ RELIGIEUSE : DEMANDER “VOTRE ÉGLISE” (SI Q23=1),False
+298,EVS_FRE_FR_R04_2008_298,REQUEST,Q29,,"D'une façon générale, pensez-vous qu'en France votre Eglise apporte de bonnes réponses...",False
+299,EVS_FRE_FR_R04_2008_299,INSTRUCTION,Q29,,A CEUX QUI N'APPARTIENNENT PAS À UNE RELIGION OU UNE COMMUNAUTÉ RELIGIEUSE : DEMANDER “LES ÉGLISES” (SI Q23=2),False
+300,EVS_FRE_FR_R04_2008_300,REQUEST,Q29,,"D'une façon générale, pensez-vous qu'en France les églises apportent de bonnes réponses...",False
+301,EVS_FRE_FR_R04_2008_301,REQUEST,Q29.A,,aux problèmes et aux besoins moraux des individus,False
+302,EVS_FRE_FR_R04_2008_302,ANSWER,Q29,1,Oui,False
+303,EVS_FRE_FR_R04_2008_303,ANSWER,Q29,2,Non,False
+304,EVS_FRE_FR_R04_2008_304,ANSWER,Q29,8,NSP,False
+305,EVS_FRE_FR_R04_2008_305,ANSWER,Q29,9,SR,False
+306,EVS_FRE_FR_R04_2008_306,REQUEST,Q30,,Croyez-vous ou non...,False
+307,EVS_FRE_FR_R04_2008_307,REQUEST,Q30.A,,en Dieu,False
+308,EVS_FRE_FR_R04_2008_308,ANSWER,Q30,1,Oui,False
+309,EVS_FRE_FR_R04_2008_309,ANSWER,Q30,2,Non,False
+310,EVS_FRE_FR_R04_2008_310,ANSWER,Q30,8,NSP,False
+311,EVS_FRE_FR_R04_2008_311,ANSWER,Q30,9,SR,False
+312,EVS_FRE_FR_R04_2008_312,REQUEST,Q31,,"Croyez-vous dans la réincarnation, c'est-à-dire que nous renaîtrons dans ce monde ?",False
+313,EVS_FRE_FR_R04_2008_313,ANSWER,Q31,1,Oui,False
+314,EVS_FRE_FR_R04_2008_314,ANSWER,Q31,2,Non,False
+315,EVS_FRE_FR_R04_2008_315,ANSWER,Q31,8,NSP (Spontané),False
+316,EVS_FRE_FR_R04_2008_316,ANSWER,Q31,9,S.R.,False
+317,EVS_FRE_FR_R04_2008_317,ANSWER,Q31,9,(Spontané),False
+318,EVS_FRE_FR_R04_2008_318,INSTRUCTION,Q32,,MONTRER CARTE 32,False
+319,EVS_FRE_FR_R04_2008_319,REQUEST,Q32,,Laquelle de ces opinions se rapproche le plus de ce que vous croyez ?,False
+320,EVS_FRE_FR_R04_2008_320,ANSWER,Q32,1,A.,False
+321,EVS_FRE_FR_R04_2008_321,ANSWER,Q32,1,Il y a un dieu personnel,False
+322,EVS_FRE_FR_R04_2008_322,ANSWER,Q32,2,B. Il y a une sorte d'esprit ou de force vitale,False
+323,EVS_FRE_FR_R04_2008_323,ANSWER,Q32,3,C.,False
+324,EVS_FRE_FR_R04_2008_324,ANSWER,Q32,3,Je ne sais pas trop quoi penser,False
+325,EVS_FRE_FR_R04_2008_325,ANSWER,Q32,4,D.,False
+326,EVS_FRE_FR_R04_2008_326,ANSWER,Q32,4,"Je ne pense pas qu'il existe quelque chose comme un esprit, un Dieu ou une force vitale",False
+327,EVS_FRE_FR_R04_2008_327,ANSWER,Q32,8,NSP (Spontané),False
+328,EVS_FRE_FR_R04_2008_328,ANSWER,Q32,9,S.R.,False
+329,EVS_FRE_FR_R04_2008_329,ANSWER,Q32,9,(Spontané),False
+330,EVS_FRE_FR_R04_2008_330,INSTRUCTION,Q33,,Montrer carte 33,False
+331,EVS_FRE_FR_R04_2008_331,REQUEST,Q33,,Dans quelle mesure l'affirmation suivante est-elle vraie pour vous:,False
+332,EVS_FRE_FR_R04_2008_332,REQUEST,Q33,,J'ai ma propre manière d'être en contact avec le divin sans avoir besoin des églises ou des services religieux.,False
+333,EVS_FRE_FR_R04_2008_333,ANSWER,Q33,1,Pas du tout,False
+334,EVS_FRE_FR_R04_2008_334,ANSWER,Q33,5,Tout à fait,False
+335,EVS_FRE_FR_R04_2008_335,ANSWER,Q33,8,NSP,False
+336,EVS_FRE_FR_R04_2008_336,ANSWER,Q33,9,SR,False
+337,EVS_FRE_FR_R04_2008_337,INSTRUCTION,Q34,,Montrer carte 34,False
+338,EVS_FRE_FR_R04_2008_338,REQUEST,Q34,,"Que vous vous considériez ou non comme quelqu'un de religieux, diriez-vous que vous êtes ou non sensible à la spiritualité, autrement dit quel est votre degré d'intérêt pour le sacré et le surnaturel ?",False
+339,EVS_FRE_FR_R04_2008_339,ANSWER,Q34,1,Très intéressé,False
+340,EVS_FRE_FR_R04_2008_340,ANSWER,Q34,2,Assez intéressé,False
+341,EVS_FRE_FR_R04_2008_341,ANSWER,Q34,3,Peu intéressé,False
+342,EVS_FRE_FR_R04_2008_342,ANSWER,Q34,4,Pas du tout intéressé,False
+343,EVS_FRE_FR_R04_2008_343,ANSWER,Q34,8,"NSP (Spontané, ne rien suggérer)",False
+344,EVS_FRE_FR_R04_2008_344,ANSWER,Q34,9,"SR (Spontané, ne rien suggérer)",False
+345,EVS_FRE_FR_R04_2008_345,INSTRUCTION,Q35,,Montrer carte 35 – UNE SEULE REPONSE,False
+346,EVS_FRE_FR_R04_2008_346,REQUEST,Q35,,"Parmi les affirmations suivantes, avec laquelle êtes-vous le plus d'accord ?",False
+347,EVS_FRE_FR_R04_2008_347,ANSWER,Q35,1,A.,False
+348,EVS_FRE_FR_R04_2008_348,ANSWER,Q35,1,Il y a une seule vraie religion,False
+349,EVS_FRE_FR_R04_2008_349,ANSWER,Q35,2,"B. Il y a une seule vraie religion, mais d'autres religions contiennent aussi des vérités de base",False
+350,EVS_FRE_FR_R04_2008_350,ANSWER,Q35,3,C.,False
+351,EVS_FRE_FR_R04_2008_351,ANSWER,Q35,3,Il n'y a pas une seule vraie religion car toutes les grandes religions contiennent des vérités de base,False
+352,EVS_FRE_FR_R04_2008_352,ANSWER,Q35,4,D.,False
+353,EVS_FRE_FR_R04_2008_353,ANSWER,Q35,4,Aucune des grandes religions n'a des vérités à offrir,False
+354,EVS_FRE_FR_R04_2008_354,ANSWER,Q35,8,"NSP (Spontané, ne rien suggérer)",False
+355,EVS_FRE_FR_R04_2008_355,ANSWER,Q35,9,"SR (Spontané, ne rien suggérer)",False
+356,EVS_FRE_FR_R04_2008_356,INSTRUCTION,Q36,,MONTRER CARTE 36,False
+357,EVS_FRE_FR_R04_2008_357,REQUEST,Q36,,Et à quel point Dieu est-il important dans votre vie ?,False
+358,EVS_FRE_FR_R04_2008_358,REQUEST,Q36,,"Veuillez utiliser cette carte où 10 veut dire ""Tout à fait important"" et 1 ""Pas du tout important"".",False
+359,EVS_FRE_FR_R04_2008_359,ANSWER,Q36,1,Pas du tout important,False
+360,EVS_FRE_FR_R04_2008_360,ANSWER,Q36,10,Très important,False
+361,EVS_FRE_FR_R04_2008_361,ANSWER,Q36,88,NSP,False
+362,EVS_FRE_FR_R04_2008_362,ANSWER,Q36,99,SR,False
+363,EVS_FRE_FR_R04_2008_363,REQUEST,Q37,,Avez-vous le sentiment que la religion vous apporte force et réconfort ?,False
+364,EVS_FRE_FR_R04_2008_364,ANSWER,Q37,1,Oui,False
+365,EVS_FRE_FR_R04_2008_365,ANSWER,Q37,2,Non,False
+366,EVS_FRE_FR_R04_2008_366,ANSWER,Q37,8,NSP (Spontané),False
+367,EVS_FRE_FR_R04_2008_367,ANSWER,Q37,9,S.R.,False
+368,EVS_FRE_FR_R04_2008_368,ANSWER,Q37,9,(Spontané),False
+369,EVS_FRE_FR_R04_2008_369,REQUEST,Q38,,"Vous arrive-t-il de prendre un moment pour prier, pour méditer, pour la contemplation ou quelque chose comme cela ?",False
+370,EVS_FRE_FR_R04_2008_370,ANSWER,Q38,1,Oui,False
+371,EVS_FRE_FR_R04_2008_371,ANSWER,Q38,2,Non,False
+372,EVS_FRE_FR_R04_2008_372,ANSWER,Q38,8,NSP (Spontané),False
+373,EVS_FRE_FR_R04_2008_373,ANSWER,Q38,9,S.R.,False
+374,EVS_FRE_FR_R04_2008_374,ANSWER,Q38,9,(Spontané),False
+375,EVS_FRE_FR_R04_2008_375,INSTRUCTION,Q39,,MONTRER CARTE 39,False
+376,EVS_FRE_FR_R04_2008_376,REQUEST,Q39,,"En dehors des services religieux, vous arrive-t-il de prier Dieu?",False
+377,EVS_FRE_FR_R04_2008_377,REQUEST,Q39,,Cela vous arrive-t-il...,False
+378,EVS_FRE_FR_R04_2008_378,ANSWER,Q39,1,Tous les jours,False
+379,EVS_FRE_FR_R04_2008_379,ANSWER,Q39,2,Plus d'une fois par semaine,False
+380,EVS_FRE_FR_R04_2008_380,ANSWER,Q39,3,Une fois par semaine,False
+381,EVS_FRE_FR_R04_2008_381,ANSWER,Q39,4,Au moins une fois par mois,False
+382,EVS_FRE_FR_R04_2008_382,ANSWER,Q39,5,Plusieurs fois par an,False
+383,EVS_FRE_FR_R04_2008_383,ANSWER,Q39,6,Moins souvent,False
+384,EVS_FRE_FR_R04_2008_384,ANSWER,Q39,7,Jamais,False
+385,EVS_FRE_FR_R04_2008_385,ANSWER,Q39,8,NSP (Spontané),False
+386,EVS_FRE_FR_R04_2008_386,ANSWER,Q39,9,S.R.,False
+387,EVS_FRE_FR_R04_2008_387,ANSWER,Q39,9,(Spontané),False
+388,EVS_FRE_FR_R04_2008_388,INSTRUCTION,Q40,,MONTRER CARTE 40,False
+389,EVS_FRE_FR_R04_2008_389,REQUEST,Q40,,Pensez-vous qu'un porte-bonheur comme une mascotte ou un talisman puisse vous protéger ou vous aider ?,False
+390,EVS_FRE_FR_R04_2008_390,ANSWER,Q40,1,Non certainement pas,False
+391,EVS_FRE_FR_R04_2008_391,ANSWER,Q40,10,Oui certainement,False
+392,EVS_FRE_FR_R04_2008_392,ANSWER,Q40,88,NSP,False
+393,EVS_FRE_FR_R04_2008_393,ANSWER,Q40,99,SR,False
+394,EVS_FRE_FR_R04_2008_394,INSTRUCTION,Q41,,MONTRER CARTE 41,False
+395,EVS_FRE_FR_R04_2008_395,REQUEST,Q41,,Dans quelle mesure êtes-vous d'accord ou pas avec les phrases suivantes ?,False
+396,EVS_FRE_FR_R04_2008_396,REQUEST,Q41.A,,Les hommes politiques qui ne croient pas en Dieu ne conviennent pas pour des fonctions publiques,False
+397,EVS_FRE_FR_R04_2008_397,ANSWER,Q41,1,Tout à fait d'accord,False
+398,EVS_FRE_FR_R04_2008_398,ANSWER,Q41,2,Plutôt d'accord,False
+399,EVS_FRE_FR_R04_2008_399,ANSWER,Q41,3,Ni d'accord ni pas d'accord,False
+400,EVS_FRE_FR_R04_2008_400,ANSWER,Q41,4,Plutôt pas d'accord,False
+401,EVS_FRE_FR_R04_2008_401,ANSWER,Q41,5,Pas du tout d'accord,False
+402,EVS_FRE_FR_R04_2008_402,ANSWER,Q41,8,NSP,False
+403,EVS_FRE_FR_R04_2008_403,ANSWER,Q41,9,SR,False
+404,EVS_FRE_FR_R04_2008_404,INTRO,v136,,LES QUESTIONS SUIVANTES PARLENT DE LA FAMILLE ET DU MARIAGE,False
+405,EVS_FRE_FR_R04_2008_405,INSTRUCTION,v136,,MONTRER CARTE 42,False
+406,EVS_FRE_FR_R04_2008_406,INSTRUCTION,v136,,Relisez le libellé de la question REGULIEREMENT,False
+407,EVS_FRE_FR_R04_2008_407,REQUEST,v136,,Voici une liste de choses dont on dit qu'elles contribuent au succès d'un mariage.,False
+408,EVS_FRE_FR_R04_2008_408,REQUEST,v136,,"Veuillez me dire pour chacune si vous pensez que c'est très important, assez important ou pas très important.",False
+409,EVS_FRE_FR_R04_2008_409,REQUEST,Q42.A,,La fidélité,False
+410,EVS_FRE_FR_R04_2008_410,ANSWER,v136,1,Très important,False
+411,EVS_FRE_FR_R04_2008_411,ANSWER,v136,2,Assez important,False
+412,EVS_FRE_FR_R04_2008_412,ANSWER,v136,3,Pas très important,False
+413,EVS_FRE_FR_R04_2008_413,ANSWER,v136,8,NSP,False
+414,EVS_FRE_FR_R04_2008_414,ANSWER,v136,9,SR,False
+415,EVS_FRE_FR_R04_2008_415,REQUEST,Q43,,Si vous entendez quelqu'un dire :,False
+416,EVS_FRE_FR_R04_2008_416,REQUEST,Q43,,"""Pour qu'un enfant grandisse dans une atmosphère heureuse, il lui faut à la fois un père et une mère""",False
+417,EVS_FRE_FR_R04_2008_417,REQUEST,Q43,,Etes-vous...,False
+418,EVS_FRE_FR_R04_2008_418,ANSWER,Q43,1,Plutô d'accord,False
+419,EVS_FRE_FR_R04_2008_419,ANSWER,Q43,2,Plutôt pas d'accord,False
+420,EVS_FRE_FR_R04_2008_420,ANSWER,Q43,8,NSP (Spontané),False
+421,EVS_FRE_FR_R04_2008_421,ANSWER,Q43,9,S.R.,False
+422,EVS_FRE_FR_R04_2008_422,ANSWER,Q43,9,(Spontané),False
+423,EVS_FRE_FR_R04_2008_423,REQUEST,Q44,,"Pensez-vous que pour s'épanouir, une femme a besoin d'avoir des enfants ou bien n'est-ce pas nécessaire?",False
+424,EVS_FRE_FR_R04_2008_424,ANSWER,Q44,1,A besoin d'avoir des enfants,False
+425,EVS_FRE_FR_R04_2008_425,ANSWER,Q44,2,Ce n'est pas nécessaire,False
+426,EVS_FRE_FR_R04_2008_426,ANSWER,Q44,8,NSP (Spontané),False
+427,EVS_FRE_FR_R04_2008_427,ANSWER,Q44,9,S.R.,False
+428,EVS_FRE_FR_R04_2008_428,ANSWER,Q44,9,(Spontané),False
+429,EVS_FRE_FR_R04_2008_429,REQUEST,Q45,,Etes-vous d'accord ou pas avec l'opinion suivante :,False
+430,EVS_FRE_FR_R04_2008_430,REQUEST,Q45,,"""Le mariage est une institution dépassée"" ?",False
+431,EVS_FRE_FR_R04_2008_431,ANSWER,Q45,1,D'accord,False
+432,EVS_FRE_FR_R04_2008_432,ANSWER,Q45,2,Pas d'accord,False
+433,EVS_FRE_FR_R04_2008_433,ANSWER,Q45,8,NSP (Spontané),False
+434,EVS_FRE_FR_R04_2008_434,ANSWER,Q45,9,S.R.,False
+435,EVS_FRE_FR_R04_2008_435,ANSWER,Q45,9,(Spontané),False
+436,EVS_FRE_FR_R04_2008_436,REQUEST,Q46,,"Si une femme désire avoir un enfant et rester célibataire, c'est-à-dire qu'elle ne veut pas vivre de façon permanente avec un homme, est-ce que vous approuvez ou vous désapprouvez ?",False
+437,EVS_FRE_FR_R04_2008_437,ANSWER,Q46,1,Approuve,False
+438,EVS_FRE_FR_R04_2008_438,ANSWER,Q46,2,Désapprouve,False
+439,EVS_FRE_FR_R04_2008_439,ANSWER,Q46,3,Cela dépend (Spontané),False
+440,EVS_FRE_FR_R04_2008_440,ANSWER,Q46,8,NSP (Spontané),False
+441,EVS_FRE_FR_R04_2008_441,ANSWER,Q46,9,S.R.,False
+442,EVS_FRE_FR_R04_2008_442,ANSWER,Q46,9,(Spontané),False
+443,EVS_FRE_FR_R04_2008_443,INSTRUCTION,Q47,,MONTRER CARTE 47,False
+444,EVS_FRE_FR_R04_2008_444,REQUEST,Q47,,Dans quelle mesure êtes-vous d'accord ou pas avec les phrases suivantes ?,False
+445,EVS_FRE_FR_R04_2008_445,REQUEST,Q47.A,,Un homme a besoin d'avoir des enfants pour être épanoui,False
+446,EVS_FRE_FR_R04_2008_446,ANSWER,Q47,1,Tout à fait d'accord,False
+447,EVS_FRE_FR_R04_2008_447,ANSWER,Q47,2,Plutôt d'accord,False
+448,EVS_FRE_FR_R04_2008_448,ANSWER,Q47,3,Ni d'accord ni pas d'accord,False
+449,EVS_FRE_FR_R04_2008_449,ANSWER,Q47,4,Plutôt pas d'accord,False
+450,EVS_FRE_FR_R04_2008_450,ANSWER,Q47,5,Pas du tout d'accord,False
+451,EVS_FRE_FR_R04_2008_451,ANSWER,Q47,8,NSP,False
+452,EVS_FRE_FR_R04_2008_452,ANSWER,Q47,9,SR,False
+453,EVS_FRE_FR_R04_2008_453,INSTRUCTION,Q48,,MONTRER CARTE 48,False
+454,EVS_FRE_FR_R04_2008_454,INSTRUCTION,Q48,,Relisez le libellé de la question REGULIEREMENT,False
+455,EVS_FRE_FR_R04_2008_455,REQUEST,Q48,,On entend parler de changements qui se produisent dans le rôle des hommes et des femmes.,False
+456,EVS_FRE_FR_R04_2008_456,REQUEST,Q48,,"Pour chacune des opinions que je vais vous lire, veuillez me dire dans quelle mesure vous êtes d'accord ou pas d'accord.",False
+457,EVS_FRE_FR_R04_2008_457,REQUEST,Q48.A,,Une mère qui travaille peut avoir avec ses enfants des relations aussi chaleureuses et sécurisantes qu'une mère qui ne travaille pas,False
+458,EVS_FRE_FR_R04_2008_458,ANSWER,Q48,1,Tout à fait d'accord,False
+459,EVS_FRE_FR_R04_2008_459,ANSWER,Q48,2,Plutôt d'accord,False
+460,EVS_FRE_FR_R04_2008_460,ANSWER,Q48,3,Plutôt pas d'accord,False
+461,EVS_FRE_FR_R04_2008_461,ANSWER,Q48,4,Pas du tout d'accord,False
+462,EVS_FRE_FR_R04_2008_462,ANSWER,Q48,8,NSP,False
+463,EVS_FRE_FR_R04_2008_463,ANSWER,Q48,9,SR,False
+464,EVS_FRE_FR_R04_2008_464,INSTRUCTION,Q49,,MONTRER CARTE 49 – UNE SEULE REPONSE,False
+465,EVS_FRE_FR_R04_2008_465,REQUEST,Q49,,Avec laquelle de ces deux opinions êtes-vous le plus d'accord ?,False
+466,EVS_FRE_FR_R04_2008_466,ANSWER,Q49,1,A.,False
+467,EVS_FRE_FR_R04_2008_467,ANSWER,Q49,1,"Quels que soient les qualités et les défauts de ses parents, on doit toujours les aimer et les respecter",False
+468,EVS_FRE_FR_R04_2008_468,ANSWER,Q49,2,B. On n'a pas le devoir de respecter et d'aimer ses parents  quand ils ne l'ont pas mérité par leur comportement et leur attitude,False
+469,EVS_FRE_FR_R04_2008_469,ANSWER,Q49,8,NSP (Spontané),False
+470,EVS_FRE_FR_R04_2008_470,ANSWER,Q49,9,S.R.,False
+471,EVS_FRE_FR_R04_2008_471,ANSWER,Q49,9,(Spontané),False
+472,EVS_FRE_FR_R04_2008_472,INSTRUCTION,Q50,,MONTRER CARTE 50 – UNE SEULE REPONSE,False
+473,EVS_FRE_FR_R04_2008_473,REQUEST,Q50,,Laquelle des deux affirmations suivantes correspond le mieux à votre opinion en ce qui concerne la responsabilité des parents à l'égard de leurs enfants ?,False
+474,EVS_FRE_FR_R04_2008_474,ANSWER,Q50,1,"Le devoir des parents est de faire de leur mieux pour leurs enfants, même aux dépens de leur propre bien-être",False
+475,EVS_FRE_FR_R04_2008_475,ANSWER,Q50,2,"Les parents ont leur vie à eux, et on ne doit pas leur demander de sacrifier leur propre bien-être au bénéfice de leurs enfants",False
+476,EVS_FRE_FR_R04_2008_476,ANSWER,Q50,3,"Ni l'un, ni l'autre (Spontané)",False
+477,EVS_FRE_FR_R04_2008_477,ANSWER,Q50,8,NSP (Spontané),False
+478,EVS_FRE_FR_R04_2008_478,ANSWER,Q50,9,SR (Spontané),False
+479,EVS_FRE_FR_R04_2008_479,INSTRUCTION,Q51,,MONTRER CARTE 51 - UNE SEULE REPONSE,False
+480,EVS_FRE_FR_R04_2008_480,REQUEST,Q51,,Et laquelle des deux affirmations suivantes correspond le mieux à votre opinion en ce qui concerne la responsabilité des enfants adultes lorsque leurs parents ont besoin d'une aide de longue durée ?,False
+481,EVS_FRE_FR_R04_2008_481,ANSWER,Q51,1,"Les enfants adultes doivent fournir l'aide que nécessitent leurs parents, même aux dépens de leur propre bien-être",False
+482,EVS_FRE_FR_R04_2008_482,ANSWER,Q51,2,"Les enfants adultes ont leur vie à eux, et on ne doit pas exiger qu'ils sacrifient leur propre bien-être à celui de leurs parents",False
+483,EVS_FRE_FR_R04_2008_483,ANSWER,Q51,3,"Ni l'un, ni l'autre (Spontané, ne rien suggérer)",False
+484,EVS_FRE_FR_R04_2008_484,ANSWER,Q51,8,"NSP (Spontané, ne rien suggérer)",False
+485,EVS_FRE_FR_R04_2008_485,ANSWER,Q51,9,"SR (Spontané, ne rien suggérer)",False
+486,EVS_FRE_FR_R04_2008_486,INSTRUCTION,Q52,,MONTRER CARTE 52 - DEMANDER LES 5 PLUS IMPORTANTES,False
+487,EVS_FRE_FR_R04_2008_487,REQUEST,Q52,,Voici une liste de qualités que les parents peuvent chercher à encourager chez leurs enfants.,False
+488,EVS_FRE_FR_R04_2008_488,REQUEST,Q52,,Voulez-vous me citer celles que vous considérez comme particulièrement importantes ?,False
+489,EVS_FRE_FR_R04_2008_489,REQUEST,Q52.A,,Les bonnes manières,False
+490,EVS_FRE_FR_R04_2008_490,ANSWER,Q52,1,Cité,False
+491,EVS_FRE_FR_R04_2008_491,ANSWER,Q52,2,Pas cité,False
+492,EVS_FRE_FR_R04_2008_492,ANSWER,Q52,8,NSP,False
+493,EVS_FRE_FR_R04_2008_493,ANSWER,Q52,9,SR,False
+494,EVS_FRE_FR_R04_2008_494,ANSWER,f180,0,Limitation followed,False
+495,EVS_FRE_FR_R04_2008_495,ANSWER,f180,1,Limitation ignored,False
+496,EVS_FRE_FR_R04_2008_496,INSTRUCTION,Q53,,MONTRER CARTE 53,False
+497,EVS_FRE_FR_R04_2008_497,REQUEST,Q53,,Approuvez-vous ou désapprouvez-vous l'avortement dans les circonstances suivantes ?,False
+498,EVS_FRE_FR_R04_2008_498,REQUEST,Q53.A,,Quand la femme n'est pas mariée,False
+499,EVS_FRE_FR_R04_2008_499,ANSWER,Q53,1,Approuve,False
+500,EVS_FRE_FR_R04_2008_500,ANSWER,Q53,2,Désapprouve,False
+501,EVS_FRE_FR_R04_2008_501,ANSWER,Q53,8,NSP,False
+502,EVS_FRE_FR_R04_2008_502,ANSWER,Q53,9,SR,False
+503,EVS_FRE_FR_R04_2008_503,INTRO,v186,,JE VAIS MAINTENANT VOUS POSER QUELQUES QUESTIONS SUR DES SUJETS DE SOCIETE,False
+504,EVS_FRE_FR_R04_2008_504,INSTRUCTION,v186,,MONTRER CARTE 54,False
+505,EVS_FRE_FR_R04_2008_505,REQUEST,v186,,Dans quelle mesure êtes-vous intéressé par la politique ?,False
+506,EVS_FRE_FR_R04_2008_506,REQUEST,v186,,Vous diriez...,False
+507,EVS_FRE_FR_R04_2008_507,ANSWER,v186,1,Très intéressé,False
+508,EVS_FRE_FR_R04_2008_508,ANSWER,v186,2,Assez intéressé,False
+509,EVS_FRE_FR_R04_2008_509,ANSWER,v186,3,Pas très intéressé,False
+510,EVS_FRE_FR_R04_2008_510,ANSWER,v186,4,Pas du tout intéressé,False
+511,EVS_FRE_FR_R04_2008_511,ANSWER,v186,8,NSP (Spontané),False
+512,EVS_FRE_FR_R04_2008_512,ANSWER,v186,9,S.R.,False
+513,EVS_FRE_FR_R04_2008_513,ANSWER,v186,9,(Spontané),False
+514,EVS_FRE_FR_R04_2008_514,INSTRUCTION,Q55,,MONTRER CARTE 55,False
+515,EVS_FRE_FR_R04_2008_515,REQUEST,Q55,,"Je vais vous citer un certain nombre de formes d'action politique, et pour chacune je vous demanderai de me dire si vous l'avez déjà fait, si vous pourriez en venir à le faire ou si vous ne le feriez jamais, quelles que soient les circonstances?",False
+516,EVS_FRE_FR_R04_2008_516,REQUEST,Q55.A,,Signer une pétition,False
+517,EVS_FRE_FR_R04_2008_517,ANSWER,Q55,1,A déjà fait,False
+518,EVS_FRE_FR_R04_2008_518,ANSWER,Q55,2,Pourrait faire,False
+519,EVS_FRE_FR_R04_2008_519,ANSWER,Q55,3,Ne fera jamais,False
+520,EVS_FRE_FR_R04_2008_520,ANSWER,Q55,8,NSP,False
+521,EVS_FRE_FR_R04_2008_521,ANSWER,Q55,9,SR,False
+522,EVS_FRE_FR_R04_2008_522,INSTRUCTION,Q56,,MONTRER CARTE 56 - UNE SEULE REPONSE,False
+523,EVS_FRE_FR_R04_2008_523,REQUEST,Q56,,Laquelle de ces deux opinions est la plus proche de la votre ?,False
+524,EVS_FRE_FR_R04_2008_524,ANSWER,Q56,1,A.,False
+525,EVS_FRE_FR_R04_2008_525,ANSWER,Q56,1,Je trouve que la liberté et l'égalité sont également importantes.,False
+526,EVS_FRE_FR_R04_2008_526,ANSWER,Q56,1,"Mais s'il fallait choisir l'une ou l'autre, je considérerais que la liberté est plus importante, c'est-à-dire que chacun puisse vivre en liberté et se développer sans contrainte.",False
+527,EVS_FRE_FR_R04_2008_527,ANSWER,Q56,2,B. Certainement la liberté et l'égalité sont importantes.,False
+528,EVS_FRE_FR_R04_2008_528,ANSWER,Q56,2,"Mais s'il fallait que je choisisse, je considérerais que l'égalité est plus importante, c'est-à-dire que personne ne soit défavorisé et que la différence entre les classes sociales ne soit pas aussi forte.",False
+529,EVS_FRE_FR_R04_2008_529,ANSWER,Q56,3,"Ni l'un, ni l'autre (Spontané)",False
+530,EVS_FRE_FR_R04_2008_530,ANSWER,Q56,8,NSP (Spontané),False
+531,EVS_FRE_FR_R04_2008_531,ANSWER,Q56,9,SR (Spontané),False
+532,EVS_FRE_FR_R04_2008_532,INSTRUCTION,Q57,,MONTRER CARTE 57,False
+533,EVS_FRE_FR_R04_2008_533,REQUEST,Q57,,"A propos de politique, les gens parlent de gauche et de droite.",False
+534,EVS_FRE_FR_R04_2008_534,REQUEST,Q57,,"Vous-même, où vous situez-vous sur cette échelle d'une façon générale ?",False
+535,EVS_FRE_FR_R04_2008_535,ANSWER,Q57,1,Gauche,False
+536,EVS_FRE_FR_R04_2008_536,ANSWER,Q57,10,Droite,False
+537,EVS_FRE_FR_R04_2008_537,ANSWER,Q57,88,NSP,False
+538,EVS_FRE_FR_R04_2008_538,ANSWER,Q57,99,SR,False
+539,EVS_FRE_FR_R04_2008_539,INSTRUCTION,Q58A,,MONTRER CARTE 58 – LIRE,False
+540,EVS_FRE_FR_R04_2008_540,INSTRUCTION,Q58A,,EXPLIQUER LENTEMENT L'ECHELLE DE REPONSE,False
+541,EVS_FRE_FR_R04_2008_541,INSTRUCTION,Q58A,,CITER LA LETTRE AVANT D'ENREGISTRER LA REPONSE,False
+542,EVS_FRE_FR_R04_2008_542,REQUEST,Q58A,,Sur cette carte figurent des opinions opposées sur différents sujets.,False
+543,EVS_FRE_FR_R04_2008_543,REQUEST,Q58A,,Où vous situez-vous sur cette échelle ?,False
+544,EVS_FRE_FR_R04_2008_544,ANSWER,Q58A,1,Les individus devraient avoir davantage la responsabilité de subvenir à leurs propres besoins,False
+545,EVS_FRE_FR_R04_2008_545,ANSWER,Q58A,10,L'état devrait avoir davantage la responsabilité d'assurer à chacun ses besoins,False
+546,EVS_FRE_FR_R04_2008_546,ANSWER,Q58A,88,NSP,False
+547,EVS_FRE_FR_R04_2008_547,ANSWER,Q58A,99,SR,False
+548,EVS_FRE_FR_R04_2008_548,INSTRUCTION,Q58B,,MONTRER CARTE 58 – LIRE,False
+549,EVS_FRE_FR_R04_2008_549,INSTRUCTION,Q58B,,EXPLIQUER LENTEMENT L'ECHELLE DE REPONSE,False
+550,EVS_FRE_FR_R04_2008_550,INSTRUCTION,Q58B,,CITER LA LETTRE AVANT D'ENREGISTRER LA REPONSE,False
+551,EVS_FRE_FR_R04_2008_551,REQUEST,Q58B,,Sur cette carte figurent des opinions opposées sur différents sujets.,False
+552,EVS_FRE_FR_R04_2008_552,REQUEST,Q58B,,Où vous situez-vous sur cette échelle ?,False
+553,EVS_FRE_FR_R04_2008_553,ANSWER,Q58B,1,Les chômeurs devraient être obligés d'accepter tout emploi disponible ou bien perdre leur indemnité de chômage,False
+554,EVS_FRE_FR_R04_2008_554,ANSWER,Q58B,10,Les chômeurs devraient avoir le droit de refuser un emploi qui ne leur convient pas,False
+555,EVS_FRE_FR_R04_2008_555,ANSWER,Q58B,88,NSP,False
+556,EVS_FRE_FR_R04_2008_556,ANSWER,Q58B,99,SR,False
+557,EVS_FRE_FR_R04_2008_557,INSTRUCTION,Q58C,,MONTRER CARTE 58 – LIRE,False
+558,EVS_FRE_FR_R04_2008_558,INSTRUCTION,Q58C,,EXPLIQUER LENTEMENT L'ECHELLE DE REPONSE,False
+559,EVS_FRE_FR_R04_2008_559,INSTRUCTION,Q58C,,CITER LA LETTRE AVANT D'ENREGISTRER LA REPONSE,False
+560,EVS_FRE_FR_R04_2008_560,REQUEST,Q58C,,Sur cette carte figurent des opinions opposées sur différents sujets.,False
+561,EVS_FRE_FR_R04_2008_561,REQUEST,Q58C,,Où vous situez-vous sur cette échelle ?,False
+562,EVS_FRE_FR_R04_2008_562,ANSWER,Q58C,1,La concurrence est une bonne chose.,False
+563,EVS_FRE_FR_R04_2008_563,ANSWER,Q58C,1,Elle pousse les gens à travailler dur et à trouver de nouvelles idées,False
+564,EVS_FRE_FR_R04_2008_564,ANSWER,Q58C,10,La concurrence est dangereuse.,False
+565,EVS_FRE_FR_R04_2008_565,ANSWER,Q58C,10,Elle conduit à développer ce qu'il y a de pire chez les gens,False
+566,EVS_FRE_FR_R04_2008_566,ANSWER,Q58C,88,NSP,False
+567,EVS_FRE_FR_R04_2008_567,ANSWER,Q58C,99,SR,False
+568,EVS_FRE_FR_R04_2008_568,INSTRUCTION,Q58D,,MONTRER CARTE 58 – LIRE,False
+569,EVS_FRE_FR_R04_2008_569,INSTRUCTION,Q58D,,EXPLIQUER LENTEMENT L'ECHELLE DE REPONSE,False
+570,EVS_FRE_FR_R04_2008_570,INSTRUCTION,Q58D,,CITER LA LETTRE AVANT D'ENREGISTRER LA REPONSE,False
+571,EVS_FRE_FR_R04_2008_571,REQUEST,Q58D,,Sur cette carte figurent des opinions opposées sur différents sujets.,False
+572,EVS_FRE_FR_R04_2008_572,REQUEST,Q58D,,Où vous situez-vous sur cette échelle ?,False
+573,EVS_FRE_FR_R04_2008_573,ANSWER,Q58D,1,L'Etat devrait donner plus de liberté aux entreprises,False
+574,EVS_FRE_FR_R04_2008_574,ANSWER,Q58D,10,L'Etat devrait contrôler plus sérieusement les entreprises,False
+575,EVS_FRE_FR_R04_2008_575,ANSWER,Q58D,88,NSP,False
+576,EVS_FRE_FR_R04_2008_576,ANSWER,Q58D,99,SR,False
+577,EVS_FRE_FR_R04_2008_577,INSTRUCTION,Q58E,,MONTRER CARTE 58 – LIRE,False
+578,EVS_FRE_FR_R04_2008_578,INSTRUCTION,Q58E,,EXPLIQUER LENTEMENT L'ECHELLE DE REPONSE,False
+579,EVS_FRE_FR_R04_2008_579,INSTRUCTION,Q58E,,CITER LA LETTRE AVANT D'ENREGISTRER LA REPONSE,False
+580,EVS_FRE_FR_R04_2008_580,REQUEST,Q58E,,Sur cette carte figurent des opinions opposées sur différents sujets.,False
+581,EVS_FRE_FR_R04_2008_581,REQUEST,Q58E,,Où vous situez-vous sur cette échelle ?,False
+582,EVS_FRE_FR_R04_2008_582,ANSWER,Q58E,1,Les revenus devraient être plus égalitaires,False
+583,EVS_FRE_FR_R04_2008_583,ANSWER,Q58E,10,Il faudrait encourager davantage les efforts individuels,False
+584,EVS_FRE_FR_R04_2008_584,ANSWER,Q58E,88,NSP,False
+585,EVS_FRE_FR_R04_2008_585,ANSWER,Q58E,99,SR,False
+586,EVS_FRE_FR_R04_2008_586,INSTRUCTION,Q58F,,MONTRER CARTE 58,False
+587,EVS_FRE_FR_R04_2008_587,INSTRUCTION,Q58F,,EXPLIQUER LENTEMENT L'ECHELLE DE REPONSE,False
+588,EVS_FRE_FR_R04_2008_588,INSTRUCTION,Q58F,,CITER LA LETTRE AVANT D'ENREGISTRER LA REPONSE,False
+589,EVS_FRE_FR_R04_2008_589,REQUEST,Q58F,,Sur cette carte figurent des opinions opposées sur différents sujets.,False
+590,EVS_FRE_FR_R04_2008_590,REQUEST,Q58F,,Où vous situez-vous sur cette échelle ?,False
+591,EVS_FRE_FR_R04_2008_591,ANSWER,Q58F,1,La propriété privée des entreprises et des industries devrait être développée,False
+592,EVS_FRE_FR_R04_2008_592,ANSWER,Q58F,10,La nationalisation des entreprises et des industries devrait être développée,False
+593,EVS_FRE_FR_R04_2008_593,ANSWER,Q58F,88,NSP,False
+594,EVS_FRE_FR_R04_2008_594,ANSWER,Q58F,99,SR,False
+595,EVS_FRE_FR_R04_2008_595,INSTRUCTION,Q59,,MONTRER CARTE 59 – UNE SEULE REPONSE,False
+596,EVS_FRE_FR_R04_2008_596,REQUEST,Q59,,Sur cette carte figurent trois attitudes fondamentales vis-à-vis de la société dans laquelle nous vivons.,False
+597,EVS_FRE_FR_R04_2008_597,REQUEST,Q59,,Choisissez celle qui correspond le mieux à vos idées personnelles.,False
+598,EVS_FRE_FR_R04_2008_598,ANSWER,Q59,1,A  Il faut changer radicalement toute l'organisation de notre société par une action révolutionnaire,False
+599,EVS_FRE_FR_R04_2008_599,ANSWER,Q59,2,B  Il faut améliorer petit à petit notre société par des réformes,False
+600,EVS_FRE_FR_R04_2008_600,ANSWER,Q59,3,C  Il faut défendre courageusement notre société actuelle contre tous les changements,False
+601,EVS_FRE_FR_R04_2008_601,ANSWER,Q59,8,NSP (Spontané),False
+602,EVS_FRE_FR_R04_2008_602,ANSWER,Q59,9,SR (Spontané),False
+603,EVS_FRE_FR_R04_2008_603,ANSWER,f201,0,consistent,False
+604,EVS_FRE_FR_R04_2008_604,ANSWER,f201,1,inconsistent,False
+605,EVS_FRE_FR_R04_2008_605,INSTRUCTION,Q60,,MONTRER CARTE 60,False
+606,EVS_FRE_FR_R04_2008_606,REQUEST,Q60,,On dit beaucoup de choses au sujet des buts que la France devrait s'efforcer d'atteindre au cours des dix prochaines années.,False
+607,EVS_FRE_FR_R04_2008_607,REQUEST,Q60,,"Parmi les buts figurant sur cette liste, voulez-vous m'indiquer celui qui vous paraît...",False
+608,EVS_FRE_FR_R04_2008_608,REQUEST,Q60,,le plus important ?,False
+609,EVS_FRE_FR_R04_2008_609,ANSWER,Q60,1,A  Maintenir l'ordre dans le pays,False
+610,EVS_FRE_FR_R04_2008_610,ANSWER,Q60,2,B  Augmenter la participation des citoyens aux décisions du gouvernement,False
+611,EVS_FRE_FR_R04_2008_611,ANSWER,Q60,3,C  Combattre la hausse de prix,False
+612,EVS_FRE_FR_R04_2008_612,ANSWER,Q60,4,D  Garantir la liberté d'expression,False
+613,EVS_FRE_FR_R04_2008_613,ANSWER,Q60,8,NSP,False
+614,EVS_FRE_FR_R04_2008_614,ANSWER,Q60,9,SR,False
+615,EVS_FRE_FR_R04_2008_615,INSTRUCTION,Q61,,MONTRER CARTE 60,False
+616,EVS_FRE_FR_R04_2008_616,REQUEST,Q61,,On dit beaucoup de choses au sujet des buts que la France devrait s'efforcer d'atteindre au cours des dix prochaines années.,False
+617,EVS_FRE_FR_R04_2008_617,REQUEST,Q61,,"Parmi les buts figurant sur cette liste, voulez-vous m'indiquer celui qui vous paraît...",False
+618,EVS_FRE_FR_R04_2008_618,REQUEST,Q61,,et celui qui vient ensuite ?,False
+619,EVS_FRE_FR_R04_2008_619,ANSWER,Q61,1,A  Maintenir l'ordre dans le pays,False
+620,EVS_FRE_FR_R04_2008_620,ANSWER,Q61,2,B  Augmenter la participation des citoyens aux décisions du gouvernement,False
+621,EVS_FRE_FR_R04_2008_621,ANSWER,Q61,3,C  Combattre la hausse des prix,False
+622,EVS_FRE_FR_R04_2008_622,ANSWER,Q61,4,D  Garantir la liberté d'expression,False
+623,EVS_FRE_FR_R04_2008_623,ANSWER,Q61,8,NSP,False
+624,EVS_FRE_FR_R04_2008_624,ANSWER,Q61,9,SR,False
+625,EVS_FRE_FR_R04_2008_625,INSTRUCTION,Q62,,MONTRER CARTE 62,False
+626,EVS_FRE_FR_R04_2008_626,REQUEST,Q62,,Je vais vous citer deux changements qui pourraient se produire dans notre manière de vivre d'ici quelque temps.,False
+627,EVS_FRE_FR_R04_2008_627,REQUEST,Q62,,"Voulez-vous me dire pour chacun si vous pensez que ce serait une bonne chose, une mauvaise chose ou si cela vous est égal ?",False
+628,EVS_FRE_FR_R04_2008_628,REQUEST,Q62.A,,Qu'on attache moins d'importance à l'argent et aux biens matériels,False
+629,EVS_FRE_FR_R04_2008_629,ANSWER,Q62,1,Bonne chose,False
+630,EVS_FRE_FR_R04_2008_630,ANSWER,Q62,2,Mauvaise chose,False
+631,EVS_FRE_FR_R04_2008_631,ANSWER,Q62,3,Indifférent,False
+632,EVS_FRE_FR_R04_2008_632,ANSWER,Q62,8,NSP,False
+633,EVS_FRE_FR_R04_2008_633,ANSWER,Q62,9,SR,False
+634,EVS_FRE_FR_R04_2008_634,INSTRUCTION,Q63,,MONTRER CARTE 63,False
+635,EVS_FRE_FR_R04_2008_635,REQUEST,Q63,,"Pour chacune des institutions que je vais vous citer, voulez-vous me dire dans quelle mesure vous avez confiance ou pas: une grande confiance, une certaine confiance, peu de confiance ou pas confiance du tout ?",False
+636,EVS_FRE_FR_R04_2008_636,REQUEST,Q63.A,,L'église,False
+637,EVS_FRE_FR_R04_2008_637,ANSWER,Q63,1,Grande confiance,False
+638,EVS_FRE_FR_R04_2008_638,ANSWER,Q63,2,Une certaine confiance,False
+639,EVS_FRE_FR_R04_2008_639,ANSWER,Q63,3,Peu de confiance,False
+640,EVS_FRE_FR_R04_2008_640,ANSWER,Q63,4,Pas confiance du tout,False
+641,EVS_FRE_FR_R04_2008_641,ANSWER,Q63,8,NSP,False
+642,EVS_FRE_FR_R04_2008_642,ANSWER,Q63,9,SR,False
+643,EVS_FRE_FR_R04_2008_643,INSTRUCTION,Q64,,MONTRER CARTE 64,False
+644,EVS_FRE_FR_R04_2008_644,REQUEST,Q64,,"D'une façon générale, êtes-vous très satisfait, plutôt satisfait, plutôt pas satisfait ou pas du tout satisfait de la façon dont la démocratie évolue dans notre pays ?",False
+645,EVS_FRE_FR_R04_2008_645,ANSWER,Q64,1,Très satisfait,False
+646,EVS_FRE_FR_R04_2008_646,ANSWER,Q64,2,Plutôt satisfait,False
+647,EVS_FRE_FR_R04_2008_647,ANSWER,Q64,3,Plutôt pas satisfait,False
+648,EVS_FRE_FR_R04_2008_648,ANSWER,Q64,4,Pas du tout satisfait,False
+649,EVS_FRE_FR_R04_2008_649,ANSWER,Q64,8,NSP (Spontané),False
+650,EVS_FRE_FR_R04_2008_650,ANSWER,Q64,9,S.R.,False
+651,EVS_FRE_FR_R04_2008_651,ANSWER,Q64,9,(Spontané),False
+652,EVS_FRE_FR_R04_2008_652,INSTRUCTION,Q65,,MONTRER CARTE 65,False
+653,EVS_FRE_FR_R04_2008_653,REQUEST,Q65,,Il existe différents points de vue sur le système de gouvernement de ce pays.,False
+654,EVS_FRE_FR_R04_2008_654,REQUEST,Q65,,"Veuillez utiliser cette échelle pour me dire, selon vous,  comment vont les choses: 1 signifie que cela va très mal, 10 signifie que cela va très bien.",False
+655,EVS_FRE_FR_R04_2008_655,ANSWER,Q65,1,Cela va très mal,False
+656,EVS_FRE_FR_R04_2008_656,ANSWER,Q65,10,Cela va très bien,False
+657,EVS_FRE_FR_R04_2008_657,ANSWER,Q65,88,NSP,False
+658,EVS_FRE_FR_R04_2008_658,ANSWER,Q65,99,SR,False
+659,EVS_FRE_FR_R04_2008_659,INSTRUCTION,Q66,,MONTRER CARTE 66,False
+660,EVS_FRE_FR_R04_2008_660,REQUEST,Q66,,Je vais vous décrire différents types de systèmes politiques et vous demander ce que vous en pensez pour gouverner ce pays.,False
+661,EVS_FRE_FR_R04_2008_661,REQUEST,Q66,,"Pour chacun, veuillez me dire si cette façon de gouverner le pays serait très bonne, assez bonne, assez mauvaise ou très mauvaise.",False
+662,EVS_FRE_FR_R04_2008_662,REQUEST,Q66.A,,Avoir à sa tête un homme fort  qui n'a pas à se préoccuper du parlement ni des élections,False
+663,EVS_FRE_FR_R04_2008_663,ANSWER,Q66,1,Très bonne,False
+664,EVS_FRE_FR_R04_2008_664,ANSWER,Q66,2,Assez bonne,False
+665,EVS_FRE_FR_R04_2008_665,ANSWER,Q66,3,Assez mauvaise,False
+666,EVS_FRE_FR_R04_2008_666,ANSWER,Q66,4,Très mauvaise,False
+667,EVS_FRE_FR_R04_2008_667,ANSWER,Q66,8,NSP,False
+668,EVS_FRE_FR_R04_2008_668,ANSWER,Q66,9,SR,False
+669,EVS_FRE_FR_R04_2008_669,INSTRUCTION,Q67,,MONTRER CARTE 67,False
+670,EVS_FRE_FR_R04_2008_670,REQUEST,Q67,,Certaines opinions sont parfois exprimées au sujet du système politique démocratique.,False
+671,EVS_FRE_FR_R04_2008_671,REQUEST,Q67,,"Veuillez me dire, à chaque fois, si vous êtes tout à fait d'accord, plutôt d'accord, plutôt pas d'accord ou pas du tout d'accord.",False
+672,EVS_FRE_FR_R04_2008_672,REQUEST,Q67.A,,"La démocratie peut poser des problèmes, mais c'est quand même mieux que n'importe quelle autre forme de gouvernement",False
+673,EVS_FRE_FR_R04_2008_673,ANSWER,Q67,1,Tout à fait d'accord,False
+674,EVS_FRE_FR_R04_2008_674,ANSWER,Q67,2,Plutôt d'accord,False
+675,EVS_FRE_FR_R04_2008_675,ANSWER,Q67,3,Plutôt pas d'accord,False
+676,EVS_FRE_FR_R04_2008_676,ANSWER,Q67,4,Pas du tout d'accord,False
+677,EVS_FRE_FR_R04_2008_677,ANSWER,Q67,8,NSP,False
+678,EVS_FRE_FR_R04_2008_678,ANSWER,Q67,9,SR,False
+679,EVS_FRE_FR_R04_2008_679,INSTRUCTION,Q68,,MONTRER CARTE 68,False
+680,EVS_FRE_FR_R04_2008_680,REQUEST,Q68,,"Pour chacune des choses que je vais vous citer, voulez-vous me dire en vous plaçant sur cette échelle si vous pensez que cela peut toujours se justifier, que cela ne peut jamais se justifier ou que c'est entre les deux ?",False
+681,EVS_FRE_FR_R04_2008_681,INSTRUCTION,Q68,,ENONCER CHAQUE PHRASE ET FAIRE NOTER DE 1 à 10.,False
+682,EVS_FRE_FR_R04_2008_682,REQUEST,Q68.A,,Demander des indemnités au-delà de ce à quoi on a droit,False
+683,EVS_FRE_FR_R04_2008_683,ANSWER,Q68,1,Jamais justifié,False
+684,EVS_FRE_FR_R04_2008_684,ANSWER,Q68,10,Toujours justifié,False
+685,EVS_FRE_FR_R04_2008_685,ANSWER,Q68,88,NSP,False
+686,EVS_FRE_FR_R04_2008_686,ANSWER,Q68,99,SR,False
+687,EVS_FRE_FR_R04_2008_687,ANSWER,f253,0,consistent,False
+688,EVS_FRE_FR_R04_2008_688,ANSWER,f253,1,inconsistent,False
+689,EVS_FRE_FR_R04_2008_689,INSTRUCTION,Q69,,MONTRER CARTE 69/70,False
+690,EVS_FRE_FR_R04_2008_690,REQUEST,Q69,,"Parmi les unités géographiques suivantes, à laquelle avez-vous le sentiment d'appartenir avant tout ?",False
+691,EVS_FRE_FR_R04_2008_691,REQUEST,Q69,,En premier,False
+692,EVS_FRE_FR_R04_2008_692,ANSWER,Q69,1,"A  La ville, la localité, le canton où vous habitez",False
+693,EVS_FRE_FR_R04_2008_693,ANSWER,Q69,2,"B  La région, la province, le département",False
+694,EVS_FRE_FR_R04_2008_694,ANSWER,Q69,3,C  La France,False
+695,EVS_FRE_FR_R04_2008_695,ANSWER,Q69,4,D  L'Europe,False
+696,EVS_FRE_FR_R04_2008_696,ANSWER,Q69,5,E  Le monde entier,False
+697,EVS_FRE_FR_R04_2008_697,ANSWER,Q69,8,NSP,False
+698,EVS_FRE_FR_R04_2008_698,ANSWER,Q69,9,SR,False
+699,EVS_FRE_FR_R04_2008_699,INSTRUCTION,Q70,,MONTRER CARTE 69/70,False
+700,EVS_FRE_FR_R04_2008_700,REQUEST,Q70,,"Parmi les unités géographiques suivantes, à laquelle avez-vous le sentiment d'appartenir avant tout ?",False
+701,EVS_FRE_FR_R04_2008_701,REQUEST,Q70,,Et ensuite,False
+702,EVS_FRE_FR_R04_2008_702,ANSWER,Q70,1,A.,False
+703,EVS_FRE_FR_R04_2008_703,ANSWER,Q70,1,"La ville, la localité, le canton où vous habitez",False
+704,EVS_FRE_FR_R04_2008_704,ANSWER,Q70,2,"B.  La région, la province, le département",False
+705,EVS_FRE_FR_R04_2008_705,ANSWER,Q70,3,C.,False
+706,EVS_FRE_FR_R04_2008_706,ANSWER,Q70,3,La France,False
+707,EVS_FRE_FR_R04_2008_707,ANSWER,Q70,4,D.,False
+708,EVS_FRE_FR_R04_2008_708,ANSWER,Q70,4,L'Europe,False
+709,EVS_FRE_FR_R04_2008_709,ANSWER,Q70,5,E.  Le monde entier,False
+710,EVS_FRE_FR_R04_2008_710,ANSWER,Q70,8,NSP,False
+711,EVS_FRE_FR_R04_2008_711,ANSWER,Q70,9,SR,False
+712,EVS_FRE_FR_R04_2008_712,REQUEST,Q71,,Etes-vous citoyen français ?,False
+713,EVS_FRE_FR_R04_2008_713,ANSWER,Q71,1,Oui,False
+714,EVS_FRE_FR_R04_2008_714,ANSWER,Q71,2,Non,False
+715,EVS_FRE_FR_R04_2008_715,ANSWER,Q71,8,NSP (Spontané),False
+716,EVS_FRE_FR_R04_2008_716,ANSWER,Q71,9,S.R.,False
+717,EVS_FRE_FR_R04_2008_717,ANSWER,Q71,9,(Spontané),False
+718,EVS_FRE_FR_R04_2008_718,REQUEST,Q72,,Diriez-vous que vous êtes fier d'être citoyen français ?,False
+719,EVS_FRE_FR_R04_2008_719,REQUEST,Q72,,"Diriez-vous très fier, assez fier, pas très fier, pas fier du tout ?",False
+720,EVS_FRE_FR_R04_2008_720,ANSWER,Q72,1,Très fier,False
+721,EVS_FRE_FR_R04_2008_721,ANSWER,Q72,2,Assez fier,False
+722,EVS_FRE_FR_R04_2008_722,ANSWER,Q72,3,Pas très fier,False
+723,EVS_FRE_FR_R04_2008_723,ANSWER,Q72,4,Pas fier du tout,False
+724,EVS_FRE_FR_R04_2008_724,ANSWER,Q72,7,Ne s'applique pas (Spontané),False
+725,EVS_FRE_FR_R04_2008_725,ANSWER,Q72,8,NSP (Spontané),False
+726,EVS_FRE_FR_R04_2008_726,ANSWER,Q72,9,S.R.,False
+727,EVS_FRE_FR_R04_2008_727,ANSWER,Q72,9,(Spontané),False
+728,EVS_FRE_FR_R04_2008_728,INSTRUCTION,Q73,,MONTRER CARTE 73,False
+729,EVS_FRE_FR_R04_2008_729,REQUEST,Q73,,Certaines personnes peuvent avoir des craintes concernant la construction de l'Union européenne.,False
+730,EVS_FRE_FR_R04_2008_730,REQUEST,Q73,,"Pour chacun des aspects suivants, dites-moi si vous en avez personnellement peur ou non ?",False
+731,EVS_FRE_FR_R04_2008_731,REQUEST,Q73.A,,La perte de la sécurité sociale,False
+732,EVS_FRE_FR_R04_2008_732,ANSWER,Q73,1,Très peur,False
+733,EVS_FRE_FR_R04_2008_733,ANSWER,Q73,10,Pas peur du tout,False
+734,EVS_FRE_FR_R04_2008_734,ANSWER,Q73,88,NSP,False
+735,EVS_FRE_FR_R04_2008_735,ANSWER,Q73,99,SR,False
+736,EVS_FRE_FR_R04_2008_736,INSTRUCTION,Q74,,Montrer carte 74,False
+737,EVS_FRE_FR_R04_2008_737,REQUEST,Q74,,Certains pensent que l'élargissement de l'Union européenne devrait continuer.,False
+738,EVS_FRE_FR_R04_2008_738,REQUEST,Q74,,D'autres estiment qu'on est déjà allé trop loin.,False
+739,EVS_FRE_FR_R04_2008_739,REQUEST,Q74,,Situez votre opinion sur cette échelle :,False
+740,EVS_FRE_FR_R04_2008_740,ANSWER,Q74,1,L'élargissement devrait continuer,False
+741,EVS_FRE_FR_R04_2008_741,ANSWER,Q74,10,L'élargissement est allé trop loin,False
+742,EVS_FRE_FR_R04_2008_742,ANSWER,Q74,88,NSP,False
+743,EVS_FRE_FR_R04_2008_743,ANSWER,Q74,99,SR,False
+744,EVS_FRE_FR_R04_2008_744,REQUEST,Q75,,"S'il y avait demain une élection nationale, pouvez-vous me dire si vous voteriez :",False
+745,EVS_FRE_FR_R04_2008_745,INSTRUCTION,Q75,,"Si l'interviewé n'est pas inscrit sur les listes électorales coder ""n'a pas le droit de voter""",False
+746,EVS_FRE_FR_R04_2008_746,ANSWER,Q75,1,"Oui, je voterais",False
+747,EVS_FRE_FR_R04_2008_747,ANSWER,Q75,2,"Non, je ne voterais pas",False
+748,EVS_FRE_FR_R04_2008_748,ANSWER,Q75,7,N'a pas le droit de voter (Spontané),False
+749,EVS_FRE_FR_R04_2008_749,ANSWER,Q75,8,NSP (Spontané),False
+750,EVS_FRE_FR_R04_2008_750,ANSWER,Q75,9,SR (Spontané),False
+751,EVS_FRE_FR_R04_2008_751,INTRO,v264,,[Q75.,False
+752,EVS_FRE_FR_R04_2008_752,INTRO,v264,,"S'il y avait demain une élection nationale, pouvez-vous me dire si vous voteriez :]",False
+753,EVS_FRE_FR_R04_2008_753,INSTRUCTION,v264,,MONTRER CARTE 75A,False
+754,EVS_FRE_FR_R04_2008_754,REQUEST,v264,,Pour quel parti voteriez-vous ?,False
+755,EVS_FRE_FR_R04_2008_755,ANSWER,v264,1,A.,False
+756,EVS_FRE_FR_R04_2008_756,ANSWER,v264,1,"Extrême gauche (LCR, LO, PT)",False
+757,EVS_FRE_FR_R04_2008_757,ANSWER,v264,2,B. Parti communiste (PCF),False
+758,EVS_FRE_FR_R04_2008_758,ANSWER,v264,3,C.,False
+759,EVS_FRE_FR_R04_2008_759,ANSWER,v264,3,Parti socialiste (PS),False
+760,EVS_FRE_FR_R04_2008_760,ANSWER,v264,4,D.,False
+761,EVS_FRE_FR_R04_2008_761,ANSWER,v264,4,"Autres partis de gauche (PRG, MRC)",False
+762,EVS_FRE_FR_R04_2008_762,ANSWER,v264,5,E. Les verts,False
+763,EVS_FRE_FR_R04_2008_763,ANSWER,v264,6,F.,False
+764,EVS_FRE_FR_R04_2008_764,ANSWER,v264,6,Autres écologistes,False
+765,EVS_FRE_FR_R04_2008_765,ANSWER,v264,7,G. Modem (Mouvement Démocrate),False
+766,EVS_FRE_FR_R04_2008_766,ANSWER,v264,8,H.,False
+767,EVS_FRE_FR_R04_2008_767,ANSWER,v264,8,Nouveau Centre,False
+768,EVS_FRE_FR_R04_2008_768,ANSWER,v264,9,I.,False
+769,EVS_FRE_FR_R04_2008_769,ANSWER,v264,9,"Chasse, pêche, nature et tradition (CPNT)",False
+770,EVS_FRE_FR_R04_2008_770,ANSWER,v264,10,J.,False
+771,EVS_FRE_FR_R04_2008_771,ANSWER,v264,10,Union pour un mouvement populaire (UMP),False
+772,EVS_FRE_FR_R04_2008_772,ANSWER,v264,11,K. Mouvement pour la France (MPF),False
+773,EVS_FRE_FR_R04_2008_773,ANSWER,v264,12,L.,False
+774,EVS_FRE_FR_R04_2008_774,ANSWER,v264,12,"Extrême droite (Front national, MNR)",False
+775,EVS_FRE_FR_R04_2008_775,ANSWER,v264,13,M.,False
+776,EVS_FRE_FR_R04_2008_776,ANSWER,v264,13,Je mettrais un bulletin blanc,False
+777,EVS_FRE_FR_R04_2008_777,ANSWER,v264,14,N.,False
+778,EVS_FRE_FR_R04_2008_778,ANSWER,v264,14,Autre (Lequel?),False
+779,EVS_FRE_FR_R04_2008_779,ANSWER,v264,77,Non concerné,False
+780,EVS_FRE_FR_R04_2008_780,ANSWER,v264,88,"NSP (Spontané, ne rien suggérer)",False
+781,EVS_FRE_FR_R04_2008_781,ANSWER,v264,99,"SR (Spontané, ne rien suggérer)",False
+782,EVS_FRE_FR_R04_2008_782,INTRO,v265,,[Q75.,False
+783,EVS_FRE_FR_R04_2008_783,INTRO,v265,,"S'il y avait demain une élection nationale, pouvez-vous me dire si vous voteriez :]",False
+784,EVS_FRE_FR_R04_2008_784,INSTRUCTION,v265,,MONTRER CARTE 75B,False
+785,EVS_FRE_FR_R04_2008_785,REQUEST,v265,,"Mais si malgré tout vous votiez, pour quel parti voteriez-vous ?",False
+786,EVS_FRE_FR_R04_2008_786,ANSWER,v265,1,A.,False
+787,EVS_FRE_FR_R04_2008_787,ANSWER,v265,1,"Extrême gauche (LCR, LO, PT)",False
+788,EVS_FRE_FR_R04_2008_788,ANSWER,v265,2,B. Parti communiste (PCF),False
+789,EVS_FRE_FR_R04_2008_789,ANSWER,v265,3,C.,False
+790,EVS_FRE_FR_R04_2008_790,ANSWER,v265,3,Parti socialiste (PS),False
+791,EVS_FRE_FR_R04_2008_791,ANSWER,v265,4,D.,False
+792,EVS_FRE_FR_R04_2008_792,ANSWER,v265,4,"Autres partis de gauche (PRG, MRC)",False
+793,EVS_FRE_FR_R04_2008_793,ANSWER,v265,5,E. Les verts,False
+794,EVS_FRE_FR_R04_2008_794,ANSWER,v265,6,F.,False
+795,EVS_FRE_FR_R04_2008_795,ANSWER,v265,6,Autres écologistes,False
+796,EVS_FRE_FR_R04_2008_796,ANSWER,v265,7,G. Modem (Mouvement Démocrate),False
+797,EVS_FRE_FR_R04_2008_797,ANSWER,v265,8,H.,False
+798,EVS_FRE_FR_R04_2008_798,ANSWER,v265,8,Nouveau Centre,False
+799,EVS_FRE_FR_R04_2008_799,ANSWER,v265,9,I.,False
+800,EVS_FRE_FR_R04_2008_800,ANSWER,v265,9,"Chasse, pêche, nature et tradition (CPNT)",False
+801,EVS_FRE_FR_R04_2008_801,ANSWER,v265,10,J.,False
+802,EVS_FRE_FR_R04_2008_802,ANSWER,v265,10,Union pour un mouvement populaire (UMP),False
+803,EVS_FRE_FR_R04_2008_803,ANSWER,v265,11,K. Mouvement pour la France (MPF),False
+804,EVS_FRE_FR_R04_2008_804,ANSWER,v265,12,L.,False
+805,EVS_FRE_FR_R04_2008_805,ANSWER,v265,12,"Extrême droite (Front national, MNR)",False
+806,EVS_FRE_FR_R04_2008_806,ANSWER,v265,13,M.,False
+807,EVS_FRE_FR_R04_2008_807,ANSWER,v265,13,Je mettrais un bulletin blanc,False
+808,EVS_FRE_FR_R04_2008_808,ANSWER,v265,14,N.,False
+809,EVS_FRE_FR_R04_2008_809,ANSWER,v265,14,Autre (Lequel?),False
+810,EVS_FRE_FR_R04_2008_810,ANSWER,v265,77,Non concerné,False
+811,EVS_FRE_FR_R04_2008_811,ANSWER,v265,88,NSP (Spontané),False
+812,EVS_FRE_FR_R04_2008_812,ANSWER,v265,99,SR (Spontané),False
+813,EVS_FRE_FR_R04_2008_813,INTRO,Q76,,DEMANDER À TOUS,False
+814,EVS_FRE_FR_R04_2008_814,INSTRUCTION,Q76,,MONTRER CARTE 76 – UNE SEULE REPONSE,False
+815,EVS_FRE_FR_R04_2008_815,REQUEST,Q76,,Nous allons maintenant parler des gens qui viennent de pays moins développés pour travailler ici.,False
+816,EVS_FRE_FR_R04_2008_816,REQUEST,Q76,,Qu'est-ce que le gouvernement devrait faire selon vous ?,False
+817,EVS_FRE_FR_R04_2008_817,ANSWER,Q76,1,A.,False
+818,EVS_FRE_FR_R04_2008_818,ANSWER,Q76,1,Laisser venir toute personne qui le désire,False
+819,EVS_FRE_FR_R04_2008_819,ANSWER,Q76,2,B. Laisser venir les gens tant qu'il y a du travail disponible,False
+820,EVS_FRE_FR_R04_2008_820,ANSWER,Q76,3,C.,False
+821,EVS_FRE_FR_R04_2008_821,ANSWER,Q76,3,Mettre des limites strictes au nombre d'étrangers pouvant venir ici,False
+822,EVS_FRE_FR_R04_2008_822,ANSWER,Q76,4,D.,False
+823,EVS_FRE_FR_R04_2008_823,ANSWER,Q76,4,Interdire aux gens des autres pays de venir ici,False
+824,EVS_FRE_FR_R04_2008_824,ANSWER,Q76,8,NSP (Spontané),False
+825,EVS_FRE_FR_R04_2008_825,ANSWER,Q76,9,S.R.,False
+826,EVS_FRE_FR_R04_2008_826,ANSWER,Q76,9,(Spontané),False
+827,EVS_FRE_FR_R04_2008_827,INSTRUCTION,Q77,,MONTRER CARTE 77 – UNE SEULE REPONSE,False
+828,EVS_FRE_FR_R04_2008_828,REQUEST,Q77,,On voit tous les jours dans les journaux des exemples de terrorisme.,False
+829,EVS_FRE_FR_R04_2008_829,REQUEST,Q77,,"La plupart des gens sont en principe contre, mais il y a tout de même des nuances.",False
+830,EVS_FRE_FR_R04_2008_830,REQUEST,Q77,,Avec laquelle de ces deux opinions êtes-vous plutôt d'accord ?,False
+831,EVS_FRE_FR_R04_2008_831,ANSWER,Q77,1,A.,False
+832,EVS_FRE_FR_R04_2008_832,ANSWER,Q77,1,Il peut y avoir des circonstances où le terrorisme se justifie,False
+833,EVS_FRE_FR_R04_2008_833,ANSWER,Q77,2,"B. Le terrorisme, quels qu'en soient les motifs, est toujours condamnable",False
+834,EVS_FRE_FR_R04_2008_834,ANSWER,Q77,3,"Ni l'un, ni l'autre (Spontané, ne rien suggérer)",False
+835,EVS_FRE_FR_R04_2008_835,ANSWER,Q77,8,"NSP (Spontané, ne rien suggérer)",False
+836,EVS_FRE_FR_R04_2008_836,ANSWER,Q77,9,"SR (Spontané, ne rien suggérer)",False
+837,EVS_FRE_FR_R04_2008_837,INSTRUCTION,Q78A,,MONTRER CARTE 78,False
+838,EVS_FRE_FR_R04_2008_838,REQUEST,Q78A,,Voici différentes phrases.,False
+839,EVS_FRE_FR_R04_2008_839,REQUEST,Q78A,,"Personnellement, où vous situez-vous sur ces échelles ?",False
+840,EVS_FRE_FR_R04_2008_840,INSTRUCTION,Q78A,,EXPLIQUER LENTEMENT L'ECHELLE DE REPONSE,False
+841,EVS_FRE_FR_R04_2008_841,INSTRUCTION,Q78A,,CITER LA LETTRE AVANT D'ENREGISTRER LA REPONSE,False
+842,EVS_FRE_FR_R04_2008_842,ANSWER,Q78A,1,Les immigrés prennent le travail des gens nés dans le pays,False
+843,EVS_FRE_FR_R04_2008_843,ANSWER,Q78A,10,Les immigrés ne prennent pas le travail des gens nés dans le pays,False
+844,EVS_FRE_FR_R04_2008_844,ANSWER,Q78A,88,NSP,False
+845,EVS_FRE_FR_R04_2008_845,ANSWER,Q78A,99,SR,False
+846,EVS_FRE_FR_R04_2008_846,INSTRUCTION,Q78B,,MONTRER CARTE 78,False
+847,EVS_FRE_FR_R04_2008_847,REQUEST,Q78B,,Voici différentes phrases.,False
+848,EVS_FRE_FR_R04_2008_848,REQUEST,Q78B,,"Personnellement, où vous situez-vous sur ces échelles ?",False
+849,EVS_FRE_FR_R04_2008_849,INSTRUCTION,Q78B,,EXPLIQUER LENTEMENT L'ECHELLE DE REPONSE,False
+850,EVS_FRE_FR_R04_2008_850,INSTRUCTION,Q78B,,CITER LA LETTRE AVANT D'ENREGISTRER LA REPONSE,False
+851,EVS_FRE_FR_R04_2008_851,ANSWER,Q78B,1,La culture d'un pays est menacée par les immigrés,False
+852,EVS_FRE_FR_R04_2008_852,ANSWER,Q78B,10,La culture d'un pays n'est pas menacée par les immigrés,False
+853,EVS_FRE_FR_R04_2008_853,ANSWER,Q78B,88,NSP,False
+854,EVS_FRE_FR_R04_2008_854,ANSWER,Q78B,99,SR,False
+855,EVS_FRE_FR_R04_2008_855,INSTRUCTION,Q78C,,MONTRER CARTE 78,False
+856,EVS_FRE_FR_R04_2008_856,REQUEST,Q78C,,Voici différentes phrases.,False
+857,EVS_FRE_FR_R04_2008_857,REQUEST,Q78C,,"Personnellement, où vous situez-vous sur ces échelles ?",False
+858,EVS_FRE_FR_R04_2008_858,INSTRUCTION,Q78C,,EXPLIQUER LENTEMENT L'ECHELLE DE REPONSE,False
+859,EVS_FRE_FR_R04_2008_859,INSTRUCTION,Q78C,,CITER LA LETTRE AVANT D'ENREGISTRER LA REPONSE,False
+860,EVS_FRE_FR_R04_2008_860,ANSWER,Q78C,1,Les immigrés accentuent les problèmes de criminalité,False
+861,EVS_FRE_FR_R04_2008_861,ANSWER,Q78C,10,Les immigrés n'accentuent pas les problèmes de criminalité,False
+862,EVS_FRE_FR_R04_2008_862,ANSWER,Q78C,88,NSP,False
+863,EVS_FRE_FR_R04_2008_863,ANSWER,Q78C,99,SR,False
+864,EVS_FRE_FR_R04_2008_864,INSTRUCTION,Q78D,,MONTRER CARTE 78,False
+865,EVS_FRE_FR_R04_2008_865,REQUEST,Q78D,,Voici différentes phrases.,False
+866,EVS_FRE_FR_R04_2008_866,REQUEST,Q78D,,"Personnellement, où vous situez-vous sur ces échelles ?",False
+867,EVS_FRE_FR_R04_2008_867,INSTRUCTION,Q78D,,EXPLIQUER LENTEMENT L'ECHELLE DE REPONSE,False
+868,EVS_FRE_FR_R04_2008_868,INSTRUCTION,Q78D,,CITER LA LETTRE AVANT D'ENREGISTRER LA REPONSE,False
+869,EVS_FRE_FR_R04_2008_869,ANSWER,Q78D,1,Les immigrés sont une charge pour la sécurité sociale d'un pays,False
+870,EVS_FRE_FR_R04_2008_870,ANSWER,Q78D,10,Les immigrés ne sont pas une charge pour la sécurité sociale d'un pays,False
+871,EVS_FRE_FR_R04_2008_871,ANSWER,Q78D,88,NSP,False
+872,EVS_FRE_FR_R04_2008_872,ANSWER,Q78D,99,SR,False
+873,EVS_FRE_FR_R04_2008_873,INSTRUCTION,Q78E,,MONTRER CARTE 78,False
+874,EVS_FRE_FR_R04_2008_874,REQUEST,Q78E,,Voici différentes phrases.,False
+875,EVS_FRE_FR_R04_2008_875,REQUEST,Q78E,,"Personnellement, où vous situez-vous sur ces échelles ?",False
+876,EVS_FRE_FR_R04_2008_876,INSTRUCTION,Q78E,,EXPLIQUER LENTEMENT L'ECHELLE DE REPONSE,False
+877,EVS_FRE_FR_R04_2008_877,INSTRUCTION,Q78E,,CITER LA LETTRE AVANT D'ENREGISTRER LA REPONSE,False
+878,EVS_FRE_FR_R04_2008_878,ANSWER,Q78E,1,"A l'avenir, le nombre d'immigrés sera une menace pour la société",False
+879,EVS_FRE_FR_R04_2008_879,ANSWER,Q78E,10,Le nombre d'immigrés ne sera pas une menace pour la société à l'avenir,False
+880,EVS_FRE_FR_R04_2008_880,ANSWER,Q78E,88,NSP,False
+881,EVS_FRE_FR_R04_2008_881,ANSWER,Q78E,99,SR,False
+882,EVS_FRE_FR_R04_2008_882,INSTRUCTION,Q78F,,MONTRER CARTE 78,False
+883,EVS_FRE_FR_R04_2008_883,REQUEST,Q78F,,Voici différentes phrases.,False
+884,EVS_FRE_FR_R04_2008_884,REQUEST,Q78F,,"Personnellement, où vous situez-vous sur ces échelles ?",False
+885,EVS_FRE_FR_R04_2008_885,INSTRUCTION,Q78F,,EXPLIQUER LENTEMENT L'ECHELLE DE REPONSE,False
+886,EVS_FRE_FR_R04_2008_886,INSTRUCTION,Q78F,,CITER LA LETTRE AVANT D'ENREGISTRER LA REPONSE,False
+887,EVS_FRE_FR_R04_2008_887,ANSWER,Q78F,1,"Pour le bien de la société, il vaut mieux que les immigrés conservent leurs propres coutumes et traditions",False
+888,EVS_FRE_FR_R04_2008_888,ANSWER,Q78F,10,"Pour le bien de la société, il vaut mieux que les immigrés ne conservent pas leurs propres coutumes et traditions mais adoptent celles du pays",False
+889,EVS_FRE_FR_R04_2008_889,ANSWER,Q78F,88,NSP,False
+890,EVS_FRE_FR_R04_2008_890,ANSWER,Q78F,99,SR,False
+891,EVS_FRE_FR_R04_2008_891,INSTRUCTION,Q79,,MONTRER CARTE 79,False
+892,EVS_FRE_FR_R04_2008_892,REQUEST,Q79,,Etes-vous d'accord ou pas d'accord avec les affirmations suivantes sur les immigrés vivant dans notre pays ?,False
+893,EVS_FRE_FR_R04_2008_893,REQUEST,Q79.A,,"A cause du nombre d'immigrés en France, je me sens parfois comme un étranger",False
+894,EVS_FRE_FR_R04_2008_894,ANSWER,Q79,1,Tout à fait d'accord,False
+895,EVS_FRE_FR_R04_2008_895,ANSWER,Q79,2,Plutôt d'accord,False
+896,EVS_FRE_FR_R04_2008_896,ANSWER,Q79,3,Ni d'accord ni pas d'accord,False
+897,EVS_FRE_FR_R04_2008_897,ANSWER,Q79,4,Plutôt pas d'accord,False
+898,EVS_FRE_FR_R04_2008_898,ANSWER,Q79,5,Pas du tout d'accord,False
+899,EVS_FRE_FR_R04_2008_899,ANSWER,Q79,8,NSP,False
+900,EVS_FRE_FR_R04_2008_900,ANSWER,Q79,9,SR,False
+901,EVS_FRE_FR_R04_2008_901,INSTRUCTION,Q80,,MONTRER CARTE 80,False
+902,EVS_FRE_FR_R04_2008_902,REQUEST,Q80,,"Certaines personnes estiment que pour être vraiment Français, il est important de posséder certaines des caractéristiques suivantes.",False
+903,EVS_FRE_FR_R04_2008_903,REQUEST,Q80,,"Pour d'autres, cela n'est pas important.",False
+904,EVS_FRE_FR_R04_2008_904,REQUEST,Q80,,"A votre avis, pour être vraiment Français, est-il important...",False
+905,EVS_FRE_FR_R04_2008_905,REQUEST,Q80.A,,... d'être né en France,False
+906,EVS_FRE_FR_R04_2008_906,ANSWER,Q80,1,Très important,False
+907,EVS_FRE_FR_R04_2008_907,ANSWER,Q80,2,Assez important,False
+908,EVS_FRE_FR_R04_2008_908,ANSWER,Q80,3,Pas très important,False
+909,EVS_FRE_FR_R04_2008_909,ANSWER,Q80,4,Pas important du tout,False
+910,EVS_FRE_FR_R04_2008_910,ANSWER,Q80,8,NSP,False
+911,EVS_FRE_FR_R04_2008_911,ANSWER,Q80,9,SR,False
+912,EVS_FRE_FR_R04_2008_912,INSTRUCTION,Q81,,MONTRER CARTE 81,False
+913,EVS_FRE_FR_R04_2008_913,REQUEST,Q81,,"Tous les combien suivez-vous l'actualité politique à la télévision, ou à la radio ou dans le  journal ?",False
+914,EVS_FRE_FR_R04_2008_914,ANSWER,Q81,1,Tous les jours,False
+915,EVS_FRE_FR_R04_2008_915,ANSWER,Q81,2,Plusieurs fois par semaine,False
+916,EVS_FRE_FR_R04_2008_916,ANSWER,Q81,3,Une ou deux fois par semaine,False
+917,EVS_FRE_FR_R04_2008_917,ANSWER,Q81,4,Moins souvent,False
+918,EVS_FRE_FR_R04_2008_918,ANSWER,Q81,5,Jamais,False
+919,EVS_FRE_FR_R04_2008_919,ANSWER,Q81,8,NSP (Spontané),False
+920,EVS_FRE_FR_R04_2008_920,ANSWER,Q81,9,S.R.,False
+921,EVS_FRE_FR_R04_2008_921,ANSWER,Q81,9,(Spontané),False
+922,EVS_FRE_FR_R04_2008_922,INSTRUCTION,Q82,,MONTRER CARTE 82,False
+923,EVS_FRE_FR_R04_2008_923,REQUEST,Q82,,Dans quelle mesure êtes-vous d'accord ou pas avec les phrases suivantes ?,False
+924,EVS_FRE_FR_R04_2008_924,REQUEST,Q82.A,,"Si quelqu'un a une information qui peut aider à ce que justice soit faite, il doit la donner aux autorités",False
+925,EVS_FRE_FR_R04_2008_925,ANSWER,Q82,1,Tout à fait d'accord,False
+926,EVS_FRE_FR_R04_2008_926,ANSWER,Q82,2,Plutôt d'accord,False
+927,EVS_FRE_FR_R04_2008_927,ANSWER,Q82,3,Ni d'accord ni pas d'accord,False
+928,EVS_FRE_FR_R04_2008_928,ANSWER,Q82,4,Plutôt pas d'accord,False
+929,EVS_FRE_FR_R04_2008_929,ANSWER,Q82,5,Pas du tout d'accord,False
+930,EVS_FRE_FR_R04_2008_930,ANSWER,Q82,8,NSP,False
+931,EVS_FRE_FR_R04_2008_931,ANSWER,Q82,9,SR,False
+932,EVS_FRE_FR_R04_2008_932,INSTRUCTION,Q83,,MONTRER CARTE 83,False
+933,EVS_FRE_FR_R04_2008_933,REQUEST,Q83,,Dans quelle mesure vous sentez-vous concerné par les conditions de vie :,False
+934,EVS_FRE_FR_R04_2008_934,REQUEST,Q83.A,,des membres de votre famille proche,False
+935,EVS_FRE_FR_R04_2008_935,ANSWER,Q83,1,Beaucoup,False
+936,EVS_FRE_FR_R04_2008_936,ANSWER,Q83,2,Assez,False
+937,EVS_FRE_FR_R04_2008_937,ANSWER,Q83,3,Dans une certaine mesure,False
+938,EVS_FRE_FR_R04_2008_938,ANSWER,Q83,4,Pas tellement,False
+939,EVS_FRE_FR_R04_2008_939,ANSWER,Q83,5,Pas du tout,False
+940,EVS_FRE_FR_R04_2008_940,ANSWER,Q83,8,NSP,False
+941,EVS_FRE_FR_R04_2008_941,ANSWER,Q83,9,SR,False
+942,EVS_FRE_FR_R04_2008_942,INSTRUCTION,Q84,,MONTRER CARTE 84,False
+943,EVS_FRE_FR_R04_2008_943,REQUEST,Q84,,Dans quelle mesure vous sentez-vous concerné par les conditions de vie :,False
+944,EVS_FRE_FR_R04_2008_944,REQUEST,Q84.A,,Des personnes âgées en France,False
+945,EVS_FRE_FR_R04_2008_945,ANSWER,Q84,1,Beaucoup,False
+946,EVS_FRE_FR_R04_2008_946,ANSWER,Q84,2,Assez,False
+947,EVS_FRE_FR_R04_2008_947,ANSWER,Q84,3,Dans une certaine mesure,False
+948,EVS_FRE_FR_R04_2008_948,ANSWER,Q84,4,Pas tellement,False
+949,EVS_FRE_FR_R04_2008_949,ANSWER,Q84,5,Pas du tout,False
+950,EVS_FRE_FR_R04_2008_950,ANSWER,Q84,8,NSP,False
+951,EVS_FRE_FR_R04_2008_951,ANSWER,Q84,9,SR,False
+952,EVS_FRE_FR_R04_2008_952,INSTRUCTION,Q85,,MONTRER CARTE 85,False
+953,EVS_FRE_FR_R04_2008_953,REQUEST,Q85,,Ja vais maintenant vous lire des affirmations au sujet de l'environnement.,False
+954,EVS_FRE_FR_R04_2008_954,REQUEST,Q85,,"Pour chacune d'entre elles, veuillez me dire si vous êtes tout à fait d'accord, d'accord, pas d'accord ou pas du tout d'accord",False
+955,EVS_FRE_FR_R04_2008_955,REQUEST,Q85.A,,Je donnerais une partie de mes revenus si j'étais sûr que l'argent soit utilisé pour éviter la pollution de l'environnement,False
+956,EVS_FRE_FR_R04_2008_956,ANSWER,Q85,1,Tout à fait d'acord,False
+957,EVS_FRE_FR_R04_2008_957,ANSWER,Q85,2,D'accord,False
+958,EVS_FRE_FR_R04_2008_958,ANSWER,Q85,3,Pas d'accord,False
+959,EVS_FRE_FR_R04_2008_959,ANSWER,Q85,4,Pas du tout d'accord,False
+960,EVS_FRE_FR_R04_2008_960,ANSWER,Q85,8,NSP,False
+961,EVS_FRE_FR_R04_2008_961,ANSWER,Q85,9,SR,False
+962,EVS_FRE_FR_R04_2008_962,INSTRUCTION,Q85.1_FR,,Montrer carte 85.1,False
+963,EVS_FRE_FR_R04_2008_963,REQUEST,Q85.1_FR,,Voici ceux afffirmations que l'on entend parfois.,False
+964,EVS_FRE_FR_R04_2008_964,REQUEST,Q85.1_FR,,"Pour chacune d'elles, êtes-vous tout à fait d'accord, assez d'accord, peu d'accord ou pas d'accord du tout ?",False
+965,EVS_FRE_FR_R04_2008_965,REQUEST,FR01,,"Pour que l'économie marche bien, il faut que les entreprises fassent des profits",False
+966,EVS_FRE_FR_R04_2008_966,ANSWER,Q85.1_FR,1,Tout à fait d'acord,False
+967,EVS_FRE_FR_R04_2008_967,ANSWER,Q85.1_FR,2,Assez D'accord,False
+968,EVS_FRE_FR_R04_2008_968,ANSWER,Q85.1_FR,3,Peu d'accord,False
+969,EVS_FRE_FR_R04_2008_969,ANSWER,Q85.1_FR,4,Pas d'accord du tout,False
+970,EVS_FRE_FR_R04_2008_970,ANSWER,Q85.1_FR,8,NSP,False
+971,EVS_FRE_FR_R04_2008_971,ANSWER,Q85.1_FR,9,SR,False
+972,EVS_FRE_FR_R04_2008_972,INSTRUCTION,Q85.2_FR,,MONTRER CARTE 85.2,False
+973,EVS_FRE_FR_R04_2008_973,REQUEST,Q85.2_FR,,"Sur cette échelle de 1 à 10, dites-moi où se situe votre opinion ?",False
+974,EVS_FRE_FR_R04_2008_974,INSTRUCTION,Q85.2_FR,,EXPLIQUER LENTEMENT L'ECHELLE DE REPONSE,False
+975,EVS_FRE_FR_R04_2008_975,ANSWER,Q85.2_FR,1,La concurrence favorise le consommateur et la croissance économique,False
+976,EVS_FRE_FR_R04_2008_976,ANSWER,Q85.2_FR,10,La concurrence conduit au gaspillage et provoque de graves problèmes sociaux,False
+977,EVS_FRE_FR_R04_2008_977,ANSWER,Q85.2_FR,88,NSP,False
+978,EVS_FRE_FR_R04_2008_978,ANSWER,Q85.2_FR,99,SR,False
+979,EVS_FRE_FR_R04_2008_979,INSTRUCTION,Q85.3_FR,,MONTRER CARTE 85.3 – LIRE,False
+980,EVS_FRE_FR_R04_2008_980,REQUEST,Q85.3_FR,,Vous arrive-t-il personnellement d'être sérieusement inquiet pour votre sécurité ?,False
+981,EVS_FRE_FR_R04_2008_981,ANSWER,Q85.3_FR,1,Souvent,False
+982,EVS_FRE_FR_R04_2008_982,ANSWER,Q85.3_FR,2,De temps en temps,False
+983,EVS_FRE_FR_R04_2008_983,ANSWER,Q85.3_FR,3,Rarement,False
+984,EVS_FRE_FR_R04_2008_984,ANSWER,Q85.3_FR,4,Jamais,False
+985,EVS_FRE_FR_R04_2008_985,ANSWER,Q85.3_FR,8,NSP (Spontané),False
+986,EVS_FRE_FR_R04_2008_986,ANSWER,Q85.3_FR,9,SR (Spontané),False
+987,EVS_FRE_FR_R04_2008_987,INTRO,v302,,RENSEIGNEMENTS SIGNALETIQUES,False
+988,EVS_FRE_FR_R04_2008_988,INTRO,v302,,DEMANDER À TOUS,False
+989,EVS_FRE_FR_R04_2008_989,REQUEST,v302,,Sexe de la personne interrogée,False
+990,EVS_FRE_FR_R04_2008_990,ANSWER,v302,1,Homme,False
+991,EVS_FRE_FR_R04_2008_991,ANSWER,v302,2,Femme,False
+992,EVS_FRE_FR_R04_2008_992,REQUEST,Q87,,Quelle est votre année de naissance ?,False
+993,EVS_FRE_FR_R04_2008_993,REQUEST,Q87,,19 ..,False
+994,EVS_FRE_FR_R04_2008_994,ANSWER,Q87,98,NSP (Spontané),False
+995,EVS_FRE_FR_R04_2008_995,ANSWER,Q87,99,SR (Spontané),False
+996,EVS_FRE_FR_R04_2008_996,REQUEST,Q88,,Avez-vous la nationalité française ?,False
+997,EVS_FRE_FR_R04_2008_997,INSTRUCTION,Q88,,A UNE CARTE D'IDENTITE OU UN PASSEPORT FRANCAIS,False
+998,EVS_FRE_FR_R04_2008_998,ANSWER,Q88,1,Oui,False
+999,EVS_FRE_FR_R04_2008_999,ANSWER,Q88,2,Non,False
+1000,EVS_FRE_FR_R04_2008_1000,ANSWER,Q88,8,"NSP (Spontané, ne rien suggérer)",False
+1001,EVS_FRE_FR_R04_2008_1001,ANSWER,Q88,9,"SR (Spontané, ne rien suggérer)",False
+1002,EVS_FRE_FR_R04_2008_1002,REQUEST,Q89,,Quelle est votre nationalité ?,False
+1003,EVS_FRE_FR_R04_2008_1003,INSTRUCTION,Q89,,SELON LA CARTE D'IDENTITE OU LE PASSEPORT.,False
+1004,EVS_FRE_FR_R04_2008_1004,INSTRUCTION,Q89,,POUR UNE RECHERCHE RAPIDE DU PAYS : TAPER LES PREMIERES LETTRES DU PAYS.,False
+1005,EVS_FRE_FR_R04_2008_1005,INSTRUCTION,Q89,,"Si le pays ne figure pas dans la liste vous avez un poste ""Autre"" à votre disposition.",False
+1006,EVS_FRE_FR_R04_2008_1006,INSTRUCTION,Q89,,INSTRUCTION DE CODAGE QUESTION OUVERTE À CODER SELON ISO 3166-1 (À 2 CHIFFRES),False
+1007,EVS_FRE_FR_R04_2008_1007,ANSWER,Q89,77,Non concerné,False
+1008,EVS_FRE_FR_R04_2008_1008,ANSWER,Q89,88,"NSP (Spontané, ne rien suggérer)",False
+1009,EVS_FRE_FR_R04_2008_1009,ANSWER,Q89,99,"SR (Spontané, ne rien suggérer)",False
+1010,EVS_FRE_FR_R04_2008_1010,REQUEST,Q90,,Etes-vous né en France ?,False
+1011,EVS_FRE_FR_R04_2008_1011,ANSWER,Q90,1,Oui,False
+1012,EVS_FRE_FR_R04_2008_1012,ANSWER,Q90,2,Non,False
+1013,EVS_FRE_FR_R04_2008_1013,ANSWER,Q90,8,"NSP (Spontané, ne rien suggérer)",False
+1014,EVS_FRE_FR_R04_2008_1014,ANSWER,Q90,9,"SR (Spontané, ne rien suggérer)",False
+1015,EVS_FRE_FR_R04_2008_1015,REQUEST,Q91,,Dans quel pays êtes-vous né ?,False
+1016,EVS_FRE_FR_R04_2008_1016,INSTRUCTION,Q91,,SELON LA CARTE D'IDENTITE OU LE PASSEPORT,False
+1017,EVS_FRE_FR_R04_2008_1017,INSTRUCTION,Q91,,POUR UNE RECHERCHE RAPIDE DU PAYS : TAPER LES PREMIERES LETTRES DU PAYS.,False
+1018,EVS_FRE_FR_R04_2008_1018,INSTRUCTION,Q91,,"Si le pays ne figure pas dans la liste vous avez un poste ""Autre"" à votre disposition.",False
+1019,EVS_FRE_FR_R04_2008_1019,INSTRUCTION,Q91,,INSTRUCTION DE CODAGE QUESTION OUVERTE À CODER SELON ISO 3166-1 (À 2 CHIFFRES),False
+1020,EVS_FRE_FR_R04_2008_1020,ANSWER,Q91,77,Non concerné,False
+1021,EVS_FRE_FR_R04_2008_1021,ANSWER,Q91,88,"NSP (Spontané, ne rien suggérer)",False
+1022,EVS_FRE_FR_R04_2008_1022,ANSWER,Q91,99,"SR (Spontané, ne rien suggérer)",False
+1023,EVS_FRE_FR_R04_2008_1023,REQUEST,Q92,,Dites-moi en quelle année vous êtes venu vivre en France pour la première fois ?,False
+1024,EVS_FRE_FR_R04_2008_1024,INSTRUCTION,Q92,,ECRIRE EN CLAIR L'ANNEE SUR 4 POSITIONS,False
+1025,EVS_FRE_FR_R04_2008_1025,ANSWER,Q92,7777,Non concerné,False
+1026,EVS_FRE_FR_R04_2008_1026,ANSWER,Q92,8888,NSP (Spontané),False
+1027,EVS_FRE_FR_R04_2008_1027,ANSWER,Q92,9999,SR (Spontané),False
+1028,EVS_FRE_FR_R04_2008_1028,INTRO,Q93,,A TOUS,False
+1029,EVS_FRE_FR_R04_2008_1029,REQUEST,Q93,,Votre père est-il né en France ?,False
+1030,EVS_FRE_FR_R04_2008_1030,ANSWER,Q93,1,Oui,False
+1031,EVS_FRE_FR_R04_2008_1031,ANSWER,Q93,2,Non,False
+1032,EVS_FRE_FR_R04_2008_1032,ANSWER,Q93,8,"NSP (Spontané, ne rien suggérer)",False
+1033,EVS_FRE_FR_R04_2008_1033,ANSWER,Q93,9,"SR (Spontané, ne rien suggérer)",False
+1034,EVS_FRE_FR_R04_2008_1034,REQUEST,Q94,,Dans quel pays votre père est-il né ?,False
+1035,EVS_FRE_FR_R04_2008_1035,INSTRUCTION,Q94,,SELON LA CARTE D'IDENTITE OU LE PASSEPORT.,False
+1036,EVS_FRE_FR_R04_2008_1036,INSTRUCTION,Q94,,POUR UNE RECHERCHE RAPIDE DU PAYS : TAPER LES PREMIERES LETTRES DU PAYS.,False
+1037,EVS_FRE_FR_R04_2008_1037,INSTRUCTION,Q94,,"Si le pays ne figure pas dans la liste vous avez un poste ""Autre"" à votre disposition.",False
+1038,EVS_FRE_FR_R04_2008_1038,INSTRUCTION,Q94,,INSTRUCTION DE CODAGE QUESTION OUVERTE À CODER SELON ISO 3166-1 (À 2 CHIFFRES),False
+1039,EVS_FRE_FR_R04_2008_1039,ANSWER,Q94,77,Non concerné,False
+1040,EVS_FRE_FR_R04_2008_1040,ANSWER,Q94,88,"NSP (Spontané, ne rien suggérer)",False
+1041,EVS_FRE_FR_R04_2008_1041,ANSWER,Q94,99,"SR (Spontané, ne rien suggérer)",False
+1042,EVS_FRE_FR_R04_2008_1042,REQUEST,Q95,,Votre mère est-elle née en France ?,False
+1043,EVS_FRE_FR_R04_2008_1043,ANSWER,Q95,1,Oui,False
+1044,EVS_FRE_FR_R04_2008_1044,ANSWER,Q95,2,Non,False
+1045,EVS_FRE_FR_R04_2008_1045,ANSWER,Q95,8,"NSP (Spontané, ne rien suggérer)",False
+1046,EVS_FRE_FR_R04_2008_1046,ANSWER,Q95,9,"SR (Spontané, ne rien suggérer)",False
+1047,EVS_FRE_FR_R04_2008_1047,REQUEST,Q96,,Dans quel pays votre mère est-elle née ?,False
+1048,EVS_FRE_FR_R04_2008_1048,INSTRUCTION,Q96,,SELON LA CARTE D'IDENTITE OU LE PASSEPORT,False
+1049,EVS_FRE_FR_R04_2008_1049,INSTRUCTION,Q96,,POUR UNE RECHERCHE RAPIDE DU PAYS : TAPER LES PREMIERES LETTRES DU PAYS.,False
+1050,EVS_FRE_FR_R04_2008_1050,INSTRUCTION,Q96,,"Si le pays ne figure pas dans la liste vous avez un poste ""Autre"" à votre disposition.",False
+1051,EVS_FRE_FR_R04_2008_1051,INSTRUCTION,Q96,,INSTRUCTION DE CODAGE QUESTION OUVERTE À CODER SELON ISO 3166-1 (À 2 CHIFFRES),False
+1052,EVS_FRE_FR_R04_2008_1052,ANSWER,Q96,77,Non concerné,False
+1053,EVS_FRE_FR_R04_2008_1053,ANSWER,Q96,88,"NSP (Spontané, ne rien suggérer)",False
+1054,EVS_FRE_FR_R04_2008_1054,ANSWER,Q96,99,"SR (Spontané, ne rien suggérer)",False
+1055,EVS_FRE_FR_R04_2008_1055,REQUEST,Q97,,Quel est votre statut matrimonial actuel ?,False
+1056,EVS_FRE_FR_R04_2008_1056,INSTRUCTION,Q97,,"Si l'interviewé est célibataire coder ""n'a jamais été marié ou pacsé auparavant""",False
+1057,EVS_FRE_FR_R04_2008_1057,INSTRUCTION,Q97,,"Si l'interviewé vit en union libre coder ""n'a jamais été marié ou pacsé auparavant""",False
+1058,EVS_FRE_FR_R04_2008_1058,ANSWER,Q97,1,Marié(e),False
+1059,EVS_FRE_FR_R04_2008_1059,ANSWER,Q97,2,Pacsé(e),False
+1060,EVS_FRE_FR_R04_2008_1060,ANSWER,Q97,3,Veuf(ve),False
+1061,EVS_FRE_FR_R04_2008_1061,ANSWER,Q97,4,Divorcé(e),False
+1062,EVS_FRE_FR_R04_2008_1062,ANSWER,Q97,5,Séparé(e),False
+1063,EVS_FRE_FR_R04_2008_1063,ANSWER,Q97,6,N'a jamais été marié(e) ou pacsé(e) auparavant,False
+1064,EVS_FRE_FR_R04_2008_1064,ANSWER,Q97,8,NSP (Spontané),False
+1065,EVS_FRE_FR_R04_2008_1065,ANSWER,Q97,9,S.R.,False
+1066,EVS_FRE_FR_R04_2008_1066,ANSWER,Q97,9,(Spontané),False
+1067,EVS_FRE_FR_R04_2008_1067,REQUEST,Q98,,Avez-vous vécu ensemble avec votre conjoint avant votre mariage / avant votre Pacs ?,False
+1068,EVS_FRE_FR_R04_2008_1068,ANSWER,Q98,1,Oui,False
+1069,EVS_FRE_FR_R04_2008_1069,ANSWER,Q98,2,Non,False
+1070,EVS_FRE_FR_R04_2008_1070,ANSWER,Q98,7,Non concerné,False
+1071,EVS_FRE_FR_R04_2008_1071,ANSWER,Q98,8,"NSP (Spontané, ne rien suggérer)",False
+1072,EVS_FRE_FR_R04_2008_1072,ANSWER,Q98,9,"SR (Spontané, ne rien suggérer)",False
+1073,EVS_FRE_FR_R04_2008_1073,INTRO,Q99,,SI MARIÉ OU PACSÉS (Q97 = 1 OU 2) ALLER À Q101,False
+1074,EVS_FRE_FR_R04_2008_1074,REQUEST,Q99,,Vivez-vous avec un conjoint ou un compagnon ?,False
+1075,EVS_FRE_FR_R04_2008_1075,ANSWER,Q99,1,Oui,False
+1076,EVS_FRE_FR_R04_2008_1076,ANSWER,Q99,2,Non,False
+1077,EVS_FRE_FR_R04_2008_1077,ANSWER,Q99,7,Non concerné,False
+1078,EVS_FRE_FR_R04_2008_1078,ANSWER,Q99,8,"NSP (Spontané, ne rien suggérer)",False
+1079,EVS_FRE_FR_R04_2008_1079,ANSWER,Q99,9,"SR (Spontané, ne rien suggérer)",False
+1080,EVS_FRE_FR_R04_2008_1080,REQUEST,Q100,,Avez-vous une relation stable ?,False
+1081,EVS_FRE_FR_R04_2008_1081,ANSWER,Q100,1,Oui,False
+1082,EVS_FRE_FR_R04_2008_1082,ANSWER,Q100,2,Non,False
+1083,EVS_FRE_FR_R04_2008_1083,ANSWER,Q100,7,Non concerné,False
+1084,EVS_FRE_FR_R04_2008_1084,ANSWER,Q100,8,"NSP (Spontané, ne rien suggérer)",False
+1085,EVS_FRE_FR_R04_2008_1085,ANSWER,Q100,9,"SR (Spontané, ne rien suggérer)",False
+1086,EVS_FRE_FR_R04_2008_1086,INSTRUCTION,Q101.a,,"POUR LES PERSONNES DIVORCÉES, SÉPARÉES OU VEUVES (Q97 = 3,4 OU 5) ALLER À Q105 / AUX PERSONNES MARIÉES OU PACSÉES (CODE 1 OU 2 EN Q97), DEMANDER :",False
+1087,EVS_FRE_FR_R04_2008_1087,REQUEST,Q101.a,,"Avant votre relation actuelle, étiez-vous marié(e) ou viviez-vous en couple ?",False
+1088,EVS_FRE_FR_R04_2008_1088,INSTRUCTION,Q101.a,,"A CEUX QUI N'ONT JAMAIS ÉTÉ MARIÉS OU PACSÉS (CODE 6 EN Q97), DEMANDER :",False
+1089,EVS_FRE_FR_R04_2008_1089,REQUEST,Q101.a,,Avez-vous vécu avant avec un partenaire ou un compagnon?,False
+1090,EVS_FRE_FR_R04_2008_1090,ANSWER,Q101.a,1,Oui,False
+1091,EVS_FRE_FR_R04_2008_1091,ANSWER,Q101.a,2,Non,False
+1092,EVS_FRE_FR_R04_2008_1092,ANSWER,Q101.a,7,Non concerné,False
+1093,EVS_FRE_FR_R04_2008_1093,ANSWER,Q101.a,8,"NSP (Spontané, ne rien suggérer)",False
+1094,EVS_FRE_FR_R04_2008_1094,ANSWER,Q101.a,9,"SR (Spontané, ne rien suggérer)",False
+1095,EVS_FRE_FR_R04_2008_1095,INSTRUCTION,Q102,,POUR CEUX QUI N'ONT JAMAIS ÉTÉ MARIÉS OU PACSÉS (Q97 = 6) ALLER À Q104; DEMANDER À CEUX QUI SONT MARIÉS OU PACSÉS (Q97= 1 OU 2),False
+1096,EVS_FRE_FR_R04_2008_1096,REQUEST,Q102,,Etiez-vous marié(e) ou pacsé(e) avec cette personne ?,False
+1097,EVS_FRE_FR_R04_2008_1097,ANSWER,Q102,1,"Oui, marié",False
+1098,EVS_FRE_FR_R04_2008_1098,ANSWER,Q102,2,"Oui, pacsé",False
+1099,EVS_FRE_FR_R04_2008_1099,ANSWER,Q102,3,Non,False
+1100,EVS_FRE_FR_R04_2008_1100,ANSWER,Q102,7,Non concerné,False
+1101,EVS_FRE_FR_R04_2008_1101,ANSWER,Q102,8,"NSP (Spontané, ne rien suggérer)",False
+1102,EVS_FRE_FR_R04_2008_1102,ANSWER,Q102,9,"SR (Spontané, ne rien suggérer)",False
+1103,EVS_FRE_FR_R04_2008_1103,REQUEST,Q103,,Avez-vous vécu en couple avec ce partenaire avant votre mariage / avant votre Pacs ?,False
+1104,EVS_FRE_FR_R04_2008_1104,ANSWER,Q103,1,Oui,False
+1105,EVS_FRE_FR_R04_2008_1105,ANSWER,Q103,2,Non,False
+1106,EVS_FRE_FR_R04_2008_1106,ANSWER,Q103,7,Non concerné,False
+1107,EVS_FRE_FR_R04_2008_1107,ANSWER,Q103,8,"NSP (Spontané, ne rien suggérer)",False
+1108,EVS_FRE_FR_R04_2008_1108,ANSWER,Q103,9,"SR (Spontané, ne rien suggérer)",False
+1109,EVS_FRE_FR_R04_2008_1109,REQUEST,Q104,,Est-ce que cette relation s'est terminée parce que vous vous êtes séparé ou parce que votre conjoint/compagnon est mort ?,False
+1110,EVS_FRE_FR_R04_2008_1110,ANSWER,Q104,1,On s'est séparé,False
+1111,EVS_FRE_FR_R04_2008_1111,ANSWER,Q104,2,Mon conjoint/compagnon est mort,False
+1112,EVS_FRE_FR_R04_2008_1112,ANSWER,Q104,7,Non concerné,False
+1113,EVS_FRE_FR_R04_2008_1113,ANSWER,Q104,8,NSP (Spontané),False
+1114,EVS_FRE_FR_R04_2008_1114,ANSWER,Q104,9,"SR (Spontané, ne rien suggérer)",False
+1115,EVS_FRE_FR_R04_2008_1115,INTRO,Q105,,A tous,False
+1116,EVS_FRE_FR_R04_2008_1116,REQUEST,Q105,,[Au cours de l'ensemble de votre vie] Combien d'enfants avez-vous eus ?,False
+1117,EVS_FRE_FR_R04_2008_1117,INSTRUCTION,Q105,,PRECISER SI NECESSAIRE : Y COMPRIS LES EVENTUELS ENFANTS DECEDES.,False
+1118,EVS_FRE_FR_R04_2008_1118,ANSWER,Q105,0,Aucun enfant,False
+1119,EVS_FRE_FR_R04_2008_1119,ANSWER,Q105,99,"SR (Spontané, ne rien suggérer)",False
+1120,EVS_FRE_FR_R04_2008_1120,REQUEST,Q106,,En quelle année est né votre premier enfant ?,False
+1121,EVS_FRE_FR_R04_2008_1121,REQUEST,Q106,,"Veuillez penser aussi, le cas échéant, aux enfants décédés ?",False
+1122,EVS_FRE_FR_R04_2008_1122,INSTRUCTION,Q106,,ECRIRE EN CLAIR L'ANNEE SUR 4 POSITIONS,False
+1123,EVS_FRE_FR_R04_2008_1123,ANSWER,Q106,7777,Ne s'applique pas,False
+1124,EVS_FRE_FR_R04_2008_1124,ANSWER,Q106,9999,"Sans réponse (Spontané, ne rien suggérer)",False
+1125,EVS_FRE_FR_R04_2008_1125,INSTRUCTION,Q107a,,MONTRER CARTE 107,False
+1126,EVS_FRE_FR_R04_2008_1126,REQUEST,Q107a,,"En dehors de vous, qui vit dans votre foyer ?",False
+1127,EVS_FRE_FR_R04_2008_1127,REQUEST,Q107a,,Nous entendons par vivre dans le foyer les personnes qui passent en moyenne au moins quatre nuits par semaine dans cette maison.,False
+1128,EVS_FRE_FR_R04_2008_1128,REQUEST,Q107a,,"Les enfants comprennent ceux du conjoint, les enfants d'adoption et les enfants en placement d'accueil.",False
+1129,EVS_FRE_FR_R04_2008_1129,REQUEST,Q107a,,Sélectionnez sur la carte les catégories de personnes concernées.,False
+1130,EVS_FRE_FR_R04_2008_1130,REQUEST,v323,,"Partenaire, mari ou femme",False
+1131,EVS_FRE_FR_R04_2008_1131,ANSWER,Q107a,1,Oui,False
+1132,EVS_FRE_FR_R04_2008_1132,ANSWER,Q107a,2,Non,False
+1133,EVS_FRE_FR_R04_2008_1133,ANSWER,Q107a,8,NSP,False
+1134,EVS_FRE_FR_R04_2008_1134,ANSWER,Q107a,9,SR,False
+1135,EVS_FRE_FR_R04_2008_1135,INSTRUCTION,Q107b,,Montrer carte 107,False
+1136,EVS_FRE_FR_R04_2008_1136,REQUEST,Q107b,,Dites-moi chaque fois combien de personne de cette catégorie vivent dans votre foyer ?,False
+1137,EVS_FRE_FR_R04_2008_1137,REQUEST,Q107b,,Quantité,False
+1138,EVS_FRE_FR_R04_2008_1138,REQUEST,v324b,,Enfants,False
+1139,EVS_FRE_FR_R04_2008_1139,ANSWER,Q107b,77,Non concerné,False
+1140,EVS_FRE_FR_R04_2008_1140,ANSWER,Q107b,88,NSP,False
+1141,EVS_FRE_FR_R04_2008_1141,ANSWER,Q107b,99,SR,False
+1142,EVS_FRE_FR_R04_2008_1142,REQUEST,Q108a,,Avez-vous déjà connu les événements suivants ?,False
+1143,EVS_FRE_FR_R04_2008_1143,REQUEST,v329a,,La mort d'un de vos enfants,False
+1144,EVS_FRE_FR_R04_2008_1144,ANSWER,Q108a,1,Oui,False
+1145,EVS_FRE_FR_R04_2008_1145,ANSWER,Q108a,2,Non,False
+1146,EVS_FRE_FR_R04_2008_1146,ANSWER,Q108a,8,NSP,False
+1147,EVS_FRE_FR_R04_2008_1147,ANSWER,Q108a,9,SR,False
+1148,EVS_FRE_FR_R04_2008_1148,REQUEST,Q108b,,Quel âge aviez-vous lorsque cet événement s'est produit pour la première fois ?,False
+1149,EVS_FRE_FR_R04_2008_1149,REQUEST,Q108b,,Quantité,False
+1150,EVS_FRE_FR_R04_2008_1150,REQUEST,v329b,,La mort d'un de vos enfants,False
+1151,EVS_FRE_FR_R04_2008_1151,ANSWER,Q108b,97,Non concerné,False
+1152,EVS_FRE_FR_R04_2008_1152,ANSWER,Q108b,98,NSP,False
+1153,EVS_FRE_FR_R04_2008_1153,ANSWER,Q108b,99,SR,False
+1154,EVS_FRE_FR_R04_2008_1154,REQUEST,Q109a,,Avez-vous terminé vos études ?,False
+1155,EVS_FRE_FR_R04_2008_1155,REQUEST,Q109a,,"A quel âge avez-vous terminé vos études à temps complet, que ce soit à l'école, au collège, au lycée, à l'université, mais sans compter les années d'apprentissage ?",False
+1156,EVS_FRE_FR_R04_2008_1156,INSTRUCTION,Q109a,,"Si la personne interrogée est encore en cours d'étude, demander:",False
+1157,EVS_FRE_FR_R04_2008_1157,REQUEST,Q109a,,A quel âge comptez-vous terminer vos études?,False
+1158,EVS_FRE_FR_R04_2008_1158,INSTRUCTION,Q109a,,NOTEZ L'AGE DE FIN D'ETUDES EN CLAIR,False
+1159,EVS_FRE_FR_R04_2008_1159,ANSWER,Q109a,0,N'a pas suivi d'études,False
+1160,EVS_FRE_FR_R04_2008_1160,ANSWER,Q109a,88,NSP (Spontané),False
+1161,EVS_FRE_FR_R04_2008_1161,ANSWER,Q109a,99,SR (Spontané),False
+1162,EVS_FRE_FR_R04_2008_1162,INSTRUCTION,Q110,,MONTRER CARTE 110 - UNE SEULE REPONSE - ATTENTION pour les items de H à L l'interviewé doit avoir eu le diplôme.,False
+1163,EVS_FRE_FR_R04_2008_1163,REQUEST,Q110,,Quel est le plus haut niveau que vous ayez atteint dans vos études?,False
+1164,EVS_FRE_FR_R04_2008_1164,ANSWER,Q110,1,A. Ecole primaire sans certificat d'études,False
+1165,EVS_FRE_FR_R04_2008_1165,ANSWER,Q110,2,B. Ecole primaire avec certificat d'études,False
+1166,EVS_FRE_FR_R04_2008_1166,ANSWER,Q110,3,C.,False
+1167,EVS_FRE_FR_R04_2008_1167,ANSWER,Q110,3,Collège d'enseignement général (de la 6ème à la 3ème),False
+1168,EVS_FRE_FR_R04_2008_1168,ANSWER,Q110,4,D.,False
+1169,EVS_FRE_FR_R04_2008_1169,ANSWER,Q110,4,Collège avec enseignement professionnel (de la 6ème à la 3ème),False
+1170,EVS_FRE_FR_R04_2008_1170,ANSWER,Q110,5,"E. Enseignements conduisant au CAP, BEP, BP",False
+1171,EVS_FRE_FR_R04_2008_1171,ANSWER,Q110,6,F.,False
+1172,EVS_FRE_FR_R04_2008_1172,ANSWER,Q110,6,Enseignement général des lycées (de la seconde à la terminale),False
+1173,EVS_FRE_FR_R04_2008_1173,ANSWER,Q110,7,G. Enseignement professionnel des lycées (de la seconde à la terminale),False
+1174,EVS_FRE_FR_R04_2008_1174,ANSWER,Q110,8,H.,False
+1175,EVS_FRE_FR_R04_2008_1175,ANSWER,Q110,8,DUT et techniciens supérieurs (bac + 2),False
+1176,EVS_FRE_FR_R04_2008_1176,ANSWER,Q110,9,I. Deug et classes préparatoires aux grandes écoles,False
+1177,EVS_FRE_FR_R04_2008_1177,ANSWER,Q110,10,J.,False
+1178,EVS_FRE_FR_R04_2008_1178,ANSWER,Q110,10,"Licence, Maîtrise, écoles d'ingénieur, écoles de commerce",False
+1179,EVS_FRE_FR_R04_2008_1179,ANSWER,Q110,11,"K. Master, DESS, DEA (bac + 5)",False
+1180,EVS_FRE_FR_R04_2008_1180,ANSWER,Q110,12,L.,False
+1181,EVS_FRE_FR_R04_2008_1181,ANSWER,Q110,12,Doctorat (bac + 8),False
+1182,EVS_FRE_FR_R04_2008_1182,ANSWER,Q110,77,Non concerné,False
+1183,EVS_FRE_FR_R04_2008_1183,ANSWER,Q110,88,NSP (Spontané),False
+1184,EVS_FRE_FR_R04_2008_1184,ANSWER,Q110,99,SR (Spontané),False
+1185,EVS_FRE_FR_R04_2008_1185,INSTRUCTION,Q111,,Montrer carte 111,False
+1186,EVS_FRE_FR_R04_2008_1186,REQUEST,Q111,,Avez-vous actuellement une activité professionnelle rémunérée ?,False
+1187,EVS_FRE_FR_R04_2008_1187,INSTRUCTION,Q111,,"Si le répondant est un étudiant qui travaille, il doit choisir par lui-même s'il se définit comme étudiant ou comme ayant une activité professionnelle.",False
+1188,EVS_FRE_FR_R04_2008_1188,INSTRUCTION,Q111,,Si le répondant a plusieurs activités n'interroger que sur l'activité principale.,False
+1189,EVS_FRE_FR_R04_2008_1189,INSTRUCTION,Q111,,Coder Handicapé si le répondant ne travaille pas à cause de son handicap.,False
+1190,EVS_FRE_FR_R04_2008_1190,ANSWER,Q111,1,30 heures ou plus par semaine,False
+1191,EVS_FRE_FR_R04_2008_1191,ANSWER,Q111,2,Moins de 30 heures par semaine,False
+1192,EVS_FRE_FR_R04_2008_1192,ANSWER,Q111,3,A son compte,False
+1193,EVS_FRE_FR_R04_2008_1193,ANSWER,Q111,4,"Retraité, pensionné",False
+1194,EVS_FRE_FR_R04_2008_1194,ANSWER,Q111,5,Au foyer sans autre activité,False
+1195,EVS_FRE_FR_R04_2008_1195,ANSWER,Q111,6,Etudiant ou élève,False
+1196,EVS_FRE_FR_R04_2008_1196,ANSWER,Q111,7,Chômeur,False
+1197,EVS_FRE_FR_R04_2008_1197,ANSWER,Q111,8,Handicapé,False
+1198,EVS_FRE_FR_R04_2008_1198,ANSWER,Q111,9,Autre,False
+1199,EVS_FRE_FR_R04_2008_1199,ANSWER,Q111,88,NSP,False
+1200,EVS_FRE_FR_R04_2008_1200,ANSWER,Q111,99,"Sans réponse (Spontané, ne rien suggérer)",False
+1201,EVS_FRE_FR_R04_2008_1201,REQUEST,Q111a,,"Dans votre DERNIER emploi (à temps plein ou partiel), étiez-vous salarié ou à votre compte ?",False
+1202,EVS_FRE_FR_R04_2008_1202,ANSWER,Q111a,1,Salarié,False
+1203,EVS_FRE_FR_R04_2008_1203,ANSWER,Q111a,2,A votre compte,False
+1204,EVS_FRE_FR_R04_2008_1204,ANSWER,Q111a,7,N'a jamais eu d'emploi rémunéré,False
+1205,EVS_FRE_FR_R04_2008_1205,ANSWER,Q111a,8,NSP,False
+1206,EVS_FRE_FR_R04_2008_1206,ANSWER,Q111a,9,"SR (Spontané, ne rien suggérer)",False
+1207,EVS_FRE_FR_R04_2008_1207,INSTRUCTION,Q112,,"SI LE REPONDANT A UNE ACTIVITE REMUNEREE AUJOURD'HUI, Q111=1 A 3, DEMANDER :",False
+1208,EVS_FRE_FR_R04_2008_1208,REQUEST,Q112,,Quelle est précisément votre profession ?,False
+1209,EVS_FRE_FR_R04_2008_1209,INSTRUCTION,Q112,,"SI LE REPONDANT A EU UNE ACTIVITE REMUNEREE AUPARAVANT, Q111A=1 OU 2?",False
+1210,EVS_FRE_FR_R04_2008_1210,INSTRUCTION,Q112,,DEMANDER :,False
+1211,EVS_FRE_FR_R04_2008_1211,REQUEST,Q112,,Quelle était précisément votre profession ?,False
+1212,EVS_FRE_FR_R04_2008_1212,INSTRUCTION,Q112,,NOTER MOT A MOT - UN MAXIMUM DE DETAILS,False
+1213,EVS_FRE_FR_R04_2008_1213,INSTRUCTION,Q112,,"RELANCER SUR LE STATUT, LA QUALIFICATION ET LE SECTEUR D'ACTIVITE.",False
+1214,EVS_FRE_FR_R04_2008_1214,INSTRUCTION,Q112,,"SI LE REPONDANT A/A EU PLUSIEURS ACTIVITES, L'INTERROGER SUR SON ACTIVITE PRINCIPALE !",False
+1215,EVS_FRE_FR_R04_2008_1215,INSTRUCTION,Q112,,ECRIRE AVEC LE PLUS DE DETAIL POSSIBLE,False
+1216,EVS_FRE_FR_R04_2008_1216,REQUEST,Q112,,"Dans votre emploi principal, quel genre de travail faites-vous (faisiez-vous) ?",False
+1217,EVS_FRE_FR_R04_2008_1217,INSTRUCTION,Q112,,NOTER MOT A MOT - UN MAXIMUM DE DETAILS,False
+1218,EVS_FRE_FR_R04_2008_1218,INSTRUCTION,Q112,,CODAGE ISCO88 À 4 CHIFFRES SUR LA BASE DE Q112 ET Q112A,False
+1219,EVS_FRE_FR_R04_2008_1219,INTRO,Q113,,A DEMANDER AUX PERSONNES À LEUR COMPTE ACTUELLEMENT (Q111=3) OU DANS,False
+1220,EVS_FRE_FR_R04_2008_1220,REQUEST,Q113,,Combien d'employés avez-vous ou aviez-vous ?,False
+1221,EVS_FRE_FR_R04_2008_1221,ANSWER,Q113,1,Aucun,False
+1222,EVS_FRE_FR_R04_2008_1222,ANSWER,Q113,2,1 à 9,False
+1223,EVS_FRE_FR_R04_2008_1223,ANSWER,Q113,3,10 à 24,False
+1224,EVS_FRE_FR_R04_2008_1224,ANSWER,Q113,4,25 ou plus,False
+1225,EVS_FRE_FR_R04_2008_1225,ANSWER,Q113,7,Non concerné,False
+1226,EVS_FRE_FR_R04_2008_1226,ANSWER,Q113,8,NSP (Spontané),False
+1227,EVS_FRE_FR_R04_2008_1227,ANSWER,Q113,9,SR (Spontané),False
+1228,EVS_FRE_FR_R04_2008_1228,INTRO,Q114,,A CEUX QUI SONT SALARIES ACTUELLEMENT (Q111=1 OU 2) OU QUI N'ETAIENT PAS,False
+1229,EVS_FRE_FR_R04_2008_1229,REQUEST,Q114,,Encadrez-vous/avez-vous encadré une ou plusieurs personnes qui soient directement sous vos ordres ?,False
+1230,EVS_FRE_FR_R04_2008_1230,ANSWER,Q114,1,Oui,False
+1231,EVS_FRE_FR_R04_2008_1231,ANSWER,Q114,2,Non,False
+1232,EVS_FRE_FR_R04_2008_1232,ANSWER,Q114,7,Non concerné,False
+1233,EVS_FRE_FR_R04_2008_1233,ANSWER,Q114,8,NSP (Spontané),False
+1234,EVS_FRE_FR_R04_2008_1234,ANSWER,Q114,9,SR (Spontané),False
+1235,EVS_FRE_FR_R04_2008_1235,REQUEST,Q114a,,Combien de personnes encadrez-vous ou encadriez-vous ?,False
+1236,EVS_FRE_FR_R04_2008_1236,ANSWER,Q114a,1,1 à 9,False
+1237,EVS_FRE_FR_R04_2008_1237,ANSWER,Q114a,2,10 à 24,False
+1238,EVS_FRE_FR_R04_2008_1238,ANSWER,Q114a,3,25 ou plus,False
+1239,EVS_FRE_FR_R04_2008_1239,ANSWER,Q114a,7,Ne s'applique pas,False
+1240,EVS_FRE_FR_R04_2008_1240,ANSWER,Q114a,8,NSP (Spontané),False
+1241,EVS_FRE_FR_R04_2008_1241,ANSWER,Q114a,9,SR (Spontané),False
+1242,EVS_FRE_FR_R04_2008_1242,INTRO,Q115,,AUX RÉPONDANTS QUI VIVENT AVEC UN CONJOINT OU UN PARTENAIRE (Q97=1 OU 2,False
+1243,EVS_FRE_FR_R04_2008_1243,REQUEST,Q115,,Votre conjoint ou compagnon est-il né en France ?,False
+1244,EVS_FRE_FR_R04_2008_1244,ANSWER,Q115,1,Oui,False
+1245,EVS_FRE_FR_R04_2008_1245,ANSWER,Q115,2,Non,False
+1246,EVS_FRE_FR_R04_2008_1246,ANSWER,Q115,7,Non concerné,False
+1247,EVS_FRE_FR_R04_2008_1247,ANSWER,Q115,8,NSP (Spontané),False
+1248,EVS_FRE_FR_R04_2008_1248,ANSWER,Q115,9,SR (Spontané),False
+1249,EVS_FRE_FR_R04_2008_1249,REQUEST,Q115a,,Dans quel pays est-il né (e)?,False
+1250,EVS_FRE_FR_R04_2008_1250,INSTRUCTION,Q115a,,SELON LA CARTE D'IDENTITE OU LE PASSEPORT,False
+1251,EVS_FRE_FR_R04_2008_1251,INSTRUCTION,Q115a,,POUR UNE RECHERCHE RAPIDE DU PAYS : TAPER LES PREMIERES LETTRES DU PAYS.,False
+1252,EVS_FRE_FR_R04_2008_1252,INSTRUCTION,Q115a,,"Si le pays ne figure pas dans la liste vous avez un poste ""Autre"" à votre disposition.",False
+1253,EVS_FRE_FR_R04_2008_1253,INSTRUCTION,Q115a,,INSTRUCTION DE CODAGE QUESTION OUVERTE À CODER SELON ISO 3166-1 (À 2 CHIFFRES),False
+1254,EVS_FRE_FR_R04_2008_1254,ANSWER,Q115a,77,Non concerné,False
+1255,EVS_FRE_FR_R04_2008_1255,ANSWER,Q115a,88,NSP (Spontané),False
+1256,EVS_FRE_FR_R04_2008_1256,ANSWER,Q115a,99,SR (Spontané),False
+1257,EVS_FRE_FR_R04_2008_1257,INSTRUCTION,Q116,,MONTRER CARTE 116 - UNE SEULE REPONSE,False
+1258,EVS_FRE_FR_R04_2008_1258,REQUEST,Q116,,Quel est le plus haut niveau que votre conjoint/compagnon ait atteint dans ses études ?,False
+1259,EVS_FRE_FR_R04_2008_1259,INSTRUCTION,Q116,,ATTENTION pour les items de H à L le conjoint doit avoir eu le diplôme.,False
+1260,EVS_FRE_FR_R04_2008_1260,ANSWER,Q116,1,A. Ecole primaire sans certificat d'études,False
+1261,EVS_FRE_FR_R04_2008_1261,ANSWER,Q116,2,B. Ecole primaire avec certificat d'études,False
+1262,EVS_FRE_FR_R04_2008_1262,ANSWER,Q116,3,C.,False
+1263,EVS_FRE_FR_R04_2008_1263,ANSWER,Q116,3,Collège d'enseignement général (de la 6ème à la 3ème),False
+1264,EVS_FRE_FR_R04_2008_1264,ANSWER,Q116,4,D.,False
+1265,EVS_FRE_FR_R04_2008_1265,ANSWER,Q116,4,Collège avec enseignement professionnel (de la 6ème à la 3ème),False
+1266,EVS_FRE_FR_R04_2008_1266,ANSWER,Q116,5,"E. Enseignements conduisant au CAP, BEP, BP",False
+1267,EVS_FRE_FR_R04_2008_1267,ANSWER,Q116,6,F.,False
+1268,EVS_FRE_FR_R04_2008_1268,ANSWER,Q116,6,Enseignement général des lycées (de la seconde à la terminale),False
+1269,EVS_FRE_FR_R04_2008_1269,ANSWER,Q116,7,G. Enseignement professionnel des lycées (de la seconde à la terminale),False
+1270,EVS_FRE_FR_R04_2008_1270,ANSWER,Q116,8,H.,False
+1271,EVS_FRE_FR_R04_2008_1271,ANSWER,Q116,8,DUT et techniciens supérieurs (bac + 2),False
+1272,EVS_FRE_FR_R04_2008_1272,ANSWER,Q116,9,I. Deug et classes préparatoires aux grandes écoles,False
+1273,EVS_FRE_FR_R04_2008_1273,ANSWER,Q116,10,J.,False
+1274,EVS_FRE_FR_R04_2008_1274,ANSWER,Q116,10,"Licence, Maîtrise, écoles d'ingénieur, écoles de commerce",False
+1275,EVS_FRE_FR_R04_2008_1275,ANSWER,Q116,11,"K. Master, DESS, DEA (bac + 5)",False
+1276,EVS_FRE_FR_R04_2008_1276,ANSWER,Q116,12,L.,False
+1277,EVS_FRE_FR_R04_2008_1277,ANSWER,Q116,12,Doctorat (bac + 8),False
+1278,EVS_FRE_FR_R04_2008_1278,ANSWER,Q116,77,Non concerné,False
+1279,EVS_FRE_FR_R04_2008_1279,ANSWER,Q116,88,NSP (Spontané),False
+1280,EVS_FRE_FR_R04_2008_1280,ANSWER,Q116,99,SR (Spontané),False
+1281,EVS_FRE_FR_R04_2008_1281,INSTRUCTION,Q117,,MONTRER CARTE 117,False
+1282,EVS_FRE_FR_R04_2008_1282,REQUEST,Q117,,Est-ce que votre conjoint/compagnon a actuellement une activité professionnelle rémunérée ?,False
+1283,EVS_FRE_FR_R04_2008_1283,REQUEST,Q117,,Veuillez choisir sur cette carte le statut qui correspond à votre conjoint/compagnon.,False
+1284,EVS_FRE_FR_R04_2008_1284,INSTRUCTION,Q117,,Si le conjoint du répondant a plusieurs activités n'interroger que sur l'activité principale.,False
+1285,EVS_FRE_FR_R04_2008_1285,INSTRUCTION,Q117,,Coder Handicapé si le conjoint du répondant ne travaille pas à cause de son handicap,False
+1286,EVS_FRE_FR_R04_2008_1286,ANSWER,Q117,1,30 heures ou plus par semaine,False
+1287,EVS_FRE_FR_R04_2008_1287,ANSWER,Q117,2,Moins de 30 heures par semaine,False
+1288,EVS_FRE_FR_R04_2008_1288,ANSWER,Q117,3,A son compte,False
+1289,EVS_FRE_FR_R04_2008_1289,ANSWER,Q117,4,"Retraité, pensionné",False
+1290,EVS_FRE_FR_R04_2008_1290,ANSWER,Q117,5,Au foyer sans autre activité,False
+1291,EVS_FRE_FR_R04_2008_1291,ANSWER,Q117,6,Etudiant ou élève,False
+1292,EVS_FRE_FR_R04_2008_1292,ANSWER,Q117,7,Chômeur,False
+1293,EVS_FRE_FR_R04_2008_1293,ANSWER,Q117,8,Handicapé,False
+1294,EVS_FRE_FR_R04_2008_1294,ANSWER,Q117,9,Autre,False
+1295,EVS_FRE_FR_R04_2008_1295,ANSWER,Q117,77,Non concerné,False
+1296,EVS_FRE_FR_R04_2008_1296,ANSWER,Q117,88,NSP (Spontané),False
+1297,EVS_FRE_FR_R04_2008_1297,ANSWER,Q117,99,SR (Spontané),False
+1298,EVS_FRE_FR_R04_2008_1298,REQUEST,Q117a,,"Dans son dernier emploi (à temps plein ou à temps partiel), était-il (elle) salarié ou à son compte ?",False
+1299,EVS_FRE_FR_R04_2008_1299,ANSWER,Q117a,1,Salarié,False
+1300,EVS_FRE_FR_R04_2008_1300,ANSWER,Q117a,2,A votre compte,False
+1301,EVS_FRE_FR_R04_2008_1301,ANSWER,Q117a,7,N'a jamais eu d'emploi rémunéré,False
+1302,EVS_FRE_FR_R04_2008_1302,ANSWER,Q117a,8,"NSP (Spontané, ne rien suggérer)",False
+1303,EVS_FRE_FR_R04_2008_1303,ANSWER,Q117a,9,"SR (Spontané, ne rien suggérer)",False
+1304,EVS_FRE_FR_R04_2008_1304,INSTRUCTION,Q118,,"SI LE PARTENAIRE A UN EMPLOI AUJOURD'HUI, Q117=1 A 3, DEMANDER :",False
+1305,EVS_FRE_FR_R04_2008_1305,REQUEST,Q118,,Quelle est PRECISEMENT sa profession ?,False
+1306,EVS_FRE_FR_R04_2008_1306,INSTRUCTION,Q118,,"SI LE PARTENAIRE AVAIT UN EMPLOI, Q117A = 1 OU 2, DEMANDER :",False
+1307,EVS_FRE_FR_R04_2008_1307,REQUEST,Q118,,Quelle était PRECISEMENT sa profession ?,False
+1308,EVS_FRE_FR_R04_2008_1308,INSTRUCTION,Q118,,NOTER MOT A MOT - UN MAXIMUM DE DETAILS,False
+1309,EVS_FRE_FR_R04_2008_1309,INSTRUCTION,Q118,,"RELANCER SUR LE STATUT, LA QUALIFICATION ET LE SECTEUR D'ACTIVITE.",False
+1310,EVS_FRE_FR_R04_2008_1310,INSTRUCTION,Q118,,"SI LE PARTENAIRE A/AVAIT PLUSIEURS ACTIVITES, INTERROGER SUR L'ACTIVITE PRINCIPALE !",False
+1311,EVS_FRE_FR_R04_2008_1311,INSTRUCTION,Q118,,ECRIRE AVEC LE PLUS DE DETAIL POSSIBLE!,False
+1312,EVS_FRE_FR_R04_2008_1312,REQUEST,Q118,,"Dans son emploi principal, quel genre de travail fait-il (elle) (faisait-il (elle)) ?",False
+1313,EVS_FRE_FR_R04_2008_1313,INSTRUCTION,Q118,,NOTER MOT A MOT - UN MAXIMUM DE DETAILS,False
+1314,EVS_FRE_FR_R04_2008_1314,INSTRUCTION,Q118,,CODAGE ISCO88 À 4 CHIFFRES SUR LA BASE DE 118 ET Q118A,False
+1315,EVS_FRE_FR_R04_2008_1315,INTRO,Q119,,SI LE CONJOINT/PARTENAIRE EST A SON COMPTE ACTUELLEMENT (Q117=3) OU,False
+1316,EVS_FRE_FR_R04_2008_1316,REQUEST,Q119,,"Si votre conjoint est / était à son compte, combien de personnes travaillent / travaillaient dans son entreprise ?",False
+1317,EVS_FRE_FR_R04_2008_1317,ANSWER,Q119,1,Aucun,False
+1318,EVS_FRE_FR_R04_2008_1318,ANSWER,Q119,2,1 à 9,False
+1319,EVS_FRE_FR_R04_2008_1319,ANSWER,Q119,3,10 à 24,False
+1320,EVS_FRE_FR_R04_2008_1320,ANSWER,Q119,4,25 ou plus,False
+1321,EVS_FRE_FR_R04_2008_1321,ANSWER,Q119,7,Non concerné,False
+1322,EVS_FRE_FR_R04_2008_1322,ANSWER,Q119,8,"NSP (Spontané, ne rien suggérer",False
+1323,EVS_FRE_FR_R04_2008_1323,ANSWER,Q119,9,"SR (Spontané, ne rien suggérer",False
+1324,EVS_FRE_FR_R04_2008_1324,INTRO,Q120,,"SI LE CONJOINT/PARTENAIRE ETAIT SALARIE (Q117=1 OU 2), OU SI LE CONJOINT",False
+1325,EVS_FRE_FR_R04_2008_1325,REQUEST,Q120,,Encadre-t-il ou encadrait-il une ou plusieurs personnes directement sous ses ordres ?,False
+1326,EVS_FRE_FR_R04_2008_1326,ANSWER,Q120,1,Oui,False
+1327,EVS_FRE_FR_R04_2008_1327,ANSWER,Q120,2,Non,False
+1328,EVS_FRE_FR_R04_2008_1328,ANSWER,Q120,7,Non concerné,False
+1329,EVS_FRE_FR_R04_2008_1329,ANSWER,Q120,8,NSP (Spontané),False
+1330,EVS_FRE_FR_R04_2008_1330,ANSWER,Q120,9,SR (Spontané),False
+1331,EVS_FRE_FR_R04_2008_1331,REQUEST,Q120a,,Combien d'employés encadre-t-il ou encadrait-il ?,False
+1332,EVS_FRE_FR_R04_2008_1332,ANSWER,Q120a,1,1 à 9,False
+1333,EVS_FRE_FR_R04_2008_1333,ANSWER,Q120a,2,10 à 24,False
+1334,EVS_FRE_FR_R04_2008_1334,ANSWER,Q120a,3,25 ou plus,False
+1335,EVS_FRE_FR_R04_2008_1335,ANSWER,Q120a,7,Non concerné,False
+1336,EVS_FRE_FR_R04_2008_1336,ANSWER,Q120a,8,[NSP],False
+1337,EVS_FRE_FR_R04_2008_1337,ANSWER,Q120a,9,[s.r],False
+1338,EVS_FRE_FR_R04_2008_1338,INTRO,Q121,,A TOUS,False
+1339,EVS_FRE_FR_R04_2008_1339,REQUEST,Q121,,"Au cours des cinq dernières années, avez-vous été au chômage pendant une période d'au moins trois mois ininterrompus ?",False
+1340,EVS_FRE_FR_R04_2008_1340,ANSWER,Q121,1,Oui,False
+1341,EVS_FRE_FR_R04_2008_1341,ANSWER,Q121,2,Non,False
+1342,EVS_FRE_FR_R04_2008_1342,ANSWER,Q121,8,"NSP (Spontané, ne rien suggérer)",False
+1343,EVS_FRE_FR_R04_2008_1343,ANSWER,Q121,9,"SR (Spontané, ne rien suggérer)",False
+1344,EVS_FRE_FR_R04_2008_1344,INTRO,Q122,,"UNIQUEMENT À CEUX VIVANT EN COUPLE (Q97 = 1 OU 2, OU Q99=1), SINON ALLER À Q123.",False
+1345,EVS_FRE_FR_R04_2008_1345,REQUEST,Q122,,"Et votre conjoint/compagnon, a-t-il été au chômage pendant une période d'au moins trois mois ininterrompus au cours des cinq dernières années ?",False
+1346,EVS_FRE_FR_R04_2008_1346,ANSWER,Q122,1,Oui,False
+1347,EVS_FRE_FR_R04_2008_1347,ANSWER,Q122,2,Non,False
+1348,EVS_FRE_FR_R04_2008_1348,ANSWER,Q122,7,Non concerné,False
+1349,EVS_FRE_FR_R04_2008_1349,ANSWER,Q122,8,"NSP (Spontané, ne rien suggérer)",False
+1350,EVS_FRE_FR_R04_2008_1350,ANSWER,Q122,9,"SR (Spontané, ne rien suggérer)",False
+1351,EVS_FRE_FR_R04_2008_1351,REQUEST,Q123,,"Au cours des cinq dernières années, avez-vous, à un moment ou un autre, été dépendant des aides sociales ?",False
+1352,EVS_FRE_FR_R04_2008_1352,REQUEST,Q123,,"Nous entendons par aide sociale les allocations de protection sociale mais cela n'inclut pas les allocations de chômage, les retraites et les allocations accordées pour handicap.",False
+1353,EVS_FRE_FR_R04_2008_1353,INSTRUCTION,Q123,,"Les aides sociales sont toutes les aides sociales SAUF les allocations de chômage, les retraites et les allocations accordées pour handicap.",False
+1354,EVS_FRE_FR_R04_2008_1354,ANSWER,Q123,1,Oui,False
+1355,EVS_FRE_FR_R04_2008_1355,ANSWER,Q123,2,Non,False
+1356,EVS_FRE_FR_R04_2008_1356,ANSWER,Q123,8,"NSP (Spontané, ne rien suggérer)",False
+1357,EVS_FRE_FR_R04_2008_1357,ANSWER,Q123,9,"SR (Spontané, ne rien suggérer)",False
+1358,EVS_FRE_FR_R04_2008_1358,INSTRUCTION,Q124,,"UNIQUEMENT À CEUX QUI VIVENT EN COUPLE (Q97=1 OU 2, OU Q99=1), SINON ALLER À Q125.",False
+1359,EVS_FRE_FR_R04_2008_1359,REQUEST,Q124,,"Et votre conjoint/compagnon, a-t-il été dépendant des aides sociales à un moment ou un autre au cours
+des cinq dernières années ?",False
+1360,EVS_FRE_FR_R04_2008_1360,INSTRUCTION,Q124,,"Les aides sociales sont toutes les aides sociales SAUF les allocations de chômage, les retraites et les allocations accordées pour handicap.",False
+1361,EVS_FRE_FR_R04_2008_1361,ANSWER,Q124,1,Oui,False
+1362,EVS_FRE_FR_R04_2008_1362,ANSWER,Q124,2,Non,False
+1363,EVS_FRE_FR_R04_2008_1363,ANSWER,Q124,7,Non concerné,False
+1364,EVS_FRE_FR_R04_2008_1364,ANSWER,Q124,8,"NSP (Spontané, ne rien suggérer)",False
+1365,EVS_FRE_FR_R04_2008_1365,ANSWER,Q124,9,"SR (Spontané, ne rien suggérer)",False
+1366,EVS_FRE_FR_R04_2008_1366,INTRO,Q125,,A tous,False
+1367,EVS_FRE_FR_R04_2008_1367,INSTRUCTION,Q125,,Montrer carte 125,False
+1368,EVS_FRE_FR_R04_2008_1368,REQUEST,Q125,,Nous désirons analyser les résultats de cette étude en fonction des revenus familiaux des personnes que nous avons interrogées.,False
+1369,EVS_FRE_FR_R04_2008_1369,REQUEST,Q125,,Voici une échelle de revenus annuels NETS.,False
+1370,EVS_FRE_FR_R04_2008_1370,REQUEST,Q125,,"Pouvez-vous me dire à quel niveau vous vous situez, en comptant toutes les rendtrées d'argent de votre foyer : salaires, allocations familiales, pensions, autres revenus... Quel est la lettre qui correspond à la situation de votre foyer ?",False
+1371,EVS_FRE_FR_R04_2008_1371,REQUEST,Q125,,Somme approximative par SEMAINE,False
+1372,EVS_FRE_FR_R04_2008_1372,ANSWER,Q125,1,A  Moins de 125 euros,False
+1373,EVS_FRE_FR_R04_2008_1373,ANSWER,Q125,2,B  De 125 euros à moins de 250 euros,False
+1374,EVS_FRE_FR_R04_2008_1374,ANSWER,Q125,3,C  De 250 euros à moins de 321.50 euros,False
+1375,EVS_FRE_FR_R04_2008_1375,ANSWER,Q125,4,D  De 321.50 euros à moins de 375 euros,False
+1376,EVS_FRE_FR_R04_2008_1376,ANSWER,Q125,5,E  De 375 euros à moins de 437.50 euros,False
+1377,EVS_FRE_FR_R04_2008_1377,ANSWER,Q125,6,F  De 437.50 euros à moins de 500 euros,False
+1378,EVS_FRE_FR_R04_2008_1378,ANSWER,Q125,7,G  De 500 euros à moins de 562.50 euros,False
+1379,EVS_FRE_FR_R04_2008_1379,ANSWER,Q125,8,H  De 562.50 euros à moins de 625 euros,False
+1380,EVS_FRE_FR_R04_2008_1380,ANSWER,Q125,9,I  De 625 euros à moins de 750 euros,False
+1381,EVS_FRE_FR_R04_2008_1381,ANSWER,Q125,10,J  De 750 euros à moins de 937.50 euros,False
+1382,EVS_FRE_FR_R04_2008_1382,ANSWER,Q125,11,K  De 937.50 euros à moins de 1 250 euros,False
+1383,EVS_FRE_FR_R04_2008_1383,ANSWER,Q125,12,L  De 1 250 euros à moins de 1 875 euros,False
+1384,EVS_FRE_FR_R04_2008_1384,ANSWER,Q125,13,M  De 1 875 euros à moins de 2 500 euros,False
+1385,EVS_FRE_FR_R04_2008_1385,ANSWER,Q125,14,N  2 500 euros et plus,False
+1386,EVS_FRE_FR_R04_2008_1386,INTRO,Q125,,A tous,False
+1387,EVS_FRE_FR_R04_2008_1387,INSTRUCTION,Q125,,Montrer carte 125,False
+1388,EVS_FRE_FR_R04_2008_1388,REQUEST,Q125,,Nous désirons analyser les résultats de cette étude en fonction des revenus familiaux des personnes que nous avons interrogées.,False
+1389,EVS_FRE_FR_R04_2008_1389,REQUEST,Q125,,Voici une échelle de revenus annuels NETS.,False
+1390,EVS_FRE_FR_R04_2008_1390,REQUEST,Q125,,"Pouvez-vous me dire à quel niveau vous vous situez, en comptant toutes les rendtrées d'argent de votre foyer : salaires, allocations familiales, pensions, autres revenus... Quel est la lettre qui correspond à la situation de votre foyer ?",False
+1391,EVS_FRE_FR_R04_2008_1391,REQUEST,Q125,,Somme approximative par MOIS,False
+1392,EVS_FRE_FR_R04_2008_1392,ANSWER,Q125,1,A  Moins de 500 euros,False
+1393,EVS_FRE_FR_R04_2008_1393,ANSWER,Q125,2,B  De 500 euros à moins de 1 000 euros,False
+1394,EVS_FRE_FR_R04_2008_1394,ANSWER,Q125,3,C  De 1 000 euros à moins de 1 250 euros,False
+1395,EVS_FRE_FR_R04_2008_1395,ANSWER,Q125,4,D  De 1 250 euros à moins de 1 500 euros,False
+1396,EVS_FRE_FR_R04_2008_1396,ANSWER,Q125,5,E  De 1 500 euros à moins de 1 750 euros,False
+1397,EVS_FRE_FR_R04_2008_1397,ANSWER,Q125,6,F  De 1 750 euros à moins de 2 000 euros,False
+1398,EVS_FRE_FR_R04_2008_1398,ANSWER,Q125,7,G  De 2 000 euros à moins de 2 250 euros,False
+1399,EVS_FRE_FR_R04_2008_1399,ANSWER,Q125,8,H  De 2 250 euros à moins de 2 500 euros,False
+1400,EVS_FRE_FR_R04_2008_1400,ANSWER,Q125,9,I  De 2 500 euros à moins de 3 000 euros,False
+1401,EVS_FRE_FR_R04_2008_1401,ANSWER,Q125,10,J  De 3 000 euros à moins de 3 750 euros,False
+1402,EVS_FRE_FR_R04_2008_1402,ANSWER,Q125,11,K  De 3 750 euros à moins de 5 000 euros,False
+1403,EVS_FRE_FR_R04_2008_1403,ANSWER,Q125,12,L  De 5 000 euros à moins de 7 500 euros,False
+1404,EVS_FRE_FR_R04_2008_1404,ANSWER,Q125,13,M  De 7 500 euros à moins de 10 000 euros,False
+1405,EVS_FRE_FR_R04_2008_1405,ANSWER,Q125,14,N  10 000 euros et plus,False
+1406,EVS_FRE_FR_R04_2008_1406,ANSWER,Q125,88,[NSP],False
+1407,EVS_FRE_FR_R04_2008_1407,ANSWER,Q125,99,[S.r],False
+1408,EVS_FRE_FR_R04_2008_1408,INTRO,Q125,,A tous,False
+1409,EVS_FRE_FR_R04_2008_1409,INSTRUCTION,Q125,,Montrer carte 125,False
+1410,EVS_FRE_FR_R04_2008_1410,REQUEST,Q125,,Nous désirons analyser les résultats de cette étude en fonction des revenus familiaux des personnes que nous avons interrogées.,False
+1411,EVS_FRE_FR_R04_2008_1411,REQUEST,Q125,,Voici une échelle de revenus annuels NETS.,False
+1412,EVS_FRE_FR_R04_2008_1412,REQUEST,Q125,,"Pouvez-vous me dire à quel niveau vous vous situez, en comptant toutes les rendtrées d'argent de votre foyer : salaires, allocations familiales, pensions, autres revenus... Quel est la lettre qui correspond à la situation de votre foyer ?",False
+1413,EVS_FRE_FR_R04_2008_1413,ANSWER,Q125,1,A  Moins de 6000 euros,False
+1414,EVS_FRE_FR_R04_2008_1414,ANSWER,Q125,2,B  De 6000 euros à moins de 12 000 euros,False
+1415,EVS_FRE_FR_R04_2008_1415,ANSWER,Q125,3,C  De 12 000 euros à moins de 15 000 euros,False
+1416,EVS_FRE_FR_R04_2008_1416,ANSWER,Q125,4,D  De 15 000 euros à moins de 18 000 euros,False
+1417,EVS_FRE_FR_R04_2008_1417,ANSWER,Q125,5,E  De 18 000 euros à moins de 21 000 euros,False
+1418,EVS_FRE_FR_R04_2008_1418,ANSWER,Q125,6,F  De 21 000 euros à moins de 24 000 euros,False
+1419,EVS_FRE_FR_R04_2008_1419,ANSWER,Q125,7,G  De 24 000 euros à moins de 27 000 euros,False
+1420,EVS_FRE_FR_R04_2008_1420,ANSWER,Q125,8,H  De 27 000 euros à moins de 30 000 euros,False
+1421,EVS_FRE_FR_R04_2008_1421,ANSWER,Q125,9,I  De 30 000 euros à moins de 36 000 euros,False
+1422,EVS_FRE_FR_R04_2008_1422,ANSWER,Q125,10,J  De 36 000 euros à moins de 45 000 euros,False
+1423,EVS_FRE_FR_R04_2008_1423,ANSWER,Q125,11,K  De 45 000 euros à moins de 60 000 euros,False
+1424,EVS_FRE_FR_R04_2008_1424,ANSWER,Q125,12,L  De 60 000 euros à moins de 90 000 euros,False
+1425,EVS_FRE_FR_R04_2008_1425,ANSWER,Q125,13,M  De 90 000 euros à moins de 120 000 euros,False
+1426,EVS_FRE_FR_R04_2008_1426,ANSWER,Q125,14,N  120 000 euros et plus,False
+1427,EVS_FRE_FR_R04_2008_1427,ANSWER,Q125,88,[NSP],False
+1428,EVS_FRE_FR_R04_2008_1428,ANSWER,Q125,99,[S.r],False
+1429,EVS_FRE_FR_R04_2008_1429,REQUEST,Q126,,"Quand vous aviez 14 ans, viviez-vous avec vos parents ?",False
+1430,EVS_FRE_FR_R04_2008_1430,INSTRUCTION,Q126,,REMPLACER PÈRE PAR MÈRE ET SON PAR SA DANS LES QUESTIONS 127 À 131 SI Q126=3,False
+1431,EVS_FRE_FR_R04_2008_1431,INSTRUCTION,Q126,,CITER,False
+1432,EVS_FRE_FR_R04_2008_1432,ANSWER,Q126,1,"Oui, avec les deux",False
+1433,EVS_FRE_FR_R04_2008_1433,ANSWER,Q126,2,Seulement avec mon père,False
+1434,EVS_FRE_FR_R04_2008_1434,ANSWER,Q126,3,Seulement avec ma mère,False
+1435,EVS_FRE_FR_R04_2008_1435,ANSWER,Q126,4,"Non, je ne vivais pas avec mes parents",False
+1436,EVS_FRE_FR_R04_2008_1436,INSTRUCTION,Q127,,MONTRER CARTE 127 - UNE SEULE REPONSE,False
+1437,EVS_FRE_FR_R04_2008_1437,REQUEST,Q127,,Quel est le plus haut niveau que votre père/mère ait  atteint dans ses  études ?,False
+1438,EVS_FRE_FR_R04_2008_1438,INSTRUCTION,Q127,,ATTENTION pour les items de H à L le père ou la mère doit avoir eu le diplôme.,False
+1439,EVS_FRE_FR_R04_2008_1439,ANSWER,Q127,1,A. Ecole primaire sans certificat d'études,False
+1440,EVS_FRE_FR_R04_2008_1440,ANSWER,Q127,2,B. Ecole primaire avec certificat d'études,False
+1441,EVS_FRE_FR_R04_2008_1441,ANSWER,Q127,3,C.,False
+1442,EVS_FRE_FR_R04_2008_1442,ANSWER,Q127,3,Collège d'enseignement général (de la 6ème à la 3ème),False
+1443,EVS_FRE_FR_R04_2008_1443,ANSWER,Q127,4,D.,False
+1444,EVS_FRE_FR_R04_2008_1444,ANSWER,Q127,4,Collège avec enseignement professionnel (de la 6ème à la 3ème),False
+1445,EVS_FRE_FR_R04_2008_1445,ANSWER,Q127,5,"E. Enseignements conduisant au CAP, BEP, BP",False
+1446,EVS_FRE_FR_R04_2008_1446,ANSWER,Q127,6,F.,False
+1447,EVS_FRE_FR_R04_2008_1447,ANSWER,Q127,6,Enseignement général des lycées (de la seconde à la terminale),False
+1448,EVS_FRE_FR_R04_2008_1448,ANSWER,Q127,7,G. Enseignement professionnel des lycées (de la seconde à la terminale),False
+1449,EVS_FRE_FR_R04_2008_1449,ANSWER,Q127,8,H.,False
+1450,EVS_FRE_FR_R04_2008_1450,ANSWER,Q127,8,DUT et techniciens supérieurs (bac + 2),False
+1451,EVS_FRE_FR_R04_2008_1451,ANSWER,Q127,9,I. Deug et classes préparatoires aux grandes écoles,False
+1452,EVS_FRE_FR_R04_2008_1452,ANSWER,Q127,10,J.,False
+1453,EVS_FRE_FR_R04_2008_1453,ANSWER,Q127,10,"Licence, Maîtrise, écoles d'ingénieur, écoles de commerce",False
+1454,EVS_FRE_FR_R04_2008_1454,ANSWER,Q127,11,"K. Master, DESS, DEA (bac + 5)",False
+1455,EVS_FRE_FR_R04_2008_1455,ANSWER,Q127,12,L.,False
+1456,EVS_FRE_FR_R04_2008_1456,ANSWER,Q127,12,Doctorat (bac + 8),False
+1457,EVS_FRE_FR_R04_2008_1457,ANSWER,Q127,77,Non concerné,False
+1458,EVS_FRE_FR_R04_2008_1458,ANSWER,Q127,88,NSP (Spontané),False
+1459,EVS_FRE_FR_R04_2008_1459,ANSWER,Q127,99,SR (Spontané),False
+1460,EVS_FRE_FR_R04_2008_1460,REQUEST,Q128,,"Quand vous aviez 14 ans, votre père (votre mère) était-il (elle) employé(e), à son compte, ou sans emploi ?",False
+1461,EVS_FRE_FR_R04_2008_1461,ANSWER,Q128,1,Employé,False
+1462,EVS_FRE_FR_R04_2008_1462,ANSWER,Q128,2,A son compte,False
+1463,EVS_FRE_FR_R04_2008_1463,ANSWER,Q128,3,Sans emploi,False
+1464,EVS_FRE_FR_R04_2008_1464,ANSWER,Q128,7,Non concerné,False
+1465,EVS_FRE_FR_R04_2008_1465,ANSWER,Q128,8,"NSP (Spontané, ne rien suggérer)",False
+1466,EVS_FRE_FR_R04_2008_1466,ANSWER,Q128,9,"SR (Spontané, ne rien suggérer)",False
+1467,EVS_FRE_FR_R04_2008_1467,REQUEST,Q129,,Quelle était précisément sa profession ?,False
+1468,EVS_FRE_FR_R04_2008_1468,INSTRUCTION,Q129,,NOTER MOT A MOT - UN MAXIMUM DE DETAILS,False
+1469,EVS_FRE_FR_R04_2008_1469,INSTRUCTION,Q129,,"RELANCER SUR LE STATUT, LA QUALIFICATION ET LE SECTEUR D'ACTIVITE.",False
+1470,EVS_FRE_FR_R04_2008_1470,REQUEST,Q129,,"Dans son emploi principal, quel genre de travail faisait-il (elle) ?",False
+1471,EVS_FRE_FR_R04_2008_1471,INSTRUCTION,Q129,,NOTER MOT A MOT - UN MAXIMUM DE DETAILS,False
+1472,EVS_FRE_FR_R04_2008_1472,INSTRUCTION,Q129,,INSTRUCTION DE CODAGE CODER SUIVANT ISCO88 (4 CHIFFRES) APRÈS L'ENTRETIEN SUR LA BASE DE Q129 ET Q129A,False
+1473,EVS_FRE_FR_R04_2008_1473,INTRO,Q130,,A ceux dont le père/la mère était à son compte (Q128=2),False
+1474,EVS_FRE_FR_R04_2008_1474,REQUEST,Q130,,Combien d'employés avait votre père (votre mère) ?,False
+1475,EVS_FRE_FR_R04_2008_1475,ANSWER,Q130,1,Aucun,False
+1476,EVS_FRE_FR_R04_2008_1476,ANSWER,Q130,2,1 à 9,False
+1477,EVS_FRE_FR_R04_2008_1477,ANSWER,Q130,3,10 à 24,False
+1478,EVS_FRE_FR_R04_2008_1478,ANSWER,Q130,4,25 ou plus,False
+1479,EVS_FRE_FR_R04_2008_1479,ANSWER,Q130,7,Non concerné,False
+1480,EVS_FRE_FR_R04_2008_1480,ANSWER,Q130,8,"NSP (Spontané, ne rien suggérer)",False
+1481,EVS_FRE_FR_R04_2008_1481,ANSWER,Q130,9,"SR (Spontané, ne rien suggérer)",False
+1482,EVS_FRE_FR_R04_2008_1482,INTRO,Q131,,A CEUX DONT LE PÈRE/LA MÈRE ÉTAIT SALARIÉ(E) (Q128=1),False
+1483,EVS_FRE_FR_R04_2008_1483,REQUEST,Q131,,Encadrait-il(elle) une ou plusieurs personnes directement sous ses ordres ?,False
+1484,EVS_FRE_FR_R04_2008_1484,ANSWER,Q131,1,Oui,False
+1485,EVS_FRE_FR_R04_2008_1485,ANSWER,Q131,2,Non,False
+1486,EVS_FRE_FR_R04_2008_1486,ANSWER,Q131,7,Non concerné,False
+1487,EVS_FRE_FR_R04_2008_1487,ANSWER,Q131,8,"NSP (Spontané, ne rien suggérer)",False
+1488,EVS_FRE_FR_R04_2008_1488,ANSWER,Q131,9,"SR (Spontané, ne rien suggérer)",False
+1489,EVS_FRE_FR_R04_2008_1489,REQUEST,Q131a,,Combien d'employés encadrait-il(elle) ?,False
+1490,EVS_FRE_FR_R04_2008_1490,ANSWER,Q131a,1,1 à 9,False
+1491,EVS_FRE_FR_R04_2008_1491,ANSWER,Q131a,2,10 à 24,False
+1492,EVS_FRE_FR_R04_2008_1492,ANSWER,Q131a,3,25 ou plus,False
+1493,EVS_FRE_FR_R04_2008_1493,ANSWER,Q131a,7,Non concerné,False
+1494,EVS_FRE_FR_R04_2008_1494,ANSWER,Q131a,8,"NSP (Spontané, ne rien suggérer)",False
+1495,EVS_FRE_FR_R04_2008_1495,ANSWER,Q131a,9,"SR (Spontané, ne rien suggérer)",False
+1496,EVS_FRE_FR_R04_2008_1496,INSTRUCTION,Q132,,MONTRER CARTE 132,False
+1497,EVS_FRE_FR_R04_2008_1497,REQUEST,Q132,,"En repensant à la vie de vos parents quand vous aviez 14 ans, dites-moi dans quelle mesure les phrases suivantes leur correspondent.",False
+1498,EVS_FRE_FR_R04_2008_1498,INSTRUCTION,Q132,,"NE PAS DEMANDER A, B ET C SI L'ENQUÊTÉ VIVAIT UNIQUEMENT AVEC SON PÈRE (VOIR Q126=2)",False
+1499,EVS_FRE_FR_R04_2008_1499,INSTRUCTION,Q132,,"NE PAS DEMANDER E, F, G SI L'ENQUÊTÉ VIVAIT UNIQUEMENT AVEC SA MÈRE (VOIR Q126=3)",False
+1500,EVS_FRE_FR_R04_2008_1500,REQUEST,Q132.A,,Ma mère aimait lire des livres,False
+1501,EVS_FRE_FR_R04_2008_1501,ANSWER,Q132,1,"Oui, vraiment",False
+1502,EVS_FRE_FR_R04_2008_1502,ANSWER,Q132,2,"Oui, plutôt",False
+1503,EVS_FRE_FR_R04_2008_1503,ANSWER,Q132,3,Peu,False
+1504,EVS_FRE_FR_R04_2008_1504,ANSWER,Q132,4,"Non, vraiment pas",False
+1505,EVS_FRE_FR_R04_2008_1505,ANSWER,Q132,7,Non concerné,False
+1506,EVS_FRE_FR_R04_2008_1506,ANSWER,Q132,8,NSP,False
+1507,EVS_FRE_FR_R04_2008_1507,ANSWER,Q132,9,SR,False
+1508,EVS_FRE_FR_R04_2008_1508,REQUEST,Q133,,Où viviez-vous quand vous aviez 14 ans ...,False
+1509,EVS_FRE_FR_R04_2008_1509,INSTRUCTION,Q133,,CITER,False
+1510,EVS_FRE_FR_R04_2008_1510,ANSWER,Q133,1,... en France ?,False
+1511,EVS_FRE_FR_R04_2008_1511,ANSWER,Q133,2,... à l'étranger ?,False
+1512,EVS_FRE_FR_R04_2008_1512,REQUEST,Q137,,"Reporter sur votre: VOTRE CODE ENQUETEUR, VOTRE NOM , la date d'interview et le numéro d'interview:",False
+1513,EVS_FRE_FR_R04_2008_1513,REQUEST,Q137,,Date de l'interview,False
+1514,EVS_FRE_FR_R04_2008_1514,REQUEST,Q137,,Jour:,False
+1515,EVS_FRE_FR_R04_2008_1515,REQUEST,Q137,,Mois:,False
+1516,EVS_FRE_FR_R04_2008_1516,REQUEST,Q137,,Année:,False
+1517,EVS_FRE_FR_R04_2008_1517,REQUEST,Q139,,"Pendant l'interview, la personne interrogée a paru...",False
+1518,EVS_FRE_FR_R04_2008_1518,ANSWER,Q139,1,...très intéressée,False
+1519,EVS_FRE_FR_R04_2008_1519,ANSWER,Q139,2,...assez intéressée,False
+1520,EVS_FRE_FR_R04_2008_1520,ANSWER,Q139,3,...pas très intéressée,False
