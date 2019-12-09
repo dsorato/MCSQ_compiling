@@ -6,6 +6,9 @@ import re
 
 
 initial_sufix = 0
+initial_request= ["Reporter sur votre: VOTRE CODE ENQUETEUR, VOTRE NOM , la date d'interview et le numéro d'interview:",
+"Numéro d'interview"]
+
 
 def update_item_id(survey_id):
 	global initial_sufix
@@ -47,6 +50,7 @@ def main(filename):
 		sentence_splitter_suffix = 'english.pickle'
 	if 'FRE' in filename:
 		sentence_splitter_suffix = 'french.pickle'
+		country = 'France'
 	if 'GER' in filename:
 		sentence_splitter_suffix = 'german.pickle'
 
@@ -76,9 +80,10 @@ def main(filename):
 			qstn = var.find('qstn')
 			if qstn is not None and 'seqNo' in qstn.attrib:
 				item_name = qstn.attrib['seqNo']
-			# else:
-			# 	item_name = var.attrib['name']
-
+			else:
+				elem_item_name = var.find('labl').text
+				item_name = elem_item_name[elem_item_name.find("(")+1:elem_item_name.find(")")]
+			
 			if node.tag=='preQTxt':
 				text = clean_text(node.text)
 				item_type = 'INTRO'
@@ -101,13 +106,19 @@ def main(filename):
 
 			if node.tag=='qstnLit':
 				text = clean_text(node.text)
-				item_type = 'REQUEST'
-				split_into_sentences = tokenizer.tokenize(text)
-				for item in split_into_sentences:
-					data = {"survey_itemid": update_item_id(survey_id), 'item_type': item_type, 
-					'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
+				if text in initial_request:
+					data = {"survey_itemid": update_item_id(survey_id), 'item_type': 'REQUEST', 
+						'item_name': 'INTRO', 'item_value': item_value,  'text': text, 'item_is_source': False}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 					last_tag = node.tag
+				else:
+					item_type = 'REQUEST'
+					split_into_sentences = tokenizer.tokenize(text)
+					for item in split_into_sentences:
+						data = {"survey_itemid": update_item_id(survey_id), 'item_type': item_type, 
+						'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
+						df_survey_item = df_survey_item.append(data, ignore_index = True)
+						last_tag = node.tag
 
 			if node.tag=='txt' and last_tag != 'catgry' and 'country' not in item_name and 'split' not in item_name:
 				text = clean_text(node.text)
@@ -115,27 +126,28 @@ def main(filename):
 				item_type = 'REQUEST'
 				if 'level' in node.attrib:
 					item_name = node.attrib['level']
-
-				split_into_sentences = tokenizer.tokenize(text)
-				for item in split_into_sentences:
-					data = {"survey_itemid": update_item_id(survey_id), 'item_type': item_type, 
-					'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
-					df_survey_item = df_survey_item.append(data, ignore_index = True)
-					last_tag = node.tag
-
-			if node.tag=='catgry' and 'country' not in item_name and 'split' not in item_name:
-				txt = node.find('txt')
-				if txt is not None:
-					text = clean_text(txt.text) 
-					item_type = 'ANSWER'
-					catValu = node.find('catValu')
-					item_value = catValu.text
+				if 'sample' not in text and text != country: 
 					split_into_sentences = tokenizer.tokenize(text)
 					for item in split_into_sentences:
 						data = {"survey_itemid": update_item_id(survey_id), 'item_type': item_type, 
 						'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 						last_tag = node.tag
+
+			if node.tag=='catgry' and 'country' not in item_name and 'split' not in item_name:
+				txt = node.find('txt')
+				if txt is not None:
+					text = clean_text(txt.text)
+					if 'sample' not in text and text != country: 
+						item_type = 'ANSWER'
+						catValu = node.find('catValu')
+						item_value = catValu.text
+						split_into_sentences = tokenizer.tokenize(text)
+						for item in split_into_sentences:
+							data = {"survey_itemid": update_item_id(survey_id), 'item_type': item_type, 
+							'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
+							df_survey_item = df_survey_item.append(data, ignore_index = True)
+							last_tag = node.tag
 
 
 	
