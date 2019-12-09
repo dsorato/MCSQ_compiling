@@ -4,6 +4,7 @@ import nltk.data
 import sys
 import re
 
+
 initial_sufix = 0
 
 def update_item_id(survey_id):
@@ -21,6 +22,16 @@ def clean_text(text):
 		text = re.sub("[.]{4,}", "", text)
 		text = re.sub('>', "",text)
 		text = re.sub('<', "",text)
+		text = re.sub('Q[0-9]*\.', "",text)
+		text = re.sub('\[', "",text)
+		text = re.sub('\]', "",text)
+		text = re.sub('^[A-Z]\.\s', "",text)
+		text = re.sub('^[A-Z]\s', "",text)
+		text = re.sub('S\.R\.', "SR",text)
+		text = re.sub('S\.R', "SR",text)
+		text = re.sub('SR\.', "SR",text)
+		text = re.sub('s\.r', "SR",text)
+		text = re.sub('s\.r\.', "SR",text)
 		text = text.rstrip()
 	else:
 		text = ''
@@ -65,8 +76,8 @@ def main(filename):
 			qstn = var.find('qstn')
 			if qstn is not None and 'seqNo' in qstn.attrib:
 				item_name = qstn.attrib['seqNo']
-			else:
-				item_name = var.attrib['name']
+			# else:
+			# 	item_name = var.attrib['name']
 
 			if node.tag=='preQTxt':
 				text = clean_text(node.text)
