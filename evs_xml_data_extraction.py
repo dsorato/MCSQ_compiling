@@ -56,13 +56,16 @@ def standartize_item_name(item_name):
 def determine_survey_item_module(item_name, filename):
 	module = 'No module'
 	if 'Q' in item_name:
-		digits_in_item_name = re.sub("Q", "", item_name)
-		digits_in_item_name = re.sub("a", "", digits_in_item_name)
-		digits_in_item_name = re.sub("b", "", digits_in_item_name)
-		digits_in_item_name = re.sub("c", "", digits_in_item_name)
-		digits_in_item_name = re.sub("d", "", digits_in_item_name)
-		digits_in_item_name = re.sub("e", "", digits_in_item_name)
-		digits_in_item_name = re.sub("f", "", digits_in_item_name)
+
+		digits_in_item_name = re.sub("[^\d]", "", item_name)
+		# digits_in_item_name = re.sub("a", "", digits_in_item_name)
+		# digits_in_item_name = re.sub("b", "", digits_in_item_name)
+		# digits_in_item_name = re.sub("c", "", digits_in_item_name)
+		# digits_in_item_name = re.sub("d", "", digits_in_item_name)
+		# digits_in_item_name = re.sub("e", "", digits_in_item_name)
+		# digits_in_item_name = re.sub("f", "", digits_in_item_name)
+		# digits_in_item_name = re.sub("g", "", digits_in_item_name)
+		# digits_in_item_name = re.sub("h", "", digits_in_item_name)
 
 		if '/' in digits_in_item_name:
 			digits_in_item_name = digits_in_item_name.split('/')
@@ -122,27 +125,14 @@ def determine_survey_item_module(item_name, filename):
 def determine_country(filename):
 	if '_AT' in filename:
 		country = 'Austria'
-	if '_IE' in filename:
-		if 'NORTH' in filename:
-			country = 'Northern Ireland'
-		else:
-			country = 'Ireland'
-	if '_FR' in filename:
-		country = 'France'
-	if '_DE' in filename:
-		country = 'Germany'
-	if '_RU' in filename:
-		country = 'Russian Federation'
+	if '_AZ' in filename:
+		country = 'Azerbaijan'
 	if '_BE' in filename:
 		country = 'Belgium'
 	if '_BY' in filename:
 		country = 'Belarus'
-	if '_GB' in filename or 'SOURCE' in filename:
-		country = 'Great Britain'
-	if '_GR' in filename:
-		country = 'Greece'
-	if '_LU' in filename:
-		country = 'Luxembourg'
+	if '_CH' in filename:
+		country = 'Switzerland'
 	if '_CY' in filename:
 		if 'NORTH' in filename:
 			country = 'Northern Cyprus'
@@ -150,13 +140,46 @@ def determine_country(filename):
 			country = 'Cyprus'
 	if '_CZ' in filename:
 		country = 'Czech Republic'
-
+	if '_DE' in filename:
+		country = 'Germany'
+	if '_EE' in filename:
+		country = 'Estonia'
+	if '_ES' in filename:
+		country = 'Spain'
+	if '_FR' in filename:
+		country = 'France'
+	if '_GE' in filename:
+		country = 'Georgia'
+	if '_GB' in filename or 'SOURCE' in filename:
+		country = 'Great Britain'
+	if '_GR' in filename:
+		country = 'Greece'
+	if '_IE' in filename:
+		if 'NORTH' in filename:
+			country = 'Northern Ireland'
+		else:
+			country = 'Ireland'	
+	if '_LU' in filename:
+		country = 'Luxembourg'
+	if '_LV' in filename:
+		country = 'Latvia'
+	if '_LT' in filename:
+		country = 'Lithuania'
+	if '_MD' in filename:
+		country = 'Moldova'
+	if '_ME' in filename:
+		country = 'Montenegro'
+	if '_MT' in filename:
+		country = 'Malta'
 	if '_PT' in filename:
 		country = 'Portugal'
-	
+	if '_RU' in filename:
+		country = 'Russian Federation'
+	if '_UA' in filename:
+		country = 'Ukraine'
 
 
-	
+	return country
 
 
 def determine_sentence_tokenizer(filename):
@@ -208,6 +231,8 @@ def main(filename):
 	sentence_splitter_suffix = determine_sentence_tokenizer(filename)
 	sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
 	tokenizer = nltk.data.load(sentence_splitter)
+
+	country = determine_country(filename)
 
 	# parse an xml file by name
 	file = str(filename)
@@ -315,8 +340,8 @@ def main(filename):
 
 	
 
-
-	df_survey_item.to_csv(str(filename)+'.csv')
+	file_to_csv_name = filename.replace('.xml', '')
+	df_survey_item.to_csv(str(file_to_csv_name)+'.csv')
 
 		
 
