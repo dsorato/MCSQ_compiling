@@ -119,14 +119,51 @@ def determine_survey_item_module(item_name, filename):
 	return module
 
 
-def main(filename):
-	sentence_splitter_prefix = 'tokenizers/punkt/'
+def determine_country(filename):
+	if '_AT' in filename:
+		country = 'Austria'
+	if '_IE' in filename:
+		if 'NORTH' in filename:
+			country = 'Northern Ireland'
+		else:
+			country = 'Ireland'
+	if '_FR' in filename:
+		country = 'France'
+	if '_DE' in filename:
+		country = 'Germany'
+	if '_RU' in filename:
+		country = 'Russian Federation'
+	if '_BE' in filename:
+		country = 'Belgium'
+	if '_BY' in filename:
+		country = 'Belarus'
+	if '_GB' in filename or 'SOURCE' in filename:
+		country = 'Great Britain'
+	if '_GR' in filename:
+		country = 'Greece'
+	if '_LU' in filename:
+		country = 'Luxembourg'
+	if '_CY' in filename:
+		if 'NORTH' in filename:
+			country = 'Northern Cyprus'
+		else:
+			country = 'Cyprus'
+	if '_CZ' in filename:
+		country = 'Czech Republic'
 
+	if '_PT' in filename:
+		country = 'Portugal'
+	
+
+
+	
+
+
+def determine_sentence_tokenizer(filename):
 	if 'ENG_' in filename:
 		sentence_splitter_suffix = 'english.pickle'
 	if 'FRE_' in filename:
 		sentence_splitter_suffix = 'french.pickle'
-		country = 'France'
 	if 'GER_' in filename:
 		sentence_splitter_suffix = 'german.pickle'
 	if 'CZE_' in filename:
@@ -162,15 +199,18 @@ def main(filename):
 	if 'HUN_' in filename:
 		sentence_splitter_suffix = 'hungarian.pickle'
 
+	return sentence_splitter_suffix
 
-		
- 	
+
+def main(filename):
 	#Punkt Sentence Tokenizer from NLTK	
+	sentence_splitter_prefix = 'tokenizers/punkt/'
+	sentence_splitter_suffix = determine_sentence_tokenizer(filename)
 	sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
 	tokenizer = nltk.data.load(sentence_splitter)
 
 	# parse an xml file by name
-	file = 'data/'+str(filename)
+	file = str(filename)
 	tree = ET.parse(file)
 	root = tree.getroot()
 
