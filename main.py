@@ -10,8 +10,9 @@ def main(folder_path):
 	files = os.listdir(path)
 
 	for index, file in enumerate(files):
-		print(file)
-		evs_xml_data_extraction.main(file)
+		if file.endswith(".xml"):
+			print('filename', file)
+			evs_xml_data_extraction.main(file)
 
 
 

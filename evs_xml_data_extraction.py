@@ -131,6 +131,8 @@ def determine_country(filename):
 		country = 'Belgium'
 	if '_BY' in filename:
 		country = 'Belarus'
+	if '_BG' in filename:
+		country = 'Bulgaria'
 	if '_CH' in filename:
 		country = 'Switzerland'
 	if '_CY' in filename:
@@ -142,6 +144,8 @@ def determine_country(filename):
 		country = 'Czech Republic'
 	if '_DE' in filename:
 		country = 'Germany'
+	if '_DK' in filename:
+		country = 'Denmark'
 	if '_EE' in filename:
 		country = 'Estonia'
 	if '_ES' in filename:
@@ -171,6 +175,8 @@ def determine_country(filename):
 		country = 'Montenegro'
 	if '_MT' in filename:
 		country = 'Malta'
+	if '_NO' in filename:
+		country = 'Norway'
 	if '_PT' in filename:
 		country = 'Portugal'
 	if '_RU' in filename:
