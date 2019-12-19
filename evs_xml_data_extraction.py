@@ -3,6 +3,7 @@ import pandas as pd
 import nltk.data
 import sys
 import re
+import string
 
 
 initial_sufix = 0
@@ -18,11 +19,40 @@ def update_item_id(survey_id):
 
 	return survey_item_id
 
+def check_if_sentence_is_uppercase(text):
+	is_uppercase = False
+	if isinstance(text, str):
+		for word in text:
+			if word.isupper() and word not in string.punctuation:
+				is_uppercase = True
+
+	return is_uppercase
+
+def clean_instruction(text):
+	if isinstance(text, str):
+		text = re.sub("…", "...", text)
+		text = re.sub("’", "'", text)
+		text = re.sub("[.]{4,}", "", text)
+		text = re.sub('>', "",text)
+		text = re.sub('<', "",text)
+		text = re.sub('Q[0-9]*\.', "",text)
+		text = re.sub('\[', "",text)
+		text = re.sub('\]', "",text)
+		text = text.rstrip()
+	else:
+		text = ''
+
+
+	return text
+
+
+
 def clean_text(text):
 	if isinstance(text, str):
 		text = re.sub("…", "...", text)
 		text = re.sub("’", "'", text)
 		text = re.sub("[.]{4,}", "", text)
+		text = re.sub("[_]{2,}", "", text)
 		text = re.sub('>', "",text)
 		text = re.sub('<', "",text)
 		text = re.sub('Q[0-9]*\.', "",text)
@@ -136,7 +166,7 @@ def determine_country(filename):
 	if '_CH' in filename:
 		country = 'Switzerland'
 	if '_CY' in filename:
-		if 'NORTH' in filename:
+		if 'TUR' in filename:
 			country = 'Northern Cyprus'
 		else:
 			country = 'Cyprus'
@@ -159,10 +189,9 @@ def determine_country(filename):
 	if '_GR' in filename:
 		country = 'Greece'
 	if '_IE' in filename:
-		if 'NORTH' in filename:
-			country = 'Northern Ireland'
-		else:
-			country = 'Ireland'	
+		country = 'Ireland'	
+	if '_NIR' in filename:
+		country = 'Northern Ireland'
 	if '_LU' in filename:
 		country = 'Luxembourg'
 	if '_LV' in filename:
@@ -271,8 +300,13 @@ def main(filename):
 			# module = 'No module'
 			
 			if node.tag=='preQTxt':
-				text = clean_text(node.text)
-				item_type = 'INTRO'
+				if is_uppercase == True:
+					item_type = 'INSTRUCTION'
+					text = clean_instruction(node.text)
+				else:
+					text = clean_text(node.text)
+					item_type = 'INTRO'
+				
 				module = determine_survey_item_module(item_name, filename)
 
 				split_into_sentences = tokenizer.tokenize(text)
@@ -280,10 +314,10 @@ def main(filename):
 					data = {"survey_itemid": update_item_id(survey_id), 'module': module,'item_type': item_type, 
 					'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
-					last_tag = node.tag
+				last_tag = node.tag
 
 			if node.tag=='ivuInstr':
-				text = clean_text(node.text)
+				text = clean_instruction(node.text)	
 				item_type = 'INSTRUCTION'
 				module = determine_survey_item_module(item_name, filename)
 
@@ -292,29 +326,40 @@ def main(filename):
 					data = {"survey_itemid": update_item_id(survey_id), 'module': module,'item_type': item_type, 
 					'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
-					last_tag = node.tag
+				last_tag = node.tag
 
 			if node.tag=='qstnLit':
 				text = clean_text(node.text)
-				module = determine_survey_item_module(item_name, filename)
-				if text in initial_request:
-					data = {"survey_itemid": update_item_id(survey_id), 'module': module,'item_type': 'REQUEST', 
-						'item_name': 'INTRO', 'item_value': item_value,  'text': text, 'item_is_source': False}
-					df_survey_item = df_survey_item.append(data, ignore_index = True)
-					last_tag = node.tag
-				else:
-					item_type = 'REQUEST'
-					split_into_sentences = tokenizer.tokenize(text)
-					for item in split_into_sentences:
-						data = {"survey_itemid": update_item_id(survey_id), 'module': module,'item_type': item_type, 
-						'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
-						df_survey_item = df_survey_item.append(data, ignore_index = True)
+				item_type = 'REQUEST'
+				print(text)
+				if len(text) != 1 and text.isnumeric() == False:
+					module = determine_survey_item_module(item_name, filename)
+					if text in initial_request:
+						split_into_sentences = tokenizer.tokenize(text)
+						for item in split_into_sentences:
+							data = {"survey_itemid": update_item_id(survey_id), 'module': module,'item_type': item_type, 
+								'item_name': 'INTRO', 'item_value': item_value,  'text': item, 'item_is_source': False}
+							df_survey_item = df_survey_item.append(data, ignore_index = True)
+						last_tag = node.tag
+					else:
+						# item_type = 'REQUEST'
+						split_into_sentences = tokenizer.tokenize(text)
+						for item in split_into_sentences:
+							data = {"survey_itemid": update_item_id(survey_id), 'module': module,'item_type': item_type, 
+							'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
+							df_survey_item = df_survey_item.append(data, ignore_index = True)
 						last_tag = node.tag
 
 			if node.tag=='txt' and last_tag != 'catgry' and 'country' not in item_name and 'split' not in item_name:
+				is_uppercase = check_if_sentence_is_uppercase(node.text)
 				text = clean_text(node.text)
-				print(text, last_tag)
 				item_type = 'REQUEST'
+
+				# if is_uppercase == True:
+				# 	text = clean_instruction(node.text)
+				# 	item_type = 'INSTRUCTION'
+				# else:
+					
 				module = determine_survey_item_module(item_name, filename)
 				# if 'level' in node.attrib:
 				# 	item_name = node.attrib['level']
@@ -325,7 +370,7 @@ def main(filename):
 						data = {"survey_itemid": update_item_id(survey_id), 'module': module, 'item_type': item_type, 
 						'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
-						last_tag = node.tag
+					last_tag = node.tag
 
 			if node.tag=='catgry' and 'country' not in item_name and 'split' not in item_name:
 				txt = node.find('txt')
@@ -341,7 +386,7 @@ def main(filename):
 							data = {"survey_itemid": update_item_id(survey_id), 'module': module, 'item_type': item_type, 
 							'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
-							last_tag = node.tag
+						last_tag = node.tag
 
 
 	
