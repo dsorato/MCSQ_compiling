@@ -38,6 +38,7 @@ def clean_instruction(text):
 		text = re.sub('Q[0-9]*\.', "",text)
 		text = re.sub('\[', "",text)
 		text = re.sub('\]', "",text)
+		text = text.replace('\n',' ')
 		text = text.rstrip()
 	else:
 		text = ''
@@ -49,6 +50,7 @@ def clean_instruction(text):
 
 def clean_text(text):
 	if isinstance(text, str):
+		text = re.sub(" \?", "?", text)
 		text = re.sub("…", "...", text)
 		text = re.sub("’", "'", text)
 		text = re.sub("[.]{4,}", "", text)
@@ -65,6 +67,7 @@ def clean_text(text):
 		text = re.sub('SR\.', "SR",text)
 		text = re.sub('s\.r', "SR",text)
 		text = re.sub('s\.r\.', "SR",text)
+		text = text.replace('\n',' ')
 		text = text.rstrip()
 	else:
 		text = ''
