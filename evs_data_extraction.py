@@ -8,9 +8,9 @@ import re
 
 initial_sufix = 0
 constants_dict = dict()
-answer_types_dict = dict()
+response_types_dict = dict()
 instruction_constants = ['ASKALL','C_CERT','INT_INS','R_LINE','R_ONLY','SHOWC','CHECK_APP','GO_TO','SKIP_MSG']
-answer_constants = ['DK', 'DKext', 'NA','NAext','NAP','OTHER','DK_cawi_mail','DKext_cawi_mail','NA_cawi_mail','NAext_cawi_mail','WOULD_NOT_MIND']
+response_constants = ['DK', 'DKext', 'NA','NAext','NAP','OTHER','DK_cawi_mail','DKext_cawi_mail','NA_cawi_mail','NAext_cawi_mail','WOULD_NOT_MIND']
 
 def clean_text(text):
 	text = re.sub("…", "...", text)
@@ -49,23 +49,23 @@ def get_survey_info_and_populate_table(survey_id):
 
 	write_survey_table(survey_id, study, wave_round, int(year), country_language)
 
-def extract_answer_types(answer_types, a_answer_type):
-	filtered_answer_types_df = answer_types[answer_types['Code'] == a_answer_type]
+def extract_response_types(response_types, a_response_type):
+	filtered_response_types_df = response_types[response_types['Code'] == a_response_type]
 
-	if a_answer_type in answer_types_dict:
-		ret = answer_types_dict[a_answer_type]
+	if a_response_type in response_types_dict:
+		ret = response_types_dict[a_response_type]
 
 	else:
-		if filtered_answer_types_df.empty:
+		if filtered_response_types_df.empty:
 			ret = ''
 		else:
-			translated_cells = iter(filtered_answer_types_df.Translated)
+			translated_cells = iter(filtered_response_types_df.Translated)
 			translated_cells = list(translated_cells)
 			
 			if pd.notna(translated_cells).all() and 'Translation' not in translated_cells:
 				ret = translated_cells
 			else:
-				ret = iter(filtered_answer_types_df.TranslatableElement)
+				ret = iter(filtered_response_types_df.TranslatableElement)
 				ret = list(ret)
 
 			clean_text_ret = []
@@ -74,7 +74,7 @@ def extract_answer_types(answer_types, a_answer_type):
 				clean_text_ret.append(item)
 
 			
-			answer_types_dict[a_answer_type] = clean_text_ret
+			response_types_dict[a_response_type] = clean_text_ret
 
 	return ret
 
@@ -105,8 +105,8 @@ def extract_constant(constants, a_constant):
 def check_question_name(question_name):
 	ret = ''
 	if isinstance(question_name, str):
-		if 'INTRO' in question_name:
-			ret =  'INTRO'
+		if 'INTRODUCTION' in question_name:
+			ret =  'INTRODUCTION'
 		else:
 			ret =  'REQUEST'
 
@@ -123,8 +123,8 @@ def check_item_name(row):
 def decide_item_type_other(row):
 	if 'CodInstruction' in str(row['QuestionElement']):
 		item_type = 'INSTRUCTION'
-	elif ('INTRO' or 'SECTION') in str(row['QuestionName']):
-		item_type = 'INTRO'
+	elif ('INTRODUCTION' or 'SECTION') in str(row['QuestionName']):
+		item_type = 'INTRODUCTION'
 	else:
 		item_type = 'REQUEST'
 
@@ -147,7 +147,7 @@ def decide_module(module_dict, row_module):
 	return module
 
 def populate_introduction_table(df_survey_item):
-	filtered_introduction_df = df_survey_item[df_survey_item['item_type'] == 'INTRO']
+	filtered_introduction_df = df_survey_item[df_survey_item['item_type'] == 'INTRODUCTION']
 	for index, row in filtered_introduction_df.iterrows():
 		print(row)
 		survey_itemid = row['survey_itemid']
@@ -166,9 +166,9 @@ def populate_instruction_table(df_survey_item):
 		item_type = row['item_type']
 		write_instruction_table(survey_itemid, final_text, '', '', '', '', item_name, item_type)
 
-def populate_answer_table(df_survey_item):
-	filtered_answer_df = df_survey_item[df_survey_item['item_type'] == 'ANSWER']
-	for index, row in filtered_answer_df.iterrows():
+def populate_response_table(df_survey_item):
+	filtered_response_df = df_survey_item[df_survey_item['item_type'] == 'RESPONSE']
+	for index, row in filtered_response_df.iterrows():
 		print(row)
 		survey_itemid = row['survey_itemid']
 		final_text = row['text']
@@ -178,7 +178,7 @@ def populate_answer_table(df_survey_item):
 			item_value = 0
 		else:
 			item_value = int(row['item_value'])
-		write_answer_table(survey_itemid, final_text, '', '', '', '', item_name, item_type, item_value)
+		write_response_table(survey_itemid, final_text, '', '', '', '', item_name, item_type, item_value)
 
 def populate_request_table(df_survey_item):
 	filtered_request_df = df_survey_item[df_survey_item['item_type'] == 'REQUEST']
@@ -211,7 +211,7 @@ def main(filename):
 
 	questionnaire = pd.read_excel(open('data/'+str(filename), 'rb'), sheet_name='Questionnaire')
 
-	answer_types = pd.read_excel(open('data/'+str(filename), 'rb'), sheet_name='AnswerTypes')
+	response_types = pd.read_excel(open('data/'+str(filename), 'rb'), sheet_name='AnswerTypes')
 
 	#populate survey table
 	survey_id = filename.replace('.xlsx', '')
@@ -232,8 +232,8 @@ def main(filename):
 
 		#case 1: Translated row is null = we only have the source text
 		if pd.isna(row['Translated']):
-			#item is a constant. A constant can be type: INSTRUCTION, INTRO or REQUEST
-			if pd.notna(row['TranslatableElement']) and row['QuestionElement'] == 'Constant' and row['TranslatableElement'] not in answer_constants:
+			#item is a constant. A constant can be type: INSTRUCTION, INTRODUCTION or REQUEST
+			if pd.notna(row['TranslatableElement']) and row['QuestionElement'] == 'Constant' and row['TranslatableElement'] not in response_constants:
 				constant = row['TranslatableElement']
 				survey_item = extract_constant(constants, constant)
 				if survey_item == '':
@@ -244,36 +244,36 @@ def main(filename):
 						'item_value': row['QuestionElementNr'], 'item_is_source': True}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 
-			#item is a answer. A answer can be only type ANSWER
+			#item is a response. A response can be only type RESPONSE
 			elif pd.notna(row['TranslatableElement']) and (row['QuestionElement'] == 'AnswerType' or row['QuestionElement'] == 'Answer' or 
-				row['TranslatableElement'] in answer_constants):
-				answer = row['TranslatableElement']
-				if answer in answer_constants:
-					survey_item = extract_constant(constants, answer)
+				row['TranslatableElement'] in response_constants):
+				response = row['TranslatableElement']
+				if response in response_constants:
+					survey_item = extract_constant(constants, response)
 					if survey_item == '':
 						pass
 					else:
 						data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(survey_item), 'surveyid': survey_last_id, 
-						'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row),
+						'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'RESPONSE', 'item_name': check_item_name(row),
 						'item_value': row['QuestionElementNr'],'item_is_source': True}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 				elif row['QuestionElement'] == 'Answer':
-					data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(answer), 'surveyid': survey_last_id, 
-					'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row),
+					data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(response), 'surveyid': survey_last_id, 
+					'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'RESPONSE', 'item_name': check_item_name(row),
 					'item_value': row['QuestionElementNr'],'item_is_source': True}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 				else:
-					survey_item = extract_answer_types(answer_types, survey_item)
+					survey_item = extract_response_types(response_types, survey_item)
 					if survey_item == '':
 						pass
 					else:
 						for item in survey_item:
 							data = {"survey_itemid": update_item_id(survey_last_id), 'text': item, 'surveyid': survey_last_id, 
-							'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row),
+							'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'RESPONSE', 'item_name': check_item_name(row),
 							'item_value': row['QuestionElementNr'],'item_is_source': True}
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
 
-			#item type can be INTRO, INSTRUCTION or REQUEST
+			#item type can be INTRODUCTION, INSTRUCTION or REQUEST
 			else:
 				if pd.notna(row['TranslatableElement']):
 					survey_item = clean_text(row['TranslatableElement'])
@@ -288,8 +288,8 @@ def main(filename):
 
 		#case 2: Translated row is not null = We have the tranlated text
 		else:
-			#item is a constant. A constant can be type: INSTRUCTION, INTRO or REQUEST
-			if pd.notna(row['Translated']) and row['QuestionElement'] == 'Constant' and row['Translated'] not in answer_constants:
+			#item is a constant. A constant can be type: INSTRUCTION, INTRODUCTION or REQUEST
+			if pd.notna(row['Translated']) and row['QuestionElement'] == 'Constant' and row['Translated'] not in response_constants:
 				constant = row['Translated']
 				survey_item = extract_constant(constants, constant)
 				if survey_item == '':
@@ -300,36 +300,36 @@ def main(filename):
 					'item_value': row['QuestionElementNr'],'item_is_source': False}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 			
-			#item is a answer. A answer can be only type ANSWER				
+			#item is a response. A response can be only type RESPONSE				
 			elif pd.notna(row['Translated']) and (row['QuestionElement'] == 'AnswerType' or row['QuestionElement'] == 'Answer' or 
-				row['Translated'] in answer_constants):
-				answer = row['Translated']
-				if answer in answer_constants:
-					survey_item = extract_constant(constants, answer)
+				row['Translated'] in response_constants):
+				response = row['Translated']
+				if response in response_constants:
+					survey_item = extract_constant(constants, response)
 					if survey_item == '':
 						pass
 					else:
 						data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(survey_item), 'surveyid': survey_last_id, 
-						'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row),
+						'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'RESPONSE', 'item_name': check_item_name(row),
 						'item_value': row['QuestionElementNr'],'item_is_source': False}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 				elif row['QuestionElement'] == 'Answer':
-					data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(answer), 'surveyid': survey_last_id, 
-					'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row),
+					data = {"survey_itemid": update_item_id(survey_last_id), 'text': clean_text(response), 'surveyid': survey_last_id, 
+					'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'RESPONSE', 'item_name': check_item_name(row),
 					'item_value': row['QuestionElementNr'],'item_is_source': False}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 				else:
-					survey_item = extract_answer_types(answer_types, survey_item)
+					survey_item = extract_response_types(response_types, survey_item)
 					if survey_item == '':
 						pass
 					else:
 						for item in survey_item:
 							data = {"survey_itemid": update_item_id(survey_last_id), 'text': item, 'surveyid': survey_last_id, 
-							'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'ANSWER', 'item_name': check_item_name(row),
+							'moduleid': decide_module(module_dict, row['Module']), 'item_type':  'RESPONSE', 'item_name': check_item_name(row),
 							'item_value': row['QuestionElementNr'],'item_is_source': False}
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
 			
-			# item type can be INTRO, INSTRUCTION or REQUEST
+			# item type can be INTRODUCTION, INSTRUCTION or REQUEST
 			else:
 				if pd.notna(row['Translated']):
 					survey_item = clean_text(row['Translated'])
@@ -361,8 +361,8 @@ def main(filename):
 	#populate instruction table
 	populate_instruction_table(df_survey_item)
 
-	#populate answer table
-	populate_answer_table(df_survey_item)
+	#populate response table
+	populate_response_table(df_survey_item)
 
 	#populate request table
 	populate_request_table(df_survey_item)

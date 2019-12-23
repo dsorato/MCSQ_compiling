@@ -4,7 +4,7 @@ from DB.survey_item import *
 from DB.module import *
 from DB.introduction import *
 from DB.instruction import *
-from DB.answer import *
+from DB.response import *
 from DB.request import *
 
 def write_request_table(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
@@ -13,9 +13,9 @@ def write_request_table(survey_itemid, final_text, translation_1, translation_2,
 	session.add(item)
 	session.commit()
 
-def write_answer_table(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value):
+def write_response_table(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value):
 	session = session_factory()
-	item = Answer(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value)
+	item = Response(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value)
 	session.add(item)
 	session.commit()
 

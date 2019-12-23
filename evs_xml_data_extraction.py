@@ -308,7 +308,7 @@ def main(filename):
 					text = clean_instruction(node.text)
 				else:
 					text = clean_text(node.text)
-					item_type = 'INTRO'
+					item_type = 'INTRODUCTION'
 				
 				module = determine_survey_item_module(item_name, filename)
 
@@ -341,7 +341,7 @@ def main(filename):
 						split_into_sentences = tokenizer.tokenize(text)
 						for item in split_into_sentences:
 							data = {"survey_itemid": update_item_id(survey_id), 'module': module,'item_type': item_type, 
-								'item_name': 'INTRO', 'item_value': item_value,  'text': item, 'item_is_source': False}
+								'item_name': 'INTRODUCTION', 'item_value': item_value,  'text': item, 'item_is_source': False}
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
 						last_tag = node.tag
 					else:
@@ -380,7 +380,7 @@ def main(filename):
 				if txt is not None:
 					text = clean_text(txt.text)
 					if 'sample' not in text and text != country: 
-						item_type = 'ANSWER'
+						item_type = 'RESPONSE'
 						module = determine_survey_item_module(item_name, filename)
 						catValu = node.find('catValu')
 						item_value = catValu.text

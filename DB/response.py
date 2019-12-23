@@ -2,11 +2,11 @@ from DB.base import Base
 from sqlalchemy import Column, String, Boolean, Integer, Sequence, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
-class Answer(Base):
-    __tablename__ = 'answer'
+class Response(Base):
+    __tablename__ = 'Response'
 
     # emits CREATE SEQUENCE + INTEGER
-    answerid = Column(Integer, Sequence('answer_id_seq'), primary_key=True)
+    responseid = Column(Integer, Sequence('response_id_seq'), primary_key=True)
     survey_itemid = Column(String, ForeignKey('survey_item.survey_itemid'), nullable=False)
     final_text = Column(String)
     translation_1 = Column(String)
@@ -18,7 +18,7 @@ class Answer(Base):
     item_value = Column(Integer)
 
 
-    survey_item = relationship("Survey_item", backref=backref("answer", uselist=False))
+    survey_item = relationship("Survey_item", backref=backref("response", uselist=False))
 
     def __init__(self, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value):
         self.survey_itemid = survey_itemid
