@@ -5,6 +5,7 @@ import numpy as np
 import sys
 import os
 import re
+from utils import *
 
 initial_sufix = 0
 constants_dict = dict()
@@ -123,7 +124,7 @@ def check_item_name(row):
 def decide_item_type_other(row):
 	if 'CodInstruction' in str(row['QuestionElement']):
 		item_type = 'INSTRUCTION'
-	elif ('INTRODUCTION' or 'SECTION') in str(row['QuestionName']):
+	elif ('INTRO' or 'SECTION') in str(row['QuestionName']):
 		item_type = 'INTRODUCTION'
 	else:
 		item_type = 'REQUEST'
@@ -195,12 +196,7 @@ def populate_request_table(df_survey_item):
 def main(filename):
 	sentence_splitter_prefix = 'tokenizers/punkt/'
 
-	if 'ENG' in filename:
-		sentence_splitter_suffix = 'english.pickle'
-	if 'FRE' in filename:
-		sentence_splitter_suffix = 'french.pickle'
-	if 'GER' in filename:
-		sentence_splitter_suffix = 'german.pickle'
+	sentence_splitter_suffix = determine_sentence_tokenizer(filename)
 
 	sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
 	tokenizer = nltk.data.load(sentence_splitter)

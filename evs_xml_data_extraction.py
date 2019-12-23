@@ -4,6 +4,7 @@ import nltk.data
 import sys
 import re
 import string
+from utils import *
 
 
 initial_sufix = 0
@@ -155,112 +156,6 @@ def determine_survey_item_module(item_name, filename):
 	return module
 
 
-def determine_country(filename):
-	if '_AT' in filename:
-		country = 'Austria'
-	if '_AZ' in filename:
-		country = 'Azerbaijan'
-	if '_BE' in filename:
-		country = 'Belgium'
-	if '_BY' in filename:
-		country = 'Belarus'
-	if '_BG' in filename:
-		country = 'Bulgaria'
-	if '_CH' in filename:
-		country = 'Switzerland'
-	if '_CY' in filename:
-		if 'TUR' in filename:
-			country = 'Northern Cyprus'
-		else:
-			country = 'Cyprus'
-	if '_CZ' in filename:
-		country = 'Czech Republic'
-	if '_DE' in filename:
-		country = 'Germany'
-	if '_DK' in filename:
-		country = 'Denmark'
-	if '_EE' in filename:
-		country = 'Estonia'
-	if '_ES' in filename:
-		country = 'Spain'
-	if '_FR' in filename:
-		country = 'France'
-	if '_GE' in filename:
-		country = 'Georgia'
-	if '_GB' in filename or 'SOURCE' in filename:
-		country = 'Great Britain'
-	if '_GR' in filename:
-		country = 'Greece'
-	if '_IE' in filename:
-		country = 'Ireland'	
-	if '_NIR' in filename:
-		country = 'Northern Ireland'
-	if '_LU' in filename:
-		country = 'Luxembourg'
-	if '_LV' in filename:
-		country = 'Latvia'
-	if '_LT' in filename:
-		country = 'Lithuania'
-	if '_MD' in filename:
-		country = 'Moldova'
-	if '_ME' in filename:
-		country = 'Montenegro'
-	if '_MT' in filename:
-		country = 'Malta'
-	if '_NO' in filename:
-		country = 'Norway'
-	if '_PT' in filename:
-		country = 'Portugal'
-	if '_RU' in filename:
-		country = 'Russian Federation'
-	if '_UA' in filename:
-		country = 'Ukraine'
-
-
-	return country
-
-
-def determine_sentence_tokenizer(filename):
-	if 'ENG_' in filename:
-		sentence_splitter_suffix = 'english.pickle'
-	if 'FRE_' in filename:
-		sentence_splitter_suffix = 'french.pickle'
-	if 'GER_' in filename:
-		sentence_splitter_suffix = 'german.pickle'
-	if 'CZE_' in filename:
-		sentence_splitter_suffix = 'czech.pickle'
-	if 'POR_' in filename:
-		sentence_splitter_suffix = 'portuguese.pickle'
-	if 'ITA_' in filename:
-		sentence_splitter_suffix = 'italian.pickle'
-	if 'RUS_' in filename:
-		sentence_splitter_suffix = 'russian.pickle'
-	if 'SPA_' in filename:
-		sentence_splitter_suffix = 'spanish.pickle'
-	if 'DAN_' in filename:
-		sentence_splitter_suffix = 'danish.pickle'
-	if 'DUT_' in filename:
-		sentence_splitter_suffix = 'dutch.pickle'
-	if 'SLO_' in filename:
-		sentence_splitter_suffix = 'slovene.pickle'
-	if 'EST_' in filename:
-		sentence_splitter_suffix = 'estonian.pickle'
-	if 'FIN_' in filename:
-		sentence_splitter_suffix = 'finnish.pickle'
-	if 'GRE_' in filename:
-		sentence_splitter_suffix = 'greek.pickle'
-	if 'POL_' in filename:
-		sentence_splitter_suffix = 'polish.pickle'
-	if 'NOR_' in filename:
-		sentence_splitter_suffix = 'norwegian.pickle'
-	if 'SWE_' in filename:
-		sentence_splitter_suffix = 'swedish.pickle'
-	if 'TUR_' in filename:
-		sentence_splitter_suffix = 'turkish.pickle'
-	if 'HUN_' in filename:
-		sentence_splitter_suffix = 'hungarian.pickle'
-
-	return sentence_splitter_suffix
 
 
 def main(filename):

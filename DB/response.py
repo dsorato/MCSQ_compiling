@@ -3,7 +3,7 @@ from sqlalchemy import Column, String, Boolean, Integer, Sequence, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
 class Response(Base):
-    __tablename__ = 'Response'
+    __tablename__ = 'response'
 
     # emits CREATE SEQUENCE + INTEGER
     responseid = Column(Integer, Sequence('response_id_seq'), primary_key=True)
