@@ -12,6 +12,7 @@ initial_request= ["Reporter sur votre: VOTRE CODE ENQUETEUR, VOTRE NOM , la date
 "Numéro d'interview"]
 
 
+
 def update_item_id(survey_id):
 	global initial_sufix
 	prefix = survey_id+'_'
@@ -41,6 +42,7 @@ def clean_instruction(text):
 		text = re.sub('\]', "",text)
 		text = text.replace('\n',' ')
 		text = text.rstrip()
+		text = text.lstrip()
 	else:
 		text = ''
 
@@ -51,8 +53,9 @@ def clean_instruction(text):
 
 def clean_text(text):
 	if isinstance(text, str):
-		text = re.sub(" \?", "?", text)
+		text = re.sub(r'\s([?.!"](?:\s|$))', r'\1', text)
 		text = re.sub("…", "...", text)
+		text = re.sub(" :", ":", text)
 		text = re.sub("’", "'", text)
 		text = re.sub("[.]{4,}", "", text)
 		text = re.sub("[_]{2,}", "", text)
@@ -68,10 +71,12 @@ def clean_text(text):
 		text = re.sub('SR\.', "SR",text)
 		text = re.sub('s\.r', "SR",text)
 		text = re.sub('s\.r\.', "SR",text)
+		text = re.sub('S\.r', "SR",text)
 		text = text.replace('\n',' ')
 		text = text.rstrip()
 	else:
 		text = ''
+
 
 
 	return text
@@ -155,7 +160,15 @@ def determine_survey_item_module(item_name, filename):
 
 	return module
 
+def dk_nr_standard(catValu):
+	if catValu == '-2' or catValu == '9' or catValu == '99':
+		item_value = '999'
+	elif catValu == '-1' or catValu == '8' or catValu == '88':
+		item_value = '888'
+	else:
+		item_value = catValu
 
+	return item_value
 
 
 def main(filename):
@@ -189,6 +202,14 @@ def main(filename):
 			item_value = ''
 			qstn = var.find('qstn')
 			if qstn is not None and 'seqNo' in qstn.attrib:
+				# item_name_exception = ''
+				# for child in qstn:
+				# 	if child.text is not None:
+				# 		if 'Q.' in child.text:
+				# 			item_name_exception = child.text
+				# 			item_name = item_name_exception.replace('\.','')
+				# 			break
+				# if item_name_exception == '':
 				item_name = qstn.attrib['seqNo']
 			else:
 				elem_item_name = var.find('labl').text
@@ -198,9 +219,12 @@ def main(filename):
 			# module = 'No module'
 			
 			if node.tag=='preQTxt':
-				if is_uppercase == True:
+				if is_uppercase == True and '?' not in node.text:
 					item_type = 'INSTRUCTION'
 					text = clean_instruction(node.text)
+				elif '?' in node.text:
+					text = clean_text(node.text)
+					item_type = 'REQUEST'
 				else:
 					text = clean_text(node.text)
 					item_type = 'INTRODUCTION'
@@ -215,8 +239,11 @@ def main(filename):
 				last_tag = node.tag
 
 			if node.tag=='ivuInstr':
-				text = clean_instruction(node.text)	
-				item_type = 'INSTRUCTION'
+				text = clean_instruction(node.text)
+				if 	'?' in text:
+					item_type = 'REQUEST'
+				else:
+					item_type = 'INSTRUCTION'
 				module = determine_survey_item_module(item_name, filename)
 
 				split_into_sentences = tokenizer.tokenize(text)
@@ -229,7 +256,7 @@ def main(filename):
 			if node.tag=='qstnLit':
 				text = clean_text(node.text)
 				item_type = 'REQUEST'
-				print(text)
+				# print(text)
 				if len(text) != 1 and text.isnumeric() == False:
 					module = determine_survey_item_module(item_name, filename)
 					if text in initial_request:
@@ -278,7 +305,7 @@ def main(filename):
 						item_type = 'RESPONSE'
 						module = determine_survey_item_module(item_name, filename)
 						catValu = node.find('catValu')
-						item_value = catValu.text
+						item_value = dk_nr_standard(catValu.text)
 						split_into_sentences = tokenizer.tokenize(text)
 						for item in split_into_sentences:
 							data = {"survey_itemid": update_item_id(survey_id), 'module': module, 'item_type': item_type, 
@@ -290,7 +317,7 @@ def main(filename):
 	
 
 	file_to_csv_name = filename.replace('.xml', '')
-	df_survey_item.to_csv(str(file_to_csv_name)+'.csv')
+	df_survey_item.to_csv(str(file_to_csv_name)+'.csv', encoding='utf-8-sig')
 
 		
 
