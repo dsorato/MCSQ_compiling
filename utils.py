@@ -6,6 +6,19 @@ main_languages_prefix = ['GER', 'ENG', 'FRE', 'RUS']
 
 initial_sufix = 0
 
+def ignore_interviewer_number_segment(filename, item_name, text):
+	ignore_item = False
+
+	if '2008_FRE_CH' in filename:
+		if text == "Numéro d'interviewer" or item_name == 'Q141':
+			ignore_item = True
+	elif '2008_FRE_LU' in filename:
+		if text == "Numéro d'enquêteur" or item_name == 'Q141':
+			ignore_item = True
+
+
+	return ignore_item
+
 def reset_initial_sufix():
 	global initial_sufix
 	initial_sufix = 0
@@ -26,14 +39,28 @@ def get_survey_item_id(prefix):
 def decide_on_survey_item_id(prefix, old_item_name, new_item_name):
 	if old_item_name == new_item_name:
 		survey_item_id = get_survey_item_id(prefix)
-		print('same survey id', survey_item_id)
 	else:
 		survey_item_id = update_survey_item_id(prefix)
-		print('update_survey_item_id', survey_item_id)
 
 
 	return survey_item_id
-	
+
+def recognize_standard_response_scales(filename, text):
+	if 'FRE' in filename:
+		dk_pattern = re.compile("(ne sait pas)", re.IGNORECASE)
+		refusal_pattern = re.compile("(pas de réponse)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(ne s'applique pas)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None 
+
+
 def determine_country(filename):
 	if '_AT' in filename:
 		country = 'Austria'

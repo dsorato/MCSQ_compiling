@@ -12,15 +12,6 @@ initial_request= ["Reporter sur votre: VOTRE CODE ENQUETEUR, VOTRE NOM , la date
 
 
 
-
-# def update_item_id(survey_id):
-# 	global initial_sufix
-# 	prefix = survey_id+'_'
-# 	survey_item_id = prefix+str(initial_sufix)
-# 	initial_sufix = initial_sufix + 1
-
-# 	return survey_item_id
-
 def check_if_sentence_is_uppercase(text):
 	is_uppercase = False
 	if isinstance(text, str):
@@ -51,7 +42,7 @@ def clean_instruction(text):
 
 
 
-def clean_text(text):
+def clean_text(text, filename):
 	if isinstance(text, str):
 		text = re.sub(r'\s([?.!"](?:\s|$))', r'\1', text)
 		text = re.sub("…", "...", text)
@@ -66,12 +57,18 @@ def clean_text(text):
 		text = re.sub('\]', "",text)
 		text = re.sub('^[A-Z]\.\s', "",text)
 		text = re.sub('^[A-Z]\s', "",text)
-		text = re.sub('S\.R\.', "SR",text)
-		text = re.sub('S\.R', "SR",text)
-		text = re.sub('SR\.', "SR",text)
-		text = re.sub('s\.r', "SR",text)
-		text = re.sub('s\.r\.', "SR",text)
-		text = re.sub('S\.r', "SR",text)
+
+		if 'FRE' in filename:
+			text = re.sub('NSP', "Ne sait pas",text)
+			text = re.sub('S\.R\.', "SR",text)
+			text = re.sub('S\.R', "SR",text)
+			text = re.sub('SR\.', "SR",text)
+			text = re.sub('s\.r', "SR",text)
+			text = re.sub('s\.r\.', "SR",text)
+			text = re.sub('S\.r', "SR",text)
+			text = re.sub('SR', "Pas de réponse",text)
+		
+
 		text = text.replace('\n',' ')
 		text = text.rstrip()
 	else:
@@ -160,11 +157,18 @@ def determine_survey_item_module(item_name, filename):
 
 	return module
 
-def dk_nr_standard(catValu):
-	if catValu == '-2' or catValu == '99':
-		item_value = '999'
-	elif catValu == '-1' or catValu == '88':
+def dk_nr_standard(filename, catValu, text):
+	# Standard
+	# Refusal 777
+	# Don't know 888
+	# Does not apply 999
+
+	if catValu == '-2' or ut.recognize_standard_response_scales(filename, text)=='refusal':
+		item_value = '777'
+	elif catValu == '-1' or ut.recognize_standard_response_scales(filename, text)=='dk':
 		item_value = '888'
+	elif catValu == '-3' or ut.recognize_standard_response_scales(filename, text)=='dontapply':
+		item_value = '999'
 	else:
 		item_value = catValu
 
@@ -231,10 +235,10 @@ def main(filename):
 					item_type = 'INSTRUCTION'
 					text = clean_instruction(node.text)
 				elif '?' in node.text:
-					text = clean_text(node.text)
+					text = clean_text(node.text, filename)
 					item_type = 'REQUEST'
 				else:
-					text = clean_text(node.text)
+					text = clean_text(node.text, filename)
 					item_type = 'INTRODUCTION'
 				
 				module = determine_survey_item_module(item_name, filename)
@@ -265,32 +269,36 @@ def main(filename):
 				last_tag = node.tag
 
 			if node.tag=='qstnLit':
-				text = clean_text(node.text)
+				text = clean_text(node.text, filename)
 				item_type = 'REQUEST'
 				if len(text) != 1 and text.isnumeric() == False:
-					module = determine_survey_item_module(item_name, filename)
-					survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
-					old_item_name = item_name
-
-					if text in initial_request:
-						split_into_sentences = tokenizer.tokenize(text)
-						for item in split_into_sentences:
-							data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
-								'item_name': 'INTRODUCTION', 'item_value': item_value,  'text': item, 'item_is_source': False}
-							df_survey_item = df_survey_item.append(data, ignore_index = True)
-						last_tag = node.tag
+					#workaround
+					if ut.ignore_interviewer_number_segment(filename, item_name, text):
+						pass
 					else:
-						# item_type = 'REQUEST'
-						split_into_sentences = tokenizer.tokenize(text)
-						for item in split_into_sentences:
-							data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
-							'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
-							df_survey_item = df_survey_item.append(data, ignore_index = True)
-						last_tag = node.tag
+						module = determine_survey_item_module(item_name, filename)
+						survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+						old_item_name = item_name
+
+						if text in initial_request:
+							split_into_sentences = tokenizer.tokenize(text)
+							for item in split_into_sentences:
+								data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
+								'item_name': 'INTRODUCTION', 'item_value': item_value,  'text': item, 'item_is_source': False}
+								df_survey_item = df_survey_item.append(data, ignore_index = True)
+							last_tag = node.tag
+					
+						else:
+							split_into_sentences = tokenizer.tokenize(text)
+							for item in split_into_sentences:
+								data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
+								'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
+								df_survey_item = df_survey_item.append(data, ignore_index = True)
+							last_tag = node.tag
 
 			if node.tag=='txt' and last_tag != 'catgry' and 'country' not in item_name and 'split' not in item_name:
 				is_uppercase = check_if_sentence_is_uppercase(node.text)
-				text = clean_text(node.text)
+				text = clean_text(node.text, filename)
 				item_type = 'REQUEST'
 
 				# if is_uppercase == True:
@@ -317,7 +325,7 @@ def main(filename):
 			if node.tag=='catgry' and 'country' not in item_name and 'split' not in item_name:
 				txt = node.find('txt')
 				if txt is not None:
-					text = clean_text(txt.text)
+					text = clean_text(txt.text, filename)
 					if 'sample' not in text and text != country:
 
 						survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
@@ -326,7 +334,7 @@ def main(filename):
 						item_type = 'RESPONSE'
 						module = determine_survey_item_module(item_name, filename)
 						catValu = node.find('catValu')
-						item_value = dk_nr_standard(catValu.text)
+						item_value = dk_nr_standard(filename, catValu.text, text)
 						split_into_sentences = tokenizer.tokenize(text)
 						for item in split_into_sentences:
 							data = {"survey_itemid": survey_item_id, 'module': module, 'item_type': item_type, 
@@ -338,7 +346,7 @@ def main(filename):
 	
 
 	file_to_csv_name = filename.replace('.xml', '')
-	df_survey_item.to_csv(str(file_to_csv_name)+'.csv', encoding='utf-8-sig')
+	df_survey_item.to_csv(str(file_to_csv_name)+'.csv', encoding='utf-8-sig', index=False)
 
 		
 
