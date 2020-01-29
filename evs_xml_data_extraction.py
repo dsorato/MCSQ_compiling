@@ -4,22 +4,22 @@ import nltk.data
 import sys
 import re
 import string
-from utils import *
+import utils as ut
 
 
-initial_sufix = 0
 initial_request= ["Reporter sur votre: VOTRE CODE ENQUETEUR, VOTRE NOM , la date d'interview et le numéro d'interview:",
 "Numéro d'interview"]
 
 
 
-def update_item_id(survey_id):
-	global initial_sufix
-	prefix = survey_id+'_'
-	survey_item_id = prefix+str(initial_sufix)
-	initial_sufix = initial_sufix + 1
 
-	return survey_item_id
+# def update_item_id(survey_id):
+# 	global initial_sufix
+# 	prefix = survey_id+'_'
+# 	survey_item_id = prefix+str(initial_sufix)
+# 	initial_sufix = initial_sufix + 1
+
+# 	return survey_item_id
 
 def check_if_sentence_is_uppercase(text):
 	is_uppercase = False
@@ -161,9 +161,9 @@ def determine_survey_item_module(item_name, filename):
 	return module
 
 def dk_nr_standard(catValu):
-	if catValu == '-2' or catValu == '9' or catValu == '99':
+	if catValu == '-2' or catValu == '99':
 		item_value = '999'
-	elif catValu == '-1' or catValu == '8' or catValu == '88':
+	elif catValu == '-1' or catValu == '88':
 		item_value = '888'
 	else:
 		item_value = catValu
@@ -172,13 +172,17 @@ def dk_nr_standard(catValu):
 
 
 def main(filename):
+	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
+	ut.reset_initial_sufix()
 	#Punkt Sentence Tokenizer from NLTK	
 	sentence_splitter_prefix = 'tokenizers/punkt/'
-	sentence_splitter_suffix = determine_sentence_tokenizer(filename)
+	sentence_splitter_suffix = ut.determine_sentence_tokenizer(filename)
 	sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
 	tokenizer = nltk.data.load(sentence_splitter)
 
-	country = determine_country(filename)
+	country = ut.determine_country(filename)
+	#The prefix is study+'_'+language+'_'+country+'_'
+	prefix = re.sub('\.xml', '', filename)+'_'
 
 	# parse an xml file by name
 	file = str(filename)
@@ -195,6 +199,7 @@ def main(filename):
 	
 
 	last_tag = 'tag'
+	old_item_name = 'last'
 	for var in evs_vars:
 		for node in var.getiterator():
 			text = ''
@@ -216,10 +221,13 @@ def main(filename):
 				item_name = elem_item_name[elem_item_name.find("(")+1:elem_item_name.find(")")]
 
 			item_name = standartize_item_name(item_name)
-			# module = 'No module'
+			
 			
 			if node.tag=='preQTxt':
-				if is_uppercase == True and '?' not in node.text:
+				survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+				old_item_name = item_name
+
+				if check_if_sentence_is_uppercase(node.text) == True and '?' not in node.text:
 					item_type = 'INSTRUCTION'
 					text = clean_instruction(node.text)
 				elif '?' in node.text:
@@ -233,12 +241,15 @@ def main(filename):
 
 				split_into_sentences = tokenizer.tokenize(text)
 				for item in split_into_sentences:
-					data = {"survey_itemid": update_item_id(survey_id), 'module': module,'item_type': item_type, 
+					data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
 					'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 				last_tag = node.tag
 
 			if node.tag=='ivuInstr':
+				survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+				old_item_name = item_name
+
 				text = clean_instruction(node.text)
 				if 	'?' in text:
 					item_type = 'REQUEST'
@@ -248,7 +259,7 @@ def main(filename):
 
 				split_into_sentences = tokenizer.tokenize(text)
 				for item in split_into_sentences:
-					data = {"survey_itemid": update_item_id(survey_id), 'module': module,'item_type': item_type, 
+					data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
 					'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 				last_tag = node.tag
@@ -256,13 +267,15 @@ def main(filename):
 			if node.tag=='qstnLit':
 				text = clean_text(node.text)
 				item_type = 'REQUEST'
-				# print(text)
 				if len(text) != 1 and text.isnumeric() == False:
 					module = determine_survey_item_module(item_name, filename)
+					survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+					old_item_name = item_name
+
 					if text in initial_request:
 						split_into_sentences = tokenizer.tokenize(text)
 						for item in split_into_sentences:
-							data = {"survey_itemid": update_item_id(survey_id), 'module': module,'item_type': item_type, 
+							data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
 								'item_name': 'INTRODUCTION', 'item_value': item_value,  'text': item, 'item_is_source': False}
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
 						last_tag = node.tag
@@ -270,7 +283,7 @@ def main(filename):
 						# item_type = 'REQUEST'
 						split_into_sentences = tokenizer.tokenize(text)
 						for item in split_into_sentences:
-							data = {"survey_itemid": update_item_id(survey_id), 'module': module,'item_type': item_type, 
+							data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
 							'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
 						last_tag = node.tag
@@ -290,9 +303,13 @@ def main(filename):
 				# 	item_name = node.attrib['level']
 				# 	item_name = standartize_item_name(item_name)
 				if 'sample' not in text and text != country: 
+					
+					survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+					old_item_name = item_name
+
 					split_into_sentences = tokenizer.tokenize(text)
 					for item in split_into_sentences:
-						data = {"survey_itemid": update_item_id(survey_id), 'module': module, 'item_type': item_type, 
+						data = {"survey_itemid": survey_item_id, 'module': module, 'item_type': item_type, 
 						'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 					last_tag = node.tag
@@ -301,14 +318,18 @@ def main(filename):
 				txt = node.find('txt')
 				if txt is not None:
 					text = clean_text(txt.text)
-					if 'sample' not in text and text != country: 
+					if 'sample' not in text and text != country:
+
+						survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+						old_item_name = item_name
+
 						item_type = 'RESPONSE'
 						module = determine_survey_item_module(item_name, filename)
 						catValu = node.find('catValu')
 						item_value = dk_nr_standard(catValu.text)
 						split_into_sentences = tokenizer.tokenize(text)
 						for item in split_into_sentences:
-							data = {"survey_itemid": update_item_id(survey_id), 'module': module, 'item_type': item_type, 
+							data = {"survey_itemid": survey_item_id, 'module': module, 'item_type': item_type, 
 							'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
 						last_tag = node.tag

@@ -4,6 +4,36 @@ import pandas as pd
 
 main_languages_prefix = ['GER', 'ENG', 'FRE', 'RUS']
 
+initial_sufix = 0
+
+def reset_initial_sufix():
+	global initial_sufix
+	initial_sufix = 0
+
+def update_survey_item_id(prefix):
+	global initial_sufix
+	initial_sufix = initial_sufix + 1
+	survey_item_id = prefix+str(initial_sufix)
+	
+	return survey_item_id
+
+def get_survey_item_id(prefix):
+	global initial_sufix
+	survey_item_id = prefix+str(initial_sufix)
+
+	return survey_item_id
+
+def decide_on_survey_item_id(prefix, old_item_name, new_item_name):
+	if old_item_name == new_item_name:
+		survey_item_id = get_survey_item_id(prefix)
+		print('same survey id', survey_item_id)
+	else:
+		survey_item_id = update_survey_item_id(prefix)
+		print('update_survey_item_id', survey_item_id)
+
+
+	return survey_item_id
+	
 def determine_country(filename):
 	if '_AT' in filename:
 		country = 'Austria'
