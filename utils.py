@@ -60,6 +60,21 @@ def recognize_standard_response_scales(filename, text):
 		else:
 			return None 
 
+	if 'GER' in filename:
+		dk_pattern = re.compile("(weiß nicht)", re.IGNORECASE)
+		refusal_pattern = re.compile("(verweigert)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(trifft nicht zu)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None 
+
+
 
 def determine_country(filename):
 	if '_AT' in filename:

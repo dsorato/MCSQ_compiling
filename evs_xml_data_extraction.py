@@ -67,6 +67,8 @@ def clean_text(text, filename):
 			text = re.sub('s\.r\.', "SR",text)
 			text = re.sub('S\.r', "SR",text)
 			text = re.sub('SR', "Pas de réponse",text)
+		if 'GER' in filename:
+			text = re.sub('TNZ', "Trifft nicht zu",text)
 		
 
 		text = text.replace('\n',' ')
@@ -82,6 +84,7 @@ def standartize_item_name(item_name):
 	item_name = re.sub("\.", "", item_name)
 	item_name = item_name.lower()
 	item_name = re.sub("q", "Q", item_name)
+	item_name = re.sub("^f", "Q", item_name)
 
 	if '_'  in item_name:
 		item_name = item_name.split('_')
@@ -91,7 +94,8 @@ def standartize_item_name(item_name):
 
 def determine_survey_item_module(item_name, filename):
 	module = 'No module'
-	if 'Q' in item_name:
+	if ('Q' in item_name or 'f' in item_name) and (len(item_name) <= 10):
+		print(item_name, len(item_name))
 
 		digits_in_item_name = re.sub("[^\d]", "", item_name)
 		# digits_in_item_name = re.sub("a", "", digits_in_item_name)
@@ -225,6 +229,8 @@ def main(filename):
 				item_name = elem_item_name[elem_item_name.find("(")+1:elem_item_name.find(")")]
 
 			item_name = standartize_item_name(item_name)
+
+
 			
 			
 			if node.tag=='preQTxt':
