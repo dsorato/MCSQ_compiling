@@ -74,6 +74,20 @@ def recognize_standard_response_scales(filename, text):
 		else:
 			return None 
 
+	if 'ENG' in filename:
+		dk_pattern = re.compile("(don't know)", re.IGNORECASE)
+		refusal_pattern = re.compile("(refusal|no answer)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(not applicable)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None 
+
 
 
 def determine_country(filename):
