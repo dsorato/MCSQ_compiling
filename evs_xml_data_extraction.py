@@ -59,16 +59,26 @@ def clean_text(text, filename):
 		text = re.sub('^[A-Z]\s', "",text)
 
 		if 'FRE' in filename:
-			text = re.sub('NSP', "Ne sait pas",text)
-			text = re.sub('S\.R\.', "SR",text)
-			text = re.sub('S\.R', "SR",text)
-			text = re.sub('SR\.', "SR",text)
-			text = re.sub('s\.r', "SR",text)
-			text = re.sub('s\.r\.', "SR",text)
-			text = re.sub('S\.r', "SR",text)
-			text = re.sub('SR', "Pas de réponse",text)
+			text = re.sub('^NSP\b', "Ne sait pas",text, flags=re.IGNORECASE)
+			text = re.sub('^S\.R\.\b', "SR",text, flags=re.IGNORECASE)
+			text = re.sub('^S\.R\b', "SR",text, flags=re.IGNORECASE)
+			text = re.sub('^SR\.\b', "SR",text, flags=re.IGNORECASE)
+			text = re.sub('^s\.r\b', "SR",text, flags=re.IGNORECASE)
+			text = re.sub('^s\.r\.\b', "SR",text, flags=re.IGNORECASE)
+			text = re.sub('^S\.r\b', "SR",text, flags=re.IGNORECASE)
+			text = re.sub('^SR\b', "Pas de réponse",text, flags=re.IGNORECASE)
 		if 'GER' in filename:
-			text = re.sub('TNZ', "Trifft nicht zu",text)
+			text = re.sub('^TNZ', "Trifft nicht zu",text, flags=re.IGNORECASE)
+		if 'ENG' in filename:
+			text = re.sub('^NAP\b', "Not applicable",text, flags=re.IGNORECASE)
+			text = re.sub('^DK\b', "Don't know",text, flags=re.IGNORECASE)
+			text = re.sub('^na\b', "No answer",text, flags=re.IGNORECASE)
+		if 'POR' in filename:
+			text = re.sub('^Na\b', "Não se aplica",text, flags=re.IGNORECASE)
+			text = re.sub('^Ns', "Não sabe",text, flags=re.IGNORECASE)
+			text = re.sub('^NS', "Não sabe",text, flags=re.IGNORECASE)
+			text = re.sub('^Nr', "Não responde",text, flags=re.IGNORECASE)
+			text = re.sub('^NR', "Não responde",text, flags=re.IGNORECASE)
 		
 
 		text = text.replace('\n',' ')

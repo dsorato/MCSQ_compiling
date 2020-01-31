@@ -88,6 +88,20 @@ def recognize_standard_response_scales(filename, text):
 		else:
 			return None 
 
+	if 'POR' in filename:
+		dk_pattern = re.compile("(não sabe)", re.IGNORECASE)
+		refusal_pattern = re.compile("(não responde)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(não se aplica)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None 
+
 
 
 def determine_country(filename):
