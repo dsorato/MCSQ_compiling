@@ -95,26 +95,14 @@ def standartize_item_name(item_name):
 def determine_survey_item_module(item_name, filename):
 	module = 'No module'
 	if ('Q' in item_name or 'f' in item_name) and (len(item_name) <= 10):
-		print(item_name, len(item_name))
 
 		digits_in_item_name = re.sub("[^\d]", "", item_name)
-		# digits_in_item_name = re.sub("a", "", digits_in_item_name)
-		# digits_in_item_name = re.sub("b", "", digits_in_item_name)
-		# digits_in_item_name = re.sub("c", "", digits_in_item_name)
-		# digits_in_item_name = re.sub("d", "", digits_in_item_name)
-		# digits_in_item_name = re.sub("e", "", digits_in_item_name)
-		# digits_in_item_name = re.sub("f", "", digits_in_item_name)
-		# digits_in_item_name = re.sub("g", "", digits_in_item_name)
-		# digits_in_item_name = re.sub("h", "", digits_in_item_name)
+
 
 		if '/' in digits_in_item_name:
 			digits_in_item_name = digits_in_item_name.split('/')
 			digits_in_item_name = digits_in_item_name[0]
-		# if '_'  in digits_in_item_name:
-		# 	digits_in_item_name = digits_in_item_name.split('_')
-		# 	digits_in_item_name = digits_in_item_name[0]
-
-
+	
 		digits_in_item_name = int(digits_in_item_name)
 		
 
@@ -166,12 +154,14 @@ def dk_nr_standard(filename, catValu, text):
 	# Refusal 777
 	# Don't know 888
 	# Does not apply 999
+	print('text', text)
 
-	if catValu == '-2' or ut.recognize_standard_response_scales(filename, text)=='refusal':
+	if ut.recognize_standard_response_scales(filename, text)=='refusal':
 		item_value = '777'
-	elif catValu == '-1' or ut.recognize_standard_response_scales(filename, text)=='dk':
+		# print('777', text, catValu, ut.recognize_standard_response_scales(filename, text))
+	elif ut.recognize_standard_response_scales(filename, text)=='dk':
 		item_value = '888'
-	elif catValu == '-3' or ut.recognize_standard_response_scales(filename, text)=='dontapply':
+	elif ut.recognize_standard_response_scales(filename, text)=='dontapply':
 		item_value = '999'
 	else:
 		item_value = catValu
