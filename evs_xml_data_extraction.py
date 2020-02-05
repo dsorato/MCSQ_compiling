@@ -80,6 +80,9 @@ def clean_text(text, filename):
 			text = re.sub('^Nr', "Não responde",text, flags=re.IGNORECASE)
 			text = re.sub('^NR', "Não responde",text, flags=re.IGNORECASE)
 		
+		if 'DUT' in filename:
+			text = re.sub('^nap', "niet van toepassing",text, flags=re.IGNORECASE)
+
 
 		text = text.replace('\n',' ')
 		text = text.rstrip()
