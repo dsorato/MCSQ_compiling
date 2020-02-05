@@ -83,6 +83,9 @@ def clean_text(text, filename):
 		if 'DUT' in filename:
 			text = re.sub('^nap', "niet van toepassing",text, flags=re.IGNORECASE)
 
+		if 'FIN' in filename:
+			text = re.sub('^EOS', "Ei osaa sanoa",text, flags=re.IGNORECASE)
+
 
 		text = text.replace('\n',' ')
 		text = text.rstrip()

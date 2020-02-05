@@ -158,6 +158,34 @@ def recognize_standard_response_scales(filename, text):
 		else:
 			return None
 
+	if 'FIN' in filename:
+		dk_pattern = re.compile("(Ei osaa sanoa)", re.IGNORECASE)
+		refusal_pattern = re.compile("(Ei vastausta)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(Ei sovellu|Ei sovi vastaajaan)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+	if 'ITA' in filename:
+		dk_pattern = re.compile("(Non so)", re.IGNORECASE)
+		refusal_pattern = re.compile("(non risponde)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(non pertinente)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
 	if 'SPA' in filename:
 		dk_pattern = re.compile("(No sabe)", re.IGNORECASE)
 		refusal_pattern = re.compile("(no contesta)", re.IGNORECASE)
@@ -250,6 +278,8 @@ def determine_country(filename):
 		country = 'Estonia'
 	if '_ES' in filename:
 		country = 'Spain'
+	if '_FI' in filename:
+		country = 'Finland'
 	if '_FR' in filename:
 		country = 'France'
 	if '_GE' in filename:
@@ -259,7 +289,9 @@ def determine_country(filename):
 	if '_GR' in filename:
 		country = 'Greece'
 	if '_IE' in filename:
-		country = 'Ireland'	
+		country = 'Ireland'
+	if '_IT' in filename:
+		country = 'Italy'	
 	if '_NIR' in filename:
 		country = 'Northern Ireland'
 	if '_LU' in filename:
