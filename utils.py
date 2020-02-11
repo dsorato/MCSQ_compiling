@@ -102,6 +102,22 @@ def recognize_standard_response_scales(filename, text):
 		else:
 			return None
 
+	if 'POL' in filename:
+		dk_pattern = re.compile("(trudno powiedzieć)", re.IGNORECASE)
+
+		#fake values - no translation for these items in XML
+		refusal_pattern = re.compile("(CEVAP VERMİYOR)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(Soru Sorulmadı)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
 	if 'BUL' in filename:
 		dk_pattern = re.compile("(Не зная)", re.IGNORECASE)
 		refusal_pattern = re.compile("(Без отговор)", re.IGNORECASE)
@@ -232,6 +248,21 @@ def recognize_standard_response_scales(filename, text):
 			else:
 				return None
 
+	if 'TUR' in filename:
+		dk_pattern = re.compile("(BİLMİYOR-FİKRİ YOK)", re.IGNORECASE)
+		refusal_pattern = re.compile("(CEVAP VERMİYOR)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(Soru Sorulmadı)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+
 
 	if 'EST' in filename:
 		dk_pattern = re.compile("(RÖ)", re.IGNORECASE)
@@ -312,8 +343,12 @@ def determine_country(filename):
 		country = 'Neatherlands'
 	if '_PT' in filename:
 		country = 'Portugal'
+	if '_PL' in filename:
+		country = 'Poland'
 	if '_RU' in filename:
 		country = 'Russian Federation'
+	if 'TUR' in filename:
+		country = 'Turkey'
 	if '_UA' in filename:
 		country = 'Ukraine'
 

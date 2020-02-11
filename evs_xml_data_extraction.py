@@ -86,6 +86,11 @@ def clean_text(text, filename):
 		if 'FIN' in filename:
 			text = re.sub('^EOS', "Ei osaa sanoa",text, flags=re.IGNORECASE)
 
+		if 'TUR' in filename:
+			text = re.sub('^FY', "BİLMİYOR-FİKRİ YOK",text, flags=re.IGNORECASE)
+			text = re.sub('^CY', "CEVAP VERMİYOR",text, flags=re.IGNORECASE)
+			text = re.sub('^SS', "Soru Sorulmadı",text, flags=re.IGNORECASE)
+
 
 		text = text.replace('\n',' ')
 		text = text.rstrip()
