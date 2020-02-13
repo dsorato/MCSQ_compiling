@@ -104,19 +104,21 @@ def clean_text(text, filename):
 def standartize_item_name(item_name):
 	item_name = re.sub("\.", "", item_name)
 	item_name = item_name.lower()
-	item_name = re.sub("q", "Q", item_name)
+	item_name = re.sub("^q", "Q", item_name)
 	item_name = re.sub("^f", "Q", item_name)
 
 	if '_'  in item_name:
 		item_name = item_name.split('_')
-		item_name = item_name[0]
+		item_name = item_name[0]+item_name[1].lower()
+
+	if item_name[0].isdigit():
+		item_name = 'Q'+item_name
 
 	return item_name
 
 def determine_survey_item_module(item_name, filename):
 	module = 'No module'
 	if ('Q' in item_name or 'f' in item_name) and (len(item_name) <= 10):
-
 		digits_in_item_name = re.sub("[^\d]", "", item_name)
 
 
@@ -179,7 +181,6 @@ def dk_nr_standard(filename, catValu, text):
 
 	if ut.recognize_standard_response_scales(filename, text)=='refusal':
 		item_value = '777'
-		# print('777', text, catValu, ut.recognize_standard_response_scales(filename, text))
 	elif ut.recognize_standard_response_scales(filename, text)=='dk':
 		item_value = '888'
 	elif ut.recognize_standard_response_scales(filename, text)=='dontapply':
@@ -191,6 +192,9 @@ def dk_nr_standard(filename, catValu, text):
 
 
 def main(filename):
+	dict_answers = dict()
+	dict_category_values = dict()
+
 	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
 	ut.reset_initial_sufix()
 	#Punkt Sentence Tokenizer from NLTK	
@@ -219,29 +223,32 @@ def main(filename):
 
 	last_tag = 'tag'
 	old_item_name = 'last'
+	item_name = ''
 	for var in evs_vars:
+		last_node_was_sublevel = False
+
 		for node in var.getiterator():
 			text = ''
 			item_type = ''
 			item_value = ''
 			qstn = var.find('qstn')
-			if qstn is not None and 'seqNo' in qstn.attrib:
-				# item_name_exception = ''
-				# for child in qstn:
-				# 	if child.text is not None:
-				# 		if 'Q.' in child.text:
-				# 			item_name_exception = child.text
-				# 			item_name = item_name_exception.replace('\.','')
-				# 			break
-				# if item_name_exception == '':
-				item_name = qstn.attrib['seqNo']
+			if node.tag=='txt' and 'level' in node.attrib:
+				item_name = node.attrib['level']
+				last_node_was_sublevel = True
+
+			elif qstn is not None and 'seqNo' in qstn.attrib and 'level' not in node.attrib:
+				item_name = qstn.attrib['seqNo'] 
+		
 			else:
 				elem_item_name = var.find('labl').text
 				item_name = elem_item_name[elem_item_name.find("(")+1:elem_item_name.find(")")]
 
-			item_name = standartize_item_name(item_name)
-			
-			
+			if item_name:
+				item_name = standartize_item_name(item_name)
+				last_node_was_sublevel = False
+
+				
+	
 			if node.tag=='preQTxt':
 				survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
 				old_item_name = item_name
@@ -295,22 +302,13 @@ def main(filename):
 						survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
 						old_item_name = item_name
 
-						if text in initial_request:
-							split_into_sentences = tokenizer.tokenize(text)
-							for item in split_into_sentences:
-								data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
-								'item_name': 'INTRODUCTION', 'item_value': item_value,  'text': item, 'item_is_source': False}
-								df_survey_item = df_survey_item.append(data, ignore_index = True)
-							last_tag = node.tag
-							last_text = node.text
-					
-						else:
-							split_into_sentences = tokenizer.tokenize(text)
-							for item in split_into_sentences:
-								data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
-								'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
-								df_survey_item = df_survey_item.append(data, ignore_index = True)
-							last_tag = node.tag
+
+						split_into_sentences = tokenizer.tokenize(text)
+						for item in split_into_sentences:
+							data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
+							'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
+							df_survey_item = df_survey_item.append(data, ignore_index = True)
+						last_tag = node.tag
 
 			if node.tag=='txt' and 'split' not in item_name and 'name' in parent_map[node].attrib:
 			# if node.tag=='txt' and last_tag != 'catgry' and 'country' not in item_name and 'split' not in item_name:
@@ -318,15 +316,7 @@ def main(filename):
 				text = clean_text(node.text, filename)
 				item_type = 'REQUEST'
 
-				# if is_uppercase == True:
-				# 	text = clean_instruction(node.text)
-				# 	item_type = 'INSTRUCTION'
-				# else:
-					
 				module = determine_survey_item_module(item_name, filename)
-				# if 'level' in node.attrib:
-				# 	item_name = node.attrib['level']
-				# 	item_name = standartize_item_name(item_name)
 				if 'sample' not in text and text != country: 
 					
 					survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
@@ -344,14 +334,23 @@ def main(filename):
 				txt = node.find('txt')
 				if txt is not None:
 					text = clean_text(txt.text, filename)
-					if 'sample' not in text and text != country:
+					catValu = node.find('catValu')
 
+					dict_answers[node.attrib['ID']] = text
+					dict_category_values[node.attrib['ID']] = catValu
+			
+				elif txt is None and 'sdatrefs' in node.attrib:
+					if node.attrib['sdatrefs'] in dict_answers:
+						text = dict_answers[node.attrib['sdatrefs']]
+						catValu = dict_category_values[node.attrib['sdatrefs']]
+
+				if text:
+					if 'sample' not in text and text != country and text != '':
 						survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
 						old_item_name = item_name
 
 						item_type = 'RESPONSE'
 						module = determine_survey_item_module(item_name, filename)
-						catValu = node.find('catValu')
 						item_value = dk_nr_standard(filename, catValu.text, text)
 						split_into_sentences = tokenizer.tokenize(text)
 						for item in split_into_sentences:
@@ -361,7 +360,9 @@ def main(filename):
 						last_tag = node.tag
 
 
-	
+
+	# for k,v in list(dict_answers.items()):
+	# 	print(k,v)
 
 	file_to_csv_name = filename.replace('.xml', '')
 	df_survey_item.to_csv(str(file_to_csv_name)+'.csv', encoding='utf-8-sig', index=False)
