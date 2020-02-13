@@ -59,14 +59,14 @@ def clean_text(text, filename):
 		text = re.sub('^[A-Z]\s', "",text)
 
 		if 'FRE' in filename:
-			text = re.sub('^NSP\b', "Ne sait pas",text, flags=re.IGNORECASE)
-			text = re.sub('^S\.R\.\b', "SR",text, flags=re.IGNORECASE)
-			text = re.sub('^S\.R\b', "SR",text, flags=re.IGNORECASE)
-			text = re.sub('^SR\.\b', "SR",text, flags=re.IGNORECASE)
-			text = re.sub('^s\.r\b', "SR",text, flags=re.IGNORECASE)
-			text = re.sub('^s\.r\.\b', "SR",text, flags=re.IGNORECASE)
-			text = re.sub('^S\.r\b', "SR",text, flags=re.IGNORECASE)
-			text = re.sub('^SR\b', "Pas de réponse",text, flags=re.IGNORECASE)
+			text = re.sub('^NSP', "Ne sait pas",text, flags=re.IGNORECASE)
+			text = re.sub('^S\.R\.', "Pas de réponse",text)
+			text = re.sub('^S\.R', "Pas de réponse",text)
+			text = re.sub('^SR\.', "Pas de réponse",text)
+			text = re.sub('^s\.r', "Pas de réponse",text)
+			text = re.sub('^s\.r\.', "Pas de réponse",text)
+			text = re.sub('^S\.r', "Pas de réponse",text)
+			text = re.sub('^SR', "Pas de réponse",text)
 		if 'GER' in filename:
 			text = re.sub('^TNZ', "Trifft nicht zu",text, flags=re.IGNORECASE)
 		if 'ENG' in filename:
@@ -208,8 +208,8 @@ def main(filename):
 	tree = ET.parse(file)
 	root = tree.getroot()
 
-	# labls = root.findall('.//dataDscr/var/labl')
-	# qstnLit = root.findall('.//dataDscr/var/qstn/qstnLit')
+	parent_map = dict((c, p) for p in tree.getiterator() for c in p)
+
 	evs_vars = root.findall('.//dataDscr/var')
 
 	survey_id = filename.replace('.xml', '')
@@ -240,8 +240,6 @@ def main(filename):
 				item_name = elem_item_name[elem_item_name.find("(")+1:elem_item_name.find(")")]
 
 			item_name = standartize_item_name(item_name)
-
-
 			
 			
 			if node.tag=='preQTxt':
@@ -304,6 +302,7 @@ def main(filename):
 								'item_name': 'INTRODUCTION', 'item_value': item_value,  'text': item, 'item_is_source': False}
 								df_survey_item = df_survey_item.append(data, ignore_index = True)
 							last_tag = node.tag
+							last_text = node.text
 					
 						else:
 							split_into_sentences = tokenizer.tokenize(text)
@@ -313,7 +312,8 @@ def main(filename):
 								df_survey_item = df_survey_item.append(data, ignore_index = True)
 							last_tag = node.tag
 
-			if node.tag=='txt' and last_tag != 'catgry' and 'country' not in item_name and 'split' not in item_name:
+			if node.tag=='txt' and 'split' not in item_name and 'name' in parent_map[node].attrib:
+			# if node.tag=='txt' and last_tag != 'catgry' and 'country' not in item_name and 'split' not in item_name:
 				is_uppercase = check_if_sentence_is_uppercase(node.text)
 				text = clean_text(node.text, filename)
 				item_type = 'REQUEST'
@@ -338,6 +338,7 @@ def main(filename):
 						'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 					last_tag = node.tag
+					last_text = node.text
 
 			if node.tag=='catgry' and 'country' not in item_name and 'split' not in item_name:
 				txt = node.find('txt')

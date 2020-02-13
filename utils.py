@@ -49,7 +49,7 @@ def recognize_standard_response_scales(filename, text):
 	if 'FRE' in filename:
 		dk_pattern = re.compile("(ne sait pas)", re.IGNORECASE)
 		refusal_pattern = re.compile("(pas de réponse|refus|sans réponse)", re.IGNORECASE)
-		dontapply_pattern = re.compile("(ne s'applique pas)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(ne s'applique pas|Non applicable)", re.IGNORECASE)
 
 		if dk_pattern.match(text):
 			return 'dk'
@@ -134,7 +134,7 @@ def recognize_standard_response_scales(filename, text):
 
 	if 'CZE' in filename:
 		dk_pattern = re.compile("(Neví)", re.IGNORECASE)
-		refusal_pattern = re.compile("(Neodpověděl|neodpověděl(a))", re.IGNORECASE)
+		refusal_pattern = re.compile("(Neodpověděl|neodpověděl(a)|BEZ ODPOVĚDI)", re.IGNORECASE)
 		dontapply_pattern = re.compile("(Nehodí se)", re.IGNORECASE)
 
 		if dk_pattern.match(text):
@@ -206,6 +206,22 @@ def recognize_standard_response_scales(filename, text):
 		dk_pattern = re.compile("(No sabe)", re.IGNORECASE)
 		refusal_pattern = re.compile("(no contesta)", re.IGNORECASE)
 		dontapply_pattern = re.compile("(no aplicable)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+	if 'SWE' in filename:
+		dk_pattern = re.compile("(Vet ej)", re.IGNORECASE)
+
+		#fake values - no translation for these items in XML
+		refusal_pattern = re.compile("(CEVAP VERMİYOR)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(Soru Sorulmadı)", re.IGNORECASE)
 
 		if dk_pattern.match(text):
 			return 'dk'
@@ -347,6 +363,8 @@ def determine_country(filename):
 		country = 'Poland'
 	if '_RU' in filename:
 		country = 'Russian Federation'
+	if '_SE' in filename:
+		country = 'Sweden'
 	if 'TUR' in filename:
 		country = 'Turkey'
 	if '_UA' in filename:
