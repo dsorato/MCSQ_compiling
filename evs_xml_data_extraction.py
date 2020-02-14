@@ -194,6 +194,7 @@ def dk_nr_standard(filename, catValu, text):
 def main(filename):
 	dict_answers = dict()
 	dict_category_values = dict()
+	dict_node_item_name = dict()
 
 	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
 	ut.reset_initial_sufix()
@@ -234,18 +235,18 @@ def main(filename):
 			qstn = var.find('qstn')
 			if node.tag=='txt' and 'level' in node.attrib:
 				item_name = node.attrib['level']
-				last_node_was_sublevel = True
 
 			elif qstn is not None and 'seqNo' in qstn.attrib and 'level' not in node.attrib:
 				item_name = qstn.attrib['seqNo'] 
 		
-			else:
-				elem_item_name = var.find('labl').text
-				item_name = elem_item_name[elem_item_name.find("(")+1:elem_item_name.find(")")]
+			# else:
+			# 	elem_item_name = var.find('labl').text
+			# 	item_name = elem_item_name[elem_item_name.find("(")+1:elem_item_name.find(")")]
 
 			if item_name:
 				item_name = standartize_item_name(item_name)
-				last_node_was_sublevel = False
+
+			dict_node_item_name[node] = item_name
 
 				
 	
@@ -332,6 +333,10 @@ def main(filename):
 
 			if node.tag=='catgry' and 'country' not in item_name and 'split' not in item_name:
 				txt = node.find('txt')
+				if df_survey_item.empty==False:
+					item_name = df_survey_item['item_name'].iloc[-1]
+				print(item_name)
+
 				if txt is not None:
 					text = clean_text(txt.text, filename)
 					catValu = node.find('catValu')
