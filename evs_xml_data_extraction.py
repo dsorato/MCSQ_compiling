@@ -10,6 +10,9 @@ import utils as ut
 initial_request= ["Reporter sur votre: VOTRE CODE ENQUETEUR, VOTRE NOM , la date d'interview et le numéro d'interview:",
 "Numéro d'interview"]
 
+dict_module_letters = {'Perceptions of Life': 'A', 'Environment': 'B', 'Work': 'C', 'Family': 'D', 'Politics and Society': 'E', 
+'Religion and Morale': 'F', 'National Identity': 'G', 'Socio Demographics and Interview char.': 'H', 'Additional country-specific variables': 'I'}
+
 
 
 def check_if_sentence_is_uppercase(text):
@@ -116,59 +119,18 @@ def standartize_item_name(item_name):
 
 	return item_name
 
-def determine_survey_item_module(item_name, filename):
+
+def determine_survey_item_module(parent_id, dictionary_vars_in_module, df_survey_item):
 	module = 'No module'
-	if ('Q' in item_name or 'f' in item_name) and (len(item_name) <= 10):
-		digits_in_item_name = re.sub("[^\d]", "", item_name)
+
+	for k, v in list(dictionary_vars_in_module.items()):
+		if parent_id in v:
+			return dict_module_letters[k]
 
 
-		if '/' in digits_in_item_name:
-			digits_in_item_name = digits_in_item_name.split('/')
-			digits_in_item_name = digits_in_item_name[0]
-	
-		digits_in_item_name = int(digits_in_item_name)
-		
+	if module == 'No module' and df_survey_item.empty == False:
+		module = df_survey_item['module'].iloc[-1]
 
-
-		if '2008' in filename:
-			#QUESTIONS SUR LA VIE EN GÉNÉRAL, LES LOISIRS ET DE TRAVAIL
-			if digits_in_item_name < 22:
-				module = 'A'
-			#QUESTIONS SUR LE SENS DE LA VIE
-			if digits_in_item_name >= 22 and digits_in_item_name < 42:
-				module = 'B'
-			#LA FAMILLE ET DU MARIAGE
-			if digits_in_item_name >= 42 and digits_in_item_name < 54:
-				module = 'C'
-			#QUESTIONS SUR DES SUJETS DE SOCIETE
-			if digits_in_item_name >= 54 and digits_in_item_name < 86:
-				module = 'D'
-			#CARACTERISTIQUES DEMOGRAPHIQUES
-			if digits_in_item_name >= 86:
-				module = 'E'
-
-		if '1999' in filename:
-			#QUESTIONS SUR LA VIE EN GÉNÉRAL, LES LOISIRS
-			if digits_in_item_name < 13:
-				module = 'A'
-			#TRAVAIL
-			if digits_in_item_name >= 13 and digits_in_item_name < 21:
-				module = 'B'
-			#RELIGION
-			if digits_in_item_name >= 21 and  digits_in_item_name < 40:
-				module = 'C'
-			#LA FAMILLE ET DU MARIAGE
-			if digits_in_item_name >= 40 and digits_in_item_name < 51:
-				module = 'D'
-			#POLITIQUE
-			if digits_in_item_name >= 51 and digits_in_item_name < 64:
-				module = 'E'
-			#SOCIETE (not so sure about where it starts...)
-			if digits_in_item_name >= 64 and digits_in_item_name < 84:
-				module = 'F'
-			#CARACTERISTIQUES DEMOGRAPHIQUES
-			if digits_in_item_name >= 84:
-				module = 'G'
 
 	return module
 
@@ -194,7 +156,6 @@ def dk_nr_standard(filename, catValu, text):
 def main(filename):
 	dict_answers = dict()
 	dict_category_values = dict()
-	dict_node_item_name = dict()
 
 	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
 	ut.reset_initial_sufix()
@@ -214,19 +175,34 @@ def main(filename):
 	root = tree.getroot()
 
 	parent_map = dict((c, p) for p in tree.getiterator() for c in p)
-
 	evs_vars = root.findall('.//dataDscr/var')
+	evs_var_grps = root.findall('.//dataDscr/varGrp')
 
 	survey_id = filename.replace('.xml', '')
 	df_survey_item = pd.DataFrame(columns=['survey_itemid', 'module','item_type', 'item_name', 'item_value', 'text',  'item_is_source'])
 
+	counter = 0
+	list_module_names = []
+	list_vars_in_module = []
+	for var in evs_var_grps:
+		for node in var.getiterator():
+			if node.tag == 'labl' and 'VAR' not in node.text and 'Weight' not in node.text and 'Archive' not in node.text:
+				list_module_names.append(node.text)
+				
+			if 'var' in node.attrib:
+				counter = counter + 1
+				#workaround to ignore Archive, ID, and weight variables
+				if counter >= 3:
+					list_vars_in_module.append(node.attrib['var'])
 	
+	dictionary_vars_in_module = dict(zip(list_module_names, list_vars_in_module))
+	print(dictionary_vars_in_module)
+
 
 	last_tag = 'tag'
 	old_item_name = 'last'
 	item_name = ''
 	for var in evs_vars:
-		last_node_was_sublevel = False
 
 		for node in var.getiterator():
 			text = ''
@@ -245,9 +221,6 @@ def main(filename):
 
 			if item_name:
 				item_name = standartize_item_name(item_name)
-
-			dict_node_item_name[node] = item_name
-
 				
 	
 			if node.tag=='preQTxt':
@@ -264,7 +237,8 @@ def main(filename):
 					text = clean_text(node.text, filename)
 					item_type = 'INTRODUCTION'
 				
-				module = determine_survey_item_module(item_name, filename)
+				parent_id = parent_map[node].attrib['ID']
+				module = determine_survey_item_module(parent_id, dictionary_vars_in_module, df_survey_item)
 
 				split_into_sentences = tokenizer.tokenize(text)
 				for item in split_into_sentences:
@@ -282,7 +256,9 @@ def main(filename):
 					item_type = 'REQUEST'
 				else:
 					item_type = 'INSTRUCTION'
-				module = determine_survey_item_module(item_name, filename)
+
+				parent_id = parent_map[node].attrib['ID']
+				module = determine_survey_item_module(parent_id, dictionary_vars_in_module, df_survey_item)
 
 				split_into_sentences = tokenizer.tokenize(text)
 				for item in split_into_sentences:
@@ -299,10 +275,9 @@ def main(filename):
 					if ut.ignore_interviewer_number_segment(filename, item_name, text):
 						pass
 					else:
-						module = determine_survey_item_module(item_name, filename)
-						survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+						parent_id = parent_map[node].attrib['ID']
+						module = determine_survey_item_module(parent_id, dictionary_vars_in_module, df_survey_item)
 						old_item_name = item_name
-
 
 						split_into_sentences = tokenizer.tokenize(text)
 						for item in split_into_sentences:
@@ -317,7 +292,9 @@ def main(filename):
 				text = clean_text(node.text, filename)
 				item_type = 'REQUEST'
 
-				module = determine_survey_item_module(item_name, filename)
+				parent_id = parent_map[node].attrib['ID']
+				module = determine_survey_item_module(parent_id, dictionary_vars_in_module, df_survey_item)
+
 				if 'sample' not in text and text != country: 
 					
 					survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
@@ -335,7 +312,6 @@ def main(filename):
 				txt = node.find('txt')
 				if df_survey_item.empty==False:
 					item_name = df_survey_item['item_name'].iloc[-1]
-				print(item_name)
 
 				if txt is not None:
 					text = clean_text(txt.text, filename)
@@ -354,8 +330,11 @@ def main(filename):
 						survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
 						old_item_name = item_name
 
+						
+						parent_id = parent_map[node].attrib['ID']
+						module = determine_survey_item_module(parent_id, dictionary_vars_in_module, df_survey_item)
+						
 						item_type = 'RESPONSE'
-						module = determine_survey_item_module(item_name, filename)
 						item_value = dk_nr_standard(filename, catValu.text, text)
 						split_into_sentences = tokenizer.tokenize(text)
 						for item in split_into_sentences:
@@ -364,10 +343,6 @@ def main(filename):
 							df_survey_item = df_survey_item.append(data, ignore_index = True)
 						last_tag = node.tag
 
-
-
-	# for k,v in list(dict_answers.items()):
-	# 	print(k,v)
 
 	file_to_csv_name = filename.replace('.xml', '')
 	df_survey_item.to_csv(str(file_to_csv_name)+'.csv', encoding='utf-8-sig', index=False)
