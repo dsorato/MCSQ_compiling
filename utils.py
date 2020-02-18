@@ -48,8 +48,8 @@ def decide_on_survey_item_id(prefix, old_item_name, new_item_name):
 def recognize_standard_response_scales(filename, text):
 	if 'FRE' in filename:
 		dk_pattern = re.compile("(ne sait pas)", re.IGNORECASE)
-		refusal_pattern = re.compile("(pas de réponse|refus|sans réponse)", re.IGNORECASE)
-		dontapply_pattern = re.compile("(ne s'applique pas|Non applicable)", re.IGNORECASE)
+		refusal_pattern = re.compile("(pas de réponse|refus|sans réponse|sans reponse)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(ne s'applique pas|Non applicable|Pas d'application|Non concerné)", re.IGNORECASE)
 
 		if dk_pattern.match(text):
 			return 'dk'
@@ -61,9 +61,9 @@ def recognize_standard_response_scales(filename, text):
 			return None 
 
 	if 'GER' in filename:
-		dk_pattern = re.compile("(weiß nicht)", re.IGNORECASE)
-		refusal_pattern = re.compile("(verweigert)", re.IGNORECASE)
-		dontapply_pattern = re.compile("(trifft nicht zu)", re.IGNORECASE)
+		dk_pattern = re.compile("(weiß nicht|weiss nicht)", re.IGNORECASE)
+		refusal_pattern = re.compile("(verweigert|keine Antwort|Keine Antwort)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(trifft nicht zu|nicht zutreffend)", re.IGNORECASE)
 
 		if dk_pattern.match(text):
 			return 'dk'
@@ -247,6 +247,7 @@ def recognize_standard_response_scales(filename, text):
 			else:
 				return None
 
+
 		else:
 			dk_pattern = re.compile("(Затрудняюсь ответить|Не знаю)", re.IGNORECASE)
 			refusal_pattern = re.compile("(Отказ от ответа|Нет ответа)", re.IGNORECASE)
@@ -351,6 +352,8 @@ def determine_country(filename):
 		country = 'Moldova'
 	if '_ME' in filename:
 		country = 'Montenegro'
+	if '_MK' in filename:
+		country = 'Macedonia'
 	if '_MT' in filename:
 		country = 'Malta'
 	if '_NO' in filename:

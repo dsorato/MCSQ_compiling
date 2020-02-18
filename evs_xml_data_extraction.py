@@ -7,11 +7,18 @@ import string
 import utils as ut
 
 
-initial_request= ["Reporter sur votre: VOTRE CODE ENQUETEUR, VOTRE NOM , la date d'interview et le numéro d'interview:",
-"Numéro d'interview"]
+# initial_request= ["Reporter sur votre: VOTRE CODE ENQUETEUR, VOTRE NOM , la date d'interview et le numéro d'interview:",
+# "Numéro d'interview", 'Interviewernummer:']
 
-dict_module_letters = {'Perceptions of Life': 'A', 'Environment': 'B', 'Work': 'C', 'Family': 'D', 'Politics and Society': 'E', 
-'Religion and Morale': 'F', 'National Identity': 'G', 'Socio Demographics and Interview char.': 'H', 'Additional country-specific variables': 'I'}
+dict_module_letters_1999 = {'Perceptions of Life': 'A - Perceptions of Life', 'Environment': 'B - Environment', 'Work': 'C - Work', 
+'Family': 'D - Family', 'Politics and Society': 'E - Politics and Society', 'Religion and Morale': 'F - Religion and Morale', 
+'National Identity': 'G - National Identity', 'Socio Demographics and Interview char.': 'H - Socio Demographics and Interview Characteristics', 
+'Additional country-specific variables': 'I - Additional country-specific variables'}
+
+dict_module_letters_2008 = {'Perceptions of Life': 'A - Perceptions of Life', 'Politics and Society': 'B - Politics and Society', 'Work': 'C - Work', 
+'Religion and Morale': 'D - Religion and Morale', 'Family': 'E - Family', 'National Identity': 'F - National Identity',  'Environment': 'G - Environment',
+'Life experiences': 'H - Life experiences', "Respondent's parents": "I - Respondent's parents", "Respondent's partner": "J - Respondent's partner",
+  'Socio Demographics and Interview Characteristics': 'K - Socio Demographics and Interview Characteristics'}
 
 
 
@@ -71,17 +78,30 @@ def clean_text(text, filename):
 			text = re.sub('^S\.r', "Pas de réponse",text)
 			text = re.sub('^SR', "Pas de réponse",text)
 		if 'GER' in filename:
-			text = re.sub('^TNZ', "Trifft nicht zu",text, flags=re.IGNORECASE)
+			text = re.sub('^TNZ', "Trifft nicht zu",text)
+			text = re.sub('^WN', "weiß nicht",text)
+			text = re.sub('^KA', "keine antwort",text)
+			text = re.sub('^NZT', "nicht zutreffend",text)
 		if 'ENG' in filename:
-			text = re.sub('^NAP\b', "Not applicable",text, flags=re.IGNORECASE)
-			text = re.sub('^DK\b', "Don't know",text, flags=re.IGNORECASE)
-			text = re.sub('^na\b', "No answer",text, flags=re.IGNORECASE)
+			text = re.sub('^NAP', "Not applicable",text)
+			text = re.sub('^DK', "Don't know",text)
+			text = re.sub('^na', "No answer",text)
+			text = re.sub('^NA', "No answer",text)
+			text = re.sub('^nap', "Not applicable",text)
+			text = re.sub('^dk', "Don't know",text)
+			text = re.sub('^N/A', "Not applicable",text)
+			
 		if 'POR' in filename:
 			text = re.sub('^Na\b', "Não se aplica",text, flags=re.IGNORECASE)
+			text = re.sub('^NAP', "Não se aplica",text)
 			text = re.sub('^Ns', "Não sabe",text, flags=re.IGNORECASE)
 			text = re.sub('^NS', "Não sabe",text, flags=re.IGNORECASE)
 			text = re.sub('^Nr', "Não responde",text, flags=re.IGNORECASE)
 			text = re.sub('^NR', "Não responde",text, flags=re.IGNORECASE)
+
+		if 'SPA' in filename:
+			text = re.sub('^NS', "No sabe",text)
+			text = re.sub('^NC', "No contesta",text)
 		
 		if 'DUT' in filename:
 			text = re.sub('^nap', "niet van toepassing",text, flags=re.IGNORECASE)
@@ -93,6 +113,11 @@ def clean_text(text, filename):
 			text = re.sub('^FY', "BİLMİYOR-FİKRİ YOK",text, flags=re.IGNORECASE)
 			text = re.sub('^CY', "CEVAP VERMİYOR",text, flags=re.IGNORECASE)
 			text = re.sub('^SS', "Soru Sorulmadı",text, flags=re.IGNORECASE)
+
+		if 'RUS_EE' in filename:
+			text = re.sub('^Н.О', "Нет ответа",text)
+			text = re.sub('^З.О', "Затрудняюсь ответить",text)
+			text = re.sub('^Н.П', "Не подходит",text)
 
 
 		text = text.replace('\n',' ')
@@ -109,23 +134,29 @@ def standartize_item_name(item_name):
 	item_name = item_name.lower()
 	item_name = re.sub("^q", "Q", item_name)
 	item_name = re.sub("^f", "Q", item_name)
+	# item_name = re.sub(")", "", item_name)
 
 	if '_'  in item_name:
 		item_name = item_name.split('_')
 		item_name = item_name[0]+item_name[1].lower()
 
-	if item_name[0].isdigit():
+	if item_name[0].isdigit() or len(item_name)==1:
 		item_name = 'Q'+item_name
 
 	return item_name
 
 
-def determine_survey_item_module(parent_id, dictionary_vars_in_module, df_survey_item):
+def determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item):
 	module = 'No module'
+
+	if '1999' in filename:
+		dictionary = dict_module_letters_1999
+	elif '2008' in filename:
+		dictionary = dict_module_letters_2008
 
 	for k, v in list(dictionary_vars_in_module.items()):
 		if parent_id in v:
-			return dict_module_letters[k]
+			return dictionary[k]
 
 
 	if module == 'No module' and df_survey_item.empty == False:
@@ -156,6 +187,7 @@ def dk_nr_standard(filename, catValu, text):
 def main(filename):
 	dict_answers = dict()
 	dict_category_values = dict()
+	df_survey_item = pd.DataFrame(columns=['survey_itemid', 'module','item_type', 'item_name', 'item_value', 'text',  'item_is_source'])
 
 	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
 	ut.reset_initial_sufix()
@@ -179,8 +211,7 @@ def main(filename):
 	evs_var_grps = root.findall('.//dataDscr/varGrp')
 
 	survey_id = filename.replace('.xml', '')
-	df_survey_item = pd.DataFrame(columns=['survey_itemid', 'module','item_type', 'item_name', 'item_value', 'text',  'item_is_source'])
-
+	
 	counter = 0
 	list_module_names = []
 	list_vars_in_module = []
@@ -238,7 +269,7 @@ def main(filename):
 					item_type = 'INTRODUCTION'
 				
 				parent_id = parent_map[node].attrib['ID']
-				module = determine_survey_item_module(parent_id, dictionary_vars_in_module, df_survey_item)
+				module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
 
 				split_into_sentences = tokenizer.tokenize(text)
 				for item in split_into_sentences:
@@ -248,8 +279,7 @@ def main(filename):
 				last_tag = node.tag
 
 			if node.tag=='ivuInstr':
-				survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
-				old_item_name = item_name
+				
 
 				text = clean_instruction(node.text)
 				if 	'?' in text:
@@ -257,8 +287,14 @@ def main(filename):
 				else:
 					item_type = 'INSTRUCTION'
 
-				parent_id = parent_map[node].attrib['ID']
-				module = determine_survey_item_module(parent_id, dictionary_vars_in_module, df_survey_item)
+				if item_name == 'Q1':
+					module = 'A - Perceptions of Life'
+				else:
+					parent_id = parent_map[node].attrib['ID']
+					module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
+
+				survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+				old_item_name = item_name
 
 				split_into_sentences = tokenizer.tokenize(text)
 				for item in split_into_sentences:
@@ -269,22 +305,29 @@ def main(filename):
 
 			if node.tag=='qstnLit':
 				text = clean_text(node.text, filename)
-				item_type = 'REQUEST'
+				
 				if len(text) != 1 and text.isnumeric() == False:
 					#workaround
-					if ut.ignore_interviewer_number_segment(filename, item_name, text):
-						pass
+					# if ut.ignore_interviewer_number_segment(filename, item_name, text):
+					# 	pass
+					# else:
+
+					if item_name == 'Q1':
+						module = 'A - Perceptions of Life'
 					else:
 						parent_id = parent_map[node].attrib['ID']
-						module = determine_survey_item_module(parent_id, dictionary_vars_in_module, df_survey_item)
-						old_item_name = item_name
+						module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
+						
+					survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+					item_type = 'REQUEST'
+					old_item_name = item_name
 
-						split_into_sentences = tokenizer.tokenize(text)
-						for item in split_into_sentences:
-							data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
-							'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
-							df_survey_item = df_survey_item.append(data, ignore_index = True)
-						last_tag = node.tag
+					split_into_sentences = tokenizer.tokenize(text)
+					for item in split_into_sentences:
+						data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
+						'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
+						df_survey_item = df_survey_item.append(data, ignore_index = True)
+					last_tag = node.tag
 
 			if node.tag=='txt' and 'split' not in item_name and 'name' in parent_map[node].attrib:
 			# if node.tag=='txt' and last_tag != 'catgry' and 'country' not in item_name and 'split' not in item_name:
@@ -293,7 +336,7 @@ def main(filename):
 				item_type = 'REQUEST'
 
 				parent_id = parent_map[node].attrib['ID']
-				module = determine_survey_item_module(parent_id, dictionary_vars_in_module, df_survey_item)
+				module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
 
 				if 'sample' not in text and text != country: 
 					
@@ -310,6 +353,7 @@ def main(filename):
 
 			if node.tag=='catgry' and 'country' not in item_name and 'split' not in item_name:
 				txt = node.find('txt')
+
 				if df_survey_item.empty==False:
 					item_name = df_survey_item['item_name'].iloc[-1]
 
@@ -327,21 +371,26 @@ def main(filename):
 
 				if text:
 					if 'sample' not in text and text != country and text != '':
-						survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
-						old_item_name = item_name
+
+						if 'SOURCE' in filename and ("cntry" in parent_map[node].attrib['name'] or "country" in parent_map[node].attrib['name']):
+							pass
+						else:
+							survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+							old_item_name = item_name
 
 						
-						parent_id = parent_map[node].attrib['ID']
-						module = determine_survey_item_module(parent_id, dictionary_vars_in_module, df_survey_item)
-						
-						item_type = 'RESPONSE'
-						item_value = dk_nr_standard(filename, catValu.text, text)
-						split_into_sentences = tokenizer.tokenize(text)
-						for item in split_into_sentences:
-							data = {"survey_itemid": survey_item_id, 'module': module, 'item_type': item_type, 
-							'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
-							df_survey_item = df_survey_item.append(data, ignore_index = True)
-						last_tag = node.tag
+							parent_id = parent_map[node].attrib['ID']
+							module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
+							
+							item_type = 'RESPONSE'
+							item_value = dk_nr_standard(filename, catValu.text, text)
+
+							split_into_sentences = tokenizer.tokenize(text)
+							for item in split_into_sentences:
+								data = {"survey_itemid": survey_item_id, 'module': module, 'item_type': item_type, 
+								'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
+								df_survey_item = df_survey_item.append(data, ignore_index = True)
+							last_tag = node.tag
 
 
 	file_to_csv_name = filename.replace('.xml', '')
