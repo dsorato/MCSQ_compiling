@@ -189,7 +189,7 @@ def recognize_standard_response_scales(filename, text):
 			return None
 
 	if 'ITA' in filename:
-		dk_pattern = re.compile("(Non so)", re.IGNORECASE)
+		dk_pattern = re.compile("(Non so|Non sa)", re.IGNORECASE)
 		refusal_pattern = re.compile("(non risponde)", re.IGNORECASE)
 		dontapply_pattern = re.compile("(non pertinente)", re.IGNORECASE)
 
@@ -236,7 +236,7 @@ def recognize_standard_response_scales(filename, text):
 		if 'LV' in filename:
 			dk_pattern = re.compile("(Затрудняюсь ответить|Не знает)", re.IGNORECASE)
 			refusal_pattern = re.compile("(Отказ от ответа|Нет ответа)", re.IGNORECASE)
-			dontapply_pattern = re.compile("(не соответствующий)", re.IGNORECASE)
+			dontapply_pattern = re.compile("(не соответствующий|не применимо)", re.IGNORECASE)
 
 			if dk_pattern.match(text):
 				return 'dk'
@@ -252,9 +252,9 @@ def recognize_standard_response_scales(filename, text):
 			dk_pattern = re.compile("(Затрудняюсь ответить|Не знаю)", re.IGNORECASE)
 			refusal_pattern = re.compile("(Отказ от ответа|Нет ответа)", re.IGNORECASE)
 			if 'BY' in filename:
-				dontapply_pattern = re.compile("(вопрос не применим)", re.IGNORECASE)
+				dontapply_pattern = re.compile("(вопрос не применим|не применимо)", re.IGNORECASE)
 			else:
-				dontapply_pattern = re.compile("(Не подходит)", re.IGNORECASE)
+				dontapply_pattern = re.compile("(Не подходит|НЕ ПРИМЕНИМО)", re.IGNORECASE)
 
 			if dk_pattern.match(text):
 				return 'dk'

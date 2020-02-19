@@ -35,6 +35,7 @@ def clean_instruction(text):
 	if isinstance(text, str):
 		text = re.sub("…", "...", text)
 		text = re.sub("’", "'", text)
+		text = re.sub(";", ",", text)
 		text = re.sub("[.]{4,}", "", text)
 		text = re.sub('>', "",text)
 		text = re.sub('<', "",text)
@@ -57,6 +58,7 @@ def clean_text(text, filename):
 		text = re.sub(r'\s([?.!"](?:\s|$))', r'\1', text)
 		text = re.sub("…", "...", text)
 		text = re.sub(" :", ":", text)
+		text = re.sub(";", ",", text)
 		text = re.sub("’", "'", text)
 		text = re.sub("[.]{4,}", "", text)
 		text = re.sub("[_]{2,}", "", text)
@@ -67,7 +69,13 @@ def clean_text(text, filename):
 		text = re.sub('\]', "",text)
 		text = re.sub('^[A-Z]\.\s', "",text)
 		text = re.sub('^[A-Z]\s', "",text)
+		text = re.sub('e\.g\.', "e.g.,",text)
 
+
+		if 'ITA' in filename:
+			text = re.sub('^NS', "Non so",text)
+			text = re.sub('^NR', "Non risponde",text)
+			text = re.sub('^NP', "Non pertinente",text)
 		if 'FRE' in filename:
 			text = re.sub('^NSP', "Ne sait pas",text, flags=re.IGNORECASE)
 			text = re.sub('^S\.R\.', "Pas de réponse",text)
@@ -114,10 +122,23 @@ def clean_text(text, filename):
 			text = re.sub('^CY', "CEVAP VERMİYOR",text, flags=re.IGNORECASE)
 			text = re.sub('^SS', "Soru Sorulmadı",text, flags=re.IGNORECASE)
 
-		if 'RUS_EE' in filename:
+		if 'RUS_EE' in filename or 'RUS_AZ' in filename or 'RUS_GE' in filename or 'RUS_MD' in filename:
+			text = re.sub('^Н.О.', "Нет ответа",text)
+			text = re.sub('^З.О.', "Затрудняюсь ответить",text)
+			text = re.sub('^Н.П.', "Не подходит",text)
 			text = re.sub('^Н.О', "Нет ответа",text)
 			text = re.sub('^З.О', "Затрудняюсь ответить",text)
 			text = re.sub('^Н.П', "Не подходит",text)
+			text = re.sub('^ЗО', "Затрудняюсь ответить",text)
+
+		if 'RUS_BY' in filename:
+			text = re.sub('^НО', "Нет ответа",text)
+			text = re.sub('^НЗ', "НЕ ЗНАЮ",text)
+
+		if 'RUS_UA' in filename:
+			text = re.sub('^ЗО', "затрудняюсь ответить",text)
+			text = re.sub('^ООО', "отказ от ответа",text)
+
 
 
 		text = text.replace('\n',' ')
@@ -268,8 +289,11 @@ def main(filename):
 					text = clean_text(node.text, filename)
 					item_type = 'INTRODUCTION'
 				
-				parent_id = parent_map[node].attrib['ID']
-				module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
+				if item_name == 'Q1':
+					module = 'A - Perceptions of Life'
+				else:
+					parent_id = parent_map[node].attrib['ID']
+					module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
 
 				split_into_sentences = tokenizer.tokenize(text)
 				for item in split_into_sentences:
