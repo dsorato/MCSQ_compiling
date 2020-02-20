@@ -90,6 +90,12 @@ def clean_text(text, filename):
 			text = re.sub('^WN', "weiß nicht",text)
 			text = re.sub('^KA', "keine antwort",text)
 			text = re.sub('^NZT', "nicht zutreffend",text)
+
+		if 'HRV' in filename:
+			text = re.sub('^n\.o\.', "nema odgovora",text)
+			text = re.sub('^n\.z\.', "ne znam",text)
+			
+
 		if 'ENG' in filename:
 			text = re.sub('^NAP', "Not applicable",text)
 			text = re.sub('^DK', "Don't know",text)
@@ -175,9 +181,13 @@ def determine_survey_item_module(filename, parent_id, dictionary_vars_in_module,
 	elif '2008' in filename:
 		dictionary = dict_module_letters_2008
 
+
 	for k, v in list(dictionary_vars_in_module.items()):
-		if parent_id in v:
-			return dictionary[k]
+		sp = v.split(' ')
+		for value in sp:
+			if value == parent_id:
+				return dictionary[k]
+			
 
 
 	if module == 'No module' and df_survey_item.empty == False:
@@ -233,7 +243,6 @@ def main(filename):
 
 	survey_id = filename.replace('.xml', '')
 	
-	counter = 0
 	list_module_names = []
 	list_vars_in_module = []
 	for var in evs_var_grps:
@@ -242,10 +251,7 @@ def main(filename):
 				list_module_names.append(node.text)
 				
 			if 'var' in node.attrib:
-				counter = counter + 1
-				#workaround to ignore Archive, ID, and weight variables
-				if counter >= 3:
-					list_vars_in_module.append(node.attrib['var'])
+				list_vars_in_module.append(node.attrib['var'])
 	
 	dictionary_vars_in_module = dict(zip(list_module_names, list_vars_in_module))
 	print(dictionary_vars_in_module)

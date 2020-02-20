@@ -46,78 +46,6 @@ def decide_on_survey_item_id(prefix, old_item_name, new_item_name):
 	return survey_item_id
 
 def recognize_standard_response_scales(filename, text):
-	if 'FRE' in filename:
-		dk_pattern = re.compile("(ne sait pas)", re.IGNORECASE)
-		refusal_pattern = re.compile("(pas de réponse|refus|sans réponse|sans reponse)", re.IGNORECASE)
-		dontapply_pattern = re.compile("(ne s'applique pas|Non applicable|Pas d'application|Non concerné)", re.IGNORECASE)
-
-		if dk_pattern.match(text):
-			return 'dk'
-		elif refusal_pattern.match(text):
-			return 'refusal'
-		elif dontapply_pattern.match(text):
-			return 'dontapply'
-		else:
-			return None 
-
-	if 'GER' in filename:
-		dk_pattern = re.compile("(weiß nicht|weiss nicht)", re.IGNORECASE)
-		refusal_pattern = re.compile("(verweigert|keine Antwort|Keine Antwort)", re.IGNORECASE)
-		dontapply_pattern = re.compile("(trifft nicht zu|nicht zutreffend)", re.IGNORECASE)
-
-		if dk_pattern.match(text):
-			return 'dk'
-		elif refusal_pattern.match(text):
-			return 'refusal'
-		elif dontapply_pattern.match(text):
-			return 'dontapply'
-		else:
-			return None 
-
-	if 'ENG' in filename:
-		dk_pattern = re.compile("(don't know)", re.IGNORECASE)
-		refusal_pattern = re.compile("(refusal|no answer)", re.IGNORECASE)
-		dontapply_pattern = re.compile("(not applicable)", re.IGNORECASE)
-
-		if dk_pattern.match(text):
-			return 'dk'
-		elif refusal_pattern.match(text):
-			return 'refusal'
-		elif dontapply_pattern.match(text):
-			return 'dontapply'
-		else:
-			return None 
-
-	if 'POR' in filename:
-		dk_pattern = re.compile("(não sabe)", re.IGNORECASE)
-		refusal_pattern = re.compile("(não responde)", re.IGNORECASE)
-		dontapply_pattern = re.compile("(não se aplica)", re.IGNORECASE)
-
-		if dk_pattern.match(text):
-			return 'dk'
-		elif refusal_pattern.match(text):
-			return 'refusal'
-		elif dontapply_pattern.match(text):
-			return 'dontapply'
-		else:
-			return None
-
-	if 'POL' in filename:
-		dk_pattern = re.compile("(trudno powiedzieć)", re.IGNORECASE)
-
-		#fake values - no translation for these items in XML
-		refusal_pattern = re.compile("(CEVAP VERMİYOR)", re.IGNORECASE)
-		dontapply_pattern = re.compile("(Soru Sorulmadı)", re.IGNORECASE)
-
-		if dk_pattern.match(text):
-			return 'dk'
-		elif refusal_pattern.match(text):
-			return 'refusal'
-		elif dontapply_pattern.match(text):
-			return 'dontapply'
-		else:
-			return None
-
 	if 'BUL' in filename:
 		dk_pattern = re.compile("(Не зная)", re.IGNORECASE)
 		refusal_pattern = re.compile("(Без отговор)", re.IGNORECASE)
@@ -174,6 +102,34 @@ def recognize_standard_response_scales(filename, text):
 		else:
 			return None
 
+	if 'ENG' in filename:
+		dk_pattern = re.compile("(don't know)", re.IGNORECASE)
+		refusal_pattern = re.compile("(refusal|no answer)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(not applicable)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None 
+
+	if 'EST' in filename:
+		dk_pattern = re.compile("(RÖ)", re.IGNORECASE)
+		refusal_pattern = re.compile("(VP)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(niet van toepassing)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
 	if 'FIN' in filename:
 		dk_pattern = re.compile("(Ei osaa sanoa)", re.IGNORECASE)
 		refusal_pattern = re.compile("(Ei vastausta)", re.IGNORECASE)
@@ -188,6 +144,77 @@ def recognize_standard_response_scales(filename, text):
 		else:
 			return None
 
+	if 'FRE' in filename:
+		dk_pattern = re.compile("(ne sait pas)", re.IGNORECASE)
+		refusal_pattern = re.compile("(pas de réponse|refus|sans réponse|sans reponse)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(ne s'applique pas|Non applicable|Pas d'application|Non concerné)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None 
+
+	if 'GER' in filename:
+		dk_pattern = re.compile("(weiß nicht|weiss nicht)", re.IGNORECASE)
+		refusal_pattern = re.compile("(verweigert|keine Antwort|Keine Antwort)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(trifft nicht zu|nicht zutreffend)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None 
+
+	if 'GRE' in filename:
+		dk_pattern = re.compile("(Δεν ξέρω)", re.IGNORECASE)
+		refusal_pattern = re.compile("(Δεν απαντώ)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(Δεν ισχύει)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None 
+
+	if 'HRV' in filename:
+		dk_pattern = re.compile("(ne znam)", re.IGNORECASE)
+		refusal_pattern = re.compile("(nema odgovora)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(pitanje se ne odnosi na ispitanika|ne primjenjuje se)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None 
+
+	if 'HUN' in filename:
+		dk_pattern = re.compile("(nem tudom)", re.IGNORECASE)
+		refusal_pattern = re.compile("(nincs válasz)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(nem kellet feltenni a kérdést|nem kellett feltenni)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None 
+
+
 	if 'ITA' in filename:
 		dk_pattern = re.compile("(Non so|Non sa)", re.IGNORECASE)
 		refusal_pattern = re.compile("(non risponde)", re.IGNORECASE)
@@ -201,6 +228,53 @@ def recognize_standard_response_scales(filename, text):
 			return 'dontapply'
 		else:
 			return None
+
+	if 'ICE' in filename:
+		dk_pattern = re.compile("(veit ekki)", re.IGNORECASE)
+		refusal_pattern = re.compile("(svarar ekki)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(non pertinente)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+
+	if 'POR' in filename:
+		dk_pattern = re.compile("(não sabe)", re.IGNORECASE)
+		refusal_pattern = re.compile("(não responde)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(não se aplica)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+	if 'POL' in filename:
+		dk_pattern = re.compile("(trudno powiedzieć)", re.IGNORECASE)
+
+		#fake values - no translation for these items in XML
+		refusal_pattern = re.compile("(CEVAP VERMİYOR)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(Soru Sorulmadı)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+	
 
 	if 'SPA' in filename:
 		dk_pattern = re.compile("(No sabe)", re.IGNORECASE)
@@ -281,19 +355,7 @@ def recognize_standard_response_scales(filename, text):
 
 
 
-	if 'EST' in filename:
-		dk_pattern = re.compile("(RÖ)", re.IGNORECASE)
-		refusal_pattern = re.compile("(VP)", re.IGNORECASE)
-		dontapply_pattern = re.compile("(niet van toepassing)", re.IGNORECASE)
-
-		if dk_pattern.match(text):
-			return 'dk'
-		elif refusal_pattern.match(text):
-			return 'refusal'
-		elif dontapply_pattern.match(text):
-			return 'dontapply'
-		else:
-			return None
+	
 
 
 
@@ -336,10 +398,14 @@ def determine_country(filename):
 		country = 'Great Britain'
 	if '_GR' in filename:
 		country = 'Greece'
+	if '_HV' in filename:
+		country = 'Bosnia and Herzegovina'
 	if '_IE' in filename:
 		country = 'Ireland'
 	if '_IT' in filename:
-		country = 'Italy'	
+		country = 'Italy'
+	if '_IS' in filename:
+		country = 'Iceland'		
 	if '_NIR' in filename:
 		country = 'Northern Ireland'
 	if '_LU' in filename:
@@ -390,6 +456,9 @@ def determine_sentence_tokenizer(filename):
 		sentence_splitter_suffix = 'portuguese.pickle'
 	if 'ITA_' in filename:
 		sentence_splitter_suffix = 'italian.pickle'
+	#no icelandic pickle
+	if 'ICE_' in filename:
+		sentence_splitter_suffix = 'norwegian.pickle'
 	if 'RUS_' in filename:
 		sentence_splitter_suffix = 'russian.pickle'
 	if 'SPA_' in filename:
@@ -416,6 +485,9 @@ def determine_sentence_tokenizer(filename):
 		sentence_splitter_suffix = 'turkish.pickle'
 	if 'HUN_' in filename:
 		sentence_splitter_suffix = 'hungarian.pickle'
+	#there is no sentence segmentation for croatian in NLTK.. 
+	if 'HRV_' in filename:
+		sentence_splitter_suffix = 'turkish.pickle'
 	#there is no sentence segmentation for bulgarian in NLTK.. 
 	if 'BUL_' in filename:
 		sentence_splitter_suffix = 'turkish.pickle'
