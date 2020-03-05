@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+from sentence_splitter import SentenceSplitter, split_text_into_sentences
 import pandas as pd 
 import nltk.data
 import sys
@@ -123,6 +124,10 @@ def clean_text(text, filename):
 		if 'FIN' in filename:
 			text = re.sub('^EOS', "Ei osaa sanoa",text, flags=re.IGNORECASE)
 
+		if 'LTZ' in filename:
+			text = re.sub('^NSP', "Ne sait pas",text)
+			text = re.sub('^SR', "Pas de réponse",text)
+			text = re.sub('^S\.R\.', "Pas de réponse",text)
 		if 'TUR' in filename:
 			text = re.sub('^FY', "BİLMİYOR-FİKRİ YOK",text, flags=re.IGNORECASE)
 			text = re.sub('^CY', "CEVAP VERMİYOR",text, flags=re.IGNORECASE)
@@ -222,11 +227,24 @@ def main(filename):
 
 	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
 	ut.reset_initial_sufix()
-	#Punkt Sentence Tokenizer from NLTK	
-	sentence_splitter_prefix = 'tokenizers/punkt/'
-	sentence_splitter_suffix = ut.determine_sentence_tokenizer(filename)
-	sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
-	tokenizer = nltk.data.load(sentence_splitter)
+
+	splitter = None
+	if 'ICE_IS' in filename:
+		splitter = SentenceSplitter(language='is')
+	elif 'HUN_HU' in filename:
+		splitter = SentenceSplitter(language='hu')
+	elif 'LAV_LV' in filename:
+		splitter = SentenceSplitter(language='lv')
+	elif 'LIT_LT' in filename:
+		splitter = SentenceSplitter(language='lt')
+	elif 'SLO_SK' in filename:
+		splitter = SentenceSplitter(language='sk')
+	else:
+		#Punkt Sentence Tokenizer from NLTK	
+		sentence_splitter_prefix = 'tokenizers/punkt/'
+		sentence_splitter_suffix = ut.determine_sentence_tokenizer(filename)
+		sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
+		tokenizer = nltk.data.load(sentence_splitter)
 
 	country = ut.determine_country(filename)
 	#The prefix is study+'_'+language+'_'+country+'_'
@@ -272,10 +290,6 @@ def main(filename):
 
 			elif qstn is not None and 'seqNo' in qstn.attrib and 'level' not in node.attrib:
 				item_name = qstn.attrib['seqNo'] 
-		
-			# else:
-			# 	elem_item_name = var.find('labl').text
-			# 	item_name = elem_item_name[elem_item_name.find("(")+1:elem_item_name.find(")")]
 
 			if item_name:
 				item_name = standartize_item_name(item_name)
@@ -301,7 +315,12 @@ def main(filename):
 					parent_id = parent_map[node].attrib['ID']
 					module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
 
-				split_into_sentences = tokenizer.tokenize(text)
+
+				if splitter:
+					split_into_sentences = splitter.split(text=text)
+				else:
+					split_into_sentences = tokenizer.tokenize(text)
+
 				for item in split_into_sentences:
 					data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
 					'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
@@ -326,7 +345,11 @@ def main(filename):
 				survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
 				old_item_name = item_name
 
-				split_into_sentences = tokenizer.tokenize(text)
+				if splitter:
+					split_into_sentences = splitter.split(text=text)
+				else:
+					split_into_sentences = tokenizer.tokenize(text)
+
 				for item in split_into_sentences:
 					data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
 					'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
@@ -337,11 +360,6 @@ def main(filename):
 				text = clean_text(node.text, filename)
 				
 				if len(text) != 1 and text.isnumeric() == False:
-					#workaround
-					# if ut.ignore_interviewer_number_segment(filename, item_name, text):
-					# 	pass
-					# else:
-
 					if item_name == 'Q1':
 						module = 'A - Perceptions of Life'
 					else:
@@ -352,7 +370,11 @@ def main(filename):
 					item_type = 'REQUEST'
 					old_item_name = item_name
 
-					split_into_sentences = tokenizer.tokenize(text)
+					if splitter:
+						split_into_sentences = splitter.split(text=text)
+					else:
+						split_into_sentences = tokenizer.tokenize(text)
+
 					for item in split_into_sentences:
 						data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
 						'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
@@ -360,7 +382,6 @@ def main(filename):
 					last_tag = node.tag
 
 			if node.tag=='txt' and 'split' not in item_name and 'name' in parent_map[node].attrib:
-			# if node.tag=='txt' and last_tag != 'catgry' and 'country' not in item_name and 'split' not in item_name:
 				is_uppercase = check_if_sentence_is_uppercase(node.text)
 				text = clean_text(node.text, filename)
 				item_type = 'REQUEST'
@@ -373,7 +394,11 @@ def main(filename):
 					survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
 					old_item_name = item_name
 
-					split_into_sentences = tokenizer.tokenize(text)
+					if splitter:
+						split_into_sentences = splitter.split(text=text)
+					else:
+						split_into_sentences = tokenizer.tokenize(text)
+
 					for item in split_into_sentences:
 						data = {"survey_itemid": survey_item_id, 'module': module, 'item_type': item_type, 
 						'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
@@ -415,7 +440,10 @@ def main(filename):
 							item_type = 'RESPONSE'
 							item_value = dk_nr_standard(filename, catValu.text, text)
 
-							split_into_sentences = tokenizer.tokenize(text)
+							if splitter:
+								split_into_sentences = splitter.split(text=text)
+							else:
+								split_into_sentences = tokenizer.tokenize(text)
 							for item in split_into_sentences:
 								data = {"survey_itemid": survey_item_id, 'module': module, 'item_type': item_type, 
 								'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}

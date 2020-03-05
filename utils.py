@@ -231,8 +231,64 @@ def recognize_standard_response_scales(filename, text):
 
 	if 'ICE' in filename:
 		dk_pattern = re.compile("(veit ekki)", re.IGNORECASE)
-		refusal_pattern = re.compile("(svarar ekki)", re.IGNORECASE)
+		refusal_pattern = re.compile("(svarar ekki|Neitar að svara)", re.IGNORECASE)
 		dontapply_pattern = re.compile("(non pertinente)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+	if 'LIT' in filename:
+		dk_pattern = re.compile("(netaikoma)", re.IGNORECASE)
+		refusal_pattern = re.compile("(neatsakė)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(nežinau)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+	if 'LAV' in filename:
+		dk_pattern = re.compile("(nezin)", re.IGNORECASE)
+		refusal_pattern = re.compile("(nav atbildes)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(nav atbilstošs)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+	if 'LTZ' in filename:
+		dk_pattern = re.compile("(Ne sait pas)", re.IGNORECASE)
+		refusal_pattern = re.compile("(Keng Äntwert|Pas de réponse|Refus)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(nav atbilstošs)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+	if 'MLT' in filename:
+		dk_pattern = re.compile("(Ma Nafx)", re.IGNORECASE)
+		refusal_pattern = re.compile("(no answer)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(not applicable)", re.IGNORECASE)
 
 		if dk_pattern.match(text):
 			return 'dk'
@@ -260,38 +316,6 @@ def recognize_standard_response_scales(filename, text):
 
 	if 'POL' in filename:
 		dk_pattern = re.compile("(trudno powiedzieć)", re.IGNORECASE)
-
-		#fake values - no translation for these items in XML
-		refusal_pattern = re.compile("(CEVAP VERMİYOR)", re.IGNORECASE)
-		dontapply_pattern = re.compile("(Soru Sorulmadı)", re.IGNORECASE)
-
-		if dk_pattern.match(text):
-			return 'dk'
-		elif refusal_pattern.match(text):
-			return 'refusal'
-		elif dontapply_pattern.match(text):
-			return 'dontapply'
-		else:
-			return None
-
-	
-
-	if 'SPA' in filename:
-		dk_pattern = re.compile("(No sabe)", re.IGNORECASE)
-		refusal_pattern = re.compile("(no contesta)", re.IGNORECASE)
-		dontapply_pattern = re.compile("(no aplicable)", re.IGNORECASE)
-
-		if dk_pattern.match(text):
-			return 'dk'
-		elif refusal_pattern.match(text):
-			return 'refusal'
-		elif dontapply_pattern.match(text):
-			return 'dontapply'
-		else:
-			return None
-
-	if 'SWE' in filename:
-		dk_pattern = re.compile("(Vet ej)", re.IGNORECASE)
 
 		#fake values - no translation for these items in XML
 		refusal_pattern = re.compile("(CEVAP VERMİYOR)", re.IGNORECASE)
@@ -339,10 +363,82 @@ def recognize_standard_response_scales(filename, text):
 			else:
 				return None
 
+	if 'SPA' in filename:
+		dk_pattern = re.compile("(No sabe)", re.IGNORECASE)
+		refusal_pattern = re.compile("(no contesta)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(no aplicable)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+	if 'SWE' in filename:
+		dk_pattern = re.compile("(Vet ej)", re.IGNORECASE)
+
+		#fake values - no translation for these items in XML
+		refusal_pattern = re.compile("(CEVAP VERMİYOR)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(Soru Sorulmadı)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+	if 'SLO' in filename:
+		dk_pattern = re.compile("(nevie)", re.IGNORECASE)
+		refusal_pattern = re.compile("(neodpovedal)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(nehodí sa)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+	if 'SLV' in filename:
+		dk_pattern = re.compile("(ne vem)", re.IGNORECASE)
+		refusal_pattern = re.compile("(brez odgovora)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(se ne nanaša)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
 	if 'TUR' in filename:
 		dk_pattern = re.compile("(BİLMİYOR-FİKRİ YOK)", re.IGNORECASE)
 		refusal_pattern = re.compile("(CEVAP VERMİYOR)", re.IGNORECASE)
 		dontapply_pattern = re.compile("(Soru Sorulmadı)", re.IGNORECASE)
+
+		if dk_pattern.match(text):
+			return 'dk'
+		elif refusal_pattern.match(text):
+			return 'refusal'
+		elif dontapply_pattern.match(text):
+			return 'dontapply'
+		else:
+			return None
+
+	if 'UKR' in filename:
+		dk_pattern = re.compile("(Важко відповісти)", re.IGNORECASE)
+		refusal_pattern = re.compile("(Відмова від відповіді)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(Не підходить)", re.IGNORECASE)
 
 		if dk_pattern.match(text):
 			return 'dk'
@@ -400,6 +496,8 @@ def determine_country(filename):
 		country = 'Greece'
 	if '_HV' in filename:
 		country = 'Bosnia and Herzegovina'
+	if '_HU' in filename:
+		country = 'Hungary'
 	if '_IE' in filename:
 		country = 'Ireland'
 	if '_IT' in filename:
@@ -434,7 +532,11 @@ def determine_country(filename):
 		country = 'Russian Federation'
 	if '_SE' in filename:
 		country = 'Sweden'
-	if 'TUR' in filename:
+	if '_SI' in filename:
+		country = 'Slovenia'
+	if '_SK' in filename:
+		country = 'Slovakia'
+	if '_TR' in filename:
 		country = 'Turkey'
 	if '_UA' in filename:
 		country = 'Ukraine'
@@ -444,53 +546,64 @@ def determine_country(filename):
 
 
 def determine_sentence_tokenizer(filename):
-	if 'ENG_' in filename:
-		sentence_splitter_suffix = 'english.pickle'
-	if 'FRE_' in filename:
-		sentence_splitter_suffix = 'french.pickle'
-	if 'GER_' in filename:
-		sentence_splitter_suffix = 'german.pickle'
+	#there is no sentence segmentation for bulgarian in NLTK.. 
+	if 'BUL_' in filename:
+		sentence_splitter_suffix = 'turkish.pickle'
 	if 'CZE_' in filename:
 		sentence_splitter_suffix = 'czech.pickle'
-	if 'POR_' in filename:
-		sentence_splitter_suffix = 'portuguese.pickle'
-	if 'ITA_' in filename:
-		sentence_splitter_suffix = 'italian.pickle'
-	#no icelandic pickle
-	if 'ICE_' in filename:
-		sentence_splitter_suffix = 'norwegian.pickle'
-	if 'RUS_' in filename:
-		sentence_splitter_suffix = 'russian.pickle'
-	if 'SPA_' in filename:
-		sentence_splitter_suffix = 'spanish.pickle'
 	if 'DAN_' in filename:
 		sentence_splitter_suffix = 'danish.pickle'
 	if 'DUT_' in filename:
 		sentence_splitter_suffix = 'dutch.pickle'
-	if 'SLO_' in filename:
-		sentence_splitter_suffix = 'slovene.pickle'
+	if 'ENG_' in filename:
+		sentence_splitter_suffix = 'english.pickle'
 	if 'EST_' in filename:
 		sentence_splitter_suffix = 'estonian.pickle'
+	if 'FRE_' in filename:
+		sentence_splitter_suffix = 'french.pickle'
 	if 'FIN_' in filename:
 		sentence_splitter_suffix = 'finnish.pickle'
+	if 'GER_' in filename:
+		sentence_splitter_suffix = 'german.pickle'
 	if 'GRE_' in filename:
 		sentence_splitter_suffix = 'greek.pickle'
-	if 'POL_' in filename:
-		sentence_splitter_suffix = 'polish.pickle'
+	
+	
+	if 'ITA_' in filename:
+		sentence_splitter_suffix = 'italian.pickle'
+	
 	if 'NOR_' in filename:
 		sentence_splitter_suffix = 'norwegian.pickle'
+	if 'POL_' in filename:
+		sentence_splitter_suffix = 'polish.pickle'
+	if 'POR_' in filename:
+		sentence_splitter_suffix = 'portuguese.pickle'
+	if 'RUS_' in filename:
+		sentence_splitter_suffix = 'russian.pickle'
+	if 'SPA_' in filename:
+		sentence_splitter_suffix = 'spanish.pickle'
+	
+	if 'SLV_' in filename:
+		sentence_splitter_suffix = 'slovene.pickle'
+	
 	if 'SWE_' in filename:
 		sentence_splitter_suffix = 'swedish.pickle'
 	if 'TUR_' in filename:
 		sentence_splitter_suffix = 'turkish.pickle'
-	if 'HUN_' in filename:
-		sentence_splitter_suffix = 'hungarian.pickle'
+
+	#there is no sentence segmentation for louxemburgish in NLTK.. 
+	if 'UKR_' in filename:
+		sentence_splitter_suffix = 'russian.pickle'
+	#there is no sentence segmentation for louxemburgish in NLTK.. 
+	if 'LTZ_' in filename:
+		sentence_splitter_suffix = 'german.pickle'
+	#there is no sentence segmentation for maltese in NLTK.. 
+	if 'MLT_' in filename:
+		sentence_splitter_suffix = 'turkish.pickle'
 	#there is no sentence segmentation for croatian in NLTK.. 
 	if 'HRV_' in filename:
 		sentence_splitter_suffix = 'turkish.pickle'
-	#there is no sentence segmentation for bulgarian in NLTK.. 
-	if 'BUL_' in filename:
-		sentence_splitter_suffix = 'turkish.pickle'
+	
 
 	return sentence_splitter_suffix
 
