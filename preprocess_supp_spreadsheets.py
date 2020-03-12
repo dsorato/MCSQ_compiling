@@ -53,37 +53,64 @@ def determine_sentence_tokenizer(filename):
 
 	return sentence_splitter_suffix
 
+def eliminate_dots(sentence):
+	return "".join(filter(lambda char: char != ".", sentence))
+
+def remove_undesired_symbols(sentence):
+	sentence = "".join(filter(lambda char: char != "»", sentence))
+	sentence = "".join(filter(lambda char: char != "«", sentence))
+	sentence = sentence.replace(" ?", "?")
+	sentence = sentence.replace(" :", ":")
+
+	return sentence
+	
+
+def string_is_uppercase(sentence):
+	return [word for word in sentence if word.isupper()]
+
 def string_has_numbers(sentence):
 	return bool(re.search(r'\d', sentence))
 
-def recursive_split(sentence, flag_zero, flag_begins_with_zero, flag_parentheses):
+def recursive_split(sentence, flag_zero, flag_begins_with_zero, flag_parentheses, flag_begins_with_number):
 	dict_answers = dict()
 	
 	if flag_zero == True and flag_begins_with_zero==True and flag_parentheses==False:
-		splits = ['00','01','02','03','04','05', '06', '07', '08', '09', '10']
+		splits = ['00','01','02','03','04','05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
 	elif flag_zero == True and flag_begins_with_zero==False and flag_parentheses==False:
-		splits = ['01','02','03','04','05', '06', '07', '08', '09', '10']
+		splits = ['01','02','03','04','05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
 	elif flag_zero == False and flag_begins_with_zero==True and flag_parentheses==False:
-		splits = ['0','1','2','3','4','5', '6', '7', '8', '9', '10']
+		splits = ['0','1','2','3','4','5', '6', '7', '8', '9', '10','11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
 	elif flag_zero == False and flag_begins_with_zero==False and flag_parentheses==False:
-		splits = ['1','2','3','4','5', '6', '7', '8', '9', '10']
+		splits = ['1','2','3','4','5', '6', '7', '8', '9', '10','11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
 	elif flag_zero == False and flag_begins_with_zero==False and flag_parentheses==True:
-		splits = ['1)','2)','3)','4)','5)', '6)', '7)', '8)', '9)', '10)']
+		splits = ['1)','2)','3)','4)','5)', '6)', '7)', '8)', '9)', '10)', '11)', '12)', '13)', '14)', '15)', '16)', '17)', '18)', '19)', '20)']
 
-	for i,n in enumerate(splits):
-		if n not in sentence and flag_parentheses==False:
-			return dict_answers
-		elif splits[i+1] not in sentence and flag_parentheses==True:
-			return dict_answers
-		else:
-			if flag_parentheses==True:
-				scale_item = sentence.split(splits[i+1])
-				item = re.sub('1\)', '', scale_item[0])
-				n = re.sub('\)', '', n)
+	if flag_begins_with_number==True:
+		for i,n in enumerate(splits):
+			print(sentence)
+			if splits[i+1] not in sentence:
+				dict_answers[n] = sentence
+				return dict_answers
+			else:		
+				scale_item = sentence.split(splits[i+1], 1)
+				if flag_parentheses==True:
+					item = re.sub('1\)', '', scale_item[0])
+					n = re.sub('\)', '', n)
+				else:
+					item = re.sub('^(\s+)?00', '', scale_item[0])
+					item = re.sub('^(\s+)?0', '', item)
+					item = re.sub('^(\s+)?1', '', item)
 				dict_answers[n] = item
 				sentence = scale_item[1]
+
+	else:
+		for i,n in enumerate(splits):
+			if n not in sentence and flag_parentheses==False:
+				return dict_answers
+			elif splits[i+1] not in sentence and flag_parentheses==True:
+				return dict_answers
 			else:
-				scale_item = sentence.split(n)
+				scale_item = sentence.split(n, 1)
 				dict_answers[n] = scale_item[0]
 				sentence = scale_item[1]
 			
@@ -106,7 +133,7 @@ def recursive_split_income_question(sentence):
 
 
 def preprocess_one_to_ten_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = analysed_item
+	sentence = eliminate_dots(analysed_item) 
 	if re.compile('(01)', re.IGNORECASE).findall(sentence):
 		first_part = sentence.split('02')
 		first_part_clean = re.sub("^01 ", "", first_part[0])
@@ -140,7 +167,7 @@ def preprocess_one_to_ten_pattern(cleaned_df_round, analysed_item,row, module):
 	return cleaned_df_round
 
 def preprocess_zero_to_ten_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = analysed_item
+	sentence = sentence = eliminate_dots(analysed_item)
 	if re.compile('(01)', re.IGNORECASE).findall(sentence):
 		first_part = sentence.split('01')
 		first_part_clean = re.sub("(^\s?00?\s?)*", "", first_part[0])
@@ -178,7 +205,7 @@ def preprocess_zero_to_ten_pattern(cleaned_df_round, analysed_item,row, module):
 
 
 def preprocess_zero_to_nine_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = analysed_item
+	sentence = eliminate_dots(analysed_item)
 	if re.compile('(01)', re.IGNORECASE).findall(sentence):
 		first_part = sentence.split('01')
 		first_part_clean = re.sub("(^\s?00?\s?)*", "", first_part[0])
@@ -216,7 +243,7 @@ def preprocess_zero_to_nine_pattern(cleaned_df_round, analysed_item,row, module)
 
 
 def preprocess_zero_to_six_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = analysed_item
+	sentence = eliminate_dots(analysed_item)
 	if re.compile('(00)', re.IGNORECASE).findall(sentence):
 		first_part = sentence.split('01')
 		first_part_clean = re.sub("^00 ", "", first_part[0])
@@ -251,7 +278,7 @@ def preprocess_zero_to_six_pattern(cleaned_df_round, analysed_item,row, module):
 	return cleaned_df_round
 		
 def preprocess_zero_to_five_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = analysed_item
+	sentence = eliminate_dots(analysed_item)
 	if re.compile('(00)', re.IGNORECASE).findall(sentence):
 		first_part = sentence.split('01')
 		first_part_clean = re.sub("^00 ", "", first_part[0])
@@ -285,8 +312,43 @@ def preprocess_zero_to_five_pattern(cleaned_df_round, analysed_item,row, module)
 
 	return cleaned_df_round
 
+def preprocess_one_to_seven_pattern(cleaned_df_round, analysed_item,row, module):
+	sentence = eliminate_dots(analysed_item)
+	if re.compile('(01)', re.IGNORECASE).findall(sentence):
+		first_part = sentence.split('02')
+		first_part_clean = re.sub("^01 ", "", first_part[0])
+		final_part = first_part[1].split('07')
+		final_part_clean = re.sub("^\s+", "", final_part[1]) 
+					
+	else:
+		final_part = sentence.split('7')
+		final_part_clean = re.sub("^\s", "", final_part[1])
+		first_part = final_part[0].split('2')
+		first_part_clean = re.sub("^1 ", "", first_part[0])
+		first_part_clean = re.sub("\s$", "", first_part_clean)
+	
+	#first part of the scale			
+	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
+	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
+	'item_type': 'RESPONSE', 'item_value': 1, 'text': first_part_clean}
+	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+
+	#final part of the scale
+	for n in range(2,7):
+		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
+		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
+		'item_type': 'RESPONSE', 'item_value': n, 'text': n}
+		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+
+	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
+	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
+	'item_type': 'RESPONSE', 'item_value': 7, 'text': final_part_clean}
+	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+
+	return cleaned_df_round
+
 def preprocess_one_to_five_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = analysed_item
+	sentence = eliminate_dots(analysed_item)
 	if re.compile('(01)', re.IGNORECASE).findall(sentence):
 		first_part = sentence.split('02')
 		first_part_clean = re.sub("^01 ", "", first_part[0])
@@ -321,7 +383,7 @@ def preprocess_one_to_five_pattern(cleaned_df_round, analysed_item,row, module):
 	return cleaned_df_round
 
 def preprocess_zero_to_four_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = analysed_item
+	sentence = eliminate_dots(analysed_item)
 	if re.compile('(00)', re.IGNORECASE).findall(sentence):
 		first_part = sentence.split('01')
 		first_part_clean = re.sub("^00 ", "", first_part[0])
@@ -357,7 +419,7 @@ def preprocess_zero_to_four_pattern(cleaned_df_round, analysed_item,row, module)
 	return cleaned_df_round
 
 def preprocess_one_to_four_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = analysed_item
+	sentence = eliminate_dots(analysed_item)
 	if re.compile('(01)', re.IGNORECASE).findall(sentence):
 		first_part = sentence.split('02')
 		first_part_clean = re.sub("^01 ", "", first_part[0])
@@ -392,7 +454,7 @@ def preprocess_one_to_four_pattern(cleaned_df_round, analysed_item,row, module):
 	return cleaned_df_round
 
 def preprocess_zero_to_three_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = analysed_item
+	sentence = eliminate_dots(analysed_item)
 	if re.compile('(00)', re.IGNORECASE).findall(sentence):
 		first_part = sentence.split('01')
 		first_part_clean = re.sub("^00 ", "", first_part[0])
@@ -428,7 +490,7 @@ def preprocess_zero_to_three_pattern(cleaned_df_round, analysed_item,row, module
 	return cleaned_df_round
 
 def preprocess_zero_to_two_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = analysed_item
+	sentence = eliminate_dots(analysed_item)
 	if re.compile('(00)', re.IGNORECASE).findall(sentence):
 		first_part = sentence.split('01')
 		first_part_clean = re.sub("^00 ", "", first_part[0])
@@ -465,7 +527,7 @@ def preprocess_zero_to_two_pattern(cleaned_df_round, analysed_item,row, module):
 
 
 def preprocess_zero_to_ten_with_value_in_five_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = analysed_item
+	sentence = eliminate_dots(analysed_item)
 	if re.compile('(00)', re.IGNORECASE).findall(sentence):
 		first_part = sentence.split('01')
 		first_part_clean = re.sub("^00 ", "", first_part[0])
@@ -514,16 +576,17 @@ def preprocess_zero_to_ten_with_value_in_five_pattern(cleaned_df_round, analysed
 def clean_dataframe_by_round(df_round, sentence_splitter):
 	# zero_to_ten_pattern = re.compile('(00?\s\w+(.)*\s0?1\s0?2\s0?3\s0?4\s0?5\s0?6\s0?7\s0?8\s0?9\s10\s\w+(.)*)', re.I)
 	zero_to_ten_with_value_in_five_pattern = re.compile('(^00?\s+)(.)*(0?5\s[a-z]+)(.)*(10\s[a-z]+)', re.IGNORECASE)
-	zero_to_ten_pattern = re.compile('(^00?\s+)(.)*(10\s+[a-z]+)', re.IGNORECASE)
-	zero_to_nine_pattern = re.compile('(^00?\s+)(.)*(\s+[a-z]+)', re.IGNORECASE)
-	one_to_ten_pattern = re.compile('(^0?1\s+)(.)*(10\s+[a-z]+)', re.IGNORECASE)
-	zero_to_five_pattern = re.compile('(^00?\s+)(.)*(0?5\s+[a-z]+)', re.I)
-	one_to_five_pattern = re.compile('(^0?1\s+)(.)*(0?5\s+[a-z]*)', re.IGNORECASE)
-	zero_to_four_pattern = re.compile('(^00?\s+)(.)*(0?4\s+[a-z]+)', re.I)
-	one_to_four_pattern = re.compile('(^0?1\s+)(.)*(0?4\s+[a-z]+)', re.IGNORECASE)
-	zero_to_three_pattern = re.compile('(^00?\s+)(.)*(0?3\s+[a-z]+)', re.I)
-	zero_to_two_pattern = re.compile('(^00?\s+)(.)*(0?2\s+[a-z]+)', re.I)
-	zero_to_six_pattern = re.compile('(^00?\s+)(.)*(0?6\s+[a-z]+)', re.I)
+	zero_to_ten_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?)\s+(0?8\.?)\s+(0?9\.?)\s+(10\.?\s+[a-z]+)', re.IGNORECASE)
+	zero_to_nine_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?)\s+(0?8\.?)\s+(0?9\.?\s+[a-z]+)', re.IGNORECASE)
+	one_to_ten_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?)\s+(0?8\.?)\s+(0?9\.?)\s+(10\.?\s+[a-z]+)', re.IGNORECASE)
+	one_to_seven_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?\s+[a-z]+)', re.IGNORECASE)
+	zero_to_five_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?\s+[a-z]+)', re.I)
+	one_to_five_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?\s+[a-z]+)', re.IGNORECASE)
+	zero_to_four_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?\s+[a-z]+)', re.I)
+	one_to_four_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?\s+[a-z]+)', re.IGNORECASE)
+	zero_to_three_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?\s+[a-z]+)', re.I)
+	zero_to_two_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?\s+[a-z]+)', re.I)
+	zero_to_six_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?\s+[a-z]+)', re.I)
 	
 	cleaned_df_round = pd.DataFrame(columns=['Study', 'Language', 'Country', 'q_name', 'q_concept', 'item_name', 'module', 'item_type', 'item_value', 'text'])
 	
@@ -532,8 +595,8 @@ def clean_dataframe_by_round(df_round, sentence_splitter):
 		module = module.groups()[0]
 
 		analysed_item = row['Introduction text']
-
 		if analysed_item != '.' and isinstance(analysed_item, str):
+			analysed_item = remove_undesired_symbols(analysed_item)
 			split_into_sentences = sentence_splitter.tokenize(analysed_item)
 			for sentence in split_into_sentences:
 				data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
@@ -542,8 +605,8 @@ def clean_dataframe_by_round(df_round, sentence_splitter):
 				cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
 
 		analysed_item = row['Request for answer text']
-
 		if analysed_item != '.' and isinstance(analysed_item, str):
+			analysed_item = remove_undesired_symbols(analysed_item)
 			split_into_sentences = sentence_splitter.tokenize(analysed_item)
 			for sentence in split_into_sentences:
 				data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
@@ -553,9 +616,9 @@ def clean_dataframe_by_round(df_round, sentence_splitter):
 
 		
 		analysed_item = row['Answer options text']
-
 		
 		if analysed_item != '.' and isinstance(analysed_item, str):
+			analysed_item = remove_undesired_symbols(analysed_item)
 			######Regex matches 0-10 scales with words in item 5######
 			if zero_to_ten_with_value_in_five_pattern.match(analysed_item):
 				cleaned_df_round = preprocess_zero_to_ten_with_value_in_five_pattern(cleaned_df_round, analysed_item, row, module)
@@ -588,6 +651,10 @@ def clean_dataframe_by_round(df_round, sentence_splitter):
 			elif zero_to_six_pattern.match(analysed_item):
 				cleaned_df_round = preprocess_zero_to_six_pattern(cleaned_df_round, analysed_item,row, module)
 			####################################
+			######Regex matches 1-7 scales######
+			elif one_to_seven_pattern.match(analysed_item):
+				cleaned_df_round = preprocess_one_to_seven_pattern(cleaned_df_round, analysed_item,row, module)
+			#####################################
 			######Regex matches 0-10 scales######
 			elif zero_to_ten_pattern.match(analysed_item):
 				cleaned_df_round = preprocess_zero_to_ten_pattern(cleaned_df_round, analysed_item,row, module)
@@ -602,7 +669,9 @@ def clean_dataframe_by_round(df_round, sentence_splitter):
 			#####################################
 			else:
 				sentence = analysed_item
-				if len(sentence.split(' ')) <= 3 or string_has_numbers(sentence) == False:
+				if len(sentence.split(' ')) <= 3 or string_has_numbers(sentence)==False:
+					if string_has_numbers(sentence)==False and len(sentence.split(' ')) > 3:
+						print(sentence)
 					data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
 						'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
 						'item_type': 'RESPONSE', 'item_value': None, 'text': sentence}
@@ -629,18 +698,36 @@ def clean_dataframe_by_round(df_round, sentence_splitter):
 
 				else:
 					d = dict()
-					if re.compile('(\s+00\s+)', re.IGNORECASE).findall(sentence):
-						d = recursive_split(sentence, True, True, False)
-					elif re.compile('(\s+01\s+)', re.IGNORECASE).findall(sentence):
-						d = recursive_split(sentence, True, False, False)
-					elif re.compile('(\s+0\s+)', re.IGNORECASE).findall(sentence):
-						d = recursive_split(sentence, False, True, False)
-					elif re.compile('(1\)\s+)', re.IGNORECASE).findall(sentence):
-						d = recursive_split(sentence, False, False, True)
-					elif re.compile('(\s+1\s+)', re.IGNORECASE).findall(sentence):
-						d = recursive_split(sentence, False, False, False)
+					sentence = eliminate_dots(analysed_item)
+					# flag_zero, flag_begins_with_zero, flag_parentheses, flag_begins_with_number
+					if re.compile('(\s+)?(00\s+)', re.IGNORECASE).findall(sentence):
+						if re.compile('(^00\s+)', re.IGNORECASE).findall(sentence):
+							d = recursive_split(sentence, True, True, False, True)
+						else:
+							d = recursive_split(sentence, True, True, False, False)
+					elif re.compile('(\s+)?(01\s+)', re.IGNORECASE).findall(sentence):
+						if re.compile('(^01\s+)', re.IGNORECASE).findall(sentence):
+							d = recursive_split(sentence, True, False, False, True)
+						else:
+							d = recursive_split(sentence, True, False, False, False)
+					elif re.compile('(\s+)?(0\s+)', re.IGNORECASE).findall(sentence):
+						if re.compile('(^0\s+)', re.IGNORECASE).findall(sentence):
+							d = recursive_split(sentence, False, True, False, True)
+						else:
+							d = recursive_split(sentence, False, True, False, False)
+					elif re.compile('(\s+)?(1\)\s+)', re.IGNORECASE).findall(sentence):
+						if re.compile('(^1\)\s+)', re.IGNORECASE).findall(sentence):
+							d = recursive_split(sentence, False, False, True, True)
+						else:
+							d = recursive_split(sentence, False, False, True, False)
+					elif re.compile('(\s+)?(1\s+)', re.IGNORECASE).findall(sentence):
+						if re.compile('(^1\s+)', re.IGNORECASE).findall(sentence):
+							d = recursive_split(sentence, False, False, False, True)
+						else:
+							d = recursive_split(sentence, False, False, False, False)
+						
 					else:
-						print(sentence)
+						print('NO MATCHES', sentence)
 
 
 					if not d:
@@ -660,7 +747,7 @@ def clean_dataframe_by_round(df_round, sentence_splitter):
 
 def split_dataframes(file, df_supp, sentence_splitter):
 	global currency
-	if 'CZE_CZ' in file:
+	if 'CZE_CZ' in file or 'FRE':
 		currency = 'Kč'
 	dict_year_round = {'1':'2002', '2':'2004', '3':'2006', '4':'2008', '5':'2010', '6':'2012', '7':'2014', '8':'2016', '9':'2018'}
 
