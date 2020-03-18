@@ -26,7 +26,7 @@ def determine_sentence_tokenizer(filename):
 		sentence_splitter_suffix = 'italian.pickle'
 	if 'RUS_' in filename:
 		sentence_splitter_suffix = 'russian.pickle'
-	if 'SPA_' in filename:
+	if 'SPA_' in filename or 'CAT_' in filename:
 		sentence_splitter_suffix = 'spanish.pickle'
 	if 'DAN_' in filename:
 		sentence_splitter_suffix = 'danish.pickle'
@@ -71,6 +71,25 @@ def string_is_uppercase(sentence):
 def string_has_numbers(sentence):
 	return bool(re.search(r'\d', sentence))
 
+def recursive_split_plus_minus_scale(sentence):
+	dict_answers = dict()
+	
+	splits = ['-5', '-4','-3','-2','-1','0','+1', '+2', '+3', '+4', '+5']
+	
+	for i,n in enumerate(splits):
+		if n not in sentence and '-' in n:
+			pass
+		elif n not in sentence and '+' in n:
+			return dict_answers
+		else:
+			scale_item = sentence.split(n, 1)
+			dict_answers[n] = scale_item[0]
+			sentence = scale_item[1]
+			
+
+
+	return dict_answers
+
 def recursive_split(sentence, flag_zero, flag_begins_with_zero, flag_parentheses, flag_begins_with_number):
 	dict_answers = dict()
 	
@@ -87,7 +106,7 @@ def recursive_split(sentence, flag_zero, flag_begins_with_zero, flag_parentheses
 
 	if flag_begins_with_number==True:
 		for i,n in enumerate(splits):
-			print(sentence)
+			# print(sentence)
 			if splits[i+1] not in sentence:
 				dict_answers[n] = sentence
 				return dict_answers
@@ -118,9 +137,14 @@ def recursive_split(sentence, flag_zero, flag_begins_with_zero, flag_parentheses
 
 	return dict_answers
 
-def recursive_split_income_question(sentence):
+def recursive_split_income_question(sentence, study, country):
 	dict_answers = dict()
 	categories = ['K','S','D','N','G','T', 'L', 'Q', 'F', 'J']
+
+
+	if ('ESS Round 4' in study and 'Germany' in country) or ('ESS Round 9' in study and 'Switzerland' in country) or ('ESS Round 6' in study and 'United Kingdom' in country):
+		categories = ['J','R','C','M','F','S', 'K', 'P', 'D', 'H']
+
 	splits = re.compile("\s+[A-Z]\s+").split(sentence)
 
 	dict_answers['pre'] = splits[0]
@@ -573,6 +597,31 @@ def preprocess_zero_to_ten_with_value_in_five_pattern(cleaned_df_round, analysed
 
 	return cleaned_df_round
 
+def split_scale_without_numbers(sentence):
+	is_scale = False
+	scale_items = []
+	index_uppercase = []
+
+	for i, s in enumerate(sentence):
+		if s.isupper():
+			index_uppercase.append(i)
+
+	
+	if len(index_uppercase) > 1:
+		is_scale = True
+		for i, index in enumerate(index_uppercase):
+			if index == index_uppercase[-1]:
+				scale_items.append(sentence[index:])
+			else:
+				scale_items.append(sentence[index:(index_uppercase[i+1]-1)])
+
+
+	return is_scale, scale_items
+
+
+
+
+
 def clean_dataframe_by_round(df_round, sentence_splitter):
 	# zero_to_ten_pattern = re.compile('(00?\s\w+(.)*\s0?1\s0?2\s0?3\s0?4\s0?5\s0?6\s0?7\s0?8\s0?9\s10\s\w+(.)*)', re.I)
 	zero_to_ten_with_value_in_five_pattern = re.compile('(^00?\s+)(.)*(0?5\s[a-z]+)(.)*(10\s[a-z]+)', re.IGNORECASE)
@@ -671,15 +720,30 @@ def clean_dataframe_by_round(df_round, sentence_splitter):
 				sentence = analysed_item
 				if len(sentence.split(' ')) <= 3 or string_has_numbers(sentence)==False:
 					if string_has_numbers(sentence)==False and len(sentence.split(' ')) > 3:
-						print(sentence)
-					data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
+						is_scale, scale_items = split_scale_without_numbers(sentence)
+
+						if is_scale ==  False:
+							data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
+							'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
+							'item_type': 'RESPONSE', 'item_value': None, 'text': sentence}
+							cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+						else:
+							for i, item in enumerate(scale_items):
+								data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
+								'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
+								'item_type': 'RESPONSE', 'item_value': i, 'text': item}
+								cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+
+
+					else:
+						data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
 						'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
 						'item_type': 'RESPONSE', 'item_value': None, 'text': sentence}
-					cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+						cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
 
 				elif currency in sentence:
 					d = dict()
-					d = recursive_split_income_question(sentence)
+					d = recursive_split_income_question(sentence, row['Study'], row['Country'])
 
 					if not d:
 						pass
@@ -705,6 +769,8 @@ def clean_dataframe_by_round(df_round, sentence_splitter):
 							d = recursive_split(sentence, True, True, False, True)
 						else:
 							d = recursive_split(sentence, True, True, False, False)
+					elif re.compile('(\s+)?(-1\s+)', re.IGNORECASE).findall(sentence):
+							d = recursive_split_plus_minus_scale(sentence)
 					elif re.compile('(\s+)?(01\s+)', re.IGNORECASE).findall(sentence):
 						if re.compile('(^01\s+)', re.IGNORECASE).findall(sentence):
 							d = recursive_split(sentence, True, False, False, True)
@@ -727,7 +793,13 @@ def clean_dataframe_by_round(df_round, sentence_splitter):
 							d = recursive_split(sentence, False, False, False, False)
 						
 					else:
-						print('NO MATCHES', sentence)
+						if "(entre '0' et '10')" in sentence:
+							data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
+							'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
+							'item_type': 'RESPONSE', 'item_value': None, 'text': sentence}
+							cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+						else:
+							print('NO MATCHES', sentence)
 
 
 					if not d:
@@ -747,8 +819,18 @@ def clean_dataframe_by_round(df_round, sentence_splitter):
 
 def split_dataframes(file, df_supp, sentence_splitter):
 	global currency
-	if 'CZE_CZ' in file or 'FRE':
+	if 'CZE_CZ' in file:
 		currency = 'Kč'
+	elif 'NOR' in file:
+		currency = 'NOK'
+	elif 'GER_DE' in file or 'GER_AT' in file or 'FRE' in file or 'POR' in file or 'SPA' in file or 'CAT' in file or 'ENG_IE' in file or 'RUS' in file:
+		currency = '€'
+	elif 'GER_CH' in file:
+		currency = 'CHF'
+	elif 'ENG_GB' in file:
+		currency = '£'
+	elif 'ENG_SOURCE' in file:
+		currency = 'individual income'
 	dict_year_round = {'1':'2002', '2':'2004', '3':'2006', '4':'2008', '5':'2010', '6':'2012', '7':'2014', '8':'2016', '9':'2018'}
 
 	filename_without_extension = re.sub('.csv', '', file)
@@ -762,7 +844,7 @@ def split_dataframes(file, df_supp, sentence_splitter):
 		round_number =  [int(s) for s in df_round_unique.split() if s.isdigit()]
 		round_number = str(round_number[0])
 		cleaned_df_round = clean_dataframe_by_round(df_round, sentence_splitter)
-		cleaned_df_round.to_csv('ESS_R0'+round_number+'_'+dict_year_round[round_number]+'_'+filename_without_extension+'_SUPP.csv', encoding='utf-8', index=False)
+		cleaned_df_round.to_csv('ESS_R0'+round_number+'_'+dict_year_round[round_number]+'_SUPP_'+filename_without_extension+'.csv', encoding='utf-8', index=False)
 
 def main():
 	path = os.getcwd()
