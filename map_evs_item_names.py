@@ -4,6 +4,22 @@ import re
 import string
 import pandas as pd
 
+def standartize_item_name(item_name):
+	item_name = re.sub("\.", "", item_name)
+	item_name = item_name.lower()
+	item_name = re.sub("^q", "Q", item_name)
+	item_name = re.sub("^f", "Q", item_name)
+	# item_name = re.sub(")", "", item_name)
+
+	if '_'  in item_name:
+		item_name = item_name.split('_')
+		item_name = item_name[0]+item_name[1].lower()
+
+	if item_name[0].isdigit() or len(item_name)==1:
+		item_name = 'Q'+item_name
+
+	return item_name
+
 
 def main(filename_xlsx,filename_xml):
 	# parse an xml file by name
@@ -43,12 +59,12 @@ def main(filename_xlsx,filename_xml):
 		for item_y in item_list:
 			if item_x == item_y[0]:
 				print(item_x, item_y[0], item_y[1].replace('.', ''))
-				data = {'v_item':item_y[0], 'q_item': item_y[1].replace('.', '')}
+				data = {'v_item':item_y[0], 'q_item': standartize_item_name(item_y[1])}
 				df_evs_sample = df_evs_sample.append(data, ignore_index=True)
 
 	df_evs_sample= df_evs_sample.drop_duplicates(subset='v_item', keep="last")
 	result = pd.merge(df_evs_sample, xlsx_file, on='v_item')
-	result.to_csv('evs_data/df_evs_sample.csv', encoding='utf-8', index=False)
+	result.to_csv('evs_data/df_evs_sample_w4.csv', encoding='utf-8', index=False)
 
 
 
