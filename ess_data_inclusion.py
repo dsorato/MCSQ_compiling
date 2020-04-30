@@ -7,32 +7,40 @@ import sys
 import os
 from populate_tables import *
 
-#Function responsible for getting the module full names in a given study/round.
-def get_module_full_names(study, wave_round):
+#Function responsible for getting the module description in a given study/round.
+def get_module_description(study, wave_round):
 	if study == 'ESS':
 		if wave_round == 'R01':
-			module_names = {'A': 'A - Media; social trust', 'B': 'B - Politics, including: political interest, efficacy, trust, electoral and other forms of participation, party allegiance, socio-political evaluations/orientations, multi-level governance',
-			'C': 'C - Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity', 'D': 'D - Immigration and asylum issues, including: attitudes, perceptions, policy preferences and knowledge',
-			'E': 'E - Citizen involvement: including organisational membership, family and friendship bonds, citizenship values, working environment', 
-			'F': 'F - Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status',
+			module_description = {'A': 'Media; social trust', 'B': 'Politics, including: political interest, efficacy, trust, electoral and other forms of participation, party allegiance, socio-political evaluations/orientations, multi-level governance',
+			'C': 'Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity', 'D': 'Immigration and asylum issues, including: attitudes, perceptions, policy preferences and knowledge',
+			'E': 'Citizen involvement: including organisational membership, family and friendship bonds, citizenship values, working environment', 
+			'F': 'Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status',
 			'SUPP_G': 'Human values scale', 'SUPP_GF': 'Human values scale', 'SUPP_GS': 'Human values scale', 'SUPP_H': 'Test questions', 'SUPP_I': 'Interviewer questions', 'INTRO_MODULE': 'Specific from MCSQ database: text that introduces a given module'}
 
 
-	return module_names 
+	return module_description 
 
 
 def populate_survey_table(surveyid, study, wave_round, year, country_language):
 	write_survey_table(surveyid, study, wave_round, year, country_language)
 
 
-def populate_module_table(file):
+def populate_module_table(study, wave_round, file):
+	modules_dict =  dict()
+
+	module_description = get_module_description(study, wave_round)
 	#import data from preprocessed csv into a dataframe
 	data = pd.read_csv(file)
 	module = data['module']
 	#get only unique values in module column
-	module_unique = data.module.unique()
-	
-	print(module_unique)
+	module_unique_names = data.module.unique()
+
+	modules_in_questionnaire = dict()
+	for module_name in module_unique_names:
+		if module_name in module_description:
+			modules_dict[module_name] = module_description[module_name]
+		
+	write_module_table(modules_dict)
 
 def main(folder_path):
 	path = os.chdir(folder_path)
@@ -49,7 +57,7 @@ def main(folder_path):
 			surveyid = split_filename[0]+'_'+split_filename[1]+'_'+split_filename[2]
 			country_language = split_filename[3]+'_'+split_filename[4]
 			# populate_survey_table(surveyid, study, wave_round, year, country_language)
-			populate_module_table(file)
+			populate_module_table(study, wave_round, file)
 
 			
 

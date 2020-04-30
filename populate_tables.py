@@ -15,12 +15,12 @@ def write_survey_table(surveyid, study, wave_round, year, country_language):
 	session.commit()
 	session.close()
 
-def write_module_table(module_names):
+def write_module_table(module_dict):
 	session = session_factory()
-	for module in module_names:
-		exists = session.query(Module.module_name).filter_by(module_name=module).scalar() is not None
+	for k, v in list(module_dict.items()):
+		exists = session.query(Module.module_name, Module.module_description).filter_by(module_name=k, module_description=v).scalar() is not None
 		if exists == False:
-			item = Module(module)
+			item = Module(k, v)
 			session.add(item)
 			session.commit()
 
