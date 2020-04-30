@@ -5,6 +5,7 @@ import nltk.data
 import re
 
 ###############README###############
+# Script developed using spreadsheets retrieved from the SQP database as input.
 # This script read the contents of the raw spreadsheets of supplementary questions, 
 # split the contents by round and preprocess the contents for each round.
 # After the preprocessing, distinct spreadsheets are created with the cleaned contents.

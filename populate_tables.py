@@ -7,6 +7,27 @@ from DB.instruction import *
 from DB.response import *
 from DB.request import *
 
+
+def write_survey_table(surveyid, study, wave_round, year, country_language):
+	session = session_factory()
+	item = Survey(surveyid, study, wave_round, year, country_language)
+	session.add(item)
+	session.commit()
+	session.close()
+
+def write_module_table(module_names):
+	session = session_factory()
+	for module in module_names:
+		exists = session.query(Module.module_name).filter_by(module_name=module).scalar() is not None
+		if exists == False:
+			item = Module(module)
+			session.add(item)
+			session.commit()
+
+	session.close()
+
+
+
 def write_request_table(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
 	session = session_factory()
 	item = Request(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
@@ -34,13 +55,6 @@ def write_instruction_table(survey_itemid, final_text, translation_1, translatio
 	session.close()
 
 
-def write_survey_table(surveyid, study, wave_round, year, country_language):
-	session = session_factory()
-	item = Survey(surveyid, study, wave_round, year, country_language)
-	session.add(item)
-	session.commit()
-	session.close()
-
 def write_survey_item_table(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type):
 	session = session_factory()
 	item = Survey_item(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type)
@@ -56,16 +70,6 @@ def get_survey_last_record():
 	return last_survey_id.surveyid
 
 
-def write_module_table(module_names):
-	session = session_factory()
-	for module in module_names:
-		exists = session.query(Module.module_name).filter_by(module_name=module).scalar() is not None
-		if exists == False:
-			item = Module(module)
-			session.add(item)
-			session.commit()
-
-	session.close()
 
 def get_module_table_as_dict():
 	module_dict = dict()
