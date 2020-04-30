@@ -42,6 +42,20 @@ def populate_module_table(study, wave_round, file):
 		
 	write_module_table(modules_dict)
 
+
+def populate_survey_item_table(file, country_language):
+	data = pd.read_csv(file)
+	item_is_source = False
+	mod = get_module_table_as_dict()
+	surveyid = get_survey_last_record()
+
+	if country_language == 'ENG_SOURCE':
+		item_is_source = True 
+
+	print(mod, surveyid)
+
+	# write_survey_item_table(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type)
+
 def main(folder_path):
 	path = os.chdir(folder_path)
 	files = os.listdir(path)
@@ -57,7 +71,8 @@ def main(folder_path):
 			surveyid = split_filename[0]+'_'+split_filename[1]+'_'+split_filename[2]
 			country_language = split_filename[3]+'_'+split_filename[4]
 			# populate_survey_table(surveyid, study, wave_round, year, country_language)
-			populate_module_table(study, wave_round, file)
+			# populate_module_table(study, wave_round, file)
+			populate_survey_item_table(file, country_language)
 
 			
 
