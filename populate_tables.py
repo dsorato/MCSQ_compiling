@@ -49,28 +49,36 @@ def get_module_table_as_dict():
 	
 	return module_dict
 
-def write_request_table(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
+def get_survey_item_last_record():
 	session = session_factory()
-	item = Request(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
+	last_survey_item_id = session.query(Survey_item).order_by(Survey_item.survey_unique_itemid.desc()).first()
+	session.close()
+
+	return last_survey_item_id.survey_unique_itemid
+
+
+def write_request_table(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
+	session = session_factory()
+	item = Request(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
 	session.add(item)
 	session.commit()
 
-def write_response_table(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value):
+def write_response_table(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value):
 	session = session_factory()
-	item = Response(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value)
+	item = Response(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value)
 	session.add(item)
 	session.commit()
 
-def write_introduction_table(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
+def write_introduction_table(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
 	session = session_factory()
-	item = Introduction(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
+	item = Introduction(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
 	session.add(item)
 	session.commit()
 	session.close()
 
-def write_instruction_table(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
+def write_instruction_table(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
 	session = session_factory()
-	item = Instruction(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
+	item = Instruction(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
 	session.add(item)
 	session.commit()
 	session.close()

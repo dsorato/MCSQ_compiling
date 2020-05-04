@@ -57,10 +57,15 @@ def populate_survey_item_table(file, country_language):
 
 	for i, row in data.iterrows():
 		write_survey_item_table(row['survey_item_ID'], surveyid, mod[row['module']], country_language, item_is_source, row['item_name'], row['item_type'])
-
-	# print(mod, surveyid)
-
-	# write_survey_item_table(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type)
+		last_survey_item_unique = get_survey_item_last_record()
+		if row['item_type'] == 'REQUEST':
+			write_request_table(last_survey_item_unique, row['survey_item_ID'], row[country_language], '', '', '', '', row['item_name'], row['item_type'])
+		elif row['item_type'] == 'INSTRUCTION':
+			write_instruction_table(last_survey_item_unique, row['survey_item_ID'], row[country_language], '', '', '', '', row['item_name'], row['item_type'])
+		elif row['item_type'] == 'RESPONSE':
+			write_response_table(last_survey_item_unique, row['survey_item_ID'], row[country_language], '', '', '', '', row['item_name'], row['item_type'], row['item_value'])
+		elif row['item_type'] == 'INTRO' or row['item_type'] == 'INTRODUCTION':
+			write_introduction_table(last_survey_item_unique, row['survey_item_ID'], row[country_language], '', '', '', '', row['item_name'], row['item_type'])
 
 def main(folder_path):
 	path = os.chdir(folder_path)
