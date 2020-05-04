@@ -18,7 +18,7 @@ class Response(Base):
     adjudication = Column(String)
     item_name = Column(String)
     item_type = Column(String)
-    item_value = Column(Integer, nullable=True)
+    item_value = Column(String, nullable=True)
 
 
     # survey_item = relationship("Survey_item", backref=backref("response", uselist=False))

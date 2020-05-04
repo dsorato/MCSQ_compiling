@@ -10,17 +10,41 @@ from populate_tables import *
 #Function responsible for getting the module description in a given study/round.
 def get_module_description(study, wave_round):
 	if study == 'ESS':
-		if wave_round == 'R01':
-			module_description = {'A': 'Media; social trust', 'B': 'Politics, including: political interest, efficacy, trust, electoral and other forms of participation, party allegiance, socio-political evaluations/orientations, multi-level governance',
-			'C': 'Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity', 'D': 'Immigration and asylum issues, including: attitudes, perceptions, policy preferences and knowledge',
-			'E': 'Citizen involvement: including organisational membership, family and friendship bonds, citizenship values, working environment', 
-			'F': 'Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status',
-			'SUPP_G': 'Human values scale', 'SUPP_GF': 'Human values scale', 'SUPP_GS': 'Human values scale', 'SUPP_H': 'Test questions', 'SUPP_I': 'Interviewer questions', 'INTRO_MODULE': 'Specific from MCSQ database: text that introduces a given module',
-			'SUPP_A': 'Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'Supplementary questions with module B equivalents (from SQP database)',
-			'SUPP_C': 'Supplementary questions with module C equivalents (from SQP database)', 'SUPP_D': 'Supplementary questions with module D equivalents (from SQP database)',
-			'SUPP_E': 'Supplementary questions with module E equivalents (from SQP database)', 'SUPP_F': 'Supplementary questions with module F equivalents (from SQP database)' }
+		module_description = {'A': 'Media; social trust', 'B': 'Politics, including: political interest, efficacy, trust, electoral and other forms of participation, party allegiance, socio-political evaluations/orientations, multi-level governance',
+		'C': 'Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity', 'D': 'Immigration and asylum issues, including: attitudes, perceptions, policy preferences and knowledge',
+		'E': 'Citizen involvement: including organisational membership, family and friendship bonds, citizenship values, working environment', 
+		'F': 'Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status',
+		'SUPP_G': 'Human values scale', 'SUPP_GF': 'Human values scale', 'SUPP_GS': 'Human values scale', 'SUPP_H': 'Test questions', 'SUPP_I': 'Interviewer questions', 'INTRO_MODULE': 'Specific from MCSQ database: text that introduces a given module',
+		'SUPP_A': 'Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'Supplementary questions with module B equivalents (from SQP database)',
+		'SUPP_C': 'Supplementary questions with module C equivalents (from SQP database)', 'SUPP_D': 'Supplementary questions with module D equivalents (from SQP database)',
+		'SUPP_E': 'Supplementary questions with module E equivalents (from SQP database)', 'SUPP_F': 'Supplementary questions with module F equivalents (from SQP database)' }
 
+		if wave_round == 'R02':
+			module_description['D'] = 'Health and care seekin health, medicine, and doctor/patient relations'
+			module_description['E'] = 'Economic morality Trust and interactions between producers and consumers'
+			module_description['SUPP_G'] = 'Family Work and Wellbeing work-life balance'
+			module_description['SUPP_H'] = 'Human values scale'
+			module_description['SUPP_I'] = 'Test questions'
+			module_description['SUPP_J'] = 'Interviewer self-completion questions'
 
+		elif wave_round == 'R03':
+			module_description['D'] = 'Timing of life; the life course; timing of key life events, attitudes to ideal age, youngest age and oldest age of life events, planning for retirement'
+			module_description['E'] = 'Personal and social well-being, helping others, feelings in the last week, life satisfaction, satisfaction with work.'
+			module_description['SUPP_I'] = 'Interviewer self-completion questions'
+		
+		elif wave_round == 'R04':
+			module_description['D'] = 'Welfare includes attitudes towards welfare provision, size of claimant groups, views on taxation, attitudes towards service delivery and likely future dependence on welfare.'
+			module_description['E'] = 'Ageism covers attitudes towards and experiences of ageism, age related status, stereotypes, experience of discrimination and contact with people in other age groups.'
+			module_description['SUPP_I'] = 'Interviewer self-completion questions'
+
+		elif wave_round == 'R05':
+			module_description['D'] = 'Trust in the Police and Courts, including: confidence in the police and courts, cooperation with the police and courts, contact with the police and attitudes towards punishment.'
+			module_description['SUPP_I'] = 'Interviewer self-completion questions'
+			module_description['SUPP_G'] = 'Work, Family and Wellbeing, including: impact of the recession on households and work, job security, housework, wellbeing, experiences of unemployment and work-life balance.'
+			module_description['SUPP_H'] = 'Human values scale'
+			module_description['SUPP_I'] = 'Test questions'
+			module_description['SUPP_J'] = 'Interviewer self-completion questions'
+	
 	return module_description 
 
 
@@ -63,7 +87,10 @@ def populate_survey_item_table(file, country_language):
 		elif row['item_type'] == 'INSTRUCTION':
 			write_instruction_table(last_survey_item_unique, row['survey_item_ID'], row[country_language], '', '', '', '', row['item_name'], row['item_type'])
 		elif row['item_type'] == 'RESPONSE':
-			write_response_table(last_survey_item_unique, row['survey_item_ID'], row[country_language], '', '', '', '', row['item_name'], row['item_type'], row['item_value'])
+			if pd.isnull(row['item_value']):
+				write_response_table(last_survey_item_unique, row['survey_item_ID'], row[country_language], '', '', '', '', row['item_name'], row['item_type'], None)
+			else:
+				write_response_table(last_survey_item_unique, row['survey_item_ID'], row[country_language], '', '', '', '', row['item_name'], row['item_type'], row['item_value'])
 		elif row['item_type'] == 'INTRO' or row['item_type'] == 'INTRODUCTION':
 			write_introduction_table(last_survey_item_unique, row['survey_item_ID'], row[country_language], '', '', '', '', row['item_name'], row['item_type'])
 
@@ -79,7 +106,7 @@ def main(folder_path):
 			study = split_filename[0]
 			wave_round = split_filename[1]
 			year = split_filename[2]
-			surveyid = split_filename[0]+'_'+split_filename[1]+'_'+split_filename[2]
+			surveyid = remove_file_extension
 			country_language = split_filename[3]+'_'+split_filename[4]
 			populate_survey_table(surveyid, study, wave_round, year, country_language)
 			populate_module_table(study, wave_round, file)
