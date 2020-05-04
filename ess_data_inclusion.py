@@ -15,7 +15,10 @@ def get_module_description(study, wave_round):
 			'C': 'Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity', 'D': 'Immigration and asylum issues, including: attitudes, perceptions, policy preferences and knowledge',
 			'E': 'Citizen involvement: including organisational membership, family and friendship bonds, citizenship values, working environment', 
 			'F': 'Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status',
-			'SUPP_G': 'Human values scale', 'SUPP_GF': 'Human values scale', 'SUPP_GS': 'Human values scale', 'SUPP_H': 'Test questions', 'SUPP_I': 'Interviewer questions', 'INTRO_MODULE': 'Specific from MCSQ database: text that introduces a given module'}
+			'SUPP_G': 'Human values scale', 'SUPP_GF': 'Human values scale', 'SUPP_GS': 'Human values scale', 'SUPP_H': 'Test questions', 'SUPP_I': 'Interviewer questions', 'INTRO_MODULE': 'Specific from MCSQ database: text that introduces a given module',
+			'SUPP_A': 'Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'Supplementary questions with module B equivalents (from SQP database)',
+			'SUPP_C': 'Supplementary questions with module C equivalents (from SQP database)', 'SUPP_D': 'Supplementary questions with module D equivalents (from SQP database)',
+			'SUPP_E': 'Supplementary questions with module E equivalents (from SQP database)', 'SUPP_F': 'Supplementary questions with module F equivalents (from SQP database)' }
 
 
 	return module_description 
@@ -52,7 +55,10 @@ def populate_survey_item_table(file, country_language):
 	if country_language == 'ENG_SOURCE':
 		item_is_source = True 
 
-	print(mod, surveyid)
+	for i, row in data.iterrows():
+		write_survey_item_table(row['survey_item_ID'], surveyid, mod[row['module']], country_language, item_is_source, row['item_name'], row['item_type'])
+
+	# print(mod, surveyid)
 
 	# write_survey_item_table(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type)
 
@@ -70,8 +76,8 @@ def main(folder_path):
 			year = split_filename[2]
 			surveyid = split_filename[0]+'_'+split_filename[1]+'_'+split_filename[2]
 			country_language = split_filename[3]+'_'+split_filename[4]
-			# populate_survey_table(surveyid, study, wave_round, year, country_language)
-			# populate_module_table(study, wave_round, file)
+			populate_survey_table(surveyid, study, wave_round, year, country_language)
+			populate_module_table(study, wave_round, file)
 			populate_survey_item_table(file, country_language)
 
 			

@@ -6,6 +6,8 @@ from sqlalchemy.orm import relationship, backref
 class Survey_item(Base):
     __tablename__ = 'survey_item'
 
+    # emits CREATE SEQUENCE + INTEGER
+    survey_unique_itemid = Column(Integer, Sequence('survey_unique_item_id_seq'), primary_key=True)
     survey_itemid = Column(String, primary_key=True)
     surveyid = Column(String, ForeignKey('survey.surveyid'), nullable=False)
     moduleid = Column(Integer, ForeignKey('module.moduleid'))

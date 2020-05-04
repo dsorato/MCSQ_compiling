@@ -26,7 +26,28 @@ def write_module_table(module_dict):
 
 	session.close()
 
+def write_survey_item_table(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type):
+	session = session_factory()
+	item = Survey_item(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type)
+	session.add(item)
+	session.commit()
+	session.close()
 
+def get_survey_last_record():
+	session = session_factory()
+	last_survey_id = session.query(Survey).order_by(Survey.surveyid.desc()).first()
+	session.close()
+
+	return last_survey_id.surveyid
+
+
+def get_module_table_as_dict():
+	module_dict = dict()
+	session = session_factory()
+	for m in session.query(Module).all():
+		module_dict[m.module_name] = m.moduleid
+	
+	return module_dict
 
 def write_request_table(survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
 	session = session_factory()
@@ -55,29 +76,7 @@ def write_instruction_table(survey_itemid, final_text, translation_1, translatio
 	session.close()
 
 
-def write_survey_item_table(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type):
-	session = session_factory()
-	item = Survey_item(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type)
-	session.add(item)
-	session.commit()
-	session.close()
 
-def get_survey_last_record():
-	session = session_factory()
-	last_survey_id = session.query(Survey).order_by(Survey.surveyid.desc()).first()
-	session.close()
-
-	return last_survey_id.surveyid
-
-
-
-def get_module_table_as_dict():
-	module_dict = dict()
-	session = session_factory()
-	for m in session.query(Module).all():
-		module_dict[m.module_name] = m.moduleid
-	
-	return module_dict
 
 
 # def write_itemtype_table(type_names):
