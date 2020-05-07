@@ -121,11 +121,9 @@ def populate_survey_item_table(file, country_language):
 
 
 def filter_instructions(instructions, unique_instructions, country_language):
-	
 	reduced_instructions = pd.DataFrame(columns=['instruction_id', 'survey_item_ID', 'text', 'module', 'country_language', 'item_name', 'item_type', 'request_reference'])
 	for instruction in unique_instructions:
 		analyzed_instruction_df = instructions.loc[instructions[country_language] == instruction]
-		# print(analyzed_instruction_df)
 		size_df = len(analyzed_instruction_df.index)
 		if size_df == 1:
 			data = {'instruction_id': get_instuction_id(), 'survey_item_ID': analyzed_instruction_df['survey_item_ID'].iloc[0], 
@@ -136,7 +134,6 @@ def filter_instructions(instructions, unique_instructions, country_language):
 			update_instruction_id()
 		elif size_df > 1:
 			for i, row in analyzed_instruction_df.iterrows():
-				print(row['survey_item_ID'] == analyzed_instruction_df['survey_item_ID'].iloc[0])
 				if row['survey_item_ID'] == analyzed_instruction_df['survey_item_ID'].iloc[0]:
 					data = {'instruction_id': get_instuction_id(), 'survey_item_ID': row['survey_item_ID'], 
 					'text': row[country_language], 'module':  row['module'], 
@@ -147,22 +144,18 @@ def filter_instructions(instructions, unique_instructions, country_language):
 					update_instruction_id()
 
 				else:
-					data = {'instruction_id': get_instuction_id(), 'survey_item_ID': row['survey_item_ID'], 
+					data = {'instruction_id': None, 'survey_item_ID': row['survey_item_ID'], 
 					'text': row[country_language], 'module':  row['module'], 
 					'country_language':country_language, 'item_name': row['item_name'], 
 					'item_type': row['item_type'], 'instruction_reference': reference}
 					reduced_instructions = reduced_instructions.append(data, ignore_index = True)
-					update_instruction_id()
-
 
 	reduced_instructions.to_csv('unique_instructions.csv', encoding='utf-8', index=False)
 
 def filter_requests(requests, unique_requests, country_language):
-	
 	reduced_requests = pd.DataFrame(columns=['requests_id', 'survey_item_ID', 'text', 'module', 'country_language', 'item_name', 'item_type', 'request_reference'])
 	for request in unique_requests:
 		analyzed_request_df = requests.loc[requests[country_language] == request]
-		# print(analyzed_request_df)
 		size_df = len(analyzed_request_df.index)
 		if size_df == 1:
 			data = {'requests_id': get_request_id(), 'survey_item_ID': analyzed_request_df['survey_item_ID'].iloc[0], 
@@ -173,7 +166,6 @@ def filter_requests(requests, unique_requests, country_language):
 			update_request_id()
 		elif size_df > 1:
 			for i, row in analyzed_request_df.iterrows():
-				print(row['survey_item_ID'] == analyzed_request_df['survey_item_ID'].iloc[0])
 				if row['survey_item_ID'] == analyzed_request_df['survey_item_ID'].iloc[0]:
 					data = {'requests_id': get_request_id(), 'survey_item_ID': row['survey_item_ID'], 
 					'text': row[country_language], 'module':  row['module'], 
@@ -184,13 +176,11 @@ def filter_requests(requests, unique_requests, country_language):
 					update_request_id()
 
 				else:
-					data = {'requests_id': get_request_id(), 'survey_item_ID': row['survey_item_ID'], 
+					data = {'requests_id': None, 'survey_item_ID': row['survey_item_ID'], 
 					'text': row[country_language], 'module':  row['module'], 
 					'country_language':country_language, 'item_name': row['item_name'], 
 					'item_type': row['item_type'], 'instruction_reference': reference}
 					reduced_requests = reduced_requests.append(data, ignore_index = True)
-					update_request_id()
-
 
 	reduced_requests.to_csv('unique_requests.csv', encoding='utf-8', index=False)
 
@@ -210,32 +200,49 @@ def filter_by_item_type(file, country_language):
 
 	
 
+def concatenate_files_from_same_country_language(files):
+	file_list = list()
+	for index, file in enumerate(files):
+		df = pd.read_csv(file)
+		file_list.append(df)
 
 
+	all_days = pd.concat(file_list, axis=0, ignore_index=True)
+	all_days.to_csv("all.csv")
 
 		
 	
+def get_directory_list(folder_path):
+	directory_list = list()
+	for root, dirs, files in os.walk(folder_path, topdown=False):
+		for name in dirs:
+			directory_list.append(os.path.join(root, name))
 
-
+	return directory_list
 
 def main(folder_path):
-	path = os.chdir(folder_path)
-	files = os.listdir(path)
-	csv_file = ''
-	for index, file in enumerate(files):
-		if file.endswith(".csv"):
-			print(file)
-			remove_file_extension = file.replace('.csv', '')
-			split_filename = remove_file_extension.split('_')
-			study = split_filename[0]
-			wave_round = split_filename[1]
-			year = split_filename[2]
-			surveyid = remove_file_extension
-			country_language = split_filename[3]+'_'+split_filename[4]
-			filter_by_item_type(file, country_language)
-			# populate_survey_table(surveyid, study, wave_round, year, country_language)
-			# populate_module_table(study, wave_round, file)
-			# populate_survey_item_table(file, country_language)
+	directory_list = get_directory_list(folder_path)
+	for directory in directory_list:
+		print(directory)
+		files = os.listdir(directory)
+		os.chdir(directory)
+		concatenate_files_from_same_country_language(files)
+		os.chdir(folder_path)
+		
+	# for index, file in enumerate(files):
+	# 	if file.endswith(".csv"):
+	# 		print(file)
+	# 		remove_file_extension = file.replace('.csv', '')
+	# 		split_filename = remove_file_extension.split('_')
+	# 		study = split_filename[0]
+	# 		wave_round = split_filename[1]
+	# 		year = split_filename[2]
+	# 		surveyid = remove_file_extension
+	# 		country_language = split_filename[3]+'_'+split_filename[4]
+	# 		filter_by_item_type(file, country_language)
+	# 		# populate_survey_table(surveyid, study, wave_round, year, country_language)
+	# 		# populate_module_table(study, wave_round, file)
+	# 		# populate_survey_item_table(file, country_language)
 
 			
 
@@ -244,7 +251,5 @@ def main(folder_path):
 
 
 if __name__ == "__main__":
-	#Call script using folder_path
-	#For instance: reset && python3 main.py /home/upf/workspace/txt_to_spreadsheet/data
 	folder_path = str(sys.argv[1])
 	main(folder_path)
