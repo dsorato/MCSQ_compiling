@@ -73,8 +73,16 @@ def get_module_description(study, wave_round):
 	return module_description 
 
 
-def populate_survey_table(surveyid, study, wave_round, year, country_language):
-	write_survey_table(surveyid, study, wave_round, year, country_language)
+def populate_survey_table(file, country_language):
+	df = pd.read_csv(file)
+	unique_studies = df.Study.unique()
+	print(country_language, unique_studies)
+	for study in unique_studies:
+		surveyid = study+'_'+country_language
+		split_surveyid = surveyid.split('_')
+		wave_round = split_surveyid[1]
+		year = split_surveyid[2]
+		write_survey_table(surveyid, study, wave_round, year, country_language)
 
 
 def populate_module_table(study, wave_round, file):
@@ -200,15 +208,15 @@ def filter_by_item_type(file, country_language):
 
 	
 
-def concatenate_files_from_same_country_language(files):
+def concatenate_files_from_same_country_language(files, country_language, folder_path):
 	file_list = list()
 	for index, file in enumerate(files):
 		df = pd.read_csv(file)
 		file_list.append(df)
 
 
-	all_days = pd.concat(file_list, axis=0, ignore_index=True)
-	all_days.to_csv("all.csv")
+	all_files = pd.concat(file_list, axis=0, ignore_index=True)
+	all_files.to_csv(folder_path+'/'+country_language+".csv")
 
 		
 	
@@ -222,25 +230,27 @@ def get_directory_list(folder_path):
 
 def main(folder_path):
 	directory_list = get_directory_list(folder_path)
-	for directory in directory_list:
-		print(directory)
-		files = os.listdir(directory)
-		os.chdir(directory)
-		concatenate_files_from_same_country_language(files)
-		os.chdir(folder_path)
-		
-	# for index, file in enumerate(files):
-	# 	if file.endswith(".csv"):
-	# 		print(file)
-	# 		remove_file_extension = file.replace('.csv', '')
-	# 		split_filename = remove_file_extension.split('_')
-	# 		study = split_filename[0]
-	# 		wave_round = split_filename[1]
-	# 		year = split_filename[2]
-	# 		surveyid = remove_file_extension
-	# 		country_language = split_filename[3]+'_'+split_filename[4]
+	# for directory in directory_list:
+	# 	country_language = directory.split('ESS_')[1]
+	# 	files = os.listdir(directory)
+	# 	os.chdir(directory)
+	# 	concatenate_files_from_same_country_language(files, country_language, folder_path)
+	# 	os.chdir(folder_path)
+
+	os.chdir(folder_path)
+	files = os.listdir(folder_path)
+	for index, file in enumerate(files):
+		if file.endswith(".csv"):
+			print(file)
+			country_language = file.replace('.csv', '')
+			# split_filename = remove_file_extension.split('_')
+			# study = split_filename[0]
+			# wave_round = split_filename[1]
+			# year = split_filename[2]
+			# surveyid = remove_file_extension
+			# country_language = split_filename[3]+'_'+split_filename[4]
 	# 		filter_by_item_type(file, country_language)
-	# 		# populate_survey_table(surveyid, study, wave_round, year, country_language)
+			populate_survey_table(file, country_language)
 	# 		# populate_module_table(study, wave_round, file)
 	# 		# populate_survey_item_table(file, country_language)
 
