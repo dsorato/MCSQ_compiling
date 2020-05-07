@@ -7,6 +7,31 @@ import sys
 import os
 from populate_tables import *
 
+global instruction_id 
+instruction_id = 0
+
+global request_id 
+request_id = 0
+
+
+def get_instuction_id():
+	global instruction_id
+	return instruction_id
+
+def update_instruction_id():
+	global instruction_id
+	instruction_id = instruction_id +1
+	return instruction_id
+
+def get_request_id():
+	global request_id
+	return request_id
+
+def update_request_id():
+	global request_id
+	request_id = request_id +1
+	return request_id
+
 #Function responsible for getting the module description in a given study/round.
 def get_module_description(study, wave_round):
 	if study == 'ESS':
@@ -94,6 +119,105 @@ def populate_survey_item_table(file, country_language):
 		elif row['item_type'] == 'INTRO' or row['item_type'] == 'INTRODUCTION':
 			write_introduction_table(last_survey_item_unique, row['survey_item_ID'], row[country_language], '', '', '', '', row['item_name'], row['item_type'])
 
+
+def filter_instructions(instructions, unique_instructions, country_language):
+	
+	reduced_instructions = pd.DataFrame(columns=['instruction_id', 'survey_item_ID', 'text', 'module', 'country_language', 'item_name', 'item_type', 'request_reference'])
+	for instruction in unique_instructions:
+		analyzed_instruction_df = instructions.loc[instructions[country_language] == instruction]
+		# print(analyzed_instruction_df)
+		size_df = len(analyzed_instruction_df.index)
+		if size_df == 1:
+			data = {'instruction_id': get_instuction_id(), 'survey_item_ID': analyzed_instruction_df['survey_item_ID'].iloc[0], 
+			'text': analyzed_instruction_df[country_language].iloc[0], 'module':  analyzed_instruction_df['module'].iloc[0], 
+			'country_language':country_language, 'item_name': analyzed_instruction_df['item_name'].iloc[0], 
+			'item_type': analyzed_instruction_df['item_type'].iloc[0], 'request_reference': None}
+			reduced_instructions = reduced_instructions.append(data, ignore_index = True)
+			update_instruction_id()
+		elif size_df > 1:
+			for i, row in analyzed_instruction_df.iterrows():
+				print(row['survey_item_ID'] == analyzed_instruction_df['survey_item_ID'].iloc[0])
+				if row['survey_item_ID'] == analyzed_instruction_df['survey_item_ID'].iloc[0]:
+					data = {'instruction_id': get_instuction_id(), 'survey_item_ID': row['survey_item_ID'], 
+					'text': row[country_language], 'module':  row['module'], 
+					'country_language':country_language, 'item_name': row['item_name'], 
+					'item_type': row['item_type'], 'instruction_reference': None}
+					reduced_instructions = reduced_instructions.append(data, ignore_index = True)
+					reference = get_instuction_id()
+					update_instruction_id()
+
+				else:
+					data = {'instruction_id': get_instuction_id(), 'survey_item_ID': row['survey_item_ID'], 
+					'text': row[country_language], 'module':  row['module'], 
+					'country_language':country_language, 'item_name': row['item_name'], 
+					'item_type': row['item_type'], 'instruction_reference': reference}
+					reduced_instructions = reduced_instructions.append(data, ignore_index = True)
+					update_instruction_id()
+
+
+	reduced_instructions.to_csv('unique_instructions.csv', encoding='utf-8', index=False)
+
+def filter_requests(requests, unique_requests, country_language):
+	
+	reduced_requests = pd.DataFrame(columns=['requests_id', 'survey_item_ID', 'text', 'module', 'country_language', 'item_name', 'item_type', 'request_reference'])
+	for request in unique_requests:
+		analyzed_request_df = requests.loc[requests[country_language] == request]
+		# print(analyzed_request_df)
+		size_df = len(analyzed_request_df.index)
+		if size_df == 1:
+			data = {'requests_id': get_request_id(), 'survey_item_ID': analyzed_request_df['survey_item_ID'].iloc[0], 
+			'text': analyzed_request_df[country_language].iloc[0], 'module':  analyzed_request_df['module'].iloc[0], 
+			'country_language':country_language, 'item_name': analyzed_request_df['item_name'].iloc[0], 
+			'item_type': analyzed_request_df['item_type'].iloc[0], 'request_reference': None}
+			reduced_requests = reduced_requests.append(data, ignore_index = True)
+			update_request_id()
+		elif size_df > 1:
+			for i, row in analyzed_request_df.iterrows():
+				print(row['survey_item_ID'] == analyzed_request_df['survey_item_ID'].iloc[0])
+				if row['survey_item_ID'] == analyzed_request_df['survey_item_ID'].iloc[0]:
+					data = {'requests_id': get_request_id(), 'survey_item_ID': row['survey_item_ID'], 
+					'text': row[country_language], 'module':  row['module'], 
+					'country_language':country_language, 'item_name': row['item_name'], 
+					'item_type': row['item_type'], 'instruction_reference': None}
+					reduced_requests = reduced_requests.append(data, ignore_index = True)
+					reference = get_request_id()
+					update_request_id()
+
+				else:
+					data = {'requests_id': get_request_id(), 'survey_item_ID': row['survey_item_ID'], 
+					'text': row[country_language], 'module':  row['module'], 
+					'country_language':country_language, 'item_name': row['item_name'], 
+					'item_type': row['item_type'], 'instruction_reference': reference}
+					reduced_requests = reduced_requests.append(data, ignore_index = True)
+					update_request_id()
+
+
+	reduced_requests.to_csv('unique_requests.csv', encoding='utf-8', index=False)
+
+def filter_by_item_type(file, country_language):
+	data = pd.read_csv(file)
+	requests = data[data.item_type == 'REQUEST']
+	instructions = data[data.item_type == 'INSTRUCTION']
+	responses = data[data.item_type == 'RESPONSE']
+
+	unique_instructions = instructions[country_language].unique()
+	filter_instructions(instructions, unique_instructions, country_language)
+
+	unique_requests = requests[country_language].unique()
+	filter_requests(requests, unique_requests, country_language)
+
+	# print(requests[country_language].unique())
+
+	
+
+
+
+
+		
+	
+
+
+
 def main(folder_path):
 	path = os.chdir(folder_path)
 	files = os.listdir(path)
@@ -108,9 +232,10 @@ def main(folder_path):
 			year = split_filename[2]
 			surveyid = remove_file_extension
 			country_language = split_filename[3]+'_'+split_filename[4]
-			populate_survey_table(surveyid, study, wave_round, year, country_language)
-			populate_module_table(study, wave_round, file)
-			populate_survey_item_table(file, country_language)
+			filter_by_item_type(file, country_language)
+			# populate_survey_table(surveyid, study, wave_round, year, country_language)
+			# populate_module_table(study, wave_round, file)
+			# populate_survey_item_table(file, country_language)
 
 			
 
