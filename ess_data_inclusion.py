@@ -40,9 +40,9 @@ def get_module_description(study, wave_round):
 		'E': 'Citizen involvement: including organisational membership, family and friendship bonds, citizenship values, working environment', 
 		'F': 'Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status',
 		'SUPP_G': 'Human values scale', 'SUPP_GF': 'Human values scale', 'SUPP_GS': 'Human values scale', 'SUPP_H': 'Test questions', 'SUPP_I': 'Interviewer questions', 'INTRO_MODULE': 'Specific from MCSQ database: text that introduces a given module',
-		'SUPP_A': 'Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'Supplementary questions with module B equivalents (from SQP database)',
-		'SUPP_C': 'Supplementary questions with module C equivalents (from SQP database)', 'SUPP_D': 'Supplementary questions with module D equivalents (from SQP database)',
-		'SUPP_E': 'Supplementary questions with module E equivalents (from SQP database)', 'SUPP_F': 'Supplementary questions with module F equivalents (from SQP database)' }
+		'SUPP_A': 'Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'Supplementary questions with module B equivalents (from SQP database) - R01',
+		'SUPP_C': 'Supplementary questions with module C equivalents (from SQP database)', 'SUPP_D': 'Supplementary questions with module D equivalents (from SQP database) - R01',
+		'SUPP_E': 'Supplementary questions with module E equivalents (from SQP database)', 'SUPP_F': 'Supplementary questions with module F equivalents (from SQP database) - R01' }
 
 		if wave_round == 'R02':
 			module_description['D'] = 'Health and care seekin health, medicine, and doctor/patient relations'
@@ -56,6 +56,7 @@ def get_module_description(study, wave_round):
 			module_description['D'] = 'Timing of life; the life course; timing of key life events, attitudes to ideal age, youngest age and oldest age of life events, planning for retirement'
 			module_description['E'] = 'Personal and social well-being, helping others, feelings in the last week, life satisfaction, satisfaction with work.'
 			module_description['SUPP_I'] = 'Interviewer self-completion questions'
+
 		
 		elif wave_round == 'R04':
 			module_description['D'] = 'Welfare includes attitudes towards welfare provision, size of claimant groups, views on taxation, attitudes towards service delivery and likely future dependence on welfare.'
@@ -80,9 +81,12 @@ def populate_survey_table(file, country_language):
 	for study in unique_studies:
 		surveyid = study+'_'+country_language
 		split_surveyid = surveyid.split('_')
+		study_name = split_surveyid[0]
 		wave_round = split_surveyid[1]
 		year = split_surveyid[2]
-		write_survey_table(surveyid, study, wave_round, year, country_language)
+		write_survey_table(surveyid, study_name, wave_round, year, country_language)
+		populate_module_table(study_name, wave_round, file)
+
 
 
 def populate_module_table(study, wave_round, file):
