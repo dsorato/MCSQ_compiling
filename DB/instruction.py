@@ -9,9 +9,7 @@ class Instruction(Base):
     # emits CREATE SEQUENCE + INTEGER
     instructionid = Column(Integer, Sequence('instruction_id_seq'), primary_key=True)
     text = Column(String)
-    item_name = Column(String)
+   
 
-
-    def __init__(self, text, item_name):
+    def __init__(self, text):
         self.text = text
-        self.item_name = item_name

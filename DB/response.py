@@ -9,11 +9,9 @@ class Response(Base):
     # emits CREATE SEQUENCE + INTEGER
     responseid = Column(Integer, Sequence('response_id_seq'), primary_key=True)
     text = Column(String)
-    item_name = Column(String)
     item_value = Column(String)
 
 
-    def __init__(self, text, item_name, item_value):
+    def __init__(self, text, item_value):
         self.text = text
-        self.item_name = item_name
         self.item_value = item_value

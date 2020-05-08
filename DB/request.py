@@ -9,9 +9,7 @@ class Request(Base):
     # emits CREATE SEQUENCE + INTEGER
     requestid = Column(Integer, Sequence('request_id_seq'), primary_key=True)
     text = Column(String)
-    item_name = Column(String)
 
 
-    def __init__(self, text, item_name):
+    def __init__(self, text):
         self.text = text
-        self.item_name = item_name

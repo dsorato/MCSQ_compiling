@@ -57,77 +57,46 @@ def get_survey_item_last_record():
 	return last_survey_item_id.survey_unique_itemid
 
 
-def write_request_table(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
+def write_request_table(unique_requests):
 	session = session_factory()
-	item = Request(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
-	session.add(item)
-	session.commit()
+	for request in unique_requests:
+		exists = session.query(Request.text).filter_by(text=request).scalar() is not None
+		if exists == False:
+			item = Request(request)
+			session.add(item)
+			session.commit()
+
+	session.close()
+
+def write_introduction_table(unique_introductions):
+	session = session_factory()
+	for introduction in unique_introductions:
+		exists = session.query(Introduction.text).filter_by(text=introduction).scalar() is not None
+		if exists == False:
+			item = Introduction(introduction)
+			session.add(item)
+			session.commit()
+
+	session.close()
+
+def write_instruction_table(unique_instructions):
+	session = session_factory()
+	for instruction in unique_instructions:
+		exists = session.query(Instruction.text).filter_by(text=instruction).scalar() is not None
+		if exists == False:
+			item = Instruction(instruction)
+			session.add(item)
+			session.commit()
+
+	session.close()
+
+
 
 def write_response_table(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value):
 	session = session_factory()
 	item = Response(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value)
 	session.add(item)
 	session.commit()
-
-def write_introduction_table(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
-	session = session_factory()
-	item = Introduction(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
-	session.add(item)
-	session.commit()
-	session.close()
-
-def write_instruction_table(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
-	session = session_factory()
-	item = Instruction(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type)
-	session.add(item)
-	session.commit()
-	session.close()
-
-
-
-
-
-# def write_itemtype_table(type_names):
-# 	session = session_factory()
-# 	for a_type in type_names:
-# 		item = ItemType(a_type, False)
-# 		session.add(item)
-# 		session.commit()
-
-# 	session.close()
-
-
-# def update_itemtype_table():
-# 	session = session_factory()
-# 	session.execute(update(ItemType, values={ItemType.itemtypeisresponse:True}).where(ItemType.itemtype.ilike('response%')))
-# 	session.commit()
-# 	session.close()
-
-# def write_document_table(parameters):
-# 	session = session_factory()
-# 	item = Document(parameters[0], parameters[1], parameters[2], parameters[3], parameters[4], parameters[5], parameters[6])
-# 	session.add(item)
-# 	session.commit()
-
-# 	session.close()
-
-# def write_document_item_table(parameters):
-# 	session = session_factory()
-# 	item = DocumentItem(parameters[0], parameters[1], parameters[2], parameters[3], parameters[4], parameters[5], parameters[6], 
-# 		parameters[7],parameters[8],parameters[9], parameters[10])
-# 	session.add(item)
-# 	session.commit()
-
-# 	session.close()
-
-# def write_item_name_table(itemnames):
-# 	session = session_factory()
-# 	for item in itemnames:
-# 		item = ItemName(item)
-# 		session.add(item)
-# 		session.commit()
-
-# 	session.close()
 
 
 

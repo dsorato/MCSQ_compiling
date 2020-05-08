@@ -74,7 +74,7 @@ def get_module_description(study, wave_round):
 	return module_description 
 
 
-def populate_survey_table(file, country_language):
+def populate_survey_and_module_table(file, country_language):
 	df = pd.read_csv(file)
 	unique_studies = df.Study.unique()
 	print(country_language, unique_studies)
@@ -164,6 +164,8 @@ def filter_instructions(instructions, unique_instructions, country_language):
 
 	reduced_instructions.to_csv('unique_instructions.csv', encoding='utf-8', index=False)
 
+	return reduced_instructions
+
 def filter_requests(requests, unique_requests, country_language):
 	reduced_requests = pd.DataFrame(columns=['requests_id', 'survey_item_ID', 'text', 'module', 'country_language', 'item_name', 'item_type', 'request_reference'])
 	for request in unique_requests:
@@ -196,19 +198,41 @@ def filter_requests(requests, unique_requests, country_language):
 
 	reduced_requests.to_csv('unique_requests.csv', encoding='utf-8', index=False)
 
+	return reduced_requests
+
+def populate_requests_table(unique_requests):
+	write_request_table(unique_requests)
+
+def populate_instruction_table(unique_instructions):
+	write_instruction_table(unique_instructions)
+
+def populate_introductions_table(unique_introductions):
+	write_introduction_table(unique_introductions)
+
 def filter_by_item_type(file, country_language):
 	data = pd.read_csv(file)
 	requests = data[data.item_type == 'REQUEST']
 	instructions = data[data.item_type == 'INSTRUCTION']
 	responses = data[data.item_type == 'RESPONSE']
+	df_check = ['INTRODUCTION', 'INTRO']
+
+	intro = data[data.item_type == 'INTRO']
+	introduction = data[data.item_type == 'INTRODUCTION']
+	frames = [intro, introduction]
+	introductions = pd.concat(frames)
 
 	unique_instructions = instructions[country_language].unique()
-	filter_instructions(instructions, unique_instructions, country_language)
+	populate_instruction_table(unique_instructions)
+	# reduced_instructions = filter_instructions(instructions, unique_instructions, country_language)
+
+	unique_introductions = introductions[country_language].unique()
+	populate_introductions_table(unique_introductions)
 
 	unique_requests = requests[country_language].unique()
-	filter_requests(requests, unique_requests, country_language)
+	populate_requests_table(unique_requests)
+	# reduced_requests = filter_requests(requests, unique_requests, country_language)
 
-	# print(requests[country_language].unique())
+
 
 	
 
@@ -247,15 +271,8 @@ def main(folder_path):
 		if file.endswith(".csv"):
 			print(file)
 			country_language = file.replace('.csv', '')
-			# split_filename = remove_file_extension.split('_')
-			# study = split_filename[0]
-			# wave_round = split_filename[1]
-			# year = split_filename[2]
-			# surveyid = remove_file_extension
-			# country_language = split_filename[3]+'_'+split_filename[4]
-	# 		filter_by_item_type(file, country_language)
-			populate_survey_table(file, country_language)
-	# 		# populate_module_table(study, wave_round, file)
+			filter_by_item_type(file, country_language)
+			populate_survey_and_module_table(file, country_language)
 	# 		# populate_survey_item_table(file, country_language)
 
 			
