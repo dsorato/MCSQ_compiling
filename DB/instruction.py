@@ -8,25 +8,10 @@ class Instruction(Base):
 
     # emits CREATE SEQUENCE + INTEGER
     instructionid = Column(Integer, Sequence('instruction_id_seq'), primary_key=True)
-    survey_unique_itemid = Column(Integer, nullable=False)
-    survey_itemid = Column(String, nullable=False)
-    ForeignKeyConstraint(['survey_itemid', 'survey_unique_itemid'], ['survey_item.survey_itemid', 'survey_item.survey_unique_itemid'])
-    final_text = Column(String)
-    translation_1 = Column(String)
-    translation_2 = Column(String)
-    review = Column(String)
-    adjudication = Column(String)
+    text = Column(String)
     item_name = Column(String)
-    item_type = Column(String)
 
 
-    def __init__(self, survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type):
-        self.survey_unique_itemid = survey_unique_itemid
-        self.survey_itemid = survey_itemid
-        self.final_text = final_text
-        self.translation_1 = translation_1
-        self.translation_2 = translation_2
-        self.review = review
-        self.adjudication = adjudication
+    def __init__(self, text, item_name):
+        self.text = text
         self.item_name = item_name
-        self.item_type = item_type
