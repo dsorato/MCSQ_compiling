@@ -92,9 +92,9 @@ def write_instruction_table(unique_instructions):
 
 
 
-def write_response_table(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value):
+def write_response_table(response_id, text, item_value):
 	session = session_factory()
-	item = Response(survey_unique_itemid, survey_itemid, final_text, translation_1, translation_2, review, adjudication, item_name, item_type, item_value)
+	item = Response(response_id, text, item_value)
 	session.add(item)
 	session.commit()
 

@@ -13,6 +13,17 @@ instruction_id = 0
 global request_id 
 request_id = 0
 
+global response_id 
+response_id = 0
+
+def get_response_id():
+	global response_id
+	return response_id
+
+def update_response_id():
+	global response_id
+	response_id = response_id +1
+	return response_id
 
 def get_instuction_id():
 	global instruction_id
@@ -209,6 +220,56 @@ def populate_instruction_table(unique_instructions):
 def populate_introductions_table(unique_introductions):
 	write_introduction_table(unique_introductions)
 
+def check_if_df_is_in_list(list_of_df_responses, analyzed_df):
+	for df in list_of_df_responses:
+		comparison_matrix = df.values == analyzed_df.values
+		df_in_list = np.all(comparison_matrix == True)
+		if df_in_list:
+			return True
+
+	return False
+
+
+def find_unique_responses(responses, country_language):
+	responses_with_multiple_values_aux = []
+	responses_with_unique_values = []
+	responses_with_multiple_values = []
+
+	unique_survey_id_values = responses['survey_item_ID'].unique()
+	for unique_id in unique_survey_id_values:
+		a_response = responses[responses.survey_item_ID == unique_id]
+		response_text = a_response[[country_language]]
+		if len(response_text) == 1:
+			if not responses_with_unique_values:
+				responses_with_unique_values.append(response_text.iloc[0][country_language])
+			else:
+				if response_text.iloc[0][country_language] not in responses_with_unique_values:
+					responses_with_unique_values.append(response_text.iloc[0][country_language])
+
+		else:
+			if not responses_with_multiple_values_aux:
+				responses_with_multiple_values_aux.append(response_text)
+			else:
+				if check_if_df_is_in_list(responses_with_multiple_values_aux, response_text) == False:
+					responses_with_multiple_values_aux.append(response_text)
+					responses_with_multiple_values.append(a_response[[country_language, 'item_value']])
+
+
+	return responses_with_unique_values, responses_with_multiple_values
+
+def populate_responses_table(responses_with_unique_values, responses_with_multiple_values, country_language):
+	for item in responses_with_unique_values:
+		write_response_table(update_request_id(), item, None)
+
+	for df in responses_with_multiple_values:
+		response_id = update_request_id()
+		for i, row in df.iterrows():
+			write_response_table(response_id, row[country_language], row['item_value'])
+
+
+
+
+
 def filter_by_item_type(file, country_language):
 	data = pd.read_csv(file)
 	requests = data[data.item_type == 'REQUEST']
@@ -231,6 +292,9 @@ def filter_by_item_type(file, country_language):
 	unique_requests = requests[country_language].unique()
 	populate_requests_table(unique_requests)
 	# reduced_requests = filter_requests(requests, unique_requests, country_language)
+
+	responses_with_unique_values, responses_with_multiple_values = find_unique_responses(responses, country_language)
+	populate_responses_table(responses_with_unique_values, responses_with_multiple_values, country_language)
 
 
 
