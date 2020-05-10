@@ -296,6 +296,19 @@ def filter_by_item_type(file, country_language):
 	responses_with_unique_values, responses_with_multiple_values = find_unique_responses(responses, country_language)
 	populate_responses_table(responses_with_unique_values, responses_with_multiple_values, country_language)
 
+	if 'ENG_SOURCE' in country_language:
+			item_is_source = True
+		else:
+			item_is_source = False
+
+	for i, row in data.iterrows():
+		survey_id = row['survey_item_ID'].rsplit('_', 1)[0]
+		if row['item_type'] == 'REQUEST':
+			requestid = get_request_id(text)
+			write_survey_item_table(row['survey_item_ID'], survey_id, moduleid, requestid, None, None, None,None, country_language, item_is_source, row['item_name'], 'REQUEST')
+
+
+
 
 
 	

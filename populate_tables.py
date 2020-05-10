@@ -56,6 +56,12 @@ def get_survey_item_last_record():
 
 	return last_survey_item_id.survey_unique_itemid
 
+def get_request_id(text):
+	session = session_factory()
+	request = session.query(Request).filter_by(text=text)
+	session.close()
+
+	return request.requestid
 
 def write_request_table(unique_requests):
 	session = session_factory()
