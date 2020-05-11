@@ -64,7 +64,7 @@ def main(filename_xlsx,filename_xml):
 
 	df_evs_sample= df_evs_sample.drop_duplicates(subset='v_item', keep="last")
 	result = pd.merge(df_evs_sample, xlsx_file, on='v_item')
-	result.to_csv('evs_data/df_evs_sample_w4.csv', encoding='utf-8', index=False)
+	result.to_csv('evs_data/df_evs_sample_w5.csv', encoding='utf-8', index=False)
 
 
 

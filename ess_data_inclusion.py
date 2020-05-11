@@ -267,7 +267,18 @@ def populate_responses_table(responses_with_unique_values, responses_with_multip
 			write_response_table(response_id, row[country_language], row['item_value'])
 
 
+def get_surveyid_moduleid(survey_item_id, module_name):
+	survey_id = survey_item_id.rsplit('_', 1)[0]
+	split_info = survey_item_id.split('_')
+	study = split_info[0]
+	wave_round = split_info[1]
 
+	module_description_dict = get_module_description(study, wave_round)
+	module_description = module_description_dict[module_name]
+	module_id = get_module_id(module_name, module_description)
+	print(module_name,module_description, module_id)
+
+	return survey_id, module_id
 
 
 def filter_by_item_type(file, country_language):
@@ -297,16 +308,28 @@ def filter_by_item_type(file, country_language):
 	populate_responses_table(responses_with_unique_values, responses_with_multiple_values, country_language)
 
 	if 'ENG_SOURCE' in country_language:
-			item_is_source = True
-		else:
-			item_is_source = False
-
+		item_is_source = True
+	else:
+		item_is_source = False
+	
+	########## Survey_item table params ##########
+	#survey_itemid, surveyid, moduleid, requestid, responseid, response_item_id, instructionid,introductionid, 
+	#country_language, item_is_source, item_name, item_type
+	##############################################
 	for i, row in data.iterrows():
-		survey_id = row['survey_item_ID'].rsplit('_', 1)[0]
+		survey_id, module_id = get_surveyid_moduleid(row['survey_item_ID'], row['module'])
 		if row['item_type'] == 'REQUEST':
-			requestid = get_request_id(text)
-			write_survey_item_table(row['survey_item_ID'], survey_id, moduleid, requestid, None, None, None,None, country_language, item_is_source, row['item_name'], 'REQUEST')
+			requestid = retrieve_request_id(row[country_language])
+			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, requestid, None, None, None,None, country_language, item_is_source, row['item_name'], 'REQUEST')
 
+		if row['item_type'] == 'INSTRUCTION':
+			instructiontid = retrieve_instruction_id(row[country_language])
+			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, instructiontid,None, country_language, item_is_source, row['item_name'], 'INSTRUCTION')
+
+
+		if row['item_type'] == 'INTRODUCTION' or row['item_type'] == 'INTRO':
+			introductionid = retrieve_introduction_id(row[country_language])
+			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, None,introductionid, country_language, item_is_source, row['item_name'], 'INTRODUCTION')
 
 
 
@@ -348,8 +371,8 @@ def main(folder_path):
 		if file.endswith(".csv"):
 			print(file)
 			country_language = file.replace('.csv', '')
-			filter_by_item_type(file, country_language)
 			populate_survey_and_module_table(file, country_language)
+			filter_by_item_type(file, country_language)
 	# 		# populate_survey_item_table(file, country_language)
 
 			
