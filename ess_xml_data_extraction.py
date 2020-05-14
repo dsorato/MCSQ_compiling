@@ -39,7 +39,18 @@ def clean(text):
 
 	return text
 
-def append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter, tokenizer):
+def identify_showcard_instruction(text, language_country):
+	item_type = 'REQUEST'
+	if 'FRE' in language_country:
+		if 'CH' in language_country:
+			showcard = 'CARTE'
+
+	if re.compile(showcard).match(text):
+		item_type = 'INSTRUCTION'
+
+	return item_type
+
+def append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter, tokenizer, language_country):
 	if node.text != '' and  isinstance(node.text, str):
 		if splitter:
 			split_into_sentences = splitter.split(text=clean(node.text))
@@ -47,7 +58,11 @@ def append_data_to_df(df_questions, parent_map, node, item_name, item_type, spli
 			split_into_sentences = tokenizer.tokenize(clean(node.text))
 
 		for text in split_into_sentences:
-			data = {'question_id': parent_map[node].attrib['tmt_id'], 'item_name':item_name, 'item_type':item_type, 'text':text}
+			if item_type == 'REQUEST':
+				data = {'question_id': parent_map[node].attrib['tmt_id'], 'item_name':item_name, 
+				'item_type':identify_showcard_instruction(text, language_country), 'text':text}
+			else:
+				data = {'question_id': parent_map[node].attrib['tmt_id'], 'item_name':item_name, 'item_type':item_type, 'text':text}
 			df_questions = df_questions.append(data, ignore_index=True)
 	else:
 		return df_questions
@@ -96,6 +111,8 @@ def main(filename):
 	ess_showcards = root.findall('.//questionnaire/showcards')
 
 	survey_id = filename.replace('.xml', '')
+	split_survey_id = survey_id.split('_')
+	language_country = split_survey_id[3]+'_'+split_survey_id[4]
 
 	df_questions =  pd.DataFrame(columns=['question_id', 'item_name', 'item_type', 'text']) 
 	item_name = ''
@@ -109,12 +126,14 @@ def main(filename):
 				if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QText':
 					text = node.text
 					item_type = 'REQUEST'
-					df_questions = append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter, tokenizer)
+					df_questions = append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter,
+					tokenizer, language_country)
 
 				if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QInstruction':
 					text = node.text
 					item_type = 'INSTRUCTION'
-					df_questions = append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter, tokenizer)
+					df_questions = append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter, 
+					tokenizer, language_country)
 
 
 
