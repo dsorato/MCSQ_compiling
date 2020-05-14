@@ -86,6 +86,17 @@ def identify_showcard_instruction(text, language_country):
 
 	return item_type
 
+def get_answer_id(node, parent_map):
+	#Get the answer id from node attributes, if it exists
+	parent = parent_map[node]
+	parent_of_parent = parent_map[parent]
+	if 'answer_id' in parent_map[parent_of_parent].attrib:
+		answer_id = parent_map[parent_of_parent].attrib['answer_id']
+	else:
+		answer_id = None
+
+	return answer_id
+
 def append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter, tokenizer, language_country):
 	if node.text != '' and  isinstance(node.text, str):
 		if splitter:
@@ -93,18 +104,13 @@ def append_data_to_df(df_questions, parent_map, node, item_name, item_type, spli
 		else:
 			split_into_sentences = tokenizer.tokenize(clean(node.text))
 
-		#Get the answer id from node attributes, if it exists
-		if 'answer_id' in parent_map[node].attrib:
-			answer_id = parent_map[node].attrib['answer_id']
-		else:
-			answer_id = None
-
+	
 		for text in split_into_sentences:
 			if item_type == 'REQUEST':
-				data = {'answer_id': answer_id, 'item_name':item_name,
+				data = {'answer_id': get_answer_id(node, parent_map), 'item_name':item_name,
 				'item_type':identify_showcard_instruction(text, language_country), 'text':text}
 			else:
-				data = {'answer_id': answer_id, 'item_name':item_name, 
+				data = {'answer_id': None, 'item_name':item_name, 
 				'item_type':item_type, 'text':text}
 			df_questions = df_questions.append(data, ignore_index=True)
 	else:
@@ -202,9 +208,11 @@ def main(filename):
 				text = node.text
 				if node.text != '' and  isinstance(node.text, str) and 'does not exist in' not in text:
 					item_type = 'RESPONSE'
-					question_id = parent_map[node].attrib['tmt_id']
+					parent = parent_map[node]
+					parent_of_parent = parent_map[parent]
+					answer_id = parent_map[parent_of_parent].attrib['tmt_id']
 					item_value = parent_map[node].attrib['labelvalue']
-					data = {'question_id': question_id, 'item_name': item_name, 'item_type':'RESPONSE', 
+					data = {'answer_id': answer_id, 'item_name': item_name, 'item_type':'RESPONSE', 
 					'text': clean_answer_category(text), 'item_value': item_value}
 					df_answers = df_answers.append(data, ignore_index=True)
 
@@ -230,8 +238,8 @@ def main(filename):
 				'item_is_source': item_is_source}
 				df_survey_item = df_survey_item.append(data, ignore_index=True)
 			
-	# df_questions.to_csv('questions.csv', encoding='utf-8-sig', index=False)
-	# df_answers.to_csv('answers.csv', encoding='utf-8-sig', index=False)
+	df_questions.to_csv('questions.csv', encoding='utf-8-sig', index=False)
+	df_answers.to_csv('answers.csv', encoding='utf-8-sig', index=False)
 	df_survey_item.to_csv('all.csv', encoding='utf-8-sig', index=False)
 	
 
