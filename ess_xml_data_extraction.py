@@ -8,6 +8,53 @@ import string
 import utils as ut
 
 
+def clean(text):
+	if isinstance(text, str):
+		text = re.sub("…", "...", text)
+		text = re.sub("’", "'", text)
+		text = re.sub(" :", ":", text)
+		text = re.sub("\s+\?", "?", text)
+		text = re.sub("[.]{4,}", "", text)
+		text = re.sub("[!]{2,}", "", text)
+		text = re.sub('</strong>', "",text)
+		text = re.sub('<strong>', "",text)
+		text = re.sub('</br>', "",text)
+		text = re.sub('<br />', "",text)
+		text = re.sub('<br>', "",text)
+		text = re.sub('</u>', "",text)
+		text = re.sub('<u>', "",text)
+		text = re.sub('&lt;', "",text)
+		text = re.sub('&gt;', "",text)
+		text = re.sub('&gt;', "",text)
+		text = re.sub('&lt', "",text)
+		text = re.sub('&gt', "",text)
+		text = re.sub('&nbsp', "",text)
+		text = re.sub(';', "",text)
+		text = text.replace('\n',' ')
+		text = text.rstrip()
+		text = text.lstrip()
+	else:
+		text = ''
+
+
+	return text
+
+def append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter, tokenizer):
+	if node.text != '' and  isinstance(node.text, str):
+		if splitter:
+			split_into_sentences = splitter.split(text=clean(node.text))
+		else:
+			split_into_sentences = tokenizer.tokenize(clean(node.text))
+
+		for text in split_into_sentences:
+			data = {'question_id': parent_map[node].attrib['tmt_id'], 'item_name':item_name, 'item_type':item_type, 'text':text}
+			df_questions = df_questions.append(data, ignore_index=True)
+	else:
+		return df_questions
+
+	return df_questions
+
+
 def main(filename):
 	dict_answers = dict()
 	dict_category_values = dict()
@@ -50,6 +97,7 @@ def main(filename):
 
 	survey_id = filename.replace('.xml', '')
 
+	df_questions =  pd.DataFrame(columns=['question_id', 'item_name', 'item_type', 'text']) 
 	item_name = ''
 	text = ''
 	item_type = ''
@@ -61,17 +109,18 @@ def main(filename):
 				if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QText':
 					text = node.text
 					item_type = 'REQUEST'
+					df_questions = append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter, tokenizer)
+
 				if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QInstruction':
 					text = node.text
 					item_type = 'INSTRUCTION'
+					df_questions = append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter, tokenizer)
+
+
 
 
 			
-
-			print(item_name)
-			print(item_type)
-			print(text)
-
+	df_questions.to_csv('questions.csv', encoding='utf-8-sig', index=False)
 
 
 if __name__ == "__main__":
