@@ -1,7 +1,9 @@
 import os
 import sys
 sys.path.insert(0, 'evs_xml_data_extraction')
+sys.path.insert(0, 'ess_xml_data_extraction')
 import evs_xml_data_extraction 
+import ess_xml_data_extraction 
 
 
 def main(folder_path):
@@ -11,8 +13,11 @@ def main(folder_path):
 
 	for index, file in enumerate(files):
 		if file.endswith(".xml"):
-			print('filename', file)
-			evs_xml_data_extraction.main(file)
+			print('Filename:', file)
+			if 'EVS' in file:
+				evs_xml_data_extraction.main(file)
+			elif 'ESS' in file:
+				ess_xml_data_extraction.main(file)
 
 
 
