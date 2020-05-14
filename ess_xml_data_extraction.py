@@ -104,7 +104,7 @@ def append_data_to_df(df_questions, parent_map, node, item_name, item_type, spli
 		else:
 			split_into_sentences = tokenizer.tokenize(clean(node.text))
 
-	
+		item_name = adjust_item_name(item_name)
 		for text in split_into_sentences:
 			if item_type == 'REQUEST':
 				data = {'answer_id': get_answer_id(node, parent_map), 'item_name':item_name,
@@ -126,6 +126,21 @@ def get_module(item_name):
 		module = items[0]
 
 	return module
+
+def adjust_item_name(item_name):
+	print(item_name)
+	if 'in' in item_name and 'minutes' not in item_name:
+		item_name = item_name.split('in')
+		item_name = item_name[1]
+	if 'above' in item_name or 'after' in item_name and '_' not in item_name:
+		item_name = 'INTRO'
+		return item_name
+	if '_' in item_name:
+		item_name = item_name.split('_')
+		item_name = item_name[0]
+
+	print(item_name)
+	return item_name
 
 def main(filename):
 	dict_answers = dict()
@@ -240,7 +255,7 @@ def main(filename):
 			
 	df_questions.to_csv('questions.csv', encoding='utf-8-sig', index=False)
 	df_answers.to_csv('answers.csv', encoding='utf-8-sig', index=False)
-	df_survey_item.to_csv('all.csv', encoding='utf-8-sig', index=False)
+	df_survey_item.to_csv(survey_id+'.csv', encoding='utf-8-sig', index=False)
 	
 
 
