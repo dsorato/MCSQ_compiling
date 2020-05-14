@@ -93,24 +93,38 @@ def append_data_to_df(df_questions, parent_map, node, item_name, item_type, spli
 		else:
 			split_into_sentences = tokenizer.tokenize(clean(node.text))
 
+		#Get the answer id from node attributes, if it exists
+		if 'answer_id' in parent_map[node].attrib:
+			answer_id = parent_map[node].attrib['answer_id']
+		else:
+			answer_id = None
+
 		for text in split_into_sentences:
 			if item_type == 'REQUEST':
-				data = {'question_id': parent_map[node].attrib['tmt_id'], 'item_name':item_name, 
+				data = {'answer_id': answer_id, 'item_name':item_name,
 				'item_type':identify_showcard_instruction(text, language_country), 'text':text}
 			else:
-				data = {'question_id': parent_map[node].attrib['tmt_id'], 'item_name':item_name, 'item_type':item_type, 'text':text}
+				data = {'answer_id': answer_id, 'item_name':item_name, 
+				'item_type':item_type, 'text':text}
 			df_questions = df_questions.append(data, ignore_index=True)
 	else:
 		return df_questions
 
 	return df_questions
 
+def get_module(item_name):
+	module = None
+	match = re.match(r"([a-z]+)([0-9]+)", item_name, re.IGNORECASE)
+	if match:
+		items = match.groups()
+		module = items[0]
+
+	return module
 
 def main(filename):
 	dict_answers = dict()
 	dict_category_values = dict()
-	df_survey_item = pd.DataFrame(columns=['survey_itemid', 'module','item_type', 'item_name', 'item_value', 'text',  'item_is_source'])
-
+	
 	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
 	ut.reset_initial_sufix()
 
@@ -133,9 +147,7 @@ def main(filename):
 		tokenizer = nltk.data.load(sentence_splitter)
 
 	country = ut.determine_country(filename)
-	#The prefix is study+'_'+language+'_'+country+'_'
-	prefix = re.sub('\.xml', '', filename)+'_'
-
+	
 	# parse an xml file by name
 	file = str(filename)
 	tree = ET.parse(file)
@@ -147,15 +159,20 @@ def main(filename):
 	ess_showcards = root.findall('.//questionnaire/showcards')
 
 	survey_id = filename.replace('.xml', '')
+	#The prefix is study+'_'+language+'_'+country+'_'
+	prefix = survey_id+'_'
 	split_survey_id = survey_id.split('_')
 	language_country = split_survey_id[3]+'_'+split_survey_id[4]
 
-	df_questions =  pd.DataFrame(columns=['question_id', 'item_name', 'item_type', 'text']) 
-	df_answers =  pd.DataFrame(columns=['question_id', 'item_name', 'item_type', 'text', 'item_value']) 
+	df_survey_item = pd.DataFrame(columns=['survey_itemid', 'module','item_type', 'item_name', 'item_value', language_country, 'item_is_source'])
+
+	df_questions =  pd.DataFrame(columns=['answer_id', 'item_name', 'item_type', 'text']) 
+	df_answers =  pd.DataFrame(columns=['answer_id', 'item_name', 'item_type', 'text', 'item_value']) 
 	item_name = ''
 	text = ''
 	item_type = ''
 	item_value = None
+	#Iterate through question nodes to extract questions and instructions (introduction is not present in metadata)
 	for question in ess_questions:
 		for node in question.getiterator():
 			if node.tag == 'question' and 'name' in node.attrib and 'tmt_id' in node.attrib:
@@ -173,12 +190,14 @@ def main(filename):
 					df_questions = append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter, 
 					tokenizer, language_country)
 
+	#Iterate through answer nodes to extract answers 
 	for answer in ess_answers:
 		for node in answer.getiterator():
 			if node.tag == 'answer' and 'name' in node.attrib and 'tmt_id' in node.attrib:
 				item_name = node.attrib['name']
 				item_name = item_name.split('_')
 				item_name = item_name[1]
+			#translation_id == 1 is the english version
 			if node.tag == 'text' and 'translation_id' in node.attrib and node.attrib['translation_id'] != '1':
 				text = node.text
 				if node.text != '' and  isinstance(node.text, str) and 'does not exist in' not in text:
@@ -189,12 +208,32 @@ def main(filename):
 					'text': clean_answer_category(text), 'item_value': item_value}
 					df_answers = df_answers.append(data, ignore_index=True)
 
-		
+	#Decide if items are source. In ESS, source is English and the nomenclature contains SOURCE in it
+	if 'ENG_SOURCE' in language_country:
+		item_is_source = True
+	else: 
+		item_is_source = False
 
+	old_item_name = 'A1'
+	for i, i_row in df_questions.iterrows():
+		survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, i_row['item_name'])
+		old_item_name = item_name
+		data = {'survey_itemid':survey_item_id, 'module':get_module(i_row['item_name']),'item_type': i_row['item_type'], 
+		'item_name':  i_row['item_name'], 'item_value':None, language_country:i_row['text'], 'item_is_source': item_is_source}
+		df_survey_item = df_survey_item.append(data, ignore_index=True)
 
+		if i_row['answer_id'] != None:
+			corresponding_answer = df_answers[df_answers.answer_id == i_row['answer_id']]
+			for j, j_row in corresponding_answer.iterrows():
+				data = {'survey_itemid':survey_item_id, 'module':get_module(j_row['item_name']),'item_type': j_row['item_type'], 
+				'item_name':  j_row['item_name'], 'item_value':j_row['item_value'], language_country:j_row['text'], 
+				'item_is_source': item_is_source}
+				df_survey_item = df_survey_item.append(data, ignore_index=True)
 			
-	df_questions.to_csv('questions.csv', encoding='utf-8-sig', index=False)
-	df_answers.to_csv('answers.csv', encoding='utf-8-sig', index=False)
+	# df_questions.to_csv('questions.csv', encoding='utf-8-sig', index=False)
+	# df_answers.to_csv('answers.csv', encoding='utf-8-sig', index=False)
+	df_survey_item.to_csv('all.csv', encoding='utf-8-sig', index=False)
+	
 
 
 if __name__ == "__main__":
