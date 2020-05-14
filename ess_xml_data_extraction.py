@@ -8,6 +8,41 @@ import string
 import utils as ut
 
 
+
+def clean_answer_category(text):
+	if isinstance(text, str):
+		text = re.sub("…", "...", text)
+		text = re.sub("’", "'", text)
+		text = re.sub(" :", ":", text)
+		text = re.sub("(\s0\s?$)", "", text)
+		text = re.sub("(\s10\s?$)", "", text)
+		text = re.sub("(\s\+\d\s?$)", "", text)
+		text = re.sub("(\s\-\d\s?$)", "", text)
+		text = re.sub("\s+\?", "?", text)
+		text = re.sub("[.]{4,}", "", text)
+		text = re.sub("[!]{2,}", "!", text)
+		text = re.sub('</strong>', "",text)
+		text = re.sub('<strong>', "",text)
+		text = re.sub('</br>', "",text)
+		text = re.sub('<br />', "",text)
+		text = re.sub('<br>', "",text)
+		text = re.sub('</u>', "",text)
+		text = re.sub('<u>', "",text)
+		text = re.sub('&lt;', "",text)
+		text = re.sub('&gt;', "",text)
+		text = re.sub('&gt;', "",text)
+		text = re.sub('&lt', "",text)
+		text = re.sub('&gt', "",text)
+		text = re.sub('&nbsp', "",text)
+		text = re.sub(';', "",text)
+		text = text.replace('\n',' ')
+		text = text.rstrip()
+		text = text.lstrip()
+	else:
+		text = ''
+
+
+	return text
 def clean(text):
 	if isinstance(text, str):
 		text = re.sub("…", "...", text)
@@ -116,9 +151,11 @@ def main(filename):
 	language_country = split_survey_id[3]+'_'+split_survey_id[4]
 
 	df_questions =  pd.DataFrame(columns=['question_id', 'item_name', 'item_type', 'text']) 
+	df_answers =  pd.DataFrame(columns=['question_id', 'item_name', 'item_type', 'text', 'item_value']) 
 	item_name = ''
 	text = ''
 	item_type = ''
+	item_value = None
 	for question in ess_questions:
 		for node in question.getiterator():
 			if node.tag == 'question' and 'name' in node.attrib and 'tmt_id' in node.attrib:
@@ -136,11 +173,28 @@ def main(filename):
 					df_questions = append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter, 
 					tokenizer, language_country)
 
+	for answer in ess_answers:
+		for node in answer.getiterator():
+			if node.tag == 'answer' and 'name' in node.attrib and 'tmt_id' in node.attrib:
+				item_name = node.attrib['name']
+				item_name = item_name.split('_')
+				item_name = item_name[1]
+			if node.tag == 'text' and 'translation_id' in node.attrib and node.attrib['translation_id'] != '1':
+				text = node.text
+				if node.text != '' and  isinstance(node.text, str) and 'does not exist in' not in text:
+					item_type = 'RESPONSE'
+					question_id = parent_map[node].attrib['tmt_id']
+					item_value = parent_map[node].attrib['labelvalue']
+					data = {'question_id': question_id, 'item_name': item_name, 'item_type':'RESPONSE', 
+					'text': clean_answer_category(text), 'item_value': item_value}
+					df_answers = df_answers.append(data, ignore_index=True)
 
+		
 
 
 			
 	df_questions.to_csv('questions.csv', encoding='utf-8-sig', index=False)
+	df_answers.to_csv('answers.csv', encoding='utf-8-sig', index=False)
 
 
 if __name__ == "__main__":
