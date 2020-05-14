@@ -50,9 +50,28 @@ def main(filename):
 
 	survey_id = filename.replace('.xml', '')
 
+	item_name = ''
+	text = ''
+	item_type = ''
 	for question in ess_questions:
 		for node in question.getiterator():
-			print(node.tag, node.attrib)
+			if node.tag == 'question' and 'name' in node.attrib and 'tmt_id' in node.attrib:
+				item_name = node.attrib['name']
+			if node.tag == 'text' and 'translation_id' in node.attrib and node.attrib['translation_id'] != '1':
+				if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QText':
+					text = node.text
+					item_type = 'REQUEST'
+				if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QInstruction':
+					text = node.text
+					item_type = 'INSTRUCTION'
+
+
+			
+
+			print(item_name)
+			print(item_type)
+			print(text)
+
 
 
 if __name__ == "__main__":
