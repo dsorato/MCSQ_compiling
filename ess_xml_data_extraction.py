@@ -23,17 +23,19 @@ def clean_answer_category(text):
 		text = re.sub("[!]{2,}", "!", text)
 		text = re.sub('</strong>', "",text)
 		text = re.sub('<strong>', "",text)
-		text = re.sub('</br>', "",text)
-		text = re.sub('<br />', "",text)
-		text = re.sub('<br>', "",text)
-		text = re.sub('</u>', "",text)
-		text = re.sub('<u>', "",text)
-		text = re.sub('&lt;', "",text)
-		text = re.sub('&gt;', "",text)
-		text = re.sub('&gt;', "",text)
-		text = re.sub('&lt', "",text)
-		text = re.sub('&gt', "",text)
-		text = re.sub('&nbsp', "",text)
+		text = re.sub('</p>', "",text)
+		text = re.sub('<p>', "",text)
+		text = re.sub('</br>', " ",text)
+		text = re.sub('<br />', " ",text)
+		text = re.sub('<br>', " ",text)
+		text = re.sub('</u>', " ",text)
+		text = re.sub('<u>', " ",text)
+		text = re.sub('&lt;', " ",text)
+		text = re.sub('&gt;', " ",text)
+		text = re.sub('&gt;', " ",text)
+		text = re.sub('&lt', " ",text)
+		text = re.sub('&gt', " ",text)
+		text = re.sub('&nbsp', " ",text)
 		text = re.sub(';', "",text)
 		text = text.replace('\n',' ')
 		text = text.rstrip()
@@ -54,17 +56,19 @@ def clean(text):
 		text = re.sub("[!]{2,}", "!", text)
 		text = re.sub('</strong>', "",text)
 		text = re.sub('<strong>', "",text)
-		text = re.sub('</br>', "",text)
-		text = re.sub('<br />', "",text)
-		text = re.sub('<br>', "",text)
-		text = re.sub('</u>', "",text)
-		text = re.sub('<u>', "",text)
-		text = re.sub('&lt;', "",text)
-		text = re.sub('&gt;', "",text)
-		text = re.sub('&gt;', "",text)
-		text = re.sub('&lt', "",text)
-		text = re.sub('&gt', "",text)
-		text = re.sub('&nbsp', "",text)
+		text = re.sub('</p>', "",text)
+		text = re.sub('<p>', "",text)
+		text = re.sub('</br>', " ",text)
+		text = re.sub('<br />', " ",text)
+		text = re.sub('<br>', " ",text)
+		text = re.sub('</u>', " ",text)
+		text = re.sub('<u>', " ",text)
+		text = re.sub('&lt;', " ",text)
+		text = re.sub('&gt;', " ",text)
+		text = re.sub('&gt;', " ",text)
+		text = re.sub('&lt', " ",text)
+		text = re.sub('&gt', " ",text)
+		text = re.sub('&nbsp', " ",text)
 		text = re.sub(';', "",text)
 		text = text.replace('\n',' ')
 		text = text.rstrip()
@@ -81,7 +85,7 @@ def identify_showcard_instruction(text, language_country):
 		if 'CH' in language_country:
 			showcard = 'CARTE'
 
-	if re.compile(showcard).match(text):
+	if re.compile(showcard).findall(text):
 		item_type = 'INSTRUCTION'
 
 	return item_type
@@ -104,7 +108,10 @@ def append_data_to_df(df_questions, parent_map, node, item_name, item_type, spli
 		else:
 			split_into_sentences = tokenizer.tokenize(clean(node.text))
 
-		item_name = adjust_item_name(item_name)
+		item_name, modified_item_type = adjust_item_name(item_name)
+		if modified_item_type != None:
+			item_type = modified_item_type
+
 		for text in split_into_sentences:
 			if item_type == 'REQUEST':
 				data = {'answer_id': get_answer_id(node, parent_map), 'item_name':item_name,
@@ -120,6 +127,10 @@ def append_data_to_df(df_questions, parent_map, node, item_name, item_type, spli
 
 def get_module(item_name):
 	module = None
+	# if item_name == 'INTRO':
+	# 	module = 'INTRO'
+	# 	return module
+
 	match = re.match(r"([a-z]+)([0-9]+)", item_name, re.IGNORECASE)
 	if match:
 		items = match.groups()
@@ -129,18 +140,36 @@ def get_module(item_name):
 
 def adjust_item_name(item_name):
 	print(item_name)
+	item_type = None
 	if 'in' in item_name and 'minutes' not in item_name:
 		item_name = item_name.split('in')
 		item_name = item_name[1]
-	if 'above' in item_name or 'after' in item_name and '_' not in item_name:
-		item_name = 'INTRO'
-		return item_name
+	if 'above' in item_name and '_' not in item_name:
+		item_type = 'INTRODUCTION'
+		item_name = item_name.split(' ')
+		item_name = item_name[-1]
+		return item_name, item_type
+	if 'after' in item_name and '_' not in item_name:
+		item_type = 'INTRODUCTION'
+		item_name = item_name.split(' ')
+		item_name = item_name[-1]
+		return item_name, item_type
+	if 'above' in item_name and '_' in item_name:
+		item_type = 'INTRODUCTION'
+		item_name = item_name.split('_')
+		item_name = item_name[-1]
+		return item_name, item_type
+	if 'after' in item_name and '_' in item_name:
+		item_type = 'INTRODUCTION'
+		item_name = item_name.split('_')
+		item_name = item_name[-1]
+		return item_name, item_type
 	if '_' in item_name:
 		item_name = item_name.split('_')
 		item_name = item_name[0]
 
 	print(item_name)
-	return item_name
+	return item_name, item_type
 
 def main(filename):
 	dict_answers = dict()
@@ -241,15 +270,17 @@ def main(filename):
 	for i, i_row in df_questions.iterrows():
 		survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, i_row['item_name'])
 		old_item_name = item_name
-		data = {'survey_itemid':survey_item_id, 'module':get_module(i_row['item_name']),'item_type': i_row['item_type'], 
-		'item_name':  i_row['item_name'], 'item_value':None, language_country:i_row['text'], 'item_is_source': item_is_source}
+		module = get_module(i_row['item_name'])
+		item_name = i_row['item_name']
+		data = {'survey_itemid':survey_item_id, 'module':module,'item_type': i_row['item_type'], 
+		'item_name':  item_name, 'item_value':None, language_country:i_row['text'], 'item_is_source': item_is_source}
 		df_survey_item = df_survey_item.append(data, ignore_index=True)
 
 		if i_row['answer_id'] != None:
 			corresponding_answer = df_answers[df_answers.answer_id == i_row['answer_id']]
 			for j, j_row in corresponding_answer.iterrows():
-				data = {'survey_itemid':survey_item_id, 'module':get_module(j_row['item_name']),'item_type': j_row['item_type'], 
-				'item_name':  j_row['item_name'], 'item_value':j_row['item_value'], language_country:j_row['text'], 
+				data = {'survey_itemid':survey_item_id, 'module':module,'item_type': j_row['item_type'], 
+				'item_name':  item_name, 'item_value':j_row['item_value'], language_country:j_row['text'], 
 				'item_is_source': item_is_source}
 				df_survey_item = df_survey_item.append(data, ignore_index=True)
 			
