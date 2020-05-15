@@ -6,6 +6,7 @@ import numpy as np
 import sys
 import os
 from populate_tables import *
+from retrieve_from_tables import *
 
 global instruction_id 
 instruction_id = 0
@@ -121,15 +122,15 @@ def populate_module_table(study, wave_round, file):
 def populate_survey_item_table(file, country_language):
 	data = pd.read_csv(file)
 	item_is_source = False
-	mod = get_module_table_as_dict()
-	surveyid = get_survey_last_record()
+	mod = retrieve_module_table_as_dict()
+	surveyid = retrieve_survey_last_record()
 
 	if country_language == 'ENG_SOURCE':
 		item_is_source = True 
 
 	for i, row in data.iterrows():
 		write_survey_item_table(row['survey_item_ID'], surveyid, mod[row['module']], country_language, item_is_source, row['item_name'], row['item_type'])
-		last_survey_item_unique = get_survey_item_last_record()
+		last_survey_item_unique = retrieve_survey_item_last_record()
 		if row['item_type'] == 'REQUEST':
 			write_request_table(last_survey_item_unique, row['survey_item_ID'], row[country_language], '', '', '', '', row['item_name'], row['item_type'])
 		elif row['item_type'] == 'INSTRUCTION':
@@ -275,7 +276,7 @@ def get_surveyid_moduleid(survey_item_id, module_name):
 
 	module_description_dict = get_module_description(study, wave_round)
 	module_description = module_description_dict[module_name]
-	module_id = get_module_id(module_name, module_description)
+	module_id = retrieve_module_id(module_name, module_description)
 	print(module_name,module_description, module_id)
 
 	return survey_id, module_id
