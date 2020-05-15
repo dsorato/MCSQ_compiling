@@ -372,8 +372,11 @@ def main(folder_path):
 		if file.endswith(".csv"):
 			print(file)
 			country_language = file.replace('.csv', '')
-			populate_survey_and_module_table(file, country_language)
-			filter_by_item_type(file, country_language)
+			# populate_survey_and_module_table(file, country_language)
+			# filter_by_item_type(file, country_language)
+			responses = retrieve_responses_as_df()
+			for i, row in responses.iterrows():
+				print(row)
 	# 		# populate_survey_item_table(file, country_language)
 
 			

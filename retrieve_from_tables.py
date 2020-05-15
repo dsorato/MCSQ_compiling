@@ -7,6 +7,20 @@ from DB.instruction import *
 from DB.response import *
 from DB.request import *
 from sqlalchemy import MetaData
+import pandas as pd
+
+
+def retrieve_responses_as_df():
+	df_requests =  pd.DataFrame(columns=['responseid', 'response_item_id', 'text', 'item_value']) 
+	session = session_factory()
+	response = session.query(Response).order_by(Response.responseid.asc())
+	for r in response:
+		data = {'responseid': r.responseid, 'response_item_id': r.response_item_id, 
+		'text': r.text, 'item_value': r.item_value}
+		df_requests = df_requests.append(data, ignore_index=True)
+	session.close()
+
+	return df_requests
 
 def retrieve_survey_last_record():
 	session = session_factory()
