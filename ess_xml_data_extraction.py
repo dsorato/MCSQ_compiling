@@ -133,8 +133,11 @@ def append_data_to_df(df_questions, parent_map, node, item_name, item_type, spli
 
 	return df_questions
 
+#Get module metadata based on item_name
 def get_module(item_name):
 	module = None
+	#The item names in ESS follow the pattern letter + number + sometimes letter (e.g. A1, F30, B2a etc)
+	#Find the module based on regex pattern split.
 	match = re.match(r"([a-z]+)([0-9]+)", item_name, re.IGNORECASE)
 	if match:
 		items = match.groups()
@@ -142,6 +145,8 @@ def get_module(item_name):
 
 	return module
 
+#Automatically adjust item_name inconsistencies present in source XML file, 
+#so it is in accordance to our standards.
 def adjust_item_name(item_name):
 	print(item_name)
 	item_type = None
@@ -176,12 +181,12 @@ def adjust_item_name(item_name):
 	return item_name, item_type
 
 def main(filename):
-	dict_answers = dict()
-	dict_category_values = dict()
-	
 	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
 	ut.reset_initial_sufix()
 
+	#Decide on a (sentence) spliter based on the language.
+	#ICE, HUN, LAV, LIT and SLO languages are not present in the NLTK library, 
+	#so another splitter library is necessary 
 	splitter = None
 	if 'ICE_IS' in filename:
 		splitter = SentenceSplitter(language='is')
@@ -200,13 +205,12 @@ def main(filename):
 		sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
 		tokenizer = nltk.data.load(sentence_splitter)
 
-	country = ut.determine_country(filename)
-	
-	# parse an xml file by name
+	#Parse the input XML file by filename
 	file = str(filename)
 	tree = ET.parse(file)
 	root = tree.getroot()
 
+	#Create a dictionary containing parent-child relations of the parsed tree
 	parent_map = dict((c, p) for p in tree.getiterator() for c in p)
 	ess_questions = root.findall('.//questionnaire/questions')
 	ess_answers = root.findall('.//questionnaire/answers')

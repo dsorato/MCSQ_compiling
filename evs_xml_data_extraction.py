@@ -228,6 +228,9 @@ def main(filename):
 	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
 	ut.reset_initial_sufix()
 
+	#Decide on a (sentence) spliter based on the language.
+	#ICE, HUN, LAV, LIT and SLO languages are not present in the NLTK library, 
+	#so another splitter library is necessary 
 	splitter = None
 	if 'ICE_IS' in filename:
 		splitter = SentenceSplitter(language='is')
@@ -246,15 +249,18 @@ def main(filename):
 		sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
 		tokenizer = nltk.data.load(sentence_splitter)
 
+	#Determine the country using the information contained in the filename.
+	#Information needed to exclude some unecessary segments of the EVS XML file.
 	country = ut.determine_country(filename)
 	#The prefix is study+'_'+language+'_'+country+'_'
 	prefix = re.sub('\.xml', '', filename)+'_'
 
-	# parse an xml file by name
+	#Parse the input XML file by filename
 	file = str(filename)
 	tree = ET.parse(file)
 	root = tree.getroot()
 
+	#Create a dictionary containing parent-child relations of the parsed tree
 	parent_map = dict((c, p) for p in tree.getiterator() for c in p)
 	evs_vars = root.findall('.//dataDscr/var')
 	evs_var_grps = root.findall('.//dataDscr/varGrp')
