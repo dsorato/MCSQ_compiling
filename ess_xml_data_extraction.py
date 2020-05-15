@@ -25,6 +25,8 @@ def clean_answer_category(text):
 		text = re.sub('<strong>', "",text)
 		text = re.sub('</p>', "",text)
 		text = re.sub('<p>', "",text)
+		text = re.sub('</em>', "",text)
+		text = re.sub('<em>', "",text)
 		text = re.sub('</br>', " ",text)
 		text = re.sub('<br />', " ",text)
 		text = re.sub('<br>', " ",text)
@@ -50,7 +52,8 @@ def clean(text):
 		text = re.sub("…", "...", text)
 		text = re.sub("’", "'", text)
 		text = re.sub(" :", ":", text)
-		text = re.sub("Enq.", "Enquêteur", text)
+		text = re.sub("Enq.:", "Enquêteur:", text, flags=re.I)
+		text = re.sub("INT.:", "INTERVIEWER:", text, flags=re.I)
 		text = re.sub("\s+\?", "?", text)
 		text = re.sub("[.]{4,}", "", text)
 		text = re.sub("[!]{2,}", "!", text)
@@ -58,6 +61,8 @@ def clean(text):
 		text = re.sub('<strong>', "",text)
 		text = re.sub('</p>', "",text)
 		text = re.sub('<p>', "",text)
+		text = re.sub('</em>', "",text)
+		text = re.sub('<em>', "",text)
 		text = re.sub('</br>', " ",text)
 		text = re.sub('<br />', " ",text)
 		text = re.sub('<br>', " ",text)
@@ -84,6 +89,9 @@ def identify_showcard_instruction(text, language_country):
 	if 'FRE' in language_country:
 		if 'CH' in language_country:
 			showcard = 'CARTE'
+	if 'GER' in language_country:
+		if 'DE' in language_country:
+			showcard = 'LISTE'
 
 	if re.compile(showcard).findall(text):
 		item_type = 'INSTRUCTION'
@@ -127,10 +135,6 @@ def append_data_to_df(df_questions, parent_map, node, item_name, item_type, spli
 
 def get_module(item_name):
 	module = None
-	# if item_name == 'INTRO':
-	# 	module = 'INTRO'
-	# 	return module
-
 	match = re.match(r"([a-z]+)([0-9]+)", item_name, re.IGNORECASE)
 	if match:
 		items = match.groups()
@@ -269,9 +273,9 @@ def main(filename):
 	old_item_name = 'A1'
 	for i, i_row in df_questions.iterrows():
 		survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, i_row['item_name'])
-		old_item_name = item_name
 		module = get_module(i_row['item_name'])
 		item_name = i_row['item_name']
+		old_item_name = item_name
 		data = {'survey_itemid':survey_item_id, 'module':module,'item_type': i_row['item_type'], 
 		'item_name':  item_name, 'item_value':None, language_country:i_row['text'], 'item_is_source': item_is_source}
 		df_survey_item = df_survey_item.append(data, ignore_index=True)
