@@ -226,9 +226,10 @@ def check_if_df_is_in_list(list_of_df_responses, analyzed_df):
 		comparison_matrix = df.values == analyzed_df.values
 		df_in_list = np.all(comparison_matrix == True)
 		if df_in_list:
-			return True
+			#If the dataframe is already in the list, return the index position of df in the list
+			return True, list_of_df_responses.index(df)
 
-	return False
+	return False, None
 
 
 def find_unique_responses(responses, country_language):
@@ -236,27 +237,45 @@ def find_unique_responses(responses, country_language):
 	responses_with_unique_values = []
 	responses_with_multiple_values = []
 
+	#Index dictionary for responses with single values
+	d_r_with_unique_values = dict()
+	#Index dictionary for responses with multiple values
+	d_r_with_multiple_values = dict()
+
 	unique_survey_id_values = responses['survey_item_ID'].unique()
 	for unique_id in unique_survey_id_values:
 		a_response = responses[responses.survey_item_ID == unique_id]
 		response_text = a_response[[country_language]]
+		#Treating cases of responses with only one value (e.g WRITE DOWN)
 		if len(response_text) == 1:
+			#Case where the list is empty
 			if not responses_with_unique_values:
+				d_r_with_unique_values[a_response['survey_item_ID']] = 0
 				responses_with_unique_values.append(response_text.iloc[0][country_language])
 			else:
+				#If response is not on the list
 				if response_text.iloc[0][country_language] not in responses_with_unique_values:
 					responses_with_unique_values.append(response_text.iloc[0][country_language])
+				#wheter the response was in the list or not, add the index to the dictionary
+				d_r_with_unique_values[a_response['survey_item_ID']] = responses_with_unique_values.index(response_text.iloc[0][country_language])
 
 		else:
+			#Case where the list is empty
 			if not responses_with_multiple_values_aux:
+				d_r_with_multiple_values[a_response['survey_item_ID']] = 0
 				responses_with_multiple_values_aux.append(response_text)
 			else:
-				if check_if_df_is_in_list(responses_with_multiple_values_aux, response_text) == False:
+				df_in_list = check_if_df_is_in_list(responses_with_multiple_values_aux, response_text)
+				if df_in_list[0] == False:
 					responses_with_multiple_values_aux.append(response_text)
 					responses_with_multiple_values.append(a_response[[country_language, 'item_value']])
+					#If the response was appended, the index is the last one
+					d_r_with_multiple_values[a_response['survey_item_ID']] = responses_with_multiple_values[-1]
+				elif df_in_list[0]:
+					d_r_with_multiple_values[a_response['survey_item_ID']] = responses_with_multiple_values[df_in_list[1]]
 
 
-	return responses_with_unique_values, responses_with_multiple_values
+	return responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values
 
 def populate_responses_table(responses_with_unique_values, responses_with_multiple_values, country_language):
 	for item in responses_with_unique_values:
@@ -305,32 +324,39 @@ def filter_by_item_type(file, country_language):
 	populate_requests_table(unique_requests)
 	# reduced_requests = filter_requests(requests, unique_requests, country_language)
 
-	responses_with_unique_values, responses_with_multiple_values = find_unique_responses(responses, country_language)
-	populate_responses_table(responses_with_unique_values, responses_with_multiple_values, country_language)
-
-	if 'ENG_SOURCE' in country_language:
-		item_is_source = True
-	else:
-		item_is_source = False
+	responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values = find_unique_responses(responses, country_language)
 	
-	########## Survey_item table params ##########
-	#survey_itemid, surveyid, moduleid, requestid, responseid, response_item_id, instructionid,introductionid, 
-	#country_language, item_is_source, item_name, item_type
-	##############################################
-	for i, row in data.iterrows():
-		survey_id, module_id = get_surveyid_moduleid(row['survey_item_ID'], row['module'])
-		if row['item_type'] == 'REQUEST':
-			requestid = retrieve_request_id(row[country_language])
-			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, requestid, None, None, None,None, country_language, item_is_source, row['item_name'], 'REQUEST')
+	for k, v in list(d_r_with_unique_values.items()):
+		print(k,v)
 
-		if row['item_type'] == 'INSTRUCTION':
-			instructiontid = retrieve_instruction_id(row[country_language])
-			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, instructiontid,None, country_language, item_is_source, row['item_name'], 'INSTRUCTION')
+	for k, v in list(d_r_with_multiple_values.items()):
+		print(k,v)
+
+	# populate_responses_table(responses_with_unique_values, responses_with_multiple_values, country_language)
+
+	# if 'ENG_SOURCE' in country_language:
+	# 	item_is_source = True
+	# else:
+	# 	item_is_source = False
+	
+	# ########## Survey_item table params ##########
+	# #survey_itemid, surveyid, moduleid, requestid, responseid, response_item_id, instructionid,introductionid, 
+	# #country_language, item_is_source, item_name, item_type
+	# ##############################################
+	# for i, row in data.iterrows():
+	# 	survey_id, module_id = get_surveyid_moduleid(row['survey_item_ID'], row['module'])
+	# 	if row['item_type'] == 'REQUEST':
+	# 		requestid = retrieve_request_id(row[country_language])
+	# 		write_survey_item_table(row['survey_item_ID'], survey_id, module_id, requestid, None, None, None,None, country_language, item_is_source, row['item_name'], 'REQUEST')
+
+	# 	if row['item_type'] == 'INSTRUCTION':
+	# 		instructiontid = retrieve_instruction_id(row[country_language])
+	# 		write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, instructiontid,None, country_language, item_is_source, row['item_name'], 'INSTRUCTION')
 
 
-		if row['item_type'] == 'INTRODUCTION' or row['item_type'] == 'INTRO':
-			introductionid = retrieve_introduction_id(row[country_language])
-			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, None,introductionid, country_language, item_is_source, row['item_name'], 'INTRODUCTION')
+	# 	if row['item_type'] == 'INTRODUCTION' or row['item_type'] == 'INTRO':
+	# 		introductionid = retrieve_introduction_id(row[country_language])
+	# 		write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, None,introductionid, country_language, item_is_source, row['item_name'], 'INTRODUCTION')
 
 
 
@@ -372,11 +398,11 @@ def main(folder_path):
 		if file.endswith(".csv"):
 			print(file)
 			country_language = file.replace('.csv', '')
-			# populate_survey_and_module_table(file, country_language)
-			# filter_by_item_type(file, country_language)
-			responses = retrieve_responses_as_df()
-			for i, row in responses.iterrows():
-				print(row)
+			populate_survey_and_module_table(file, country_language)
+			filter_by_item_type(file, country_language)
+			# responses = retrieve_responses_as_df()
+			# for i, row in responses.iterrows():
+			# 	print(row)
 	# 		# populate_survey_item_table(file, country_language)
 
 			
