@@ -222,12 +222,12 @@ def populate_introductions_table(unique_introductions):
 	write_introduction_table(unique_introductions)
 
 def check_if_df_is_in_list(list_of_df_responses, analyzed_df):
-	for df in list_of_df_responses:
+	for i, df in enumerate(list_of_df_responses):
 		comparison_matrix = df.values == analyzed_df.values
 		df_in_list = np.all(comparison_matrix == True)
 		if df_in_list:
 			#If the dataframe is already in the list, return the index position of df in the list
-			return True, list_of_df_responses.index(df)
+			return True, i
 
 	return False, None
 
@@ -247,22 +247,23 @@ def find_unique_responses(responses, country_language):
 		a_response = responses[responses.survey_item_ID == unique_id]
 		response_text = a_response[[country_language]]
 		#Treating cases of responses with only one value (e.g WRITE DOWN)
+		survey_item_id = a_response.iloc[0]['survey_item_ID']
 		if len(response_text) == 1:
 			#Case where the list is empty
 			if not responses_with_unique_values:
-				d_r_with_unique_values[a_response['survey_item_ID']] = 0
+				d_r_with_unique_values[survey_item_id] = 0
 				responses_with_unique_values.append(response_text.iloc[0][country_language])
 			else:
 				#If response is not on the list
 				if response_text.iloc[0][country_language] not in responses_with_unique_values:
 					responses_with_unique_values.append(response_text.iloc[0][country_language])
 				#wheter the response was in the list or not, add the index to the dictionary
-				d_r_with_unique_values[a_response['survey_item_ID']] = responses_with_unique_values.index(response_text.iloc[0][country_language])
+				d_r_with_unique_values[survey_item_id] = responses_with_unique_values.index(response_text.iloc[0][country_language])
 
 		else:
 			#Case where the list is empty
 			if not responses_with_multiple_values_aux:
-				d_r_with_multiple_values[a_response['survey_item_ID']] = 0
+				d_r_with_multiple_values[survey_item_id] = 0
 				responses_with_multiple_values_aux.append(response_text)
 			else:
 				df_in_list = check_if_df_is_in_list(responses_with_multiple_values_aux, response_text)
@@ -270,9 +271,9 @@ def find_unique_responses(responses, country_language):
 					responses_with_multiple_values_aux.append(response_text)
 					responses_with_multiple_values.append(a_response[[country_language, 'item_value']])
 					#If the response was appended, the index is the last one
-					d_r_with_multiple_values[a_response['survey_item_ID']] = responses_with_multiple_values[-1]
+					d_r_with_multiple_values[survey_item_id] = len(responses_with_multiple_values) -1 
 				elif df_in_list[0]:
-					d_r_with_multiple_values[a_response['survey_item_ID']] = responses_with_multiple_values[df_in_list[1]]
+					d_r_with_multiple_values[survey_item_id] = df_in_list[1]
 
 
 	return responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values
@@ -313,16 +314,16 @@ def filter_by_item_type(file, country_language):
 	frames = [intro, introduction]
 	introductions = pd.concat(frames)
 
-	unique_instructions = instructions[country_language].unique()
-	populate_instruction_table(unique_instructions)
-	# reduced_instructions = filter_instructions(instructions, unique_instructions, country_language)
+	# unique_instructions = instructions[country_language].unique()
+	# populate_instruction_table(unique_instructions)
+	# # reduced_instructions = filter_instructions(instructions, unique_instructions, country_language)
 
-	unique_introductions = introductions[country_language].unique()
-	populate_introductions_table(unique_introductions)
+	# unique_introductions = introductions[country_language].unique()
+	# populate_introductions_table(unique_introductions)
 
-	unique_requests = requests[country_language].unique()
-	populate_requests_table(unique_requests)
-	# reduced_requests = filter_requests(requests, unique_requests, country_language)
+	# unique_requests = requests[country_language].unique()
+	# populate_requests_table(unique_requests)
+	# # reduced_requests = filter_requests(requests, unique_requests, country_language)
 
 	responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values = find_unique_responses(responses, country_language)
 	
@@ -398,7 +399,7 @@ def main(folder_path):
 		if file.endswith(".csv"):
 			print(file)
 			country_language = file.replace('.csv', '')
-			populate_survey_and_module_table(file, country_language)
+			# populate_survey_and_module_table(file, country_language)
 			filter_by_item_type(file, country_language)
 			# responses = retrieve_responses_as_df()
 			# for i, row in responses.iterrows():
