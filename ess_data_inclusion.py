@@ -297,7 +297,7 @@ def populate_responses_table(responses_with_unique_values, responses_with_multip
 		for i, row in df.iterrows():
 			write_response_table(response_id, row[country_language], row['item_value'])
 			response_item_id = retrieve_response_item_last_record()
-			update_response_dictionary(d_r_with_multiple_values, j, [response_id,response_item_id])
+			update_response_dictionary(d_r_with_multiple_values, j, [response_id, response_item_id])
 
 	return d_r_with_unique_values, d_r_with_multiple_values
 
