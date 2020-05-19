@@ -34,6 +34,17 @@ def write_survey_item_table(survey_itemid, surveyid, moduleid, requestid, respon
 	session.close()
 
 
+
+# def write_response_in_survey_item_table(survey_itemid, surveyid, moduleid, requestid, responseid, response_item_id, instructionid,introductionid, country_language, item_is_source, item_name):
+# 	session = session_factory()
+# 	exists = session.query(survey_item.survey_itemid, survey_item.item_type).filter_by(survey_itemid=survey_itemid, item_type='RESPONSE').scalar() is not None
+# 	if exists == False:
+# 		item = Survey_item(survey_itemid, surveyid, moduleid, requestid, responseid, response_item_id, instructionid,introductionid, country_language, item_is_source, item_name, 'RESPONSE')
+# 		session.add(item)
+# 		session.commit()
+# 	session.close()
+
+
 def write_request_table(unique_requests):
 	session = session_factory()
 	for request in unique_requests:

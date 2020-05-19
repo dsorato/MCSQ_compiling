@@ -22,6 +22,16 @@ def retrieve_responses_as_df():
 
 	return df_requests
 
+def retrieve_response_item_last_record():
+	session = session_factory()
+	response_item_id = 0
+	result = session.execute('SELECT last_value FROM response_item_id_seq;')
+	for i in result:
+		response_item_id = i[0]
+	session.close()
+
+	return response_item_id
+
 def retrieve_survey_last_record():
 	session = session_factory()
 	last_survey_id = session.query(Survey).order_by(Survey.surveyid.desc()).first()
