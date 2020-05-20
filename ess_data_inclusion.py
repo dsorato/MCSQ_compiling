@@ -296,8 +296,7 @@ def populate_responses_table(responses_with_unique_values, responses_with_multip
 		response_id = update_response_id()
 		for i, row in df.iterrows():
 			write_response_table(response_id, row[country_language], row['item_value'])
-			response_item_id = retrieve_response_item_last_record()
-			update_response_dictionary(d_r_with_multiple_values, j, [response_id, response_item_id])
+			update_response_dictionary(d_r_with_multiple_values, j, response_id)
 
 	return d_r_with_unique_values, d_r_with_multiple_values
 
@@ -367,6 +366,9 @@ def filter_by_item_type(file, country_language):
 			introductionid = retrieve_introduction_id(row[country_language])
 			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, None,introductionid, country_language, item_is_source, row['item_name'], 'INTRODUCTION')
 
+	# responses = retrieve_responses_as_df()
+			# for i, row in responses.iterrows():
+			# 	print(row)
 		if row['item_type'] == 'RESPONSE':
 			if row['survey_item_ID'] in d_r_with_unique_values:
 				#The response table has a conjoint PK consisting of responseid and response_item_id
@@ -376,9 +378,7 @@ def filter_by_item_type(file, country_language):
 				response_item_id  = response_combined_id[1]
 				write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id, None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
 			elif row['survey_item_ID'] in d_r_with_multiple_values:
-				response_combined_id = d_r_with_multiple_values[row['survey_item_ID']]
-				responseid = response_combined_id[0]
-				response_item_id  = response_combined_id[1]
+				responseid = d_r_with_multiple_values[row['survey_item_ID']]
 				write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id,None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
 
 
@@ -422,9 +422,7 @@ def main(folder_path):
 			country_language = file.replace('.csv', '')
 			populate_survey_and_module_table(file, country_language)
 			filter_by_item_type(file, country_language)
-			# responses = retrieve_responses_as_df()
-			# for i, row in responses.iterrows():
-			# 	print(row)
+		
 	# 		# populate_survey_item_table(file, country_language)
 
 			
