@@ -85,6 +85,7 @@ def write_response_table(response_id, text, item_value):
 	item = Response(response_id, text, item_value)
 	session.add(item)
 	session.commit()
+	session.close()
 
 
 

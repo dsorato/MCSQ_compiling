@@ -24,13 +24,16 @@ def retrieve_responses_as_df():
 
 def retrieve_response_item_last_record():
 	session = session_factory()
-	response_item_id = 0
-	result = session.execute('SELECT last_value FROM response_item_id_seq;')
-	for i in result:
-		response_item_id = i[0]
+	last_response_item_id = session.query(Response).order_by(Response.response_item_id.desc()).first()
+
+	# response_item_id = 0
+	# result = session.execute('SELECT last_value FROM response_item_id_seq;')
+	# for i in result:
+	# 	response_item_id = i[0]
+	# session.close()
 	session.close()
 
-	return response_item_id
+	return last_response_item_id.response_item_id
 
 def retrieve_survey_last_record():
 	session = session_factory()
@@ -51,7 +54,8 @@ def retrieve_module_table_as_dict():
 	session = session_factory()
 	for m in session.query(Module).all():
 		module_dict[m.module_name] = m.moduleid
-	
+		
+	session.close()
 	return module_dict
 
 def retrieve_survey_item_last_record():

@@ -313,7 +313,6 @@ def get_surveyid_moduleid(survey_item_id, module_name):
 	module_description_dict = get_module_description(study, wave_round)
 	module_description = module_description_dict[module_name]
 	module_id = retrieve_module_id(module_name, module_description)
-	print(module_name,module_description, module_id)
 
 	return survey_id, module_id
 
@@ -381,6 +380,7 @@ def filter_by_item_type(file, country_language):
 				write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id, None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
 			elif row['survey_item_ID'] in d_r_with_multiple_values:
 				response_combined_id = d_r_with_multiple_values[row['survey_item_ID']]
+				print(row['survey_item_ID'], response_combined_id)
 				responseid = response_combined_id[0]
 				response_item_id  = response_combined_id[1]
 				if row['survey_item_ID'] not in response_item_id_dict:
