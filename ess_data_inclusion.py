@@ -417,28 +417,21 @@ def get_directory_list(folder_path):
 
 def main(folder_path):
 	directory_list = get_directory_list(folder_path)
-	# for directory in directory_list:
-	# 	country_language = directory.split('ESS_')[1]
-	# 	files = os.listdir(directory)
-	# 	os.chdir(directory)
-	# 	concatenate_files_from_same_country_language(files, country_language, folder_path)
-	# 	os.chdir(folder_path)
+	for directory in directory_list:
+		country_language = directory.split('ESS_')[1]
+		files = os.listdir(directory)
+		os.chdir(directory)
+		concatenate_files_from_same_country_language(files, country_language, folder_path)
+		os.chdir(folder_path)
 
-	os.chdir(folder_path)
-	files = os.listdir(folder_path)
-	for index, file in enumerate(files):
-		if file.endswith(".csv"):
-			print(file)
-			country_language = file.replace('.csv', '')
-			populate_survey_and_module_table(file, country_language)
-			filter_by_item_type(file, country_language)
-		
-	# 		# populate_survey_item_table(file, country_language)
-
-			
-
-		
-
+	# os.chdir(folder_path)
+	# files = os.listdir(folder_path)
+	# for index, file in enumerate(files):
+	# 	if file.endswith(".csv"):
+	# 		print(file)
+	# 		country_language = file.replace('.csv', '')
+	# 		populate_survey_and_module_table(file, country_language)
+	# 		filter_by_item_type(file, country_language)
 
 
 if __name__ == "__main__":
