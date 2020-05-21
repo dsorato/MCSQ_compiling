@@ -56,7 +56,7 @@ def get_module_description(study, wave_round):
 		'SUPP_A': 'Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'Supplementary questions with module B equivalents (from SQP database) - R01',
 		'SUPP_C': 'Supplementary questions with module C equivalents (from SQP database)', 'SUPP_D': 'Supplementary questions with module D equivalents (from SQP database) - R01',
 		'SUPP_E': 'Supplementary questions with module E equivalents (from SQP database)', 'SUPP_F': 'Supplementary questions with module F equivalents (from SQP database) - R01',
-		'SUPP_HF': 'Human values scale', 'SUPP_IF': 'Test questions', 'K': 'Administration', 'N':'Nationales Modul Deutschland'}
+		'SUPP_HF': 'Human values scale', 'SUPP_HS': 'Human values scale', 'SUPP_IF': 'Test questions', 'K': 'Administration', 'N':'Nationales Modul Deutschland'}
 
 		if wave_round == 'R02':
 			module_description['D'] = 'Health and care seekin health, medicine, and doctor/patient relations'
@@ -415,23 +415,24 @@ def get_directory_list(folder_path):
 
 	return directory_list
 
+#URGENT TODO INCLUSION OF NEW DATA  (NOT IN BATCH)
 def main(folder_path):
 	directory_list = get_directory_list(folder_path)
-	for directory in directory_list:
-		country_language = directory.split('ESS_')[1]
-		files = os.listdir(directory)
-		os.chdir(directory)
-		concatenate_files_from_same_country_language(files, country_language, folder_path)
-		os.chdir(folder_path)
+	# for directory in directory_list:
+	# 	country_language = directory.split('ESS_')[1]
+	# 	files = os.listdir(directory)
+	# 	os.chdir(directory)
+	# 	concatenate_files_from_same_country_language(files, country_language, folder_path)
+	# 	os.chdir(folder_path)
 
-	# os.chdir(folder_path)
-	# files = os.listdir(folder_path)
-	# for index, file in enumerate(files):
-	# 	if file.endswith(".csv"):
-	# 		print(file)
-	# 		country_language = file.replace('.csv', '')
-	# 		populate_survey_and_module_table(file, country_language)
-	# 		filter_by_item_type(file, country_language)
+	os.chdir(folder_path)
+	files = os.listdir(folder_path)
+	for index, file in enumerate(files):
+		if file.endswith(".csv"):
+			print(file)
+			country_language = file.replace('.csv', '')
+			populate_survey_and_module_table(file, country_language)
+			filter_by_item_type(file, country_language)
 
 
 if __name__ == "__main__":
