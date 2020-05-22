@@ -116,13 +116,14 @@ def preparation_to_populate_survey_and_module_table(file, meta_country_language,
 	df = pd.read_csv(file)
 	if is_country_and_language:
 		populate_survey_and_module_table(df, meta_country_language)
+
 	else:
 		unique_country_language = get_country_and_language(df, meta_country_language)
 		for country_language in unique_country_language:
 			filtered_df = df[df['survey_item_ID'].str.contains(country_language)]
 			populate_survey_and_module_table(filtered_df, country_language)
 
-
+	return df
 
 def populate_module_table(study, wave_round, df):
 	modules_dict =  dict()
@@ -342,19 +343,17 @@ def get_surveyid_moduleid(survey_item_id, module_name):
 	return survey_id, module_id
 
 
-def filter_by_item_type(file, country_language):
-	#All data for a Language/country pair
-	data = pd.read_csv(file)
+def filter_by_item_type(df, country_language):
 	#Dataframe filtered by item_type 'REQUEST'
-	requests = data[data.item_type == 'REQUEST']
+	requests = df[df.item_type == 'REQUEST']
 	#Dataframe filtered by item_type 'INSTRUCTION'
-	instructions = data[data.item_type == 'INSTRUCTION']
+	instructions = df[df.item_type == 'INSTRUCTION']
 	#Dataframe filtered by item_type 'RESPONSE'
-	responses = data[data.item_type == 'RESPONSE']
+	responses = df[df.item_type == 'RESPONSE']
 	#Dataframe filtered by item_type 'INTRODUCTION'
 	df_check = ['INTRODUCTION', 'INTRO']
-	intro = data[data.item_type == 'INTRO']
-	introduction = data[data.item_type == 'INTRODUCTION']
+	intro = df[df.item_type == 'INTRO']
+	introduction = df[df.item_type == 'INTRODUCTION']
 	frames = [intro, introduction]
 	introductions = pd.concat(frames)
 
@@ -381,45 +380,45 @@ def filter_by_item_type(file, country_language):
 
 	response_item_id_dict = dict()
 	
-	########## Survey_item table params ##########
-	#survey_itemid, surveyid, moduleid, requestid, responseid, response_item_id, instructionid,introductionid, 
-	#country_language, item_is_source, item_name, item_type
-	##############################################
-	for i, row in data.iterrows():
-		survey_id, module_id = get_surveyid_moduleid(row['survey_item_ID'], row['module'])
-		if row['item_type'] == 'REQUEST':
-			requestid = retrieve_request_id(row[country_language])
-			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, requestid, None, None, None,None, country_language, item_is_source, row['item_name'], 'REQUEST')
+	# ########## Survey_item table params ##########
+	# #survey_itemid, surveyid, moduleid, requestid, responseid, response_item_id, instructionid,introductionid, 
+	# #country_language, item_is_source, item_name, item_type
+	# ##############################################
+	# for i, row in df.iterrows():
+	# 	survey_id, module_id = get_surveyid_moduleid(row['survey_item_ID'], row['module'])
+	# 	if row['item_type'] == 'REQUEST':
+	# 		requestid = retrieve_request_id(row[country_language])
+	# 		write_survey_item_table(row['survey_item_ID'], survey_id, module_id, requestid, None, None, None,None, country_language, item_is_source, row['item_name'], 'REQUEST')
 
-		if row['item_type'] == 'INSTRUCTION':
-			instructiontid = retrieve_instruction_id(row[country_language])
-			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, instructiontid,None, country_language, item_is_source, row['item_name'], 'INSTRUCTION')
+	# 	if row['item_type'] == 'INSTRUCTION':
+	# 		instructiontid = retrieve_instruction_id(row[country_language])
+	# 		write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, instructiontid,None, country_language, item_is_source, row['item_name'], 'INSTRUCTION')
 
 
-		if row['item_type'] == 'INTRODUCTION' or row['item_type'] == 'INTRO':
-			introductionid = retrieve_introduction_id(row[country_language])
-			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, None,introductionid, country_language, item_is_source, row['item_name'], 'INTRODUCTION')
+	# 	if row['item_type'] == 'INTRODUCTION' or row['item_type'] == 'INTRO':
+	# 		introductionid = retrieve_introduction_id(row[country_language])
+	# 		write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, None,introductionid, country_language, item_is_source, row['item_name'], 'INTRODUCTION')
 
-		if row['item_type'] == 'RESPONSE':
-			if row['survey_item_ID'] in d_r_with_unique_values:
-				#The response table has a conjoint PK consisting of responseid and response_item_id
-				#This is necessary because of scale responses.
-				response_combined_id = d_r_with_unique_values[row['survey_item_ID']]
-				responseid = response_combined_id[0]
-				response_item_id  = response_combined_id[1]
-				write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id, None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
-			elif row['survey_item_ID'] in d_r_with_multiple_values:
-				response_combined_id = d_r_with_multiple_values[row['survey_item_ID']]
-				print(row['survey_item_ID'], response_combined_id)
-				responseid = response_combined_id[0]
-				response_item_id  = response_combined_id[1]
-				if row['survey_item_ID'] not in response_item_id_dict:
-					response_item_id_dict[row['survey_item_ID']] = response_item_id
-				else:
-					response_item_id_dict[row['survey_item_ID']] += 1
-					response_item_id = response_item_id_dict[row['survey_item_ID']]
+	# 	if row['item_type'] == 'RESPONSE':
+	# 		if row['survey_item_ID'] in d_r_with_unique_values:
+	# 			#The response table has a conjoint PK consisting of responseid and response_item_id
+	# 			#This is necessary because of scale responses.
+	# 			response_combined_id = d_r_with_unique_values[row['survey_item_ID']]
+	# 			responseid = response_combined_id[0]
+	# 			response_item_id  = response_combined_id[1]
+	# 			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id, None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
+	# 		elif row['survey_item_ID'] in d_r_with_multiple_values:
+	# 			response_combined_id = d_r_with_multiple_values[row['survey_item_ID']]
+	# 			print(row['survey_item_ID'], response_combined_id)
+	# 			responseid = response_combined_id[0]
+	# 			response_item_id  = response_combined_id[1]
+	# 			if row['survey_item_ID'] not in response_item_id_dict:
+	# 				response_item_id_dict[row['survey_item_ID']] = response_item_id
+	# 			else:
+	# 				response_item_id_dict[row['survey_item_ID']] += 1
+	# 				response_item_id = response_item_id_dict[row['survey_item_ID']]
 
-				write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id,None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
+	# 			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id,None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
 
 
 
@@ -470,12 +469,10 @@ def main(folder_path):
 			if len(more_contries_with_same_language) == 2:
 				is_country_and_language = True
 
-			preparation_to_populate_survey_and_module_table(file, meta_about_country_language, is_country_and_language)
+			df = preparation_to_populate_survey_and_module_table(file, meta_about_country_language, is_country_and_language)
+			filter_by_item_type(df, meta_about_country_language)
+
 				
-
-	
-	# 		filter_by_item_type(file, country_language)
-
 
 if __name__ == "__main__":
 	folder_path = str(sys.argv[1])
