@@ -405,16 +405,27 @@ def filter_by_item_type(file, country_language):
 
 	
 
-def concatenate_files_from_same_country_language(files, country_language, folder_path):
+def concatenate_files(files, metainfo, folder_path, more_contries_flag):
 	file_list = list()
+	if more_contries_flag:
+		file_names = []
+	else:
+		file_names = None
+
 	for index, file in enumerate(files):
 		df = pd.read_csv(file)
+		column_names = df.columns
+		text = column_names[-1]
+		df = df.rename(columns={text: metainfo})
 		file_list.append(df)
+		if more_contries_flag:
+			file_names.append(file)
 
 
 	all_files = pd.concat(file_list, axis=0, ignore_index=True)
-	all_files.to_csv(folder_path+'/'+country_language+".csv")
+	all_files.to_csv(folder_path+'/'+metainfo+".csv")
 
+	return file_names
 		
 	
 def get_directory_list(folder_path):
@@ -428,21 +439,35 @@ def get_directory_list(folder_path):
 #URGENT TODO INCLUSION OF NEW DATA  (NOT IN BATCH)
 def main(folder_path):
 	directory_list = get_directory_list(folder_path)
-	# for directory in directory_list:
-	# 	country_language = directory.split('ESS_')[1]
-	# 	files = os.listdir(directory)
-	# 	os.chdir(directory)
-	# 	concatenate_files_from_same_country_language(files, country_language, folder_path)
-	# 	os.chdir(folder_path)
+	
+	all_file_names = []
+	for directory in directory_list:
+		more_contries_flag = False
+		more_contries_with_same_language = directory.split('_')
+		if len(more_contries_with_same_language) == 3:
+			more_contries_flag = True
+		else:
+			country_language = directory.split('ESS_')[1]
 
-	os.chdir(folder_path)
-	files = os.listdir(folder_path)
-	for index, file in enumerate(files):
-		if file.endswith(".csv"):
-			print(file)
-			country_language = file.replace('.csv', '')
-			populate_survey_and_module_table(file, country_language)
-			filter_by_item_type(file, country_language)
+		
+		metainfo = directory.split('ESS_')[1]
+		files = os.listdir(directory)
+		os.chdir(directory)
+		file_names = concatenate_files(files, metainfo, folder_path, more_contries_flag)
+		all_file_names.append(file_names)
+		os.chdir(folder_path)
+		
+		
+
+
+	# os.chdir(folder_path)
+	# files = os.listdir(folder_path)
+	# for index, file in enumerate(files):
+	# 	if file.endswith(".csv"):
+	# 		print(file)
+	# 		country_language = file.replace('.csv', '')
+	# 		populate_survey_and_module_table(file, country_language)
+	# 		filter_by_item_type(file, country_language)
 
 
 if __name__ == "__main__":
