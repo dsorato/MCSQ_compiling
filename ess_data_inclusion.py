@@ -88,11 +88,21 @@ def get_module_description(study, wave_round):
 	
 	return module_description 
 
+def get_country_and_language(df, language):
+	unique_survey_item_ids = df.survey_item_ID.unique()
+	unique_country_language = []
+	for u in unique_survey_item_ids:
+		get_country = u.split(language+'_')[1]
+		country = get_country.split('_')[0]
+		country_language = language+'_'+country
+		if country_language not in unique_country_language:
+			unique_country_language.append(country_language)
 
-def populate_survey_and_module_table(file, country_language):
-	df = pd.read_csv(file)
+	return unique_country_language
+
+
+def populate_survey_and_module_table(df, country_language):
 	unique_studies = df.Study.unique()
-	print(country_language, unique_studies)
 	for study in unique_studies:
 		surveyid = study+'_'+country_language
 		split_surveyid = surveyid.split('_')
@@ -100,19 +110,29 @@ def populate_survey_and_module_table(file, country_language):
 		wave_round = split_surveyid[1]
 		year = split_surveyid[2]
 		write_survey_table(surveyid, study_name, wave_round, year, country_language)
-		populate_module_table(study_name, wave_round, file)
+		populate_module_table(study_name, wave_round, df)
+
+def preparation_to_populate_survey_and_module_table(file, meta_country_language, is_country_and_language):
+	df = pd.read_csv(file)
+	if is_country_and_language:
+		populate_survey_and_module_table(df, meta_country_language)
+	else:
+		unique_country_language = get_country_and_language(df, meta_country_language)
+		for country_language in unique_country_language:
+			filtered_df = df[df['survey_item_ID'].str.contains(country_language)]
+			populate_survey_and_module_table(filtered_df, country_language)
 
 
 
-def populate_module_table(study, wave_round, file):
+def populate_module_table(study, wave_round, df):
 	modules_dict =  dict()
 
 	module_description = get_module_description(study, wave_round)
-	#import data from preprocessed csv into a dataframe
-	data = pd.read_csv(file)
-	module = data['module']
+	# #import data from preprocessed csv into a dataframe
+	# data = pd.read_csv(file)
+	module = df['module']
 	#get only unique values in module column
-	module_unique_names = data.module.unique()
+	module_unique_names = df.module.unique()
 
 	modules_in_questionnaire = dict()
 	for module_name in module_unique_names:
@@ -405,28 +425,18 @@ def filter_by_item_type(file, country_language):
 
 	
 
-def concatenate_files(files, metainfo, folder_path, more_contries_flag):
+def concatenate_files(files, metainfo, folder_path):
 	file_list = list()
-	if more_contries_flag:
-		file_names = []
-	else:
-		file_names = None
-
 	for index, file in enumerate(files):
 		df = pd.read_csv(file)
 		column_names = df.columns
 		text = column_names[-1]
 		df = df.rename(columns={text: metainfo})
 		file_list.append(df)
-		if more_contries_flag:
-			file_names.append(file)
-
 
 	all_files = pd.concat(file_list, axis=0, ignore_index=True)
 	all_files.to_csv(folder_path+'/'+metainfo+".csv")
 
-	return file_names
-		
 	
 def get_directory_list(folder_path):
 	directory_list = list()
@@ -436,37 +446,34 @@ def get_directory_list(folder_path):
 
 	return directory_list
 
-#URGENT TODO INCLUSION OF NEW DATA  (NOT IN BATCH)
-def main(folder_path):
-	directory_list = get_directory_list(folder_path)
-	
-	all_file_names = []
-	for directory in directory_list:
-		more_contries_flag = False
-		more_contries_with_same_language = directory.split('_')
-		if len(more_contries_with_same_language) == 3:
-			more_contries_flag = True
-		else:
-			country_language = directory.split('ESS_')[1]
 
-		
+def preparation_to_include_data(folder_path):
+	directory_list = get_directory_list(folder_path)
+	for directory in directory_list:
 		metainfo = directory.split('ESS_')[1]
 		files = os.listdir(directory)
 		os.chdir(directory)
-		file_names = concatenate_files(files, metainfo, folder_path, more_contries_flag)
-		all_file_names.append(file_names)
+		concatenate_files(files, metainfo, folder_path)
 		os.chdir(folder_path)
-		
-		
 
+def main(folder_path):
+	# preparation_to_include_data(folder_path)
+		
+	os.chdir(folder_path)
+	files = os.listdir(folder_path)
+	for index, file in enumerate(files):
+		if file.endswith(".csv"):
+			print(file)
+			is_country_and_language = False
+			meta_about_country_language = file.replace('.csv', '')
+			more_contries_with_same_language = meta_about_country_language.split('_')
+			if len(more_contries_with_same_language) == 2:
+				is_country_and_language = True
 
-	# os.chdir(folder_path)
-	# files = os.listdir(folder_path)
-	# for index, file in enumerate(files):
-	# 	if file.endswith(".csv"):
-	# 		print(file)
-	# 		country_language = file.replace('.csv', '')
-	# 		populate_survey_and_module_table(file, country_language)
+			preparation_to_populate_survey_and_module_table(file, meta_about_country_language, is_country_and_language)
+				
+
+	
 	# 		filter_by_item_type(file, country_language)
 
 
