@@ -47,6 +47,7 @@ def update_request_id():
 #Function responsible for getting the module description in a given study/round.
 def get_module_description(study, wave_round):
 	if study == 'ESS':
+		#Module descriptions for ESS. Have to check later if everything is correct with the IF/IS/HS modules
 		module_description = {'A': 'Media; social trust', 'B': 'Politics, including: political interest, efficacy, trust, electoral and other forms of participation, party allegiance, socio-political evaluations/orientations, multi-level governance',
 		'C': 'Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity', 'D': 'Immigration and asylum issues, including: attitudes, perceptions, policy preferences and knowledge',
 		'E': 'Citizen involvement: including organisational membership, family and friendship bonds, citizenship values, working environment', 
@@ -240,8 +241,10 @@ def find_unique_responses(responses, country_language):
 	responses_with_multiple_values = []
 
 	#Index dictionary for responses with single values
+	#Dictionary is cleaned every time the language/country pair changes
 	d_r_with_unique_values = dict()
 	#Index dictionary for responses with multiple values
+	#Dictionary is cleaned every time the language/country pair changes
 	d_r_with_multiple_values = dict()
 
 	unique_survey_id_values = responses['survey_item_ID'].unique()
@@ -255,6 +258,7 @@ def find_unique_responses(responses, country_language):
 			if not responses_with_unique_values:
 				d_r_with_unique_values[survey_item_id] = 0
 				responses_with_unique_values.append(response_text.iloc[0][country_language])
+			#Case where the list is not empty
 			else:
 				#If response is not on the list
 				if response_text.iloc[0][country_language] not in responses_with_unique_values:
@@ -267,6 +271,7 @@ def find_unique_responses(responses, country_language):
 			if not responses_with_multiple_values_aux:
 				d_r_with_multiple_values[survey_item_id] = 0
 				responses_with_multiple_values_aux.append(response_text)
+			#Case where the list is not empty
 			else:
 				df_in_list = check_if_df_is_in_list(responses_with_multiple_values_aux, response_text)
 				if df_in_list[0] == False:
@@ -318,12 +323,16 @@ def get_surveyid_moduleid(survey_item_id, module_name):
 
 
 def filter_by_item_type(file, country_language):
+	#All data for a Language/country pair
 	data = pd.read_csv(file)
+	#Dataframe filtered by item_type 'REQUEST'
 	requests = data[data.item_type == 'REQUEST']
+	#Dataframe filtered by item_type 'INSTRUCTION'
 	instructions = data[data.item_type == 'INSTRUCTION']
+	#Dataframe filtered by item_type 'RESPONSE'
 	responses = data[data.item_type == 'RESPONSE']
+	#Dataframe filtered by item_type 'INTRODUCTION'
 	df_check = ['INTRODUCTION', 'INTRO']
-
 	intro = data[data.item_type == 'INTRO']
 	introduction = data[data.item_type == 'INTRODUCTION']
 	frames = [intro, introduction]
@@ -344,6 +353,7 @@ def filter_by_item_type(file, country_language):
 	
 	d_r_with_unique_values, d_r_with_multiple_values = populate_responses_table(responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values, country_language)
 
+	#Both for EVS and ESS, the source questionnaire is in English
 	if 'ENG_SOURCE' in country_language:
 		item_is_source = True
 	else:
