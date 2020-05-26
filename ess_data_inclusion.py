@@ -52,7 +52,7 @@ def get_module_description(study, wave_round):
 		'C': 'Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity', 'D': 'Immigration and asylum issues, including: attitudes, perceptions, policy preferences and knowledge',
 		'E': 'Citizen involvement: including organisational membership, family and friendship bonds, citizenship values, working environment', 
 		'F': 'Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status',
-		'SUPP_G': 'Human values scale', 'SUPP_IS': 'Human values scale', 'SUPP_GF1': 'Human values scale','SUPP_GF2': 'Human values scale', 'SUPP_GF': 'Human values scale', 'SUPP_GS': 'Human values scale', 'SUPP_H': 'Test questions', 'SUPP_I': 'Interviewer questions', 
+		'SUPP_G': 'Human values scale', 'SUPP_IS': 'Human values scale', 'SUPP_G1': 'Human values scale','SUPP_G2': 'Human values scale', 'SUPP_GF1': 'Human values scale','SUPP_GF2': 'Human values scale', 'SUPP_GF': 'Human values scale', 'SUPP_GS': 'Human values scale', 'SUPP_H': 'Test questions', 'SUPP_I': 'Interviewer questions', 
 		'INTRO_MODULE': 'Specific from MCSQ database: text that introduces a given module',
 		'SUPP_A': 'Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'Supplementary questions with module B equivalents (from SQP database) - R01',
 		'SUPP_C': 'Supplementary questions with module C equivalents (from SQP database)', 'SUPP_D': 'Supplementary questions with module D equivalents (from SQP database) - R01',
@@ -143,7 +143,7 @@ def populate_module_table(study, wave_round, df):
 	write_module_table(modules_dict)
 
 
-def populate_survey_item_table(file, country_language):
+def populate_survey_item_table_simple_version(file, country_language):
 	data = pd.read_csv(file)
 	item_is_source = False
 	mod = retrieve_module_table_as_dict()
@@ -397,6 +397,55 @@ def populate_survey_item_table(df,country_language, d_r_with_unique_values, d_r_
 				write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id,None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
 
 
+def populate_survey_item_table_multiple_countries(df,meta_country_language, country_language, d_r_with_unique_values, d_r_with_multiple_values):
+	########## Survey_item table params ##########
+	#survey_itemid, surveyid, moduleid, requestid, responseid, response_item_id, instructionid,introductionid, 
+	#country_language, item_is_source, item_name, item_type
+	##############################################
+	#Both for EVS and ESS, the source questionnaire is in English
+	if 'ENG_SOURCE' in country_language:
+		item_is_source = True
+	else:
+		item_is_source = False
+
+	response_item_id_dict = dict()
+
+	for i, row in df.iterrows():
+		survey_id, module_id = get_surveyid_moduleid(row['survey_item_ID'], row['module'])
+		if row['item_type'] == 'REQUEST':
+			requestid = retrieve_request_id(row[meta_country_language])
+			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, requestid, None, None, None,None, country_language, item_is_source, row['item_name'], 'REQUEST')
+
+		if row['item_type'] == 'INSTRUCTION':
+			instructiontid = retrieve_instruction_id(row[meta_country_language])
+			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, instructiontid,None, country_language, item_is_source, row['item_name'], 'INSTRUCTION')
+
+
+		if row['item_type'] == 'INTRODUCTION' or row['item_type'] == 'INTRO':
+			introductionid = retrieve_introduction_id(row[meta_country_language])
+			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, None,introductionid, country_language, item_is_source, row['item_name'], 'INTRODUCTION')
+
+		if row['item_type'] == 'RESPONSE':
+			if row['survey_item_ID'] in d_r_with_unique_values:
+				#The response table has a conjoint PK consisting of responseid and response_item_id
+				#This is necessary because of scale responses.
+				response_combined_id = d_r_with_unique_values[row['survey_item_ID']]
+				responseid = response_combined_id[0]
+				response_item_id  = response_combined_id[1]
+				write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id, None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
+			elif row['survey_item_ID'] in d_r_with_multiple_values:
+				response_combined_id = d_r_with_multiple_values[row['survey_item_ID']]
+				# print(row['survey_item_ID'], response_combined_id)
+				responseid = response_combined_id[0]
+				response_item_id  = response_combined_id[1]
+				if row['survey_item_ID'] not in response_item_id_dict:
+					response_item_id_dict[row['survey_item_ID']] = response_item_id
+				else:
+					response_item_id_dict[row['survey_item_ID']] += 1
+					response_item_id = response_item_id_dict[row['survey_item_ID']]
+
+				write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id,None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
+
 def filter_by_item_type(df, meta_country_language, is_country_and_language):
 	#Dataframe filtered by item_type 'REQUEST'
 	requests = df[df.item_type == 'REQUEST']
@@ -411,32 +460,29 @@ def filter_by_item_type(df, meta_country_language, is_country_and_language):
 	frames = [intro, introduction]
 	introductions = pd.concat(frames)
 
-	unique_instructions = instructions[meta_country_language].unique()
-	populate_instruction_table(unique_instructions)
-	# reduced_instructions = filter_instructions(instructions, unique_instructions, meta_country_language)
+	# unique_instructions = instructions[meta_country_language].unique()
+	# populate_instruction_table(unique_instructions)
+	# # reduced_instructions = filter_instructions(instructions, unique_instructions, meta_country_language)
 
-	unique_introductions = introductions[meta_country_language].unique()
-	populate_introductions_table(unique_introductions)
+	# unique_introductions = introductions[meta_country_language].unique()
+	# populate_introductions_table(unique_introductions)
 
-	unique_requests = requests[meta_country_language].unique()
-	populate_requests_table(unique_requests)
-	# reduced_requests = filter_requests(requests, unique_requests, meta_country_language)
+	# unique_requests = requests[meta_country_language].unique()
+	# populate_requests_table(unique_requests)
+	# # reduced_requests = filter_requests(requests, unique_requests, meta_country_language)
 
 	responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values = find_unique_responses(responses, meta_country_language)
-	
-
 	d_r_with_unique_values, d_r_with_multiple_values = populate_responses_table(responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values, meta_country_language)
-
-	for k, v in list(d_r_with_multiple_values.items()):
-		print(k,v)
 
 	if is_country_and_language:
 		populate_survey_item_table(df,meta_country_language, d_r_with_unique_values, d_r_with_multiple_values)
 	else:
 		unique_country_language = get_country_and_language(df, meta_country_language)
 		for country_language in unique_country_language:
+			print(country_language)
 			filtered_df = df[df['survey_item_ID'].str.contains(country_language)]
-			populate_survey_item_table(filtered_df,country_language, d_r_with_unique_values, d_r_with_multiple_values)
+			print(filtered_df)
+			populate_survey_item_table_multiple_countries(filtered_df,meta_country_language,country_language, d_r_with_unique_values, d_r_with_multiple_values)
 
 	
 
