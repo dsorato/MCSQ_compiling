@@ -322,9 +322,11 @@ def populate_responses_table(responses_with_unique_values, responses_with_multip
 		
 	for j, df in enumerate(responses_with_multiple_values):
 		response_id = update_response_id()
+		print(df)
 		for i, row in df.iterrows():
 			write_response_table(response_id, row[country_language], row['item_value'])
 			response_item_id = retrieve_response_item_last_record()
+			print(j, [response_id, response_item_id])
 			update_response_dictionary(d_r_with_multiple_values, j, [response_id, response_item_id])
 
 	return d_r_with_unique_values, d_r_with_multiple_values
@@ -421,14 +423,16 @@ def filter_by_item_type(df, meta_country_language, is_country_and_language):
 	
 	d_r_with_unique_values, d_r_with_multiple_values = populate_responses_table(responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values, meta_country_language)
 
+	for k, v in list(d_r_with_multiple_values.items()):
+		print(k,v)
 
-	if is_country_and_language:
-		populate_survey_item_table(df,meta_country_language, d_r_with_unique_values, d_r_with_multiple_values)
-	else:
-		unique_country_language = get_country_and_language(df, meta_country_language)
-		for country_language in unique_country_language:
-			filtered_df = df[df['survey_item_ID'].str.contains(country_language)]
-			populate_survey_item_table(filtered_df,country_language, d_r_with_unique_values, d_r_with_multiple_values)
+	# if is_country_and_language:
+	# 	populate_survey_item_table(df,meta_country_language, d_r_with_unique_values, d_r_with_multiple_values)
+	# else:
+	# 	unique_country_language = get_country_and_language(df, meta_country_language)
+	# 	for country_language in unique_country_language:
+	# 		filtered_df = df[df['survey_item_ID'].str.contains(country_language)]
+	# 		populate_survey_item_table(filtered_df,country_language, d_r_with_unique_values, d_r_with_multiple_values)
 
 	
 
@@ -482,7 +486,7 @@ def main(folder_path):
 				is_country_and_language = True
 
 			df = preparation_to_populate_survey_and_module_table(file, meta_about_country_language, is_country_and_language)
-			filter_by_item_type(df, meta_about_country_language)
+			filter_by_item_type(df, meta_about_country_language, is_country_and_language)
 
 				
 
