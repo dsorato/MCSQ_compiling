@@ -292,6 +292,7 @@ def find_unique_responses(responses, country_language):
 			if not responses_with_multiple_values_aux:
 				d_r_with_multiple_values[survey_item_id] = 0
 				responses_with_multiple_values_aux.append(response_text)
+				responses_with_multiple_values.append(a_response[[country_language, 'item_value']])
 			#Case where the list is not empty
 			else:
 				df_in_list = check_if_df_is_in_list(responses_with_multiple_values_aux, response_text)
@@ -300,8 +301,12 @@ def find_unique_responses(responses, country_language):
 					responses_with_multiple_values.append(a_response[[country_language, 'item_value']])
 					#If the response was appended, the index is the last one
 					d_r_with_multiple_values[survey_item_id] = len(responses_with_multiple_values) -1 
-				elif df_in_list[0]:
+				elif df_in_list[0] == True:
 					d_r_with_multiple_values[survey_item_id] = df_in_list[1]
+
+			# print('***************')
+			# print(responses_with_multiple_values_aux)
+			# print(responses_with_multiple_values)
 
 
 	return responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values
@@ -322,11 +327,9 @@ def populate_responses_table(responses_with_unique_values, responses_with_multip
 		
 	for j, df in enumerate(responses_with_multiple_values):
 		response_id = update_response_id()
-		print(df)
 		for i, row in df.iterrows():
 			write_response_table(response_id, row[country_language], row['item_value'])
 			response_item_id = retrieve_response_item_last_record()
-			print(j, [response_id, response_item_id])
 			update_response_dictionary(d_r_with_multiple_values, j, [response_id, response_item_id])
 
 	return d_r_with_unique_values, d_r_with_multiple_values
@@ -382,7 +385,7 @@ def populate_survey_item_table(df,country_language, d_r_with_unique_values, d_r_
 				write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id, None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
 			elif row['survey_item_ID'] in d_r_with_multiple_values:
 				response_combined_id = d_r_with_multiple_values[row['survey_item_ID']]
-				print(row['survey_item_ID'], response_combined_id)
+				# print(row['survey_item_ID'], response_combined_id)
 				responseid = response_combined_id[0]
 				response_item_id  = response_combined_id[1]
 				if row['survey_item_ID'] not in response_item_id_dict:
@@ -421,18 +424,19 @@ def filter_by_item_type(df, meta_country_language, is_country_and_language):
 
 	responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values = find_unique_responses(responses, meta_country_language)
 	
+
 	d_r_with_unique_values, d_r_with_multiple_values = populate_responses_table(responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values, meta_country_language)
 
 	for k, v in list(d_r_with_multiple_values.items()):
 		print(k,v)
 
-	# if is_country_and_language:
-	# 	populate_survey_item_table(df,meta_country_language, d_r_with_unique_values, d_r_with_multiple_values)
-	# else:
-	# 	unique_country_language = get_country_and_language(df, meta_country_language)
-	# 	for country_language in unique_country_language:
-	# 		filtered_df = df[df['survey_item_ID'].str.contains(country_language)]
-	# 		populate_survey_item_table(filtered_df,country_language, d_r_with_unique_values, d_r_with_multiple_values)
+	if is_country_and_language:
+		populate_survey_item_table(df,meta_country_language, d_r_with_unique_values, d_r_with_multiple_values)
+	else:
+		unique_country_language = get_country_and_language(df, meta_country_language)
+		for country_language in unique_country_language:
+			filtered_df = df[df['survey_item_ID'].str.contains(country_language)]
+			populate_survey_item_table(filtered_df,country_language, d_r_with_unique_values, d_r_with_multiple_values)
 
 	
 
