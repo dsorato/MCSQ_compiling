@@ -342,8 +342,57 @@ def get_surveyid_moduleid(survey_item_id, module_name):
 
 	return survey_id, module_id
 
+def populate_survey_item_table(df,country_language, d_r_with_unique_values, d_r_with_multiple_values):
+	########## Survey_item table params ##########
+	#survey_itemid, surveyid, moduleid, requestid, responseid, response_item_id, instructionid,introductionid, 
+	#country_language, item_is_source, item_name, item_type
+	##############################################
+	#Both for EVS and ESS, the source questionnaire is in English
+	if 'ENG_SOURCE' in country_language:
+		item_is_source = True
+	else:
+		item_is_source = False
 
-def filter_by_item_type(df, country_language):
+	response_item_id_dict = dict()
+
+	for i, row in df.iterrows():
+		survey_id, module_id = get_surveyid_moduleid(row['survey_item_ID'], row['module'])
+		if row['item_type'] == 'REQUEST':
+			requestid = retrieve_request_id(row[country_language])
+			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, requestid, None, None, None,None, country_language, item_is_source, row['item_name'], 'REQUEST')
+
+		if row['item_type'] == 'INSTRUCTION':
+			instructiontid = retrieve_instruction_id(row[country_language])
+			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, instructiontid,None, country_language, item_is_source, row['item_name'], 'INSTRUCTION')
+
+
+		if row['item_type'] == 'INTRODUCTION' or row['item_type'] == 'INTRO':
+			introductionid = retrieve_introduction_id(row[country_language])
+			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, None,introductionid, country_language, item_is_source, row['item_name'], 'INTRODUCTION')
+
+		if row['item_type'] == 'RESPONSE':
+			if row['survey_item_ID'] in d_r_with_unique_values:
+				#The response table has a conjoint PK consisting of responseid and response_item_id
+				#This is necessary because of scale responses.
+				response_combined_id = d_r_with_unique_values[row['survey_item_ID']]
+				responseid = response_combined_id[0]
+				response_item_id  = response_combined_id[1]
+				write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id, None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
+			elif row['survey_item_ID'] in d_r_with_multiple_values:
+				response_combined_id = d_r_with_multiple_values[row['survey_item_ID']]
+				print(row['survey_item_ID'], response_combined_id)
+				responseid = response_combined_id[0]
+				response_item_id  = response_combined_id[1]
+				if row['survey_item_ID'] not in response_item_id_dict:
+					response_item_id_dict[row['survey_item_ID']] = response_item_id
+				else:
+					response_item_id_dict[row['survey_item_ID']] += 1
+					response_item_id = response_item_id_dict[row['survey_item_ID']]
+
+				write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id,None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
+
+
+def filter_by_item_type(df, meta_country_language, is_country_and_language):
 	#Dataframe filtered by item_type 'REQUEST'
 	requests = df[df.item_type == 'REQUEST']
 	#Dataframe filtered by item_type 'INSTRUCTION'
@@ -357,68 +406,31 @@ def filter_by_item_type(df, country_language):
 	frames = [intro, introduction]
 	introductions = pd.concat(frames)
 
-	unique_instructions = instructions[country_language].unique()
+	unique_instructions = instructions[meta_country_language].unique()
 	populate_instruction_table(unique_instructions)
-	# reduced_instructions = filter_instructions(instructions, unique_instructions, country_language)
+	# reduced_instructions = filter_instructions(instructions, unique_instructions, meta_country_language)
 
-	unique_introductions = introductions[country_language].unique()
+	unique_introductions = introductions[meta_country_language].unique()
 	populate_introductions_table(unique_introductions)
 
-	unique_requests = requests[country_language].unique()
+	unique_requests = requests[meta_country_language].unique()
 	populate_requests_table(unique_requests)
-	# reduced_requests = filter_requests(requests, unique_requests, country_language)
+	# reduced_requests = filter_requests(requests, unique_requests, meta_country_language)
 
-	responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values = find_unique_responses(responses, country_language)
+	responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values = find_unique_responses(responses, meta_country_language)
 	
-	d_r_with_unique_values, d_r_with_multiple_values = populate_responses_table(responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values, country_language)
+	d_r_with_unique_values, d_r_with_multiple_values = populate_responses_table(responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values, meta_country_language)
 
-	#Both for EVS and ESS, the source questionnaire is in English
-	if 'ENG_SOURCE' in country_language:
-		item_is_source = True
+
+	if is_country_and_language:
+		populate_survey_item_table(df,meta_country_language, d_r_with_unique_values, d_r_with_multiple_values)
 	else:
-		item_is_source = False
+		unique_country_language = get_country_and_language(df, meta_country_language)
+		for country_language in unique_country_language:
+			filtered_df = df[df['survey_item_ID'].str.contains(country_language)]
+			populate_survey_item_table(filtered_df,country_language, d_r_with_unique_values, d_r_with_multiple_values)
 
-	response_item_id_dict = dict()
 	
-	# ########## Survey_item table params ##########
-	# #survey_itemid, surveyid, moduleid, requestid, responseid, response_item_id, instructionid,introductionid, 
-	# #country_language, item_is_source, item_name, item_type
-	# ##############################################
-	# for i, row in df.iterrows():
-	# 	survey_id, module_id = get_surveyid_moduleid(row['survey_item_ID'], row['module'])
-	# 	if row['item_type'] == 'REQUEST':
-	# 		requestid = retrieve_request_id(row[country_language])
-	# 		write_survey_item_table(row['survey_item_ID'], survey_id, module_id, requestid, None, None, None,None, country_language, item_is_source, row['item_name'], 'REQUEST')
-
-	# 	if row['item_type'] == 'INSTRUCTION':
-	# 		instructiontid = retrieve_instruction_id(row[country_language])
-	# 		write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, instructiontid,None, country_language, item_is_source, row['item_name'], 'INSTRUCTION')
-
-
-	# 	if row['item_type'] == 'INTRODUCTION' or row['item_type'] == 'INTRO':
-	# 		introductionid = retrieve_introduction_id(row[country_language])
-	# 		write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, None, None, None,introductionid, country_language, item_is_source, row['item_name'], 'INTRODUCTION')
-
-	# 	if row['item_type'] == 'RESPONSE':
-	# 		if row['survey_item_ID'] in d_r_with_unique_values:
-	# 			#The response table has a conjoint PK consisting of responseid and response_item_id
-	# 			#This is necessary because of scale responses.
-	# 			response_combined_id = d_r_with_unique_values[row['survey_item_ID']]
-	# 			responseid = response_combined_id[0]
-	# 			response_item_id  = response_combined_id[1]
-	# 			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id, None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
-	# 		elif row['survey_item_ID'] in d_r_with_multiple_values:
-	# 			response_combined_id = d_r_with_multiple_values[row['survey_item_ID']]
-	# 			print(row['survey_item_ID'], response_combined_id)
-	# 			responseid = response_combined_id[0]
-	# 			response_item_id  = response_combined_id[1]
-	# 			if row['survey_item_ID'] not in response_item_id_dict:
-	# 				response_item_id_dict[row['survey_item_ID']] = response_item_id
-	# 			else:
-	# 				response_item_id_dict[row['survey_item_ID']] += 1
-	# 				response_item_id = response_item_id_dict[row['survey_item_ID']]
-
-	# 			write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id,None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
 
 
 
