@@ -446,7 +446,7 @@ def populate_survey_item_table_multiple_countries(df,meta_country_language, coun
 
 				write_survey_item_table(row['survey_item_ID'], survey_id, module_id, None, responseid, response_item_id,None,None, country_language, item_is_source, row['item_name'], 'RESPONSE')
 
-def filter_by_item_type(df, meta_country_language, is_country_and_language):
+def preparation_to_populate_remaining_table(df, meta_country_language, is_country_and_language):
 	#Dataframe filtered by item_type 'REQUEST'
 	requests = df[df.item_type == 'REQUEST']
 	#Dataframe filtered by item_type 'INSTRUCTION'
@@ -460,16 +460,16 @@ def filter_by_item_type(df, meta_country_language, is_country_and_language):
 	frames = [intro, introduction]
 	introductions = pd.concat(frames)
 
-	# unique_instructions = instructions[meta_country_language].unique()
-	# populate_instruction_table(unique_instructions)
-	# # reduced_instructions = filter_instructions(instructions, unique_instructions, meta_country_language)
+	unique_instructions = instructions[meta_country_language].unique()
+	populate_instruction_table(unique_instructions)
+	# reduced_instructions = filter_instructions(instructions, unique_instructions, meta_country_language)
 
-	# unique_introductions = introductions[meta_country_language].unique()
-	# populate_introductions_table(unique_introductions)
+	unique_introductions = introductions[meta_country_language].unique()
+	populate_introductions_table(unique_introductions)
 
-	# unique_requests = requests[meta_country_language].unique()
-	# populate_requests_table(unique_requests)
-	# # reduced_requests = filter_requests(requests, unique_requests, meta_country_language)
+	unique_requests = requests[meta_country_language].unique()
+	populate_requests_table(unique_requests)
+	# reduced_requests = filter_requests(requests, unique_requests, meta_country_language)
 
 	responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values = find_unique_responses(responses, meta_country_language)
 	d_r_with_unique_values, d_r_with_multiple_values = populate_responses_table(responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values, meta_country_language)
@@ -483,8 +483,6 @@ def filter_by_item_type(df, meta_country_language, is_country_and_language):
 			filtered_df = df[df['survey_item_ID'].str.contains(country_language)]
 			print(filtered_df)
 			populate_survey_item_table_multiple_countries(filtered_df,meta_country_language,country_language, d_r_with_unique_values, d_r_with_multiple_values)
-
-	
 
 
 
@@ -536,7 +534,7 @@ def main(folder_path):
 				is_country_and_language = True
 
 			df = preparation_to_populate_survey_and_module_table(file, meta_about_country_language, is_country_and_language)
-			filter_by_item_type(df, meta_about_country_language, is_country_and_language)
+			preparation_to_populate_remaining_table(df, meta_about_country_language, is_country_and_language)
 
 				
 
