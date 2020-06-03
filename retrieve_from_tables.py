@@ -8,7 +8,29 @@ from DB.response import *
 from DB.request import *
 from sqlalchemy import MetaData
 import pandas as pd
+from sqlalchemy.sql import select
 
+def get_response_from_id(responseid):
+	session = session_factory()
+	response = []
+	result = session.execute("select text from response where responseid ="+str(responseid))
+	
+	for i in result:
+		response.append(i[0])
+	session.close()
+
+	return response
+
+
+def retrieve_responseids(language):
+	responseids = []
+	session = session_factory()
+	result = session.execute("select distinct responseid from survey_item where responseid in (select responseid from survey_item where responseid is not null and country_language ilike '%"+language+"%' and surveyid ilike '%R01%' order by survey_item_elementid) order by responseid;")
+	for i in result:
+		responseids.append(i[0])
+	session.close()
+
+	return responseids
 
 def retrieve_responses_as_df():
 	df_requests =  pd.DataFrame(columns=['responseid', 'response_item_id', 'text', 'item_value']) 

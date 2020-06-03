@@ -1,0 +1,165 @@
+-------------- R01 -------------- 
+--ENG_GB
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'ENG_GB' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'ENG_GB' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'ENG_GB' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'ENG_GB' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+--ENG_SOURCE
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'ENG_SOURCE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'ENG_SOURCE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'ENG_SOURCE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'ENG_SOURCE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+--ENG_IE
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'ENG_IE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'ENG_IE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'ENG_IE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'ENG_IE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+
+--RUS_IL
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'RUS_IL' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'RUS_IL' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'RUS_IL' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'RUS_IL' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+--NOR_NO
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'NOR_NO' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'NOR_NO' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'NOR_NO' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'NOR_NO' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+--GER_AT
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'GER_AT' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'GER_AT' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'GER_AT' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'GER_AT' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+--GER_DE
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'GER_DE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'GER_DE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'GER_DE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'GER_DE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+--GER_CH
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'GER_CH' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'GER_CH' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'GER_CH' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'GER_CH' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+--CAT_ES
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'CAT_ES' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'GER_CH' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'CAT_ES' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'CAT_ES' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+--SPA_ES
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'SPA_ES' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'SPA_ES' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'SPA_ES' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'SPA_ES' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+--POR_PT
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'POR_PT' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'POR_PT' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'POR_PT' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'POR_PT' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+--FRE_BE
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'FRE_BE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'FRE_BE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'FRE_BE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'FRE_BE' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+--FRE_CH
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'FRE_CH' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'FRE_CH' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'FRE_CH' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'FRE_CH' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+
+--FRE_FR
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'FRE_FR' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'FRE_FR' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'FRE_FR' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'FRE_FR' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+--FRE_LU
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'FRE_LU' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'FRE_LU' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'FRE_LU' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'FRE_LU' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+--CZE_CZ
+
+select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'CZE_CZ' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'CZE_CZ' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'CZE_CZ' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s inner join instruction i on i.instructionid=s.instructionid where s.country_language ilike 'CZE_CZ' and s.surveyid ilike '%R01%' order by survey_item_elementid
+
+----------------------------------------------------------------------
+
+
