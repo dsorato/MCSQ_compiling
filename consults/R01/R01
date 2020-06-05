@@ -83,7 +83,7 @@ select s.survey_itemid, s.item_name, i.text, i.instructionid from survey_item s 
 
 select s.survey_itemid, s.item_name, r.text, r.requestid from survey_item s inner join request r on s.requestid=r.requestid where s.country_language ilike 'CAT_ES' and s.surveyid ilike '%R01%' order by survey_item_elementid
 
-select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'GER_CH' and s.surveyid ilike '%R01%' order by survey_item_elementid
+select s.survey_itemid, s.item_name, r.text, r.response_item_id, r.responseid from survey_item s inner join response r on s.response_item_id=r.response_item_id where s.country_language ilike 'CAT_ES' and s.surveyid ilike '%R01%' order by survey_item_elementid
 
 select s.survey_itemid, s.item_name, i.text, i.introductionid from survey_item s inner join introduction i on i.introductionid=s.introductionid where s.country_language ilike 'CAT_ES' and s.surveyid ilike '%R01%' order by survey_item_elementid
 
