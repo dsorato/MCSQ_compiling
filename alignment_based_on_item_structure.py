@@ -101,6 +101,8 @@ def main(filename_source, filename_target):
 	filtered_df_source = filter_dataframe_by_round(df_source, 'R01') 
 	filtered_df_target = filter_dataframe_by_round(df_target, 'R01') 
 	filtered_df_eng_source = filter_eng_version(filtered_df_source, 'ENG_SOURCE')
+	if target_language == 'GER':
+		filtered_df_target = filter_eng_version(filtered_df_target, 'GER_CH')
 
 	intersection_modules = set(filtered_df_eng_source.module.unique()).intersection(set(filtered_df_target.module.unique()))
 

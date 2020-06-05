@@ -1,0 +1,2437 @@
+item_name,item_type,source,target,item_value
+B1,REQUEST,How interested would you say you are in politics - are you...,Hvor interessert vil du si at du er i politikk?,
+B1,RESPONSE,very interested,"veldig interessert,",1
+B1,RESPONSE,quite interested,"ganske interessert,",2
+B1,RESPONSE,hardly interested,"litt interessert,",3
+B1,RESPONSE,"or, not at all interested?",eller ikke interessertidet hele tatt?,4
+B1,RESPONSE,(Don't know),(Vet ikke),888
+B2,REQUEST,How often does politics seem so complicated that you can't really understand what is going on?,Hvor ofte virker politikk så komplisert at du egentlig ikke skjønner noe av det?,
+B2,INSTRUCTION,,KORT 6,
+B2,INSTRUCTION,Please use this card.,Bruk dette kortet til å svare.,
+B2,RESPONSE,Never,Aldri,1
+B2,RESPONSE,Seldom,Sjelden,2
+B2,RESPONSE,Occasionally,Av og til,3
+B2,RESPONSE,Regularly,Jevnlig,4
+B2,RESPONSE,Frequently,Ofte,5
+B2,RESPONSE,(Don't know),(Vet ikke),888
+B3,REQUEST,Do you think that you could take an active role in a group involved with political issues?,Hadde du kunnet deltatt aktivt i en gruppe som arbeider med politiske saker?,
+B3,INSTRUCTION,,KORT 7,
+B3,INSTRUCTION,Please use this card.,Bruk kortet.,
+B3,RESPONSE,Definitely not,Slett ikke,1
+B3,RESPONSE,Probably not,Trolig ikke,2
+B3,RESPONSE,Not sure either way,Muligens,3
+B3,RESPONSE,Probably,Trolig,4
+B3,RESPONSE,Definitely,Helt sikkert,5
+B3,RESPONSE,(Don't know),(Vet ikke),888
+B4,REQUEST,How difficult or easy do you find it to make your mind up about political issues?,Hvor vanskelig eller lett synes du det er å bestemme deg for hva du mener om politiske saker?,
+B4,INSTRUCTION,,KORT 8,
+B4,INSTRUCTION,Please use this card.,Bruk kortet til å svare.,
+B4,RESPONSE,Very difficult,Veldig vanskelig,1
+B4,RESPONSE,Difficult,Vanskelig,2
+B4,RESPONSE,Neither difficult nor easy,Verken vanskelig eller lett,3
+B4,RESPONSE,Easy,Lett,4
+B4,RESPONSE,Very easy,Veldig lett,5
+B4,RESPONSE,(Don't know),(Vet ikke),888
+B5,REQUEST,"Using this card, do you think that politicians in general care what people like you think?",Tror du at politikere til vanlig bryr seg om hva folk som deg mener?,
+B5,RESPONSE,Hardly any politicians care what people like me think,Det er knapt noen politikere som bryr seg om hva folk som jeg mener,1
+B5,RESPONSE,Very few care,Veldig få bryr seg,2
+B5,RESPONSE,Some care,Noen bryr seg,3
+B5,RESPONSE,Many care,Mange bryr seg,4
+B5,RESPONSE,Most politicians care what people like me think,De fleste politikere bryr seg om hva folk som jeg mener,5
+B5,RESPONSE,(Don't know),(Vet ikke),888
+B6,REQUEST,Would you say that politicians are just interested in getting people's votes rather than in people's opinions?,Vil du si at politikere bare er interessert i å få stemmene til folk eller er de interessert I hva folk mener?,
+B6,INSTRUCTION,,KORT 10,
+B6,INSTRUCTION,Please use this card.,Velg ett av svaralternativene på dette kortet.,
+B6,RESPONSE,Nearly all politicians are just interested in votes,Nesten alle politikere er bare interessert i stemmene til folk,1
+B6,RESPONSE,Most politicians are just interested in votes,De fleste politikere er bare interessert i stemmene til folk,2
+B6,RESPONSE,"Some politicians are just interested in votes, others aren't","Noen politikere er bare interessert i stemmer, andre ikke",3
+B6,RESPONSE,Most politicians are interested in people's opinions,De fleste politikere er interessert i folks meninger,4
+B6,RESPONSE,Nearly all politicians are interested in people's opinions,Nesten alle politikere er interessert i folks meninger,5
+B6,RESPONSE,(Don't know),(Vet ikke),888
+B7,REQUEST,"Using this card, please tell me on a score of 0-10 how much you personally trust each of the institutions I read out.","Se på dette kortet, og fortell meg på en skala fra 0-10 hvor stor tillit du personlig har til hver av institusjonene jeg leser opp.",
+B7,REQUEST,"0 means you do not trust an institution at all, and 10 means you have complete trust.",Null star for at du ikke har noen tillit til institusjonenidet hele tatt mens ti står for at du har full tillit til institusjonenen.,
+B7,REQUEST,Firstly country's parliament?,Vi begynner med...,
+B7,RESPONSE, No trust At all, Ingen tillit I det hele tatt,0
+B7,RESPONSE,1,1,1
+B7,RESPONSE,2,2,2
+B7,RESPONSE,3,3,3
+B7,RESPONSE,4,4,4
+B7,RESPONSE,5,5,5
+B7,RESPONSE,6,6,6
+B7,RESPONSE,7,7,7
+B7,RESPONSE,8,8,8
+B7,RESPONSE,9,9,9
+B7,RESPONSE, Complete trust, Full tillit,10
+B7,RESPONSE,(Don't know),(Vet ikke),888
+B8,REQUEST,... the legal system?,rettsvesenet?,
+B8,RESPONSE, No trust At all, Ingen tillit I det hele tatt,0
+B8,RESPONSE,1,1,1
+B8,RESPONSE,2,2,2
+B8,RESPONSE,3,3,3
+B8,RESPONSE,4,4,4
+B8,RESPONSE,5,5,5
+B8,RESPONSE,6,6,6
+B8,RESPONSE,7,7,7
+B8,RESPONSE,8,8,8
+B8,RESPONSE,9,9,9
+B8,RESPONSE, Complete trust, Full tillit,10
+B8,RESPONSE,(Don't know),(Vet ikke),888
+B9,REQUEST,... the police?,... politiet?,
+B9,RESPONSE, No trust At all, Ingen tillit I det hele tatt,0
+B9,RESPONSE,1,1,1
+B9,RESPONSE,2,2,2
+B9,RESPONSE,3,3,3
+B9,RESPONSE,4,4,4
+B9,RESPONSE,5,5,5
+B9,RESPONSE,6,6,6
+B9,RESPONSE,7,7,7
+B9,RESPONSE,8,8,8
+B9,RESPONSE,9,9,9
+B9,RESPONSE, Complete trust, Full tillit,10
+B9,RESPONSE,(Don't know),(Vet ikke),888
+B10,REQUEST,... politicians?,... politikere?,
+B10,RESPONSE, No trust At all, Ingen tillit I det hele tatt,0
+B10,RESPONSE,1,1,1
+B10,RESPONSE,2,2,2
+B10,RESPONSE,3,3,3
+B10,RESPONSE,4,4,4
+B10,RESPONSE,5,5,5
+B10,RESPONSE,6,6,6
+B10,RESPONSE,7,7,7
+B10,RESPONSE,8,8,8
+B10,RESPONSE,9,9,9
+B10,RESPONSE, Complete trust, Full tillit,10
+B10,RESPONSE,(Don't know),(Vet ikke),888
+B11,REQUEST,... the European Parliament?,... Europaparla mentet?,
+B11,RESPONSE, No trust At all, Ingen tillit I det hele tatt,0
+B11,RESPONSE,1,1,1
+B11,RESPONSE,2,2,2
+B11,RESPONSE,3,3,3
+B11,RESPONSE,4,4,4
+B11,RESPONSE,5,5,5
+B11,RESPONSE,6,6,6
+B11,RESPONSE,7,7,7
+B11,RESPONSE,8,8,8
+B11,RESPONSE,9,9,9
+B11,RESPONSE, Complete trust, Full tillit,10
+B11,RESPONSE,(Don't know),(Vet ikke),888
+B12,REQUEST,... the United Nations?,... FN?,
+B12,RESPONSE, No trust At all, Ingen tillit I det hele tatt,0
+B12,RESPONSE,1,1,1
+B12,RESPONSE,2,2,2
+B12,RESPONSE,3,3,3
+B12,RESPONSE,4,4,4
+B12,RESPONSE,5,5,5
+B12,RESPONSE,6,6,6
+B12,RESPONSE,7,7,7
+B12,RESPONSE,8,8,8
+B12,RESPONSE,9,9,9
+B12,RESPONSE, Complete trust, Full tillit,10
+B12,RESPONSE,(Don't know),(Vet ikke),888
+B13,REQUEST,Some people don't vote nowadays for one reason or another.,"Noen mennesker stemmer ikke ved valg, av ulike grunner.",
+B13,REQUEST,Did you vote in the last country national election in month/year?,"Stemte du ved siste Stortingsvalg, ifjor høst?",
+B13,RESPONSE,Yes,Ja,1
+B13,RESPONSE,No,Nei,2
+B13,RESPONSE,Not eligible to vote,Har ikke stemmerett,3
+B13,RESPONSE,(Don't know),(Vet ikke),888
+B14,REQUEST,Which party did you vote for in that election?,Hvilket parti stemte du på i det valget?,
+B14,RESPONSE,Conservative,Rød Valgallianse/AKP,1
+B14,RESPONSE,Labour,Sosialistisk Venstreparti,2
+B14,RESPONSE,Liberal Democrat,Det Norske Arbeiderparti,3
+B14,RESPONSE,Scottish National Party,Venstre,4
+B14,RESPONSE,Plaid Cymru,Kristelig Folkeparti,5
+B14,RESPONSE,Green Party,Senterpartiet,6
+B14,RESPONSE,Other,Høyre,7
+B14,RESPONSE,(Refused),Fremskrittspartiet,8
+B14,RESPONSE,(Don't know),(Vet ikke),888
+B15,REQUEST,There are different ways of trying to improve things in country or help prevent things from going wrong.,Det finnes flere måter å gå frem på for å prøve å forbedre ulike forhold i Norge eller for å forhindre at ting går galt.,
+B15,REQUEST,"During the last 12 months, have you done any of the following?",Har du i løpet av de siste 12 månedene gjort noe av følgende?,
+B15,REQUEST,Firstly...,Har du...,
+B15,REQUEST,"Contacted a politician, government or local government official","Kontaktet en politiker eller en statlig, kommunal eller fylkeskommunal tjenestemann?",
+B15,RESPONSE,Yes,Ja,1
+B15,RESPONSE,No,Nei,2
+B15,RESPONSE,(Don't know),(Vet ikke),888
+B16,REQUEST,Worked in a political party or action group,Arbeidet i et politisk parti eller en aksjonsgruppe?,
+B16,RESPONSE,Yes,Ja,1
+B16,RESPONSE,No,Nei,2
+B16,RESPONSE,(Don't know),(Vet ikke),888
+B17,REQUEST,Worked in another organisation or association,Arbeidet i annen organisasjon eller forening?,
+B17,RESPONSE,Yes,Ja,1
+B17,RESPONSE,No,Nei,2
+B17,RESPONSE,(Don't know),(Vet ikke),888
+B18,REQUEST,Worn or displayed a campaign badge/sticker,Gått med eller vist fram et merke til støtte for en sak?,
+B18,RESPONSE,Yes,Ja,1
+B18,RESPONSE,No,Nei,2
+B18,RESPONSE,(Don't know),(Vet ikke),888
+B19,REQUEST,Signed a petition,Skrevet under på en underskriftskampanje?,
+B19,RESPONSE,Yes,Ja,1
+B19,RESPONSE,No,Nei,2
+B19,RESPONSE,(Don't know),(Vet ikke),888
+B20,REQUEST,Taken part in a lawful public demonstration,Deltatt i en lovlig offentlig demonstrasjon?,
+B20,RESPONSE,Yes,Ja,1
+B20,RESPONSE,No,Nei,2
+B20,RESPONSE,(Don't know),(Vet ikke),888
+B21,REQUEST,Boycotted certain products,Boikottet spesielle produkter?,
+B21,RESPONSE,Yes,Ja,1
+B21,RESPONSE,No,Nei,2
+B21,RESPONSE,(Don't know),(Vet ikke),888
+B22,REQUEST,"Deliberately bought certain products for political, ethical or environmental reasons","Bevisst kjøpt spesielle produkter av politiske, etiske eller miljømessige grunner?",
+B22,RESPONSE,Yes,Ja,1
+B22,RESPONSE,No,Nei,2
+B22,RESPONSE,(Don't know),(Vet ikke),888
+B23,REQUEST,Donated money to a political organisation or group,Gitt penger til en politisk organisasjon eller gruppe?,
+B23,RESPONSE,Yes,Ja,1
+B23,RESPONSE,No,Nei,2
+B23,RESPONSE,(Don't know),(Vet ikke),888
+B24,REQUEST,Participated in illegal protest activities,Deltatt i ulovlige protester eller aksjoner?,
+B24,RESPONSE,Yes,Ja,1
+B24,RESPONSE,No,Nei,2
+B24,RESPONSE,(Don't know),(Vet ikke),888
+B25a,REQUEST,Is there a particular political party you feel closer to than all the other parties?,Er det et spesielt politisk parti du føler deg nærmere knyttet til enn de andre partiene?,
+B25a,RESPONSE,Yes,Ja,1
+B25a,RESPONSE,No,Nei,2
+B25a,RESPONSE,(Don't know),(Vet ikke),888
+B25b,REQUEST,Which one?,Hvilket parti er det?,
+B25b,RESPONSE,Conservative,Rød Valgallianse,1
+B25b,RESPONSE,Labour,Sosialistisk Venstreparti,2
+B25b,RESPONSE,Liberal Democrat,Arbeiderpartiet,3
+B25b,RESPONSE,Scottish National Party,Venstre,4
+B25b,RESPONSE,Plaid Cymru,Kristelig Folkeparti,5
+B25b,RESPONSE,Green Party,Senterpartiet,6
+B25b,RESPONSE,Other,Høyre,7
+B25b,RESPONSE,(Refused),Fremskrittspartiet,8
+B25b,RESPONSE,(Don't know),(Vet ikke),888
+B25c,REQUEST,How close do you feel to this party?,Hvor nært føler du deg knyttet til dette partiet?,
+B25c,REQUEST,Do you feel that you are ...,Er du...,
+B25c,RESPONSE,very close,svært nær,1
+B25c,RESPONSE,quite close,ganske nær,2
+B25c,RESPONSE,not close,ikke nær,3
+B25c,RESPONSE,"or, not at all close?",absolutt ikke nær?,4
+B25c,RESPONSE,(Don't know),(Vet ikke),888
+B26,REQUEST,Are you a member of any political party?,Er du medlem av et politisk parti?,
+B26,RESPONSE,Yes,Ja,1
+B26,RESPONSE,No,Nei,2
+B26,RESPONSE,(Don't know),(Vet ikke),888
+B27,REQUEST,Which one?,Hvilket parti er det?,
+B27,RESPONSE,Conservative,Rød Valgallianse,1
+B27,RESPONSE,Labour,Sosialistisk Venstreparti,2
+B27,RESPONSE,Liberal Democrat,Arbeiderpartiet,3
+B27,RESPONSE,Scottish National Party,Venstre,4
+B27,RESPONSE,Plaid Cymru,Kristelig Folkeparti,5
+B27,RESPONSE,Green Party,Senterpartiet,6
+B27,RESPONSE,Other,Høyre,7
+B27,RESPONSE,(Refused),Fremskrittpartiet,8
+B27,RESPONSE,(Don't know),(Vet ikke),888
+B28,REQUEST,"In politics people sometimes talk of ""left"" and ""right"".",I politikken snakker en ofte om venstre og høyre.,
+B28,REQUEST,"Using this card, where would you place yourself on this scale, where 0 means the left and 10 means the right?","Se på dette kortet, og plasser deg selv på en skala der 0 står for venstre og 10 står for høyre.",
+B28,RESPONSE, Left, Venstre,0
+B28,RESPONSE,1,1,1
+B28,RESPONSE,2,2,2
+B28,RESPONSE,3,3,3
+B28,RESPONSE,4,4,4
+B28,RESPONSE,5,5,5
+B28,RESPONSE,6,6,6
+B28,RESPONSE,7,7,7
+B28,RESPONSE,8,8,8
+B28,RESPONSE,9,9,9
+B28,RESPONSE, Right, Høyre,10
+B28,RESPONSE,(Don't know),(Vet ikke),888
+B29,REQUEST,"All things considered, how satisfied are you with your life as a whole nowadays?","Alt i alt, hvor tilfreds er du med livet nå om dagen?",
+B29,REQUEST,"Please answer using this card, where 0 means extremely dissatisfied and 10 means extremely satisfied.","Svar ved å bruke tallene på dette kortet, hvor 0 betyr ekstremt missfornøyd og 10 betyr ekstremt fornøyd.",
+B29,RESPONSE, Extremely dissatisfied, Ekstremt misfornøyd,0
+B29,RESPONSE,1,1,1
+B29,RESPONSE,2,2,2
+B29,RESPONSE,3,3,3
+B29,RESPONSE,4,4,4
+B29,RESPONSE,5,5,5
+B29,RESPONSE,6,6,6
+B29,RESPONSE,7,7,7
+B29,RESPONSE,8,8,8
+B29,RESPONSE,9,9,9
+B29,RESPONSE, Extremely satisfied, Ekstremt fornøyd,10
+B29,RESPONSE,(Don't know),(Vet ikke),888
+B30,REQUEST,On the whole how satisfied are you with the present state of the economy in country?,Hvor fornøyd er du i det store og hele med den nåværende økonomiske situasjonen i Norge?,
+B30,INSTRUCTION,,KORT 13,
+B30,INSTRUCTION,Still use this card.,Bruk fortsatt kortet til å svare.,
+B30,RESPONSE, Extremely dissatisfied, Ekstremt misfornøyd,0
+B30,RESPONSE,1,1,1
+B30,RESPONSE,2,2,2
+B30,RESPONSE,3,3,3
+B30,RESPONSE,4,4,4
+B30,RESPONSE,5,5,5
+B30,RESPONSE,6,6,6
+B30,RESPONSE,7,7,7
+B30,RESPONSE,8,8,8
+B30,RESPONSE,9,9,9
+B30,RESPONSE, Extremely satisfied, Ekstremt fornøyd,10
+B30,RESPONSE,(Don't know),(Vet ikke),888
+B31,REQUEST,"Now thinking about the country government, how satisfied are you with the way it is doing its job?",Tenk nå på regjeringen i Norge.,
+B31,INSTRUCTION,,FORTSATT KORT 13,
+B31,INSTRUCTION,Still use this card.,Bruk fortsatt kortet til å svare.,
+B31,RESPONSE, Extremely dissatisfied, Ekstremt misfornøyd,0
+B31,RESPONSE,1,1,1
+B31,RESPONSE,2,2,2
+B31,RESPONSE,3,3,3
+B31,RESPONSE,4,4,4
+B31,RESPONSE,5,5,5
+B31,RESPONSE,6,6,6
+B31,RESPONSE,7,7,7
+B31,RESPONSE,8,8,8
+B31,RESPONSE,9,9,9
+B31,RESPONSE, Extremely satisfied, Ekstremt fornøyd,10
+B31,RESPONSE,(Don't know),(Vet ikke),888
+B32,REQUEST,"And on the whole, how satisfied are you with the way democracy works in country?","Og sett under ett, hvor fornøyd er du med måten demokratiet fungerer på I Norge?",
+B32,INSTRUCTION,,FORTSATT KORT 13,
+B32,INSTRUCTION,Still use this card.,Velg et tall fra kortet.,
+B32,RESPONSE, Extremely dissatisfied, Ekstremt misfornøyd,0
+B32,RESPONSE,1,1,1
+B32,RESPONSE,2,2,2
+B32,RESPONSE,3,3,3
+B32,RESPONSE,4,4,4
+B32,RESPONSE,5,5,5
+B32,RESPONSE,6,6,6
+B32,RESPONSE,7,7,7
+B32,RESPONSE,8,8,8
+B32,RESPONSE,9,9,9
+B32,RESPONSE, Extremely satisfied, Ekstremt fornøyd,10
+B32,RESPONSE,(Don't know),(Vet ikke),888
+B33,REQUEST,"Now, using this card, please say what you think overall about the state of education in country nowadays?",Nå vil jeg gjerne at du forteller meg hva du synes om utdanningssystemet I Norge?,
+B33,RESPONSE, Extremely bad, Ekstremt dårlig,0
+B33,RESPONSE,1,1,1
+B33,RESPONSE,2,2,2
+B33,RESPONSE,3,3,3
+B33,RESPONSE,4,4,4
+B33,RESPONSE,5,5,5
+B33,RESPONSE,6,6,6
+B33,RESPONSE,7,7,7
+B33,RESPONSE,8,8,8
+B33,RESPONSE,9,9,9
+B33,RESPONSE, Extremely good, Ekstremt godt,10
+B33,RESPONSE,(Don't know),(Vet ikke),888
+B34,REQUEST,"Still using this card, please say what you think overall about the state of health services in country nowadays?",Bruk det samme kortet til å fortelle hva du mener om helsetjenestene i Norge nå om dagen?,
+B34,RESPONSE, Extremely bad, Ekstremt dårlig,0
+B34,RESPONSE,1,1,1
+B34,RESPONSE,2,2,2
+B34,RESPONSE,3,3,3
+B34,RESPONSE,4,4,4
+B34,RESPONSE,5,5,5
+B34,RESPONSE,6,6,6
+B34,RESPONSE,7,7,7
+B34,RESPONSE,8,8,8
+B34,RESPONSE,9,9,9
+B34,RESPONSE, Extremely good, Ekstremt godt,10
+B34,RESPONSE,(Don't know),(Vet ikke),888
+B35,REQUEST,Policies can be decided at different levels.,Politiske saker kan avgjøres på ulike nivåer.,
+B35,REQUEST,"Using this card, at which level do you think the following policies should mainly be decided?",Bruk dette kortet til å fortelle på hvilket nivå du først og fremst synes disse sakene bør avgjøres:,
+B35,REQUEST,Protecting the environment,... å beskytte miljøet,
+B35,RESPONSE,International level,Internasjonalt nivå,1
+B35,RESPONSE,European level,Europeisk nivå,2
+B35,RESPONSE,National level,Nasjonalt nivå,3
+B35,RESPONSE,Regional or local level,Regionalt eller lokalt nivå,4
+B35,RESPONSE,(Don't know),(Vet ikke),888
+B36,REQUEST,fighting against organised crime,... å bekjempe organisert kriminalitet,
+B36,RESPONSE,International level,Internasjonalt nivå,1
+B36,RESPONSE,European level,Europeisk nivå,2
+B36,RESPONSE,National level,Nasjonalt nivå,3
+B36,RESPONSE,Regional or local level,Regionalt eller lokalt nivå,4
+B36,RESPONSE,(Don't know),(Vet ikke),888
+B37,REQUEST,agriculture,... jordbruk,
+B37,RESPONSE,International level,Internasjonalt nivå,1
+B37,RESPONSE,European level,Europeisk nivå,2
+B37,RESPONSE,National level,Nasjonalt nivå,3
+B37,RESPONSE,Regional or local level,Regionalt eller lokalt nivå,4
+B37,RESPONSE,(Don't know),(Vet ikke),888
+B38,REQUEST,defence,... forsvar,
+B38,RESPONSE,International level,Internasjonalt nivå,1
+B38,RESPONSE,European level,Europeisk nivå,2
+B38,RESPONSE,National level,Nasjonalt nivå,3
+B38,RESPONSE,Regional or local level,Regionalt eller lokalt nivå,4
+B38,RESPONSE,(Don't know),(Vet ikke),888
+B39,REQUEST,social welfare,... sosiale velferdsordninger,
+B39,RESPONSE,International level,Internasjonalt nivå,1
+B39,RESPONSE,European level,Europeisk nivå,2
+B39,RESPONSE,National level,Nasjonalt nivå,3
+B39,RESPONSE,Regional or local level,Regionalt eller lokalt nivå,4
+B39,RESPONSE,(Don't know),(Vet ikke),888
+B40,REQUEST,aid to developing countries,... hjelp til utviklingsland,
+B40,RESPONSE,International level,Internasjonalt nivå,1
+B40,RESPONSE,European level,Europeisk nivå,2
+B40,RESPONSE,National level,Nasjonalt nivå,3
+B40,RESPONSE,Regional or local level,Regionalt eller lokalt nivå,4
+B40,RESPONSE,(Don't know),(Vet ikke),888
+B41,REQUEST,immigration and refugees,... innvandring og flyktninger,
+B41,RESPONSE,International level,Internasjonalt nivå,1
+B41,RESPONSE,European level,Europeisk nivå,2
+B41,RESPONSE,National level,Nasjonalt nivå,3
+B41,RESPONSE,Regional or local level,Regionalt eller lokalt nivå,4
+B41,RESPONSE,(Don't know),(Vet ikke),888
+B42,REQUEST,interest rates,... rentenivå,
+B42,RESPONSE,International level,Internasjonalt nivå,1
+B42,RESPONSE,European level,Europeisk nivå,2
+B42,RESPONSE,National level,Nasjonalt nivå,3
+B42,RESPONSE,Regional or local level,Regionalt eller lokalt nivå,4
+B42,RESPONSE,(Don't know),(Vet ikke),888
+B43,REQUEST,"Using this card, please say to what extent you agree or disagree with each of the following statements.",Bruk dette kortet til å viseihvilken grad du er enig eller uenig i følgende påstand.,
+B43,REQUEST,"The less that government intervenes in the economy, the better it is for country","Desto mindre regjeringen forsøker å styre økonomien, desto bedre er det for Norge.",
+B43,RESPONSE,Agree strongly,Svært enig,1
+B43,RESPONSE,Agree,Enig,2
+B43,RESPONSE,Neither Agree nor disagree,Verken enig eller uenig,3
+B43,RESPONSE,Disagree,Uenig,4
+B43,RESPONSE,Disagree strongly,Svært uenig,5
+B43,RESPONSE,(Don't know),(Vet ikke),888
+B44,REQUEST,The government should take measures to reduce differences in income levels,Regjeringen bør gjennomføre tiltak for å redusere inntektsforskjellene,
+B44,RESPONSE,Agree strongly,Svært enig,1
+B44,RESPONSE,Agree,Enig,2
+B44,RESPONSE,Neither Agree nor disagree,Verken enig eller uenig,3
+B44,RESPONSE,Disagree,Uenig,4
+B44,RESPONSE,Disagree strongly,Svært uenig,5
+B44,RESPONSE,(Don't know),(Vet ikke),888
+B45,REQUEST,Employees need strong trade unions to protect their working conditions and wages,Arbeidstakere trenger sterke fagforeninger til å beskytte lønns- og arbeidsvillkår.,
+B45,RESPONSE,Agree strongly,Svært enig,1
+B45,RESPONSE,Agree,Enig,2
+B45,RESPONSE,Neither Agree nor disagree,Verken enig eller uenig,3
+B45,RESPONSE,Disagree,Uenig,4
+B45,RESPONSE,Disagree strongly,Svært uenig,5
+B45,RESPONSE,(Don't know),(Vet ikke),888
+B46,REQUEST,Gay men and lesbians should be free to live their own life as they wish,Homofile og lesbiske bør ha frihet til å kunne velge å leve som de selv ønsker,
+B46,RESPONSE,Agree strongly,Svært enig,1
+B46,RESPONSE,Agree,Enig,2
+B46,RESPONSE,Neither Agree nor disagree,Verken enig eller uenig,3
+B46,RESPONSE,Disagree,Uenig,4
+B46,RESPONSE,Disagree strongly,Svært uenig,5
+B46,RESPONSE,(Don't know),(Vet ikke),888
+B47,REQUEST,"Whatever the circumstances, the law should always be obeyed","Loven bør følges under enhver omstendighet, må alltid adlydes",
+B47,RESPONSE,Agree strongly,Svært enig,1
+B47,RESPONSE,Agree,Enig,2
+B47,RESPONSE,Neither Agree nor disagree,Verken enig eller uenig,3
+B47,RESPONSE,Disagree,Uenig,4
+B47,RESPONSE,Disagree strongly,Svært uenig,5
+B47,RESPONSE,(Don't know),(Vet ikke),888
+B48,REQUEST,Political parties that wish to overthrow democracy should be banned,Politiske partier som ønsker å avskaffe demokratiet bør forbys,
+B48,RESPONSE,Agree strongly,Svært enig,1
+B48,RESPONSE,Agree,Enig,2
+B48,RESPONSE,Neither Agree nor disagree,Verken enig eller uenig,3
+B48,RESPONSE,Disagree,Uenig,4
+B48,RESPONSE,Disagree strongly,Svært uenig,5
+B48,RESPONSE,(Don't know),(Vet ikke),888
+B49,REQUEST,Economic growth always endsup harming the environment,Økonomisk vekst fører alltid til skade på miljøet,
+B49,RESPONSE,Agree strongly,Svært enig,1
+B49,RESPONSE,Agree,Enig,2
+B49,RESPONSE,Neither Agree nor disagree,Verken enig eller uenig,3
+B49,RESPONSE,Disagree,Uenig,4
+B49,RESPONSE,Disagree strongly,Svært uenig,5
+B49,RESPONSE,(Don't know),(Vet ikke),888
+B50,REQUEST,Modern science can be relied on to solve our environmental problems,Vi kan stole på at moderne vitenskap kan løse miljøproblemene våre.,
+B50,RESPONSE,Agree strongly,Svært enig,1
+B50,RESPONSE,Agree,Enig,2
+B50,RESPONSE,Neither Agree nor disagree,Verken enig eller uenig,3
+B50,RESPONSE,Disagree,Uenig,4
+B50,RESPONSE,Disagree strongly,Svært uenig,5
+B50,RESPONSE,(Don't know),(Vet ikke),888
+A1,INSTRUCTION,CARD 1,KORT 1,
+A1,INSTRUCTION,,Velg et svaralternativ fra dette kortet.,
+A1,REQUEST,"On an average weekday, how much time, in total, do you spend watching television?","Hvor mye tid bruker du, alt i alt, til å se på TV en vanlig ukedag?",
+A1,INSTRUCTION,Please use this card to answer.,KORT 1,
+A1,RESPONSE,No time at all,Ikke noe tid,1
+A1,RESPONSE,Less than 0.5 hour,Mindre enn en 0.5 time,2
+A1,RESPONSE,0.5 hour to 1 hour,Fra 0.5 til 1 time,3
+A1,RESPONSE,"More than 1 hour, up to 1.5 hours","Mer enn 1 time, opptil 1.5 time",4
+A1,RESPONSE,"More than 1.5 hours, up to 2 hours","Mer enn 1.5, opptil 2 timer",5
+A1,RESPONSE,"More than 2 hours, up to 2.5 hours","Mer enn 2 timer, opptil 2.5 timer",6
+A1,RESPONSE,"More than 2.5 hours, up to 3 hours","Mer enn 2.5 timer, opptil 3 timer",7
+A1,RESPONSE,More than 3 hours,Mer enn 3 timer,8
+A1,RESPONSE,(Don't know),(Vet ikke),888
+A2,INSTRUCTION,STILL CARD 1,KORT 1,
+A2,INSTRUCTION,,Bruk fortsatt kortet til å svare.,
+A2,REQUEST,"And again on an average weekday, how much of your time watching television is spent watching news or programmes about politics and current affairs?","Hvor mye av tv-tiden bruker du til å se nyheter og programmer om politikk og aktuelle saker, på en vanlig ukedag?",
+A2,INSTRUCTION,Still use this card.,KORT 1,
+A2,RESPONSE,No time at all,Ikke noe tid,1
+A2,RESPONSE,Less than 0.5 hour,Mindre enn en 0.5 time,2
+A2,RESPONSE,0.5 hour to 1 hour,Fra 0.5 til 1 time,3
+A2,RESPONSE,"More than 1 hour, up to 1.5 hours","Mer enn 1 time, opptil 1.5 time",4
+A2,RESPONSE,"More than 1.5 hours, up to 2 hours","Mer enn 1.5, opptil 2 timer",5
+A2,RESPONSE,"More than 2 hours, up to 2.5 hours","Mer enn 2 timer, opptil 2.5 timer",6
+A2,RESPONSE,"More than 2.5 hours, up to 3 hours","Mer enn 2.5 timer, opptil 3 timer",7
+A2,RESPONSE,More than 3 hours,Mer enn 3 timer,8
+A2,RESPONSE,(Don't know),(Vet ikke),888
+A3,INSTRUCTION,ASK ALL,STILLES TIL ALLE,
+A3,INSTRUCTION,,KORT 1,
+A3,INSTRUCTION,,Bruk fortsatt kortet.,
+A3,INSTRUCTION,STILL CARD 1,STILLES TIL ALLE,
+A3,REQUEST,"On an average weekday, how much time, in total, do you spend listening to the radio?","Hvor mye tid, alt i alt, bruker du til å høre på radio, på en vanlig ukedag?",
+A3,INSTRUCTION,Use the same card.,STILLES TIL ALLE,
+A3,RESPONSE,No time at all,Ikke noe tid,1
+A3,RESPONSE,Less than 0.5 hour,Mindre enn en 0.5 time,2
+A3,RESPONSE,0.5 hour to 1 hour,Fra 0.5 til 1 time,3
+A3,RESPONSE,"More than 1 hour, up to 1.5 hours","Mer enn 1 time, opptil 1.5 time",4
+A3,RESPONSE,"More than 1.5 hours, up to 2 hours","Mer enn 1.5, opptil 2 timer",5
+A3,RESPONSE,"More than 2 hours, up to 2.5 hours","Mer enn 2 timer, opptil 2.5 timer",6
+A3,RESPONSE,"More than 2.5 hours, up to 3 hours","Mer enn 2.5 timer, opptil 3 timer",7
+A3,RESPONSE,More than 3 hours,Mer enn 3 timer,8
+A3,RESPONSE,(Don't know),(Vet ikke),888
+A4,INSTRUCTION,STILL CARD 1,KORT 1,
+A4,INSTRUCTION,,Bruk kortet til å svare.,
+A4,REQUEST,"And again on an average weekday, how much of your time listening to the radio is spent listening to news or programmes about politics and current affairs?","Hvor mye av tiden, alt i alt, bruker du til å høre nyheter og radioprogrammer om politikk og aktuelle samfunnspørsmål, på en vanlig ukedag?",
+A4,INSTRUCTION,Still use this card.,KORT 1,
+A4,RESPONSE,No time at all,Ikke noe tid,1
+A4,RESPONSE,Less than 0.5 hour,Mindre enn en 0.5 time,2
+A4,RESPONSE,0.5 hour to 1 hour,Fra 0.5 til 1 time,3
+A4,RESPONSE,"More than 1 hour, up to 1.5 hours","Mer enn 1 time, opptil 1.5 time",4
+A4,RESPONSE,"More than 1.5 hours, up to 2 hours","Mer enn 1.5, opptil 2 timer",5
+A4,RESPONSE,"More than 2 hours, up to 2.5 hours","Mer enn 2 timer, opptil 2.5 timer",6
+A4,RESPONSE,"More than 2.5 hours, up to 3 hours","Mer enn 2.5 timer, opptil 3 timer",7
+A4,RESPONSE,More than 3 hours,Mer enn 3 timer,8
+A4,RESPONSE,(Don't know),(Vet ikke),888
+A5,REQUEST,"On an average weekday, how much time, in total, do you spend reading the newspapers?","Hvor mye tid, alt i alt, bruker du til å lese aviser, på en vanlig ukedag?",
+A5,INSTRUCTION,Use this card again,STILLES TIL ALLE,
+A5,INSTRUCTION,,KORT 1,
+A5,INSTRUCTION,,Velg et svaralternativ fra kortet.,
+A5,RESPONSE,No time at all,Ikke noe tid,1
+A5,RESPONSE,Less than 0.5 hour,Mindre enn en 0.5 time,2
+A5,RESPONSE,0.5 hour to 1 hour,Fra 0.5 til 1 time,3
+A5,RESPONSE,"More than 1 hour, up to 1.5 hours","Mer enn 1 time, opptil 1.5 time",4
+A5,RESPONSE,"More than 1.5 hours, up to 2 hours","Mer enn 1.5, opptil 2 timer",5
+A5,RESPONSE,"More than 2 hours, up to 2.5 hours","Mer enn 2 timer, opptil 2.5 timer",6
+A5,RESPONSE,"More than 2.5 hours, up to 3 hours","Mer enn 2.5 timer, opptil 3 timer",7
+A5,RESPONSE,More than 3 hours,Mer enn 3 timer,8
+A5,RESPONSE,(Don't know),(Vet ikke),888
+A6,REQUEST,And how much of this time is spent reading about politics and current affairs?,Hvor mye av denne tiden bruker du til å lese om politikk og aktuelle samfunnsspørsmål?,
+A6,INSTRUCTION,Still use this card.,KORT 1,
+A6,INSTRUCTION,,Bruk kortet,
+A6,RESPONSE,No time at all,Ikke noe tid,1
+A6,RESPONSE,Less than 0.5 hour,Mindre enn en 0.5 time,2
+A6,RESPONSE,0.5 hour to 1 hour,Fra 0.5 til 1 time,3
+A6,RESPONSE,"More than 1 hour, up to 1.5 hours","Mer enn 1 time, opptil 1.5 time",4
+A6,RESPONSE,"More than 1.5 hours, up to 2 hours","Mer enn 1.5, opptil 2 timer",5
+A6,RESPONSE,"More than 2 hours, up to 2.5 hours","Mer enn 2 timer, opptil 2.5 timer",6
+A6,RESPONSE,"More than 2.5 hours, up to 3 hours","Mer enn 2.5 timer, opptil 3 timer",7
+A6,RESPONSE,More than 3 hours,Mer enn 3 timer,8
+A6,RESPONSE,(Don't know),(Vet ikke),888
+A7,REQUEST,"Now, using this card, how often do you use the internet, the World Wide Web or e-mail – whether at home or at work – for your personal use?","Bruk dette kortet, og vis hvor ofte du bruker internett, World Wide Web eller e-post til privat bruk, enten hjemme eller på jobben?",
+A7,RESPONSE,No access at home or work,"Har ikke nettilgang, verken hjemme eller på jobben",1
+A7,RESPONSE,Never use,Bruker aldri,2
+A7,RESPONSE,Less than once a month,Mindre enn en gangimåneden,3
+A7,RESPONSE,Once a month,En gang i måneden,4
+A7,RESPONSE,Several times a month,Flere ganger i måneden,5
+A7,RESPONSE,Once a week,En gang i uken,6
+A7,RESPONSE,Several times a week,Flere ganger i uken,7
+A7,RESPONSE,Every day,Hver dag,8
+A7,RESPONSE,(Don't know),(Vet ikke),888
+A8,REQUEST,"Using this card, generally speaking, would you say that most people can be trusted, or that you can't be too careful in dealing with people?","Vil du stort sett si at de fleste er til å stole på, eller at en ikke kan være for forsiktig når en har med andre å gjøre.",
+A8,REQUEST,"Please tell me on a score of 0 to 10, where 0 means you can't be too careful and 10 means that most people can be trusted.","Vær så snill å gi meg svaret på en skala fra 0-10, der null betyr at en ikke kan være for forsiktig, mens ti betyr at en kan stole på folk flest.",
+A8,RESPONSE, You can't be too careful, En kan ikke være for forsiktig,0
+A8,RESPONSE,1,1,1
+A8,RESPONSE,2,2,2
+A8,RESPONSE,3,3,3
+A8,RESPONSE,4,4,4
+A8,RESPONSE,5,5,5
+A8,RESPONSE,6,6,6
+A8,RESPONSE,7,7,7
+A8,RESPONSE,8,8,8
+A8,RESPONSE,9,9,9
+A8,RESPONSE, Most people can be trusted, De fleste er til til å stole på,10
+A8,RESPONSE,(Don't know),(Vet ikke),888
+A9,REQUEST,"Using this card, do you think that most people would try to take advantage of you if they got the chance, or would they try to be fair?","Tror du at folk flest vil prøve å utnytte deg hvis de fikk sjansen, eller vil de prøve å behandle deg rimelig og rettferdig?",
+A9,RESPONSE, Most people would try to take advantage of me, Folk flest vil prøve å utnytte meg,0
+A9,RESPONSE,1,1,1
+A9,RESPONSE,2,2,2
+A9,RESPONSE,3,3,3
+A9,RESPONSE,4,4,4
+A9,RESPONSE,5,5,5
+A9,RESPONSE,6,6,6
+A9,RESPONSE,7,7,7
+A9,RESPONSE,8,8,8
+A9,RESPONSE,9,9,9
+A9,RESPONSE, Most people would try to be fair, Folk flest vil prøve å være rimelige og rettferdige,10
+A9,RESPONSE,(Don't know),(Vet ikke),888
+A10,REQUEST,Would you say that most of the time people try to be helpful or that they are mostly looking out for themselves?,"Vil du si at folk for det meste prøver å være hjelpsomme, eller at de har nok med seg selv?",
+A10,INSTRUCTION,Please use this card.,KORT 5,
+A10,RESPONSE, People mostly look out for themselves, Folk har stort sett nok med seg selv,0
+A10,RESPONSE,1,1,1
+A10,RESPONSE,2,2,2
+A10,RESPONSE,3,3,3
+A10,RESPONSE,4,4,4
+A10,RESPONSE,5,5,5
+A10,RESPONSE,6,6,6
+A10,RESPONSE,7,7,7
+A10,RESPONSE,8,8,8
+A10,RESPONSE,9,9,9
+A10,RESPONSE, People mostly try to be helpful, Folk forsøker stort sett å være hjelpsomme,10
+A10,RESPONSE,(Don't know),(Vet ikke),888
+B1,INTRO,Now we want to ask a few questions about politics and government,Nå vil vi stille noen spørsmål om politikk og politikere.,
+C1,INTRO,And now a few questions about you and your life.,Og nå noen spørsmål om deg og livet ditt.,
+D1,INTRO,People come to live in country from other countries for different reasons.,Folk kommer fra andre land for å bo i Norge av mange forskjellige grunner.,
+D1,INTRO,Some have ancestral ties.,Noen kommer på grunn av slekt eller forfedre.,
+D1,INTRO,"Others come to work here, or to join their families.","Andre kommer for å arbeide her, for å gjenforenes med familien sin eller for å flykte fra forfølgelse.",
+D1,INTRO,Others come because they're under threat.,Her er noen spørsmål om folk som kommer til Norge.,
+E1a,INTRO,The next few questions are about the organisations some people take part in.,De neste spørsmålene er om organisasjoner som enkelte er med i.,
+F1,INTRO,"And finally, I would like to ask you a few details about yourself and others in your household.",Til slutt vil jeg stille noen spørsmål om deg og de andre i husholdningen din.,
+C1,REQUEST,"Taking all things together, how happy would you say you are?","I det store og hele, hvor lykkelig er du?",
+C1,INSTRUCTION,,KORT 17,
+C1,INSTRUCTION,Please use this card.,Velg et tall fra kortet.,
+C1,RESPONSE, Extremely unhappy, Svært ulykkelig,0
+C1,RESPONSE,1,1,1
+C1,RESPONSE,2,2,2
+C1,RESPONSE,3,3,3
+C1,RESPONSE,4,4,4
+C1,RESPONSE,5,5,5
+C1,RESPONSE,6,6,6
+C1,RESPONSE,7,7,7
+C1,RESPONSE,8,8,8
+C1,RESPONSE,9,9,9
+C1,RESPONSE, Extremely happy, Svært lykkelig,10
+C1,RESPONSE,(Don't know),(Vet ikke),888
+C2,REQUEST,"Using this card, how often do you meet socially with friends, relatives or work colleagues?","Hvor ofte omgås du sosialt med venner, slektninger eller arbeidskollegaer?",
+C2,RESPONSE,Never,Aldri,1
+C2,RESPONSE,Less than once a month,Sjeldnere enn en gang i måneden,2
+C2,RESPONSE,Once a month,En gang i måneden,3
+C2,RESPONSE,Several times a month,Flere ganger i måneden,4
+C2,RESPONSE,Once a week,En gang i uka,5
+C2,RESPONSE,Several times a week,Flere ganger i uka,6
+C2,RESPONSE,Every day,Hver dag,7
+C2,RESPONSE,(Don't know),(Vet ikke),888
+C3,REQUEST,Do you have anyone with whom you can discuss intimate and personal matters?,Har du noen som du kan betro deg til og diskutere personlige ting med?,
+C3,RESPONSE,Yes,Ja,1
+C3,RESPONSE,No,Nei,2
+C3,RESPONSE,(Don't know),(Vet ikke),888
+C4,REQUEST,"Compared to other people of your age, how often would you say you take part in social activities?","Hvor ofte deltar du i sosiale aktiviteter, sammenlignet med andre på din alder?",
+C4,INSTRUCTION,,KORT 19,
+C4,INSTRUCTION,Please use this card.,Ta en titt på dette kortet.,
+C4,RESPONSE,Much less than most,Mye mindre enn folk flest,1
+C4,RESPONSE,Less than most,Mindre enn folk flest,2
+C4,RESPONSE,About the same,Omtrent som andre,3
+C4,RESPONSE,More than most,Mer enn folk flest,4
+C4,RESPONSE,Much more than most,Mye mer enn folk flest,5
+C4,RESPONSE,(Don't know),(Vet ikke),888
+C5,REQUEST,Have you or a member of your household been the victim of a burglary or assault in the last 5 years?,"Har du eller et annet medlem av din husholdning blitt utsatt for innbrudd, ran eller overfall i løpet av de siste fem årene?",
+C5,RESPONSE,Yes,Ja,1
+C5,RESPONSE,No,Nei,2
+C5,RESPONSE,(Don't know),(Vet ikke),888
+C6,REQUEST,How safe do you – or would you - feel walking alone in this area after dark?,"Hvor trygg føler du deg, eller ville du følt deg, hvis du går alene i ditt nabolag etter at det har blitt mørkt?",
+C6,REQUEST,Do – or would – you feel...,Føler du deg- eller ville du følt deg-...,
+C6,RESPONSE,very safe,veldig trygg,1
+C6,RESPONSE,safe,trygg,2
+C6,RESPONSE,unsafe,utrygg,3
+C6,RESPONSE,"or, very unsafe?",eller veldig utrygg?,4
+C6,RESPONSE,(Don't know),(Vet ikke),888
+C7,REQUEST,How is your health in general?,Hvordan er helsen din stort sett?,
+C7,REQUEST,Would you say it is ...,Vil du si at den er,
+C7,RESPONSE,very good,svært god,1
+C7,RESPONSE,good,god,2
+C7,RESPONSE,fair,middels,3
+C7,RESPONSE,bad,dårlig,4
+C7,RESPONSE,"or, very bad?","eller svært dårlig,?",5
+C7,RESPONSE,(Don't know),(Vet ikke),888
+C8,REQUEST,"Are you hampered in your daily activities in any way by any longstanding illness, or disability, infirmity or mental health problem?","Er du på noen måte hemmet i dine daglige aktiviteter på grunn av langvarig sykdom, funksjonshemming, dårlig helse eller psykiske problemer?",
+C8,RESPONSE,Yes a lot,"Ja, mye",1
+C8,RESPONSE,Yes to some extent,"Ja, til en viss grad",2
+C8,RESPONSE,No,Nei,3
+C8,RESPONSE,(Don't know),(Vet ikke),888
+C9,REQUEST,Do you consider yourself as belonging to any particular religion or denomination?,Vil du si at du tillhører en bestemt religion eller trosretning?,
+C9,RESPONSE,Yes,Ja,1
+C9,RESPONSE,No,Nei,2
+C9,RESPONSE,(Don't know),(Vet ikke),888
+C10,REQUEST,Which one?,Hvilken er det?,
+C10,RESPONSE,Christian – no denomination,Romersk katolsk,1
+C10,RESPONSE,Roman Catholic,Den norske kirke,2
+C10,RESPONSE,Greek or Russian Orthodox,Gresk ortodoks,3
+C10,RESPONSE,Other Eastern Orthodox,Andre kristne menigheter,4
+C10,RESPONSE,Protestant (no further detail),Jøder,5
+C10,RESPONSE,Church of England / Anglican,Muslimer,6
+C10,RESPONSE,Baptist,Østlige religioner,7
+C10,RESPONSE,Methodist,Andre ikke kristne religioner,8
+C10,RESPONSE,Presbyterian / Church of Scotland,Passer ikke,9
+C10,RESPONSE,(Don't know),(Vet ikke),888
+C11,REQUEST,Have you ever considered yourself as belonging to any particular religion or denomination?,Vil du si at du noen gang har tilhørt en bestemt religion eller trosretning?,
+C11,RESPONSE,Yes,JA,1
+C11,RESPONSE,No,Nei,2
+C11,RESPONSE,(Don't know),(Vet ikke),888
+C12,REQUEST,Which one?,Hvilken var det?,
+C12,RESPONSE,Christian – no denomination,Romersk katolsk,1
+C12,RESPONSE,Roman Catholic,Den norske kirke,2
+C12,RESPONSE,Greek or Russian Orthodox,Gresk ortodoks,3
+C12,RESPONSE,Other Eastern Orthodox,Andre kristne menigheter,4
+C12,RESPONSE,Protestant (no further detail),Jøder,5
+C12,RESPONSE,Church of England / Anglican,Muslimer,6
+C12,RESPONSE,Baptist,Østlige religioner,7
+C12,RESPONSE,Methodist,Andre ikke kristne religioner,8
+C12,RESPONSE,Presbyterian / Church of Scotland,Passer ikke,9
+C12,RESPONSE,(Don't know),(Vet ikke),888
+C13,REQUEST,"Regardless of whether you belong to a particular religion, how religious would you say you are?","Uavhengig av om du tilhører en bestemt religion, hvor religiøs vil du si at du er?",
+C13,INSTRUCTION,,STILLES TIL ALLE,
+C13,INSTRUCTION,,KORT 20,
+C13,INSTRUCTION,Please use this card.,Bruk kortet til å svare.,
+C13,RESPONSE, Not at all religious, Ikke religiøs i det hele tatt,0
+C13,RESPONSE,1,1,1
+C13,RESPONSE,2,2,2
+C13,RESPONSE,3,3,3
+C13,RESPONSE,4,4,4
+C13,RESPONSE,5,5,5
+C13,RESPONSE,6,6,6
+C13,RESPONSE,7,7,7
+C13,RESPONSE,8,8,8
+C13,RESPONSE,9,9,9
+C13,RESPONSE, Very religious, Veldig religiøs,10
+C13,RESPONSE,(Don't know),(Vet ikke),888
+C14,REQUEST,"Apart from special occasions such as weddings and funerals, about how often do you attend religious services nowadays?","Hvis du ser bort fra spesielle anledninger som bryllup og begravelser, hvor ofte deltar du I gudstjenester eller andre religiøse møter?",
+C14,RESPONSE,Every day,Hver dag,1
+C14,RESPONSE,More than once a week,Mer enn en gang i uka,2
+C14,RESPONSE,Once a week,En gang i uka,3
+C14,RESPONSE,At least once a month,Minst en gang i måneden,4
+C14,RESPONSE,Only on special holy days,Bare på spesielle helligdager,5
+C14,RESPONSE,Less often,Sjeldnere,6
+C14,RESPONSE,Never,Aldri,7
+C14,RESPONSE,(Don't know),(Vet ikke),888
+C15,REQUEST,"Apart from when you are at religious services, how often, if at all, do you pray?","Hvis du ser bort ifra de gangene du går til gudstjeneste, hvor ofte ber du, hvis du ber I det hele tatt?",
+C15,INSTRUCTION,,KORT 21 IGJEN,
+C15,INSTRUCTION,Please use this card.,Bruk kortet til å svare.,
+C15,RESPONSE,Every day,Hver dag,1
+C15,RESPONSE,More than once a week,Mer enn en gang i uka,2
+C15,RESPONSE,Once a week,En gang i uka,3
+C15,RESPONSE,At least once a month,Minst en gang i måneden,4
+C15,RESPONSE,Only on special holy days,Bare på spesielle helligdager,5
+C15,RESPONSE,Less often,Sjeldnere,6
+C15,RESPONSE,Never,Aldri,7
+C15,RESPONSE,(Don't know),(Vet ikke),888
+C16,REQUEST,Would you describe yourself as being a member of a group that is discriminated against in this country?,Vil du si at du er medlem av en gruppe som blir diskriminert her i landet?,
+C16,RESPONSE,Yes,Ja,1
+C16,RESPONSE,No,Nei,2
+C16,RESPONSE,(Don't know),(Vet ikke),888
+C17,REQUEST,On what grounds is your group discriminated against?,Hvorfor blir gruppen diskriminert?,
+C17,RESPONSE,Colour or race,Hudfarve,1
+C17,RESPONSE,Nationality,Nasjonalitet,2
+C17,RESPONSE,Religion,Religion,3
+C17,RESPONSE,Language,Språk,4
+C17,RESPONSE,Ethnic group,Etnisk tilhørighet,5
+C17,RESPONSE,Age,Alder,6
+C17,RESPONSE,Gender,Kjønn,7
+C17,RESPONSE,Sexuality,Seksuell legning,8
+C17,RESPONSE,Disability,Funksjonshemming,9
+C17,RESPONSE,Other,Andre (SKRIV INN),10
+C17,RESPONSE,(Don't know),(Vet ikke),888
+C18,REQUEST,Are you a citizen of country?,Er du norsk statsborger?,
+C18,RESPONSE,Yes,Ja,1
+C18,RESPONSE,No,Nei,2
+C18,RESPONSE,(Don't know),(Vet ikke),888
+C19,REQUEST,What citizenship do you hold?,Hvilket statsborgerskap har du?,
+C20,REQUEST,Were you born in country?,Er du født i Norge?,
+C20,RESPONSE,Yes,Ja,1
+C20,RESPONSE,No,Nei,2
+C20,RESPONSE,(Don't know),(Vet ikke),888
+C21,REQUEST,In which country were you born?,I hvilket land ble du født?,
+C22,REQUEST,How long ago did you first come to live in country?,Hvor lenge siden er det du kom til Norge for å bosette deg?,
+C22,INSTRUCTION,,KORT 22,
+C22,INSTRUCTION,Please use this card.,Bruk dette kortet.,
+C22,RESPONSE,Within the last year,I løpet av det siste året,1
+C22,RESPONSE,1-5 years ago,1-5 år siden,2
+C22,RESPONSE,6-10 years ago,6-10 år siden,3
+C22,RESPONSE,11-20 years ago,11-20 år siden,4
+C22,RESPONSE,More than 20 years ago,Mer enn 20 år siden,5
+C22,RESPONSE,(Don't know),(Vet ikke),888
+C23,REQUEST,What language or languages do you speak most often at home?,Hvilket eller hvilke språk bruker du stort sett hjemme?,
+C23,RESPONSE,WRITE IN UP TO 2 LANGUAGES,SKRIV INN MAKSIMALT TO SPRÅK,1
+C23,RESPONSE,(Don't know),(Vet ikke),888
+C24,REQUEST,Do you belong to a minority ethnic group in country?,Tilhører du en etnisk minoritet i Norge?,
+C24,RESPONSE,Yes,Ja,1
+C24,RESPONSE,No,Nei,2
+C24,RESPONSE,(Don't know),(Vet ikke),888
+C25,REQUEST,Was your father born in country?,Er din far født i Norge?,
+C25,RESPONSE,Yes,Ja,1
+C25,RESPONSE,No,Nei,2
+C25,RESPONSE,(Don't know),(Vet ikke),888
+C26,REQUEST,From which of these continents does your father originally come?,Hvilket kontinent kommer faren din opprinnelig fra?,
+C26,INSTRUCTION,,KORT 23,
+C26,INSTRUCTION,Please use this card.,Ta en titt på kortet.,
+C26,RESPONSE,Europe,Europa,1
+C26,RESPONSE,Africa,Afrika,2
+C26,RESPONSE,Asia,Asia,3
+C26,RESPONSE,North America,Nord-Amerika (inkludert Mexico),4
+C26,RESPONSE,South America and the Caribbean,Sør-Amerika,5
+C26,RESPONSE,Australasia,Oceania/Australia og New Zealand,6
+C26,RESPONSE,(Don't know),(Vet ikke),888
+C27,REQUEST,Was your mother born in country?,Er din mor født i Norge?,
+C27,RESPONSE,Yes,Ja,1
+C27,RESPONSE,No,Nei,2
+C27,RESPONSE,(Don't know),(Vet ikke),888
+C28,REQUEST,From which of these continents does your mother originally come?,Hvilket kontinent kommer moren din opprinnelig fra?,
+C28,INSTRUCTION,,KORT 23 IGJEN,
+C28,INSTRUCTION,Please use this card.,Ta en titt på kortet.,
+C28,RESPONSE,Europe,Europa,1
+C28,RESPONSE,Africa,Afrika,2
+C28,RESPONSE,Asia,Asia,3
+C28,RESPONSE,North America,Nord-Amerika (innkludert Mexico),4
+C28,RESPONSE,South America and the Caribbean,Sør-Amerika,5
+C28,RESPONSE,Australasia,Oceania/Australia og New Zealand,6
+C28,RESPONSE,(Don't know),(Vet ikke),888
+F1,REQUEST,"Including yourself, how many people - including children - live here regularly as members of this household?","Hvor mange bor i din husholdning, medregnet deg selv og eventuelle barn?",
+F3,REQUEST,And in what year were you he born?,Hvilket år hun født?,
+F4,REQUEST,"Looking at this card, what relationship is he to you?",Hvilket familieforhold har hun/han til deg?,
+F4,RESPONSE,Husband/wife/partner,IO Selv,1
+F4,RESPONSE,"Son/daughter (inc. step, adopted, foster, child of partner)",Ektefelle/partner/samboer,2
+F4,RESPONSE,"Parent, parent-in-law, partner's parent, step parent","Sønn/datter (medregnet stebarn, adopterte, fosterbarn og barn av partner)",3
+F4,RESPONSE,Other relative,Foreldre/svigerforeldre/partners foreldre/steforeldre,4
+F4,RESPONSE,Other non-relative,Annen slektning,5
+F4,RESPONSE,(Don't know),(Vet ikke),888
+F5,REQUEST,Which phrase on this card best describes the area where you live?,Hvilken betegnelse på dette kortet passer best på området du bor i?,
+F5,RESPONSE,A big city,En storby,1
+F5,RESPONSE,The suburbs or outskirts of a big city,En forstad eller utkanten av en storby,2
+F5,RESPONSE,A town or a small city,En liten by,3
+F5,RESPONSE,A country village,Bygdesentrum,4
+F5,RESPONSE,A farm or home in the countryside,En gård eller et hjem på landet,5
+F5,RESPONSE,(Don't know),(Vet ikke),888
+F7,REQUEST,How many years of full-time education have you completed?,"Alt i alt hvor mange år har du gått på skole, eller vært under utdannelse?",
+F8a,REQUEST,"Using this card, which of these descriptions applies to what you have been doing for the last 7 days?",Hvilke av beskrivelsene passer på det du har gjort de siste 7 dagene?,
+F8a,RESPONSE,"in paid work (or away temporarily) (employee, self-employed, working for your family business)","i betalt arbeid (eller midlertidig fraværende) (ansatt, selvstendig eller har arbeidifamiliebedrift)",1
+F8a,RESPONSE,"in education, even if on vacation (not paid for by employer)","under utdanning (som ikke er betalt av arbeidsgiver, medregnet fravær fra utdanning på grunn av ferie)",2
+F8a,RESPONSE,unemployed and actively looking for a job,arbeidsledig og aktivt arbeidssøkende,3
+F8a,RESPONSE,"unemployed, wanting a job but not actively looking for a job","arbeidsledig, ønsker en jobb men er ikke aktivt arbeidssøkende",4
+F8a,RESPONSE,permanently sick or disabled,varig syk eller funksjonshemmet,5
+F8a,RESPONSE,retired,pensjonert,6
+F8a,RESPONSE,in community or military service,i siviltjeneste eller millitærtjeneste,7
+F8a,RESPONSE,"doing housework, looking after children or other persons","gjør husarbeid, passer barn eller andre personer",8
+F8a,RESPONSE,(Don't know),(Vet ikke),888
+F8b,REQUEST,And which of these descriptions best describes your situation (in the last seven days)?,Og hvilke av disse beskrivelsene passer best på din situasjon (de siste 7 dagene)?,
+F8b,RESPONSE,"in paid work (or away temporarily) (employee, self-employed, working for your family business)","i betalt arbeid (eller midlertidig fraværende) (ansatt, selvstendig eller har arbeidifamiliebedrift)",1
+F8b,RESPONSE,"in education, even if on vacation (not paid for by employer)","under utdanning (som ikke er betalt av arbeidsgiver, medregnet fravær fra utdanning på grunn av ferie)",2
+F8b,RESPONSE,unemployed and actively looking for a job,arbeidsledig og aktivt arbeidssøkende,3
+F8b,RESPONSE,"unemployed, wanting a job but not actively looking for a job","arbeidsledig, ønsker en jobb men er ikke aktivt arbeidssøkende",4
+F8b,RESPONSE,permanently sick or disabled,varig syk eller funksjonshemmet,5
+F8b,RESPONSE,retired,pensjonert,6
+F8b,RESPONSE,in community or military service,i siviltjeneste eller millitærtjeneste,7
+F8b,RESPONSE,"doing housework, looking after children or other persons","gjør husarbeid, passer barn eller andre personer",8
+F8b,RESPONSE,(Don't know),(Vet ikke),888
+F9,REQUEST,"Can I just check, did you do any paid work (of an hour or more) in the last seven days?",Har du utført lønnet arbeid (i minst en time) i løpet av de siste syv dagene?,
+F9,RESPONSE,Yes,Ja,1
+F9,RESPONSE,No,Nei,2
+F9,RESPONSE,(Don't know),(Vet ikke),888
+F10,REQUEST,Have you ever had a paid job?,Har du noen gang hatt betalt arbeid?,
+F10,RESPONSE,Yes,Ja,1
+F10,RESPONSE,No,Nei,2
+F10,RESPONSE,(Don't know),(Vet ikke),888
+F11,REQUEST,In what year were you last in a paid job?,I hvilket år hadde du sist betalt arbeid?,
+F12,REQUEST,In your main job are you...,I hovedyrke ditt er du...,
+F12,RESPONSE,an employee,Ansatt,1
+F12,RESPONSE,self-employed,selvstendig næringsdrivende,2
+F12,RESPONSE,working for your own family's business,arbeider i familiebedrift,3
+F12,RESPONSE,(Don't know),(Vet ikke),888
+F13,REQUEST,How many employees (if any) do you have?,"Hvor mange ansatte, hvis noen, har du?",
+F14,REQUEST,Do you have a work contract of...,Har du en arbeidskontrakt...,
+F14,RESPONSE,unlimited duration,uten tidsbegrensning,1
+F14,RESPONSE,"or, limited duration",eller for en begrenset tid,2
+F14,RESPONSE,(Don't know),(Vet ikke),888
+F15,REQUEST,"Including yourself, about how many people are employed at the place where you usually work?",Medregnet deg selv omtrent hvor mange er ansatt der du vanligvis arbeider?,
+F15,RESPONSE,...under 10,...under 10,1
+F15,RESPONSE,...10 to 24,...10 til 24,2
+F15,RESPONSE,...25 to 99,...25 til 99,3
+F15,RESPONSE,...100 to 499,...100 til 499,4
+F15,RESPONSE,"or, 500 or more?","eller, 500 eller flere?",5
+F15,RESPONSE,(Don't know),(Vet ikke),888
+F16,REQUEST,"In your main job, do you have any responsibility for supervising the work of other employees?",Har du noe ansvar for å lede andre ansattes arbeidihovedjobben din?,
+F16,RESPONSE,Yes,Ja,1
+F16,RESPONSE,No,Nei,2
+F16,RESPONSE,(Don't know),(Vet ikke),888
+F17,REQUEST,How many people are you responsible for?,Hvor mange mennesker er du leder for?,
+F18,REQUEST,To what extent can you organise your own work?,STILLES TIL ALLE ARBEIDSTAKERE ELLER TIDLIGERE ARBEIDSTAKERE,
+F18,REQUEST,Can you...,I hvor stor grad kan du organisere ditt eget arbeid som du selv ønsket?,
+F18,RESPONSE,...to a large extent,i stor grad...,1
+F18,RESPONSE,...to some extent,i noen grad...,2
+F18,RESPONSE,...very little,i liten grad...,3
+F18,RESPONSE,...or not at all?,eller ikke i det hele tatt?...,4
+F18,RESPONSE,(Don't know),(Vet ikke),888
+F19,REQUEST,"What are your total ‘basic' or contracted hours each week (in your main job), excluding any paid and unpaid overtime?",Hvor mange timer står det at du i utgangspunktet skal jobbe i løpet av en uke i arbeidsavtalen din (i hovedjobben din)?,
+F20,REQUEST,"Regardless of your basic or contracted hours, how many hours do you normally work a week (in your main job), including any paid or unpaid overtime.","Uavhengig av den egentlige arbeidstiden din, hvor mange timer arbeider du vanligvis i løpet av en uke (i hovedjobben din)?",
+F21,REQUEST,What is the name or title of your main job?,Hva var hovedyrket ditt?,
+F22,REQUEST,"In your main job, what kind of work do you do most of the time?",Hva slags arbeid gjør du stort sett i hovedyrket ditt?,
+F24,REQUEST,What does the firm/ organisation you work for mainly make or do?,Hva lager eller gjør hovedsakelig firmaet eller organisasjonen du jobber i?,
+F25,REQUEST,Have you ever been unemployed and seeking work for a period of more than three months?,Har du noen gang vært arbeidsledig og søkt arbeid i en periode på mer enn tre måneder?,
+F25,RESPONSE,Yes,Ja,1
+F25,RESPONSE,No,Nei,2
+F25,RESPONSE,(Don't know),(Vet ikke),888
+F26,REQUEST,Has any of these periods lasted for 12 months or more?,Har en slik periode vart i 12 måneder eller mer?,
+F26,RESPONSE,Yes,Ja,1
+F26,RESPONSE,No,Nei,2
+F26,RESPONSE,(Don't know),(Vet ikke),888
+F27,REQUEST,Have any of these periods been within the past 5 years?,Har noen av periodene du har fortalt om vært i løpet av de siste 5 årene?,
+F27,RESPONSE,Yes,Ja,1
+F27,RESPONSE,No,Nei,2
+F27,RESPONSE,(Don't know),(Vet ikke),888
+F28,REQUEST,Are you or have you ever been a member of a trade union or similar organisation?,Er du eller har du noen gang vært medlem i en fagforening eller lignende organisasjon?,
+F28,RESPONSE,"Yes, currently","Ja, er medlem nå",1
+F28,RESPONSE,"Yes, previously","Ja, har vært medlem før",2
+F28,RESPONSE,No,Nei,3
+F28,RESPONSE,(Don't know),(Vet ikke),888
+F29,REQUEST,Please consider the income of all household members and any income which may be received by the household as a whole.,Nå kommer noen spørsmål om inntekt.,
+F29,REQUEST,What is the main source of income in your household?,Tenk på inntekten til alle medlemmene i husholdningen og alle inntekt husholdningen mottar.,
+F29,INSTRUCTION,,KORT 55,
+F29,INSTRUCTION,Please use this card.,Velg et alternative fra kortet.,
+F29,RESPONSE,Wages or salaries,Lønn,1
+F29,RESPONSE,Income from self-employment or farming,inntekt fra egen næringsvirksomhet eller gårdsdrift,2
+F29,RESPONSE,Pensions,Pensjoner,3
+F29,RESPONSE,Unemployment/redundancy benefit,Arbeidsledighetstrygd eller etterlønn,4
+F29,RESPONSE,Any other social benefits or grants,Andre trygder eller bidrag,5
+F29,RESPONSE,"Income from investment, savings, insurance or property","inntekt fra investeringer, sparepenger, forsikring eller eiendom",6
+F29,RESPONSE,Income from other sources,Annen inntekt (studielån),7
+F29,RESPONSE,(Don't know),(Vet ikke),888
+F30w,REQUEST,"Using this card, if you add up the income from all sources, which letter describes your household's total net income?",Slå sammen inntekten du får fra alle kilder.,
+F30w,REQUEST,"If you don't know the exact figure, please give an estimate.","Hvilken bokstav på kortet beskriver usholdningens totale netto inntekt, (det vil si inntekt etter at skatten er betalt).",
+F30w,REQUEST,"Use the part of the card that you know best: weekly, monthly or annual income.","Hvis du ikke vet, elg den bokstaven du tror passer best.",
+F30w,REQUEST,Approximate WEEKLY:,"Bruk den delen av kortet som du kjenner best, enten ukentlig, ånedlig eller årlig inntekt.",
+F30w,RESPONSE,J Less than €40,J Mindre enn NOK 300,J
+F30w,RESPONSE,R €40 to under €70,R NOK 300 til NOK 500,R
+F30w,RESPONSE,C €70 to under €120,C NOK 500 til NOK 850,C
+F30w,RESPONSE,M €120 to under €230,M NOK 850 til NOK 1650,M
+F30w,RESPONSE,F €230 to under €350,F NOK 1650 til NOK 2500,F
+F30w,RESPONSE,S €350 to under €460,S NOK 2500 til NOK 3300,S
+F30w,RESPONSE,K €460 to under €580,K NOK 3300 til NOK 4150,K
+F30w,RESPONSE,P €580 to under €690,P NOK 4150 til NOK 4950,P
+F30w,RESPONSE,D €690 to under €1150,D NOK 4950 til NOK 8250,D
+F30w,RESPONSE,H €1150 to under €1730,H NOK 8250 til NOK 12400,H
+F30w,RESPONSE,U €1730 to under €2310,U NOK 12400 til NOK 16550,U
+F30w,RESPONSE,N €2310 or more,N NOK 16550 eller mer,N
+F30w,RESPONSE,(Don't know),(Vet ikke),888
+F30m,REQUEST,"Using this card, if you add up the income from all sources, which letter describes your household's total net income?",Slå sammen inntekten du får fra alle kilder.,
+F30m,REQUEST,"If you don't know the exact figure, please give an estimate.","Hvilken bokstav på kortet beskriver usholdningens totale netto inntekt, (det vil si inntekt etter at skatten er betalt).",
+F30m,REQUEST,"Use the part of the card that you know best: weekly, monthly or annual income.","Hvis du ikke vet, elg den bokstaven du tror passer best.",
+F30m,REQUEST,Approximate MONTHLY:,"Bruk den delen av kortet som du kjenner best, enten ukentlig, ånedlig eller årlig inntekt.",
+F30m,RESPONSE,J Less than €150,J Mindre enn NOK 1050,J
+F30m,RESPONSE,R €150 to under €300,R NOK 1050 til NOK 2150,R
+F30m,RESPONSE,C €300 to under €500,C NOK 2150 til NOK 3600,C
+F30m,RESPONSE,M €500 to under €1000,M NOK 3600 til NOK 7150,M
+F30m,RESPONSE,F €1000 to under €1500,F NOK 7150 til NOK 10750,F
+F30m,RESPONSE,S €1500 to under €2000,S NOK 10750 til NOK 14300,S
+F30m,RESPONSE,K €2000 to under €2500,K NOK 14300 til NOK 17900,K
+F30m,RESPONSE,P €2500 to under €3000,P NOK 17900 til NOK 21500,P
+F30m,RESPONSE,D €3000 to under €5000,D NOK 21500 til NOK 35800,D
+F30m,RESPONSE,H €5000 to under €7500,H NOK 35800 til NOK 53700,H
+F30m,RESPONSE,U €7500 to under €10000,U NOK 53700 til NOK 71600,U
+F30m,RESPONSE,N €10000 or more,N NOK 71600 eller mer,N
+F30m,RESPONSE,(Don't know),(Vet ikke),888
+F30y,REQUEST,"Using this card, if you add up the income from all sources, which letter describes your household's total net income?",Slå sammen inntekten du får fra alle kilder.,
+F30y,REQUEST,"If you don't know the exact figure, please give an estimate.","Hvilken bokstav på kortet beskriver usholdningens totale netto inntekt, (det vil si inntekt etter at skatten er betalt).",
+F30y,REQUEST,"Use the part of the card that you know best: weekly, monthly or annual income.","Hvis du ikke vet, elg den bokstaven du tror passer best.",
+F30y,REQUEST,Approximate ANNUAL:,"Bruk den delen av kortet som du kjenner best, enten ukentlig, ånedlig eller årlig inntekt.",
+F30y,RESPONSE,J Less than €1800,J Mindre enn NOK 12900,J
+F30y,RESPONSE,R €1800 to under €3600,R NOK 12900 til NOK 25800,R
+F30y,RESPONSE,C €3600 to under €6000,C NOK 25800 til NOK 43000,C
+F30y,RESPONSE,M €6000 to under €12000,M NOK 43000 til NOK 85900,M
+F30y,RESPONSE,F €12000 to under €18000,F NOK 85900 til NOK 128900,F
+F30y,RESPONSE,S €18000 to under €24000,S NOK 128900 til NOK 171800,S
+F30y,RESPONSE,K €24000 to under €30000,K NOK 171800 til NOK 214800,K
+F30y,RESPONSE,P €30000 to under €36000,P NOK 214800 til NOK 257700,P
+F30y,RESPONSE,D €36000 to under €60000,D NOK 257700 til NOK 429500,D
+F30y,RESPONSE,H €60000 to under €90000,H NOK 429500 til NOK 644300,H
+F30y,RESPONSE,U €90000 to under €120000,U NOK 644300 til NOK 859000,U
+F30y,RESPONSE,N €120000 or more,N NOK 859000 eller mer,N
+F30y,RESPONSE,(Don't know),(Vet ikke),888
+F31,REQUEST,Which of the descriptions on this card comes closest to how you feel about your household's income nowadays?,Hvilken av beskrivelsene passer best med hvordan du opplever husholdningens inntekt for tiden?,
+F31,RESPONSE,Living comfortably on present income,Har det bra med nåværende inntekt,1
+F31,RESPONSE,Coping on present income,Klarer meg/oss med nåværende inntekt,2
+F31,RESPONSE,Finding it difficult on present income,Det er vanskelig å klare seg på nåværende inntekt,3
+F31,RESPONSE,Finding it very difficult on present income,Det er svært vanskelig å klare seg på nåværende inntekt,4
+F31,RESPONSE,(Don't know),(Vet ikke),888
+F32,REQUEST,"If for some reason you were in serious financial difficulties and had to borrow money to make ends meet, how difficult or easy would that be?","Hvis du av en eller annen grunn fikk alvorlige økonomiske problemer og måtte låne penger for å få endene til å møtes, hvor vanskelig eller lett ville det være?",
+F32,INSTRUCTION,,KORT 58,
+F32,INSTRUCTION,Please use this card.,Bruk kortet til å svare.,
+F32,RESPONSE,Very difficult,Veldig vanskelig,1
+F32,RESPONSE,Quite difficult,Ganske vanskelig,2
+F32,RESPONSE,Neither easy nor difficult,Verken lett eller vanskelig,3
+F32,RESPONSE,Quite easy,Ganske lett,4
+F32,RESPONSE,Very easy,Veldig lett,5
+F32,RESPONSE,(Don't know),(Vet ikke),888
+F33,RESPONSE,RESPONDENT LIVES WITH HUSBAND,INTERVJUOBJEKT BOR SAMMEN MED MANN/KONE/PARTNER I F4,1
+F33,RESPONSE,DOES NOT,GJØR IKKE DET,2
+F33,RESPONSE,(Don't know),(Vet ikke),888
+F34,REQUEST,What is the highest level of education your husband has achieved?,Hva er den høyeste utdanningen til din mann?,
+F34,INSTRUCTION,,KORT 59,
+F34,INSTRUCTION,Please use this card.,Bruk kategoriene på kortet.,
+F34,RESPONSE,Not completed primary (compulsory) education,Barneskole/ folkeskole,1
+F34,RESPONSE,Primary education or first stage of basic education,Ungdomsskole,2
+F34,RESPONSE,Lower level secondary education or second stage of basic education,Framhaldsskole,3
+F34,RESPONSE,Upper secondary education,Realskole,4
+F34,RESPONSE,"Post-secondary, non tertiary education",Yrkesskole/handelsskole,5
+F34,RESPONSE,First stage of tertiary education (not leading directly to an advanced research qualification),Videregående/gymnas,6
+F34,RESPONSE,Second stage of tertiary education (leading directly to an advanced research qualification,Lærerskole/sykepleieskole,7
+F34,RESPONSE,(Don't know),(Vet ikke),888
+F35a,REQUEST,Which of the descriptions on this card applies to what he has been doing for the last 7 days?,Hvilken av beskrivelsene på kortet passer for det han har gjort de siste 7 dagene?,
+F35a,RESPONSE,"in paid work (or away temporarily) (employee, self-employed, working for your family business)","i betalt arbeid (eller midlertidig fraværende) (ansatt, selvstendig eller har arbeidifamiliebedrift)",1
+F35a,RESPONSE,"in education, even if on vacation (not paid for by employer)","tar utdanning (som ikke er betalt av arbeidsgiver, medregnet fravær fra utdanning på grunn av ferie)",2
+F35a,RESPONSE,unemployed and actively looking for a job,arbeidsløs som aktivt søker arbeid,3
+F35a,RESPONSE,"unemployed, wanting a job but not actively looking for a job",arbeidsløs som ønsker jobb men som ikke søker aktivt,4
+F35a,RESPONSE,permanently sick or disabled,varig syk eller funksjonshemme,5
+F35a,RESPONSE,retired,pensjonert,6
+F35a,RESPONSE,in community or military service,i siviltjeneste eller millitærtjeneste,7
+F35a,RESPONSE,"doing housework, looking after children or other persons","gjør husarbeid, passer barn eller andre",8
+F35a,RESPONSE,(Don't know),(Vet ikke),888
+F35b,REQUEST,And which of the descriptions on this card best describes his situation (in the last 7 days)?,Og hvilken av beskrivelsene passer best på hans situasjon (de siste 7 dagene)?,
+F35b,RESPONSE,"in paid work (or away temporarily) (employee, self-employed, working for your family business)","i betalt arbeid (eller midlertidig fraværende) (ansatt, selvstendig eller har arbeidifamiliebedrift)",1
+F35b,RESPONSE,"in education, even if on vacation (not paid for by employer)","tar utdanning (som ikke er betalt av arbeidsgiver, medregnet fravær fra utdanning på grunn av ferie)",2
+F35b,RESPONSE,unemployed and actively looking for a job,arbeidsløs som aktivt søker arbeid,3
+F35b,RESPONSE,"unemployed, wanting a job but not actively looking for a job",arbeidsløs som ønsker jobb men som ikke søker aktivt,4
+F35b,RESPONSE,permanently sick or disabled,varig syk eller funksjonshemme,5
+F35b,RESPONSE,retired,pensjonert,6
+F35b,RESPONSE,in community or military service,i siviltjeneste eller millitærtjeneste,7
+F35b,RESPONSE,"doing housework, looking after children or other persons","gjør husarbeid, passer barn eller andre",8
+F35b,RESPONSE,(Don't know),(Vet ikke),888
+F36,REQUEST,"Can I just check, did he do any paid work (of an hour or more) in the last 7 days?","Skal vi se, har han utført lønnet arbeid (i minst en time) i løpet av de siste syv dagene?",
+F36,RESPONSE,Yes,Ja,1
+F36,RESPONSE,No,Nei,2
+F36,RESPONSE,(Don't know),(Vet ikke),888
+F37,REQUEST,What is the name or title of his main job?,Hvilken tittel har han i hovedjobben sin?,
+F38,REQUEST,"In his main job, what kind of work does he do most of the time?",Hva slags arbeid gjør han stort sett i hovedjobben sin?,
+F40,REQUEST,In his main job is he ...,"I hoved jobben hans, er han...",
+F40,RESPONSE,an employee,Ansatt,1
+F40,RESPONSE,self-employed,selvstendig næringsdrivende,2
+F40,RESPONSE,working for your family business,arbeider i familiebedrift,3
+F40,RESPONSE,(Don't know),(Vet ikke),888
+F41,REQUEST,How many employees (if any) does he have?,"Hvor mange ansatte, hvis noen, har han?",
+F42,REQUEST,"In his main job, does he have any responsibility for supervising the work of other employees?",Har han noe ansvar for å lede andre ansattes arbeid i hovedjobben sin?,
+F42,RESPONSE,Yes,Ja,1
+F42,RESPONSE,No,Nei,2
+F42,RESPONSE,(Don't know),(Vet ikke),888
+F43,REQUEST,How many people is he responsible for?,Hvor mange mennesker er han leder for?,
+F44,REQUEST,How many hours does he normally work a week (in his main job)?,Hvor mange timer arbeider han vanligvisiløpet av en uke (i hovedjobben sin)?,
+F44,REQUEST,Please include any paid or unpaid overtime.,Regn med eventuell betalt eller ubetalt overtid.,
+F45,REQUEST,What is the highest level of education your father achieved?,Hva er den høyeste utdanningen til faren din?,
+F45,INSTRUCTION,,KORT 61,
+F45,INSTRUCTION,Please use this card.,Bruk kategoriene på kortet.,
+F45,RESPONSE,Not completed primary (compulsory) education,Barneskole/ folkeskole,1
+F45,RESPONSE,Primary education or first stage of basic education,Ungdomsskole,2
+F45,RESPONSE,Lower level secondary education or second stage of basic education,Framhaldsskole,3
+F45,RESPONSE,Upper secondary education,Realskole,4
+F45,RESPONSE,"Post-secondary, non tertiary education",Yrkesskole/handelsskole,5
+F45,RESPONSE,First stage of tertiary education (not leading directly to an advanced research qualification),Videregående/gymnas,6
+F45,RESPONSE,Second stage of tertiary education (leading directly to an advanced research qualification,Lærerskole/sykepleieskole,7
+F45,RESPONSE,(Don't know),(Vet ikke),888
+F46,REQUEST,"When you were 14, did your father work as an employee, was he self-employed, or was he not working then?","Da du var i fjortenårs alderen, var faren din ansatt, var han selvstendig næringsdrivende, eller arbeidet han ikke da?",
+F46,RESPONSE,Employee,Ansatt,1
+F46,RESPONSE,Self-employed,Selvstendig næringsdrivende,2
+F46,RESPONSE,Not working,Arbeidet ikke,3
+F46,RESPONSE,(Father died/absent when respondent was 14), (Far død eller fraværende da IO var 14 år),4
+F46,RESPONSE,(Don't know),(Vet ikke),888
+F47,REQUEST,How many employees did he have?,Hvor mange ansatte hadde han?,
+F47,RESPONSE,None,Ingen,1
+F47,RESPONSE,1 to 24,1 til 24,2
+F47,RESPONSE,25 or more,25 eller flere,3
+F47,RESPONSE,(Don't know),(Vet ikke),888
+F48,REQUEST,Did he have any responsibility for supervising the work of other employees?,Hadde han noe ansvar for å lede andre ansattes arbeid?,
+F48,RESPONSE,Yes,Ja,1
+F48,RESPONSE,No,Nei,2
+F48,RESPONSE,(Don't know),(Vet ikke),888
+F49,REQUEST,What was the name or title of his main job?,Hvilken tittel hadde han i hoved jobben sin?,
+F50,REQUEST,Which of the descriptions on this card best describes the sort of work he did when you were 14.,Hvilken av beskrivelsene på kortet passer best på arbeidet han utførte da du var 14 år?,
+F50,RESPONSE,Traditional professional occupations such as: accountant - solicitor - medical practitioner – scientist - civil / mechanical engineer,Tradisjonelle profesjonsyrker slik som: revisor - advokat - lege - forsker - sivilingeniør - ingeniør (mekaniske fag),1
+F50,RESPONSE,Modern professional occupations such as: teacher - nurse - physiotherapist - social worker - welfare officer - artist - musician - police officer (sergeant or above) - software designer,Moderne profesjonsyrker slik som: lærer - sykepleier - fysioterapeut - sosialarbeider – kunstner - musiker - politimann - software programmerer,2
+F50,RESPONSE,Clerical and intermediate occupations such as: secretary - personal assistant - clerical worker – office clerk - call centre agent - nursing auxiliary - nursery nurse,"Stillinger på kontor- eller mellomnivå slik som: sekretær - personlig assistent - kontormedarbeider - kontorfullmektig - telefonselger, telefonintervjuer eller telefonopplysning - hjelpepleier - barnepleier",3
+F50,RESPONSE,"Senior managers or administrators (usually responsible for planning, organising and co-ordinating work and for finance) such as: finance manager – chief executive","Ledelse eller administrasjon (vanligvis ansvarlig for planlegging, organisering og koordinering av arbeid og økonomi) slik som: økonomi ledelse - øverste ledelse",4
+F50,RESPONSE,Technical and craft occupations such as: motor mechanic - fitter - inspector - plumber - printer - tool maker - electrician - gardener - train driver,Yrker som krever fagutdannelse slik som: motor mekaniker - montør - inspektør - rørlegger - trykkeriarbeider - person som lager redskap - elektriker - gartner -togkonduktør - snekker,5
+F50,RESPONSE,Semi-routine manual and service occupations such as: postal worker - machine operative - security guard - caretaker - farm worker - catering assistant - receptionist - sales assistant,Halvt rutinepregede manuelle- og service yrker slik som: postfunksjonær - maskinoperatør - sikkerhetsvakt - omsorgsarbeider - cateringpersonale - resepsjonist -salgsassistent,6
+F50,RESPONSE,Routine manual and service occupations such as: HGV driver - van driver - cleaner - porter - packer - sewing machinist - messenger - labourer - waiter / waitress - bar staff,Rutinepregede manuelle- og service yrker slik som: tungtransport sjåfør - lastebilsjåfør - vaskehjelp - vaktmester -stuer - syerske - bud - arbeider - servitør - ansatt i bar,7
+F50,RESPONSE,Middle or junior managers such as: office manager - retail manager - bank manager - restaurant manager - warehouse manager – publican,Primærnæringsyrker bønder - småbrukere - fiskere - skogsarbeidere - gårdsarbeidere,8
+F50,RESPONSE,(Don't know),(Vet ikke),888
+F51,REQUEST,What is the highest level of education your mother achieved?,Hva er den høyeste utdanningen til moren din?,
+F51,INSTRUCTION,,STILLES TIL ALLE,
+F51,INSTRUCTION,,KORT 63,
+F51,INSTRUCTION,Please use this card.,Bruk kategoriene på kortet.,
+F51,RESPONSE,Not completed primary (compulsory) education,Barneskole/ folkeskole,1
+F51,RESPONSE,Primary education or first stage of basic education,Ungdomsskole,2
+F51,RESPONSE,Lower level secondary education or second stage of basic education,Framhaldsskole,3
+F51,RESPONSE,Upper secondary education,Realskole,4
+F51,RESPONSE,"Post-secondary, non tertiary education",Yrkesskole/handelsskole,5
+F51,RESPONSE,First stage of tertiary education (not leading directly to an advanced research qualification),Videregående/gymnas,6
+F51,RESPONSE,Second stage of tertiary education (leading directly to an advanced research qualification,Lærerskole/sykepleieskole,7
+F51,RESPONSE,(Don't know),(Vet ikke),888
+F52,REQUEST,"When you were 14, did your mother work as an employee, was she self-employed, or was she not working then?","Da du var fjorten år, var moren din ansatt, var hun selvstendig næringsdrivende, eller arbeidet hun ikke da?",
+F52,RESPONSE,Employee,Ansatt,1
+F52,RESPONSE,Self-employed,Selvstendig næringsdrivende,2
+F52,RESPONSE,Not working,Arbeidet ikke,3
+F52,RESPONSE,(Mother died/absent when respondent was 14),(Mor død eller fraværende da IO var 14 år),4
+F52,RESPONSE,(Don't know),(Vet ikke),888
+F53,REQUEST,How many employees did she have?,Hvor mange ansatte hadde hun?,
+F53,RESPONSE,None,Ingen,1
+F53,RESPONSE,1 to 24,1 til 24,2
+F53,RESPONSE,25 or more,25 eller flere,3
+F53,RESPONSE,(Don't know),(Vet ikke),888
+F54,REQUEST,Did she have any responsibility for supervising the work of other employees?,Hadde hun noe ansvar for å lede andre ansattes arbeid?,
+F54,RESPONSE,Yes,Ja,1
+F54,RESPONSE,No,Nei,2
+F54,RESPONSE,(Don't know),(Vet ikke),888
+F55,REQUEST,What was the name or title of her main job?,Hvilken tittel hadde hunihovedjobben sin?,
+F56,REQUEST,Which of the descriptions on this card best describes the sort of work she did when you were 14.,Hvilken av beskrivelsene på kortet passer best på arbeidet hun utførte da du var 14 år?,
+F56,RESPONSE,Traditional professional occupations such as: accountant - solicitor - medical practitioner – scientist - civil / mechanical engineer,Tradisjonelle profesjonsyrker slik som: revisor - advokat - lege - forsker - sivilingeniør - ingeniør (mekaniske fag),1
+F56,RESPONSE,Modern professional occupations such as: teacher - nurse - physiotherapist - social worker - welfare officer - artist - musician - police officer (sergeant or above) - software designer,Moderne profesjonsyrker slik som: lærer - sykepleier - fysioterapeut - sosialarbeider – kunstner - musiker - politimann - software programmerer,2
+F56,RESPONSE,Clerical and intermediate occupations such as: secretary - personal assistant - clerical worker – office clerk - call centre agent - nursing auxiliary - nursery nurse,"Stillinger på kontor- eller mellomnivå slik som: sekretær - personlig assistent - kontormedarbeider - kontorfullmektig - telefonselger, telefonintervjuer eller telefonopplysning - hjelpepleier - barnepleier",3
+F56,RESPONSE,"Senior managers or administrators (usually responsible for planning, organising and co-ordinating work and for finance) such as: finance manager – chief executive","Ledelse eller administrasjon (vanligvis ansvarlig for planlegging, organisering og koordinering av arbeid og økonomi) slik som: økonomi ledelse - øverste ledelse",4
+F56,RESPONSE,Technical and craft occupations such as: motor mechanic - fitter - inspector - plumber - printer - tool maker - electrician - gardener - train driver,Yrker som krever fagutdannelse slik som: motor mekaniker - montør - inspektør - rørlegger - trykkeriarbeider - person som lager redskap - elektriker - gartner -togkonduktør - snekker,5
+F56,RESPONSE,Semi-routine manual and service occupations such as: postal worker - machine operative - security guard - caretaker - farm worker - catering assistant - receptionist - sales assistant,Halvt rutinepregede manuelle- og service yrker slik som: postfunksjonær - maskinoperatør - sikkerhetsvakt - omsorgsarbeider - cateringpersonale - resepsjonist -salgsassistent,6
+F56,RESPONSE,Routine manual and service occupations such as: HGV driver - van driver - cleaner - porter - packer - sewing machinist - messenger - labourer - waiter / waitress - bar staff,Rutinepregede manuelle- og service yrker slik som: tungtransport sjåfør - lastebilsjåfør - vaskehjelp - vaktmester -stuer - syerske - bud - arbeider - servitør - ansatt i bar,7
+F56,RESPONSE,Middle or junior managers such as: office manager - retail manager - bank manager - restaurant manager - warehouse manager – publican,Primærnæringsyrker bønder - småbrukere - fiskere - skogsarbeidere - gårdsarbeidere,8
+F56,RESPONSE,(Don't know),(Vet ikke),888
+F57,REQUEST,"During the last twelve months, have you taken any course or attended any lecture or conference to improve your knowledge","Har du fulgt kurs, undervisning eller deltatt på konferanser for å forbedre kunnskap og ferdigheter for jobben,iløpet av de siste tolv månedene?",
+F57,RESPONSE,Yes,Ja,1
+F57,RESPONSE,No,Nei,2
+F57,RESPONSE,(Don't know),(Vet ikke),888
+F58,REQUEST,Could I ask about your current legal marital status?,Kan jeg få spørre om din nåværende ekteskaplige status?,
+F58,REQUEST,Which of the descriptions on this card applies to you?,Hvilken av beskrivelsene på dette kortet passer for deg?,
+F58,RESPONSE,Married,Gift,1
+F58,RESPONSE,Separated (still legally married),Separert (men fortsatt gift),2
+F58,RESPONSE,Divorced,Skilt,3
+F58,RESPONSE,Widowed,Enke/enkemann,4
+F58,RESPONSE,Never married,Ugift,5
+F58,RESPONSE,(Don't know),(Vet ikke),888
+F59,REQUEST,Are you currently living with your husband?,Bor du for tiden sammen med din ektemann?,
+F59,RESPONSE,Yes,Ja,1
+F59,RESPONSE,No,Nei,2
+F59,RESPONSE,(Don't know),(Vet ikke),888
+F60,REQUEST,Are you currently living with another partner?,Bor du for tiden sammen med en annen partner?,
+F60,RESPONSE,Yes,Ja,1
+F60,RESPONSE,No,Nei,2
+F60,RESPONSE,(Don't know),(Vet ikke),888
+F61,REQUEST,Are you currently living with a partner?,Bor du for tiden med en partner?,
+F61,RESPONSE,Yes,Ja,1
+F61,RESPONSE,No,Nei,2
+F61,RESPONSE,(Don't know),(Vet ikke),888
+F62,REQUEST,Have you ever lived with a partner without being married to them?,Har du noen gang bodd sammen med en partner uten å være gift?,
+F62,RESPONSE,Yes,Ja,1
+F62,RESPONSE,No,Nei,2
+F62,RESPONSE,(Don't know),(Vet ikke),888
+F63,REQUEST,Have you ever been divorced?,Har du noen gang vært skilt?,
+F63,RESPONSE,Yes,Ja,1
+F63,RESPONSE,No,Nei,2
+F63,RESPONSE,(Don't know),(Vet ikke),888
+F64,RESPONSE,RESPONDENT HAS CHILDREN LIVING AT HOME,INTERVJUOBJEKTET HAR BARN SOM BOR HJEMME (KODE I F4),1
+F64,RESPONSE,DOES NOT,HAR IKKE,2
+F64,RESPONSE,(Don't know),(Vet ikke),888
+F65,REQUEST,"Have you ever had any children of your own, step-children, adopted children, foster children or a partner's children living in your household?","Har du noen gang hatt egne barn, stebarn, fosterbarn eller partners barn boende i din husholdning?",
+F65,RESPONSE,Yes,Ja,1
+F65,RESPONSE,No,Nei,2
+F65,RESPONSE,(Don't know),(Vet ikke),888
+I1,REQUEST,How was the supplementary questionnaire administered?,Hvordan ble papirskjemaet administrert?,
+I1,RESPONSE,Face-to-face interview,Ansikt-til-ansik tintervju,1
+I1,RESPONSE,Completed by the respondent while you were present,Besvart av IO mEns du var til stede,2
+I1,RESPONSE,"Left with respondent, to be collected by you","Lagt igjen hos IO, for siden å bli hentet av deg",3
+I1,RESPONSE,"Left with respondent, to be returned by post","Lagt igjen hos IO, for siden å returnert via post",4
+I1,RESPONSE,(Don't know),(Vet ikke),888
+I2,REQUEST,QUESTIONS ON THE INTERVIEW AS A WHOLE,Spurte IO om forklaring på noen av spørsmålene?,
+I2,RESPONSE,Never,Aldri,1
+I2,RESPONSE,Almost never,Nesten aldri,2
+I2,RESPONSE,Now and then,Av og til,3
+I2,RESPONSE,Often,Ofte,4
+I2,RESPONSE,Very often,Veldig ofte,5
+I2,RESPONSE,(Don't know),(Vet ikke),888
+I3,REQUEST,Did you feel that the respondent was reluctant to answer any questions?,Følte du at IO var motvilig til å svare på noen av spørsmålene?,
+I3,RESPONSE,Never,Aldri,1
+I3,RESPONSE,Almost never,Nesten aldri,2
+I3,RESPONSE,Now and then,Av og til,3
+I3,RESPONSE,Often,Ofte,4
+I3,RESPONSE,Very often,Veldig ofte,5
+I3,RESPONSE,(Don't know),(Vet ikke),888
+I4,REQUEST,Did you feel that the respondent tried to answer the questions to the best of his or her ability?,Følte du at IO prøvde å svare på spørsmålene etter beste evne?,
+I4,RESPONSE,Never,Aldri,1
+I4,RESPONSE,Almost never,Nesten aldri,2
+I4,RESPONSE,Now and then,Av og til,3
+I4,RESPONSE,Often,Ofte,4
+I4,RESPONSE,Very often,Veldig ofte,5
+I4,RESPONSE,(Don't know),(Vet ikke),888
+I5,REQUEST,"Overall, did you feel that the respondent understood the questions?",Følte du at IO stort sett forstod spørsmålene?,
+I5,RESPONSE,Never,Aldri,1
+I5,RESPONSE,Almost never,Nesten aldri,2
+I5,RESPONSE,Now and then,Av og til,3
+I5,RESPONSE,Often,Ofte,4
+I5,RESPONSE,Very often,Veldig ofte,5
+I5,RESPONSE,(Don't know),(Vet ikke),888
+I6,REQUEST,"Was anyone else present, who interfered with the interview?",Var det noen andre til stede som forstyrret intervjuet?,
+I6,RESPONSE,Yes,Ja,1
+I6,RESPONSE,No,Nei,2
+I6,RESPONSE,(Don't know),(Vet ikke),888
+I7,REQUEST,Who was this?,Hvem var det?,
+I7,RESPONSE,Husband/wife/partner,Kone/mann/partner,1
+I7,RESPONSE,"Son/daughter (inc. step, adopted, foster, child of partner)",Sønn/datter (medregnet stebarn/adopterte/fosterbarn/barn til partner),2
+I7,RESPONSE,Parent/parent-in-law/step-parent/partner's parent,Foreldre/svigerforeldre,3
+I7,RESPONSE,Other relative,Annen slektning,4
+I7,RESPONSE,Other non-relative,Annen ikke-slektning,5
+I7,RESPONSE,(Don't know),(Vet ikke),888
+I8,REQUEST,"If you have any additional comments on the interview, please write them in the space below.","Har du andre kommentarer, er det fint om du skriver dem nedenfor.",
+E1a,REQUEST,"For each of the voluntary organisations I will now mention, please use this card to tell me whether any of these things apply to you now or in the last 12 months, and, if so, which.",Jeg kommer nå til å nevne noen frivillige organisasjoner.,
+E1a,REQUEST,"...Firstly, a sports club or club for out-door activities?","Si i fra om noe av det som står på kortet passer for ditt forhold til organisasjonene, enten i dag eller i løpet av de siste 12 månedene.",
+E1a,RESPONSE,None,Ingen ting,1
+E1a,RESPONSE,Member,Medlem,2
+E1a,RESPONSE,Participated,Deltok,3
+E1a,RESPONSE,Donated money,Donerte penger,4
+E1a,RESPONSE,Voluntary work,Frivillig arbeid,5
+E1a,RESPONSE,(Don't know),(Vet ikke),888
+E2a,REQUEST,...an organisation for cultural or hobby activities?,...en forening for kulturelle aktiviteter eller hobbier?,
+E2a,RESPONSE,None,Ingen ting,1
+E2a,RESPONSE,Member,Medlem,2
+E2a,RESPONSE,Participated,Deltok,3
+E2a,RESPONSE,Donated money,Donerte penger,4
+E2a,RESPONSE,Voluntary work,Frivillig arbeid,5
+E2a,RESPONSE,(Don't know),(Vet ikke),888
+E3a,REQUEST,...a trade union?,... en fagforening eller faglig forbund,
+E3a,RESPONSE,None,Ingen ting,1
+E3a,RESPONSE,Member,Medlem,2
+E3a,RESPONSE,Participated,Deltok,3
+E3a,RESPONSE,Donated money,Donerte penger,4
+E3a,RESPONSE,Voluntary work,Frivillig arbeid,5
+E3a,RESPONSE,(Don't know),(Vet ikke),888
+E4a,REQUEST,"...a business professional, or farmers' organisation?","... en forretnings-, yrkes - eller landbruksorgasnisasjon?",
+E4a,RESPONSE,None,Ingen ting,1
+E4a,RESPONSE,Member,Medlem,2
+E4a,RESPONSE,Participated,Deltok,3
+E4a,RESPONSE,Donated money,Donerte penger,4
+E4a,RESPONSE,Voluntary work,Frivillig arbeid,5
+E4a,RESPONSE,(Don't know),(Vet ikke),888
+E5a,REQUEST,...a consumer or automobile organisation?,... en forbruker- eller bilorganisasjon?,
+E5a,RESPONSE,None,Ingen ting,1
+E5a,RESPONSE,Member,Medlem,2
+E5a,RESPONSE,Participated,Deltok,3
+E5a,RESPONSE,Donated money,Donerte penger,4
+E5a,RESPONSE,Voluntary work,Frivillig arbeid,5
+E5a,RESPONSE,(Don't know),(Vet ikke),888
+E6a,REQUEST,"...an organisation for humanitarian aid, human rights, minorities, or immigrants?","... en organisasjon for nødhjelp, menneskerettigheter, minoriteter eller innvandrere?",
+E6a,RESPONSE,None,Ingen ting,1
+E6a,RESPONSE,Member,Medlem,2
+E6a,RESPONSE,Participated,Deltok,3
+E6a,RESPONSE,Donated money,Donerte penger,4
+E6a,RESPONSE,Voluntary work,Frivillig arbeid,5
+E6a,RESPONSE,(Don't know),(Vet ikke),888
+E7a,REQUEST,"...an organisation for environmental protection, peace or animal rights?","...en organisasjon for å miljøvern, fred eller dyrebeskyttelse?",
+E7a,RESPONSE,None,Ingen ting,1
+E7a,RESPONSE,Member,Medlem,2
+E7a,RESPONSE,Participated,Deltok,3
+E7a,RESPONSE,Donated money,Donerte penger,4
+E7a,RESPONSE,Voluntary work,Frivillig arbeid,5
+E7a,RESPONSE,(Don't know),(Vet ikke),888
+E8a,REQUEST,...a religious or church organisation?,... en religiøs eller kirkelig organsisasjon?,
+E8a,RESPONSE,None,Ingen ting,1
+E8a,RESPONSE,Member,Medlem,2
+E8a,RESPONSE,Participated,Deltok,3
+E8a,RESPONSE,Donated money,Donerte penger,4
+E8a,RESPONSE,Voluntary work,Frivillig arbeid,5
+E8a,RESPONSE,(Don't know),(Vet ikke),888
+E9a,REQUEST,...a political party?,... et politisk parti?,
+E9a,RESPONSE,None,Ingen ting,1
+E9a,RESPONSE,Member,Medlem,2
+E9a,RESPONSE,Participated,Deltok,3
+E9a,RESPONSE,Donated money,Donerte penger,4
+E9a,RESPONSE,Voluntary work,Frivillig arbeid,5
+E9a,RESPONSE,(Don't know),(Vet ikke),888
+E10a,REQUEST,"...an organisation for science, education, or teachers and parents?","... en organisasjon for vitenskap, utdanning eller foreldreråd",
+E10a,RESPONSE,None,Ingen ting,1
+E10a,RESPONSE,Member,Medlem,2
+E10a,RESPONSE,Participated,Deltok,3
+E10a,RESPONSE,Donated money,Donerte penger,4
+E10a,RESPONSE,Voluntary work,Frivillig arbeid,5
+E10a,RESPONSE,(Don't know),(Vet ikke),888
+E11a,REQUEST,"... a social club, club for the young, the retired/elderly, women, or friendly societies?","... en sosial forening eller klubb for unge, pensjonister og eldre, for kvinner eller en vennskapsklubb?",
+E11a,RESPONSE,None,Ingen ting,1
+E11a,RESPONSE,Member,Medlem,2
+E11a,RESPONSE,Participated,Deltok,3
+E11a,RESPONSE,Donated money,Donerte penger,4
+E11a,RESPONSE,Voluntary work,Frivillig arbeid,5
+E11a,RESPONSE,(Don't know),(Vet ikke),888
+E12a,REQUEST,... any other voluntary organisation such as the ones I've just mentioned?,... en annen frivillig organisasjon som ligner på dem jeg har nevnt?,
+E12a,RESPONSE,None,Ingen ting,1
+E12a,RESPONSE,Member,Medlem,2
+E12a,RESPONSE,Participated,Deltok,3
+E12a,RESPONSE,Donated money,Donerte penger,4
+E12a,RESPONSE,Voluntary work,Frivillig arbeid,5
+E12a,RESPONSE,(Don't know),(Vet ikke),888
+E1b,REQUEST,Do you have personal friends within this organisation?,Har du personlige venner i denne organisasjonen?,
+E1b,RESPONSE,None,Ja,1
+E1b,RESPONSE,Member,Nei,2
+E1b,RESPONSE,(Don't know),(Vet ikke),888
+E2b,REQUEST,...an organisation for cultural or hobby activities?,...en forening for kulturelle aktiviteter eller hobbier?,
+E2b,RESPONSE,None,Ja,1
+E2b,RESPONSE,Member,Nei,2
+E2b,RESPONSE,(Don't know),(Vet ikke),888
+E3b,REQUEST,...a trade union?,... en fagforening eller faglig forbund,
+E3b,RESPONSE,None,Ja,1
+E3b,RESPONSE,Member,Nei,2
+E3b,RESPONSE,(Don't know),(Vet ikke),888
+E4b,REQUEST,"...a business professional, or farmers' organisation?","... en forretnings-, yrkes - eller landbruksorgasnisasjon?",
+E4b,RESPONSE,None,Ja,1
+E4b,RESPONSE,Member,Nei,2
+E4b,RESPONSE,(Don't know),(Vet ikke),888
+E5b,REQUEST,...a consumer or automobile organisation?,... en forbruker- eller bilorganisasjon?,
+E5b,RESPONSE,None,Ja,1
+E5b,RESPONSE,Member,Nei,2
+E5b,RESPONSE,(Don't know),(Vet ikke),888
+E6b,REQUEST,"...an organisation for humanitarian aid, human rights, minorities, or immigrants?","... en organisasjon for nødhjelp, menneskerettigheter, minoriteter eller innvandrere?",
+E6b,RESPONSE,None,Ja,1
+E6b,RESPONSE,Member,Nei,2
+E6b,RESPONSE,(Don't know),(Vet ikke),888
+E7b,REQUEST,"...an organisation for environmental protection, peace or animal rights?","...en organisasjon for å miljøvern, fred eller dyrebeskyttelse?",
+E7b,RESPONSE,None,Ja,1
+E7b,RESPONSE,Member,Nei,2
+E7b,RESPONSE,(Don't know),(Vet ikke),888
+E8b,REQUEST,...a religious or church organisation?,... en religiøs eller kirkelig organsisasjon?,
+E8b,RESPONSE,None,Ja,1
+E8b,RESPONSE,Member,Nei,2
+E8b,RESPONSE,(Don't know),(Vet ikke),888
+E9b,REQUEST,...a political party?,... et politisk parti?,
+E9b,RESPONSE,None,Ja,1
+E9b,RESPONSE,Member,Nei,2
+E9b,RESPONSE,(Don't know),(Vet ikke),888
+E10b,REQUEST,"...an organisation for science, education, or teachers and parents?","... en organisasjon for vitenskap, utdanning eller foreldreråd",
+E10b,RESPONSE,None,Ja,1
+E10b,RESPONSE,Member,Nei,2
+E10b,RESPONSE,(Don't know),(Vet ikke),888
+E11b,REQUEST,"... a social club, club for the young, the retired/elderly, women, or friendly societies?","... en sosial forening eller klubb for unge, pensjonister og eldre, for kvinner eller en vennskapsklubb?",
+E11b,RESPONSE,None,Ja,1
+E11b,RESPONSE,Member,Nei,2
+E11b,RESPONSE,(Don't know),(Vet ikke),888
+E12b,REQUEST,... any other voluntary organisation such as the ones I've just mentioned?,... en annen frivillig organisasjon som ligner på dem jeg har nevnt?,
+E12b,RESPONSE,None,Ja,1
+E12b,RESPONSE,Member,Nei,2
+E12b,RESPONSE,(Don't know),(Vet ikke),888
+E13,REQUEST,"Looking at this card, how important is each of these things in your life.",Se på dette kortet og svar på hvor viktig hver av disse tingene er i livet ditt?,
+E13,REQUEST,Firstly...,Vi begynner med ...,
+E13,REQUEST,...family?,... familie?,
+E13,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+E13,RESPONSE,1,1,1
+E13,RESPONSE,2,2,2
+E13,RESPONSE,3,3,3
+E13,RESPONSE,4,4,4
+E13,RESPONSE,5,5,5
+E13,RESPONSE,6,6,6
+E13,RESPONSE,7,7,7
+E13,RESPONSE,8,8,8
+E13,RESPONSE,9,9,9
+E13,RESPONSE, Extremely important, Ekstremt viktig,10
+E13,RESPONSE, (Don't know),(Vet ikke),888
+E14,REQUEST,...friends?,... venner?,
+E14,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+E14,RESPONSE,1,1,1
+E14,RESPONSE,2,2,2
+E14,RESPONSE,3,3,3
+E14,RESPONSE,4,4,4
+E14,RESPONSE,5,5,5
+E14,RESPONSE,6,6,6
+E14,RESPONSE,7,7,7
+E14,RESPONSE,8,8,8
+E14,RESPONSE,9,9,9
+E14,RESPONSE, Extremely important, Ekstremt viktig,10
+E14,RESPONSE, (Don't know),(Vet ikke),888
+E15,REQUEST,...leisure time?,... fritid?,
+E15,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+E15,RESPONSE,1,1,1
+E15,RESPONSE,2,2,2
+E15,RESPONSE,3,3,3
+E15,RESPONSE,4,4,4
+E15,RESPONSE,5,5,5
+E15,RESPONSE,6,6,6
+E15,RESPONSE,7,7,7
+E15,RESPONSE,8,8,8
+E15,RESPONSE,9,9,9
+E15,RESPONSE, Extremely important, Ekstremt viktig,10
+E15,RESPONSE, (Don't know),(Vet ikke),888
+E16,REQUEST,...politics?,... politikk?,
+E16,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+E16,RESPONSE,1,1,1
+E16,RESPONSE,2,2,2
+E16,RESPONSE,3,3,3
+E16,RESPONSE,4,4,4
+E16,RESPONSE,5,5,5
+E16,RESPONSE,6,6,6
+E16,RESPONSE,7,7,7
+E16,RESPONSE,8,8,8
+E16,RESPONSE,9,9,9
+E16,RESPONSE, Extremely important, Ekstremt viktig,10
+E16,RESPONSE, (Don't know),(Vet ikke),888
+E17,REQUEST,...work?,... arbeid?,
+E17,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+E17,RESPONSE,1,1,1
+E17,RESPONSE,2,2,2
+E17,RESPONSE,3,3,3
+E17,RESPONSE,4,4,4
+E17,RESPONSE,5,5,5
+E17,RESPONSE,6,6,6
+E17,RESPONSE,7,7,7
+E17,RESPONSE,8,8,8
+E17,RESPONSE,9,9,9
+E17,RESPONSE, Extremely important, Ekstremt viktig,10
+E17,RESPONSE, (Don't know),(Vet ikke),888
+E18,REQUEST,...religion?,... religion?,
+E18,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+E18,RESPONSE,1,1,1
+E18,RESPONSE,2,2,2
+E18,RESPONSE,3,3,3
+E18,RESPONSE,4,4,4
+E18,RESPONSE,5,5,5
+E18,RESPONSE,6,6,6
+E18,RESPONSE,7,7,7
+E18,RESPONSE,8,8,8
+E18,RESPONSE,9,9,9
+E18,RESPONSE, Extremely important, Ekstremt viktig,10
+E18,RESPONSE, (Don't know),(Vet ikke),888
+E19,REQUEST,...voluntary organisations?,... frivillige organisasjoner?,
+E19,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+E19,RESPONSE,1,1,1
+E19,RESPONSE,2,2,2
+E19,RESPONSE,3,3,3
+E19,RESPONSE,4,4,4
+E19,RESPONSE,5,5,5
+E19,RESPONSE,6,6,6
+E19,RESPONSE,7,7,7
+E19,RESPONSE,8,8,8
+E19,RESPONSE,9,9,9
+E19,RESPONSE, Extremely important, Ekstremt viktig,10
+E19,RESPONSE, (Don't know),(Vet ikke),888
+E20,REQUEST,"...Not counting anything you do for your family, in your work, or within voluntary organisations, how often, if at all, do you actively provide help for other people?","Se bort fra arbeid i familien, på jobben og i frivillige organisasjoner.",
+E20,RESPONSE,Every day,Hver dag,1
+E20,RESPONSE,Several times a week,Flere ganger i uka,2
+E20,RESPONSE,Once a week,En gang i uka,3
+E20,RESPONSE,Several times a month,Flere ganger i måneden,4
+E20,RESPONSE,Once a month,En gang i måneden,5
+E20,RESPONSE,Less often,Sjeldnere,6
+E20,RESPONSE,Never,Aldri,7
+E20,RESPONSE,(Don't know),(Vet ikke),888
+E21,REQUEST,"...Still using this card, how often would you say you discuss politics and current affairs?",Bruk kortet til å angi hvor ofte du diskuterer politikk og aktuelle saker.,
+E21,INSTRUCTION,Please use this card.,KORT 45 IGJEN,
+E21,RESPONSE,Every day,Hver dag,1
+E21,RESPONSE,Several times a week,Flere ganger i uka,2
+E21,RESPONSE,Once a week,En gang i uka,3
+E21,RESPONSE,Several times a month,Flere ganger i måneden,4
+E21,RESPONSE,Once a month,En gang i måneden,5
+E21,RESPONSE,Less often,Sjeldnere,6
+E21,RESPONSE,Never,Aldri,7
+E21,RESPONSE,(Don't know),(Vet ikke),888
+E22,REQUEST,"To be a good citizen, how important would you say it is for a person to...",For å være et godt medlem av samfunnet hvor viktig er det å,
+E22,REQUEST,...support people who are worse off than themselves?,... støtte folk som har det verre enn en selv?,
+E22,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+E22,RESPONSE,1,1,1
+E22,RESPONSE,2,2,2
+E22,RESPONSE,3,3,3
+E22,RESPONSE,4,4,4
+E22,RESPONSE,5,5,5
+E22,RESPONSE,6,6,6
+E22,RESPONSE,7,7,7
+E22,RESPONSE,8,8,8
+E22,RESPONSE,9,9,9
+E22,RESPONSE, Extremely important, Ekstremt viktig,10
+E22,RESPONSE, (Don't know),(Vet ikke),888
+E23,REQUEST,...vote in elections?,... stemme ved valg?,
+E23,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+E23,RESPONSE,1,1,1
+E23,RESPONSE,2,2,2
+E23,RESPONSE,3,3,3
+E23,RESPONSE,4,4,4
+E23,RESPONSE,5,5,5
+E23,RESPONSE,6,6,6
+E23,RESPONSE,7,7,7
+E23,RESPONSE,8,8,8
+E23,RESPONSE,9,9,9
+E23,RESPONSE, Extremely important, Ekstremt viktig,10
+E23,RESPONSE, (Don't know),(Vet ikke),888
+E24,REQUEST,...always obey laws and regulations?,... alltid følge lover og regler?,
+E24,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+E24,RESPONSE,1,1,1
+E24,RESPONSE,2,2,2
+E24,RESPONSE,3,3,3
+E24,RESPONSE,4,4,4
+E24,RESPONSE,5,5,5
+E24,RESPONSE,6,6,6
+E24,RESPONSE,7,7,7
+E24,RESPONSE,8,8,8
+E24,RESPONSE,9,9,9
+E24,RESPONSE, Extremely important, Ekstremt viktig,10
+E24,RESPONSE, (Don't know),(Vet ikke),888
+E25,REQUEST,"...form their own opinion, independently of others?","...gjøre seg opp sin egen mening, uavhengig av andre?",
+E25,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+E25,RESPONSE,1,1,1
+E25,RESPONSE,2,2,2
+E25,RESPONSE,3,3,3
+E25,RESPONSE,4,4,4
+E25,RESPONSE,5,5,5
+E25,RESPONSE,6,6,6
+E25,RESPONSE,7,7,7
+E25,RESPONSE,8,8,8
+E25,RESPONSE,9,9,9
+E25,RESPONSE, Extremely important, Ekstremt viktig,10
+E25,RESPONSE, (Don't know),(Vet ikke),888
+E26,REQUEST,...be active in voluntary organisations?,...være aktiv i frivillige organisasjoner?,
+E26,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+E26,RESPONSE,1,1,1
+E26,RESPONSE,2,2,2
+E26,RESPONSE,3,3,3
+E26,RESPONSE,4,4,4
+E26,RESPONSE,5,5,5
+E26,RESPONSE,6,6,6
+E26,RESPONSE,7,7,7
+E26,RESPONSE,8,8,8
+E26,RESPONSE,9,9,9
+E26,RESPONSE, Extremely important, Ekstremt viktig,10
+E26,RESPONSE, (Don't know),(Vet ikke),888
+E27,REQUEST,...be active in voluntary politics?,... være politisk aktiv?,
+E27,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+E27,RESPONSE,1,1,1
+E27,RESPONSE,2,2,2
+E27,RESPONSE,3,3,3
+E27,RESPONSE,4,4,4
+E27,RESPONSE,5,5,5
+E27,RESPONSE,6,6,6
+E27,RESPONSE,7,7,7
+E27,RESPONSE,8,8,8
+E27,RESPONSE,9,9,9
+E27,RESPONSE, Extremely important, Ekstremt viktig,10
+E27,RESPONSE, (Don't know),(Vet ikke),888
+E28,REQUEST,...How long have you lived in this area?,Hvor lenge har du bodd i dette området?,
+E29,REQUEST,The next set of questions is about working life.,Er du for tiden...,
+E29,RESPONSE,...employed (ASK E30),".ansatt,",1
+E29,RESPONSE,...self-employed,selvstendig næringsdrivende,2
+E29,RESPONSE,"or, not in paid work? (GO TO F1)",eller ikke i betalt arbeid?,3
+E29,RESPONSE,(Don't know),(Vet ikke),888
+E30,REQUEST,I am going to read out a list of things about your working life.,Jeg vil nå lese opp en liste med ting som har med arbeidet ditt å gjøre.,
+E30,REQUEST,"Using this card, please say how much the management at your work allows you...",Bruk kortet til å si i hvor stor grad ledelsen på jobben din lar deg...,
+E30,REQUEST,... to be flexible in your working hours?,... ha en fleksibel arbeidstid?,
+E30,RESPONSE, I have no influence, Jeg har ingen inflytelse over det,0
+E30,RESPONSE,1,1,1
+E30,RESPONSE,2,2,2
+E30,RESPONSE,3,3,3
+E30,RESPONSE,4,4,4
+E30,RESPONSE,5,5,5
+E30,RESPONSE,6,6,6
+E30,RESPONSE,7,7,7
+E30,RESPONSE,8,8,8
+E30,RESPONSE,9,9,9
+E30,RESPONSE, I have complete control, Jeg har full kontroll,10
+E30,RESPONSE, (Don't know),(Vet ikke),888
+E31,REQUEST,...to decide how your own daily work is organised?,...selv organisere arbeidsdagen din?,
+E31,RESPONSE, I have no influence, Jeg har ingen inflytelse over det,0
+E31,RESPONSE,1,1,1
+E31,RESPONSE,2,2,2
+E31,RESPONSE,3,3,3
+E31,RESPONSE,4,4,4
+E31,RESPONSE,5,5,5
+E31,RESPONSE,6,6,6
+E31,RESPONSE,7,7,7
+E31,RESPONSE,8,8,8
+E31,RESPONSE,9,9,9
+E31,RESPONSE, I have complete control, Jeg har full kontroll,10
+E31,RESPONSE, (Don't know),(Vet ikke),888
+E32,REQUEST,...to influence your environment?,...påvirke arbeidsmiljøet ditt?,
+E32,RESPONSE, I have no influence, Jeg har ingen inflytelse over det,0
+E32,RESPONSE,1,1,1
+E32,RESPONSE,2,2,2
+E32,RESPONSE,3,3,3
+E32,RESPONSE,4,4,4
+E32,RESPONSE,5,5,5
+E32,RESPONSE,6,6,6
+E32,RESPONSE,7,7,7
+E32,RESPONSE,8,8,8
+E32,RESPONSE,9,9,9
+E32,RESPONSE, I have complete control, Jeg har full kontroll,10
+E32,RESPONSE, (Don't know),(Vet ikke),888
+E33,REQUEST,...to influence decisions about the general direction of your work?,... påvirke beslutninger om hva som er målet med arbeidet ditt?,
+E33,RESPONSE, I have no influence, Jeg har ingen inflytelse over det,0
+E33,RESPONSE,1,1,1
+E33,RESPONSE,2,2,2
+E33,RESPONSE,3,3,3
+E33,RESPONSE,4,4,4
+E33,RESPONSE,5,5,5
+E33,RESPONSE,6,6,6
+E33,RESPONSE,7,7,7
+E33,RESPONSE,8,8,8
+E33,RESPONSE,9,9,9
+E33,RESPONSE, I have complete control, Jeg har full kontroll,10
+E33,RESPONSE, (Don't know),(Vet ikke),888
+E34,REQUEST,...to change your work tasks if you wish to?,"...forandre arbeidsoppgavene dine, hvis du ønsker det?",
+E34,RESPONSE, I have no influence, Jeg har ingen inflytelse over det,0
+E34,RESPONSE,1,1,1
+E34,RESPONSE,2,2,2
+E34,RESPONSE,3,3,3
+E34,RESPONSE,4,4,4
+E34,RESPONSE,5,5,5
+E34,RESPONSE,6,6,6
+E34,RESPONSE,7,7,7
+E34,RESPONSE,8,8,8
+E34,RESPONSE,9,9,9
+E34,RESPONSE, I have complete control, Jeg har full kontroll,10
+E34,RESPONSE, (Don't know),(Vet ikke),888
+E35,REQUEST,"Now using this card, how difficult or easy would it be for you...",Bruk nå dette kortet til å si hvor vanskelig eller lett vil det være for deg...,
+E35,REQUEST,... to get a similar or better job with another employer if you wanted to?,"...få en like god eller bedre jobb hos en annen arbeidsgiver, hvis du skulle ønske det?",
+E35,RESPONSE, Extremely difficult, Ekstremt vanskelig,0
+E35,RESPONSE,1,1,1
+E35,RESPONSE,2,2,2
+E35,RESPONSE,3,3,3
+E35,RESPONSE,4,4,4
+E35,RESPONSE,5,5,5
+E35,RESPONSE,6,6,6
+E35,RESPONSE,7,7,7
+E35,RESPONSE,8,8,8
+E35,RESPONSE,9,9,9
+E35,RESPONSE, Extremely easy, Ekstremt lett,10
+E35,RESPONSE, (Don't know),(Vet ikke),888
+E36,REQUEST,... to start your own business if you wanted to?,"...starte for deg selv, hvis du skulle ønske det?",
+E36,RESPONSE, Extremely difficult, Ekstremt vanskelig,0
+E36,RESPONSE,1,1,1
+E36,RESPONSE,2,2,2
+E36,RESPONSE,3,3,3
+E36,RESPONSE,4,4,4
+E36,RESPONSE,5,5,5
+E36,RESPONSE,6,6,6
+E36,RESPONSE,7,7,7
+E36,RESPONSE,8,8,8
+E36,RESPONSE,9,9,9
+E36,RESPONSE, Extremely easy, Ekstremt lett,10
+E36,RESPONSE, (Don't know),(Vet ikke),888
+E37,REQUEST,"... Can I just check, is there a trade union or similar organisation at your work place?","Er det en fagforening, fagforbund eller en lignende organisasjon på arbeidsplassen din?",
+E37,RESPONSE,Yes (ASK E38 and E39),Ja,1
+E37,RESPONSE,No (GO TO E40),Nei,2
+E37,RESPONSE,(Don't know),(Vet ikke),888
+E38,REQUEST,How difficult or easy is it...,"Bruk dette kortet, hvor vanskelig eller lett er det...",
+E38,REQUEST,... to have a say in the actions taken by the trade union?,å ha innflytelse på hva fagforeningen eller fagforbundet gjør?,
+E38,RESPONSE, Extremely difficult, Ekstremt vanskelig,0
+E38,RESPONSE,1,1,1
+E38,RESPONSE,2,2,2
+E38,RESPONSE,3,3,3
+E38,RESPONSE,4,4,4
+E38,RESPONSE,5,5,5
+E38,RESPONSE,6,6,6
+E38,RESPONSE,7,7,7
+E38,RESPONSE,8,8,8
+E38,RESPONSE,9,9,9
+E38,RESPONSE, Extremely easy, Ekstremt lett,10
+E38,RESPONSE, (Don't know),(Vet ikke),888
+E39,REQUEST,... or the trade union to influence conditions at your place of work?,for fagforeningen eller fagforbundet å påvirke forholdene på arbeidsplassen din?,
+E39,RESPONSE, Extremely difficult, Ekstremt vanskelig,0
+E39,RESPONSE,1,1,1
+E39,RESPONSE,2,2,2
+E39,RESPONSE,3,3,3
+E39,RESPONSE,4,4,4
+E39,RESPONSE,5,5,5
+E39,RESPONSE,6,6,6
+E39,RESPONSE,7,7,7
+E39,RESPONSE,8,8,8
+E39,RESPONSE,9,9,9
+E39,RESPONSE, Extremely easy, Ekstremt lett,10
+E39,RESPONSE, (Don't know),(Vet ikke),888
+E40,REQUEST,"... During the last 12 months, how satisfied or dissatisfied have you generally been with the way things have been handled in your work or workplace?","Hvor fornøyd eller misfornøyd har du stort sett vært med hvordan ting har blitt håndtert i jobben din eller på arbeidsplassen,iløpet av de siste 12 månedene.",
+E40,INSTRUCTION,Please use this card.,KORT 49,
+E40,INSTRUCTION,,Bruk kortet til å svare.,
+E40,RESPONSE, Extremely dissatisfied, Ekstremt misfornøyd,0
+E40,RESPONSE,1,1,1
+E40,RESPONSE,2,2,2
+E40,RESPONSE,3,3,3
+E40,RESPONSE,4,4,4
+E40,RESPONSE,5,5,5
+E40,RESPONSE,6,6,6
+E40,RESPONSE,7,7,7
+E40,RESPONSE,8,8,8
+E40,RESPONSE,9,9,9
+E40,RESPONSE, Extremely satisfied, Ekstremt fornøyd,10
+E40,RESPONSE, (Don't know),(Vet ikke),888
+E41,REQUEST,"... During the last 12 months, have you made any attempt to improve conditions at work, or to prevent them from getting worse?","Har du forsøkt å forbedre arbeidsforholdene dine eller forsøkt å forhindre at de blir verre, i løpet av de siste 12 månedene?",
+E41,RESPONSE,Yes (ASK E42),Ja,1
+E41,RESPONSE,No (GO TO F1),Nei,2
+E41,RESPONSE,(Don't know),(Vet ikke),888
+E42,REQUEST,... Did any improvements result?,Førte det til noen forbedringer?,
+E43,REQUEST,"… Regardless of the outcome, how fairly or unfairly were you treated in your attempt to improve things at work?",Se nå bort fra om ting ble bedre eller ikke.,
+E43,INSTRUCTION,Please use this card.,KORT 50,
+E43,INSTRUCTION,,Svar med kortet.,
+E43,RESPONSE, Treated very unfairly, Behandlet veldig urettferdig,0
+E43,RESPONSE,1,1,1
+E43,RESPONSE,2,2,2
+E43,RESPONSE,3,3,3
+E43,RESPONSE,4,4,4
+E43,RESPONSE,5,5,5
+E43,RESPONSE,6,6,6
+E43,RESPONSE,7,7,7
+E43,RESPONSE,8,8,8
+E43,RESPONSE,9,9,9
+E43,RESPONSE, Treated very fairly, Behandlet veldig rettferdig,10
+E43,RESPONSE, (Don't know),(Vet ikke),888
+D1,REQUEST,"Thinking of people coming to live in country nowadays from other countries, would you say that...","Når du tenker på folk som kommer fra andre land for å bosette seg i Norge nå om dagen, vil du si at...",
+D1,RESPONSE,...most are of the same race or ethnic group as the majority of country 30 people,"de fleste er av den samme rasen eller etniske gruppen som flertallet av den norske befolkningen,",1
+D1,RESPONSE,most are of a different race or ethnic group,"de fleste er fra en annen rase eller etnisk gruppe,",2
+D1,RESPONSE,"or, is it about half and half?",eller at omtrent halvparten er det?,3
+D1,RESPONSE,(Don't know),(Vet ikke),888
+D2,REQUEST,"Now thinking about people coming to live in country nowadays from other countries within Europe, would you say that...",Tenk nå på folk som kommer fra andre land i Europa for å bosette segiNorge for tida.,
+D2,RESPONSE,...most come from the richer countries of Europe,flesteparten kommer fra rike land i Europa,1
+D2,RESPONSE,most come from the poorer countries of Europe,flesteparten kommer fra fattige land i Europa,2
+D2,RESPONSE,"or, is it about half and half?",eller omtrent like mange fra hver?,3
+D2,RESPONSE,(Don't know),(Vet ikke),888
+D3,REQUEST,"And what about people who come to live in country nowadays from countries outside Europe, would you say that...",Og hva med folk som kommer fra land utenfor Europa for å bosette seg i Norge for tida.,
+D3,RESPONSE,...most come from the richer countries of Europe,flesteparten kommer fra rike land utenfor Europa,1
+D3,RESPONSE,most come from the poorer countries of Europe,flesteparten kommer fra fattige land utenfor Europa,2
+D3,RESPONSE,"or, is it about half and half?",eller omtrent like mange fra hver?,3
+D3,RESPONSE,(Don't know),(Vet ikke),888
+D4,REQUEST,"Now, using this card, to what extent do you think country should allow people of the same race or ethnic group as most country people to come and live here?","I hvilken utstrekning synes du at Norge bør la folk av samme rase eller etninsk gruppe som de fleste i Norge, få bosette seg her?",
+D4,RESPONSE,Allow many to come and live here,La mange bosette seg her,1
+D4,RESPONSE,Allow some,La noen bosette seg her,2
+D4,RESPONSE,Allow a few,La enkelte bosette seg her,3
+D4,RESPONSE,Allow none,Ikke la noen bosette seg her,4
+D4,RESPONSE,(Don't know),(Vet ikke),888
+D5,REQUEST,How about people of a different race or ethnic group from most country people?,Hva med folk av en annen rase eller etninsk gruppe enn de fleste i Norge?,
+D5,INSTRUCTION,Still use this card.,FORTSATT KORT 24,
+D5,INSTRUCTION,,Bruk fortsatt dette kortet.,
+D5,RESPONSE,Allow many to come and live here,La mange bosette seg her,1
+D5,RESPONSE,Allow some,La noen bosette seg her,2
+D5,RESPONSE,Allow a few,La enkelte bosette seg her,3
+D5,RESPONSE,Allow none,Ikke la noen bosette seg her,4
+D5,RESPONSE,(Don't know),(Vet ikke),888
+D6,REQUEST,"Now, still using this card, to what extent do you think country should allow people from the richer countries in Europe to come and live here?",I hvilken utstrekning synes du at Norge bør la folk fra rike land i Europa få bosette seg her?,
+D6,RESPONSE,Allow many to come and live here,La mange bosette seg her,1
+D6,RESPONSE,Allow some,La noen bosette seg her,2
+D6,RESPONSE,Allow a few,La enkelte bosette seg her,3
+D6,RESPONSE,Allow none,Ikke la noen bosette seg her,4
+D6,RESPONSE,(Don't know),(Vet ikke),888
+D7,REQUEST,And how about people from the poorer countries in Europe?,Og hva med folk fra fattige land i Europa?,
+D7,INSTRUCTION,Still use this card.,FORTSATT KORT 24,
+D7,INSTRUCTION,,Velg ett av alternativene på kortet.,
+D7,RESPONSE,Allow many to come and live here,La mange bosette seg her,1
+D7,RESPONSE,Allow some,La noen bosette seg her,2
+D7,RESPONSE,Allow a few,La enkelte bosette seg her,3
+D7,RESPONSE,Allow none,Ikke la noen bosette seg her,4
+D7,RESPONSE,(Don't know),(Vet ikke),888
+D8,REQUEST,To what extent do you think country should allow people from the richer countries outside Europe to come and live here?,I hvilken grad synes du at Norge bør la folk fra rike land utenfor Europa få bosette seg her?,
+D8,INSTRUCTION,Use the same card.,FORTSATT KORT 24,
+D8,RESPONSE,Allow many to come and live here,La mange bosette seg her,1
+D8,RESPONSE,Allow some,La noen bosette seg her,2
+D8,RESPONSE,Allow a few,La enkelte bosette seg her,3
+D8,RESPONSE,Allow none,Ikke la noen bosette seg her,4
+D8,RESPONSE,(Don't know),(Vet ikke),888
+D9,REQUEST,How about people from the poorer countries outside Europe?,Hva med folk fra fattige land utenfor Europa?,
+D9,INSTRUCTION,Use the same card.,FORTSATT KORT 24,
+D9,INSTRUCTION,,Velg ett av alternativene på kortet.,
+D9,RESPONSE,Allow many to come and live here,La mange bosette seg her,1
+D9,RESPONSE,Allow some,La noen bosette seg her,2
+D9,RESPONSE,Allow a few,La enkelte bosette seg her,3
+D9,RESPONSE,Allow none,Ikke la noen bosette seg her,4
+D9,RESPONSE,(Don't know),(Vet ikke),888
+D10,REQUEST,"Please tell me how important you think each of these things should be in deciding whether someone born, brought up and living outside country should be able to come and live here.","Hvor viktig synes du hver av disse tingene bør være, når en skal bestemme om noen som er født, oppvokst og bor utenfor Norge skal få bosette seg her?",
+D10,INSTRUCTION,Please use this card.,KORT 25,
+D10,REQUEST,"Firstly, how important should it be for them to ...",Hvor viktig er det at de...,
+D10,REQUEST,have good educational qualifications?,...har god utdanning?,
+D10,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+D10,RESPONSE,1,1,1
+D10,RESPONSE,2,2,2
+D10,RESPONSE,3,3,3
+D10,RESPONSE,4,4,4
+D10,RESPONSE,5,5,5
+D10,RESPONSE,6,6,6
+D10,RESPONSE,7,7,7
+D10,RESPONSE,8,8,8
+D10,RESPONSE,9,9,9
+D10,RESPONSE, Extremely important, Ekstremt viktig,10
+D10,RESPONSE, (Don't know),(Vet ikke),888
+D11,REQUEST,have close family living here?,...har nær familie boende her?,
+D11,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+D11,RESPONSE,1,1,1
+D11,RESPONSE,2,2,2
+D11,RESPONSE,3,3,3
+D11,RESPONSE,4,4,4
+D11,RESPONSE,5,5,5
+D11,RESPONSE,6,6,6
+D11,RESPONSE,7,7,7
+D11,RESPONSE,8,8,8
+D11,RESPONSE,9,9,9
+D11,RESPONSE, Extremely important, Ekstremt viktig,10
+D11,RESPONSE, (Don't know),(Vet ikke),888
+D12,REQUEST,be able to speak country's official language(s)?,...kan snakke norsk?,
+D12,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+D12,RESPONSE,1,1,1
+D12,RESPONSE,2,2,2
+D12,RESPONSE,3,3,3
+D12,RESPONSE,4,4,4
+D12,RESPONSE,5,5,5
+D12,RESPONSE,6,6,6
+D12,RESPONSE,7,7,7
+D12,RESPONSE,8,8,8
+D12,RESPONSE,9,9,9
+D12,RESPONSE, Extremely important, Ekstremt viktig,10
+D12,RESPONSE, (Don't know),(Vet ikke),888
+D13,REQUEST,be able to speak country's official language(s)?,...kommer fra en kristen kultur?,
+D13,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+D13,RESPONSE,1,1,1
+D13,RESPONSE,2,2,2
+D13,RESPONSE,3,3,3
+D13,RESPONSE,4,4,4
+D13,RESPONSE,5,5,5
+D13,RESPONSE,6,6,6
+D13,RESPONSE,7,7,7
+D13,RESPONSE,8,8,8
+D13,RESPONSE,9,9,9
+D13,RESPONSE, Extremely important, Ekstremt viktig,10
+D13,RESPONSE, (Don't know),(Vet ikke),888
+D14,REQUEST,come from a Christian background?,...er hvite?,
+D14,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+D14,RESPONSE,1,1,1
+D14,RESPONSE,2,2,2
+D14,RESPONSE,3,3,3
+D14,RESPONSE,4,4,4
+D14,RESPONSE,5,5,5
+D14,RESPONSE,6,6,6
+D14,RESPONSE,7,7,7
+D14,RESPONSE,8,8,8
+D14,RESPONSE,9,9,9
+D14,RESPONSE, Extremely important, Ekstremt viktig,10
+D14,RESPONSE, (Don't know),(Vet ikke),888
+D15,REQUEST,be wealthy?,...er velstående?,
+D15,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+D15,RESPONSE,1,1,1
+D15,RESPONSE,2,2,2
+D15,RESPONSE,3,3,3
+D15,RESPONSE,4,4,4
+D15,RESPONSE,5,5,5
+D15,RESPONSE,6,6,6
+D15,RESPONSE,7,7,7
+D15,RESPONSE,8,8,8
+D15,RESPONSE,9,9,9
+D15,RESPONSE, Extremely important, Ekstremt viktig,10
+D15,RESPONSE, (Don't know),(Vet ikke),888
+D16,REQUEST,have work skills that country needs?,...har ferdigheter som Norge trenger?,
+D16,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+D16,RESPONSE,1,1,1
+D16,RESPONSE,2,2,2
+D16,RESPONSE,3,3,3
+D16,RESPONSE,4,4,4
+D16,RESPONSE,5,5,5
+D16,RESPONSE,6,6,6
+D16,RESPONSE,7,7,7
+D16,RESPONSE,8,8,8
+D16,RESPONSE,9,9,9
+D16,RESPONSE, Extremely important, Ekstremt viktig,10
+D16,RESPONSE, (Don't know),(Vet ikke),888
+D17,REQUEST,be committed to the way of life in country?,...ønsker å leve som nordmenn?,
+D17,RESPONSE, Extremely unimportant, Ekstremt lite viktig,0
+D17,RESPONSE,1,1,1
+D17,RESPONSE,2,2,2
+D17,RESPONSE,3,3,3
+D17,RESPONSE,4,4,4
+D17,RESPONSE,5,5,5
+D17,RESPONSE,6,6,6
+D17,RESPONSE,7,7,7
+D17,RESPONSE,8,8,8
+D17,RESPONSE,9,9,9
+D17,RESPONSE, Extremely important, Ekstremt viktig,10
+D17,RESPONSE, (Don't know),(Vet ikke),888
+D18,REQUEST,"Using this card, please say how much you agree or disagree with each of the following statements.",Hvor enig eller uenig er du i følgende utsagn?,
+D18,REQUEST,Firstly...,For det første...,
+D18,REQUEST,Average wages and salaries are generally brought down by people coming to live and work here,Lønningnivået for folk flest går stort sett ned når folk kommer for å bosette seg og arbeide her,
+D18,RESPONSE,Agree,Svært enig,1
+D18,RESPONSE,Agree strongly,Enig,2
+D18,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D18,RESPONSE,Disagree,Uenig,4
+D18,RESPONSE,Disagree strongly,Svært uenig,5
+D18,RESPONSE,(Don't know),(Vet ikke),888
+D19,REQUEST,People who come to live and work here generally harm the economic prospects of the poor more than the rich,"Folk som kommer for å bo og arbeide her, er stort sett en større trussel mot økonomien til de fattige enn til de rike.",
+D19,RESPONSE,Agree,Svært enig,1
+D19,RESPONSE,Agree strongly,Enig,2
+D19,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D19,RESPONSE,Disagree,Uenig,4
+D19,RESPONSE,Disagree strongly,Svært uenig,5
+D19,RESPONSE,(Don't know),(Vet ikke),888
+D20,REQUEST,People who come to live and work here help to fill jobs where there are shortages of workers,Folk som kommer for å bosette seg og arbeide her fyller jobber hvor det er mangel på arbeidskraft.,
+D20,RESPONSE,Agree,Svært enig,1
+D20,RESPONSE,Agree strongly,Enig,2
+D20,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D20,RESPONSE,Disagree,Uenig,4
+D20,RESPONSE,Disagree strongly,Svært uenig,5
+D20,RESPONSE,(Don't know),(Vet ikke),888
+D21,REQUEST,"If people who have come to live and work here are unemployed for a long period, they should be made to leave","Hvis folk som kom for å bosette seg her går arbeidsløse i lengere tid, bør de bli sendt ut av landet.",
+D21,RESPONSE,Agree,Svært enig,1
+D21,RESPONSE,Agree strongly,Enig,2
+D21,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D21,RESPONSE,Disagree,Uenig,4
+D21,RESPONSE,Disagree strongly,Svært uenig,5
+D21,RESPONSE,(Don't know),(Vet ikke),888
+D22,REQUEST,People who have come to live here should be given the same rights as everyone else,Folk som har bosatt seg her bør få de same rettighetene som alleandre,
+D22,RESPONSE,Agree,Svært enig,1
+D22,RESPONSE,Agree strongly,Enig,2
+D22,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D22,RESPONSE,Disagree,Uenig,4
+D22,RESPONSE,Disagree strongly,Svært uenig,5
+D22,RESPONSE,(Don't know),(Vet ikke),888
+D23,REQUEST,"If people who have come to live here commit a serious crime, they should be made to leave",Hvis folk som har bosatt seg her begår en alvorlig forbrytelse må de bli sendt ut av landet.,
+D23,RESPONSE,Agree,Svært enig,1
+D23,RESPONSE,Agree strongly,Enig,2
+D23,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D23,RESPONSE,Disagree,Uenig,4
+D23,RESPONSE,Disagree strongly,Svært uenig,5
+D23,RESPONSE,(Don't know),(Vet ikke),888
+D25,REQUEST,"Using this card, would you say that people who come to live here generally take jobs away from workers in country, or generally help to create new jobs?","Vil du si at folk som kommer for å bosette seg her stort sett tar jobber fra norske arbeidere, eller at de hjelper til med å skape nye jobber?",
+D25,RESPONSE, Take jobs away, Tar jobber,0
+D25,RESPONSE,1,1,1
+D25,RESPONSE,2,2,2
+D25,RESPONSE,3,3,3
+D25,RESPONSE,4,4,4
+D25,RESPONSE,5,5,5
+D25,RESPONSE,6,6,6
+D25,RESPONSE,7,7,7
+D25,RESPONSE,8,8,8
+D25,RESPONSE,9,9,9
+D25,RESPONSE, Create new jobs, Skaper nye jobber,10
+D25,RESPONSE, (Don't know),(Vet ikke),888
+D26,REQUEST,Most people who come to live here work and pay taxes.,De fleste som bosetter seg i Norge arbeider og betaler skatt.,
+D26,REQUEST,They also use health and welfare services.,De bruker også helsevesen og velferdsordninger.,
+D26,REQUEST,"On balance, do you think people who come here take out more than they put in or put in more than they take out?","Når regnskapet gjøres opp, tror du at folk som bosetter seg får mer tilbake enn de bidrar med, eller bidrar de med mer enn de får tilbake?",
+D26,INSTRUCTION,Please use this card.,KORT 28,
+D26,INSTRUCTION,,Bruk dette kortet.,
+D26,RESPONSE, Generally take out more, Får mer enn de bidrar med,0
+D26,RESPONSE,1,1,1
+D26,RESPONSE,2,2,2
+D26,RESPONSE,3,3,3
+D26,RESPONSE,4,4,4
+D26,RESPONSE,5,5,5
+D26,RESPONSE,6,6,6
+D26,RESPONSE,7,7,7
+D26,RESPONSE,8,8,8
+D26,RESPONSE,9,9,9
+D26,RESPONSE, Generally put in more, Bidrar med mer enn de får,10
+D26,RESPONSE, (Don't know),(Vet ikke),888
+D27,REQUEST,Would you say it is generally bad or good for country's economy that people come to live here from other countries?,"Vil du si at det, alt i alt, er bra eller dårlig for den norske økonomien at folk kommer fra andre land for å bosette seg her?",
+D27,INSTRUCTION,Please use this card.,KORT 29,
+D27,INSTRUCTION,,Svar med utgangspunkt i kortet.,
+D27,RESPONSE, Bad for the economy, Dårlig for økonomien,0
+D27,RESPONSE,1,1,1
+D27,RESPONSE,2,2,2
+D27,RESPONSE,3,3,3
+D27,RESPONSE,4,4,4
+D27,RESPONSE,5,5,5
+D27,RESPONSE,6,6,6
+D27,RESPONSE,7,7,7
+D27,RESPONSE,8,8,8
+D27,RESPONSE,9,9,9
+D27,RESPONSE, Good for the economy, Bra for økonomien,10
+D27,RESPONSE, (Don't know),(Vet ikke),888
+D28,REQUEST,"And, using this card, would you say that country's cultural life is generally undermined or enriched by people coming to live here from other countries?",Vil du si at norsk kultur stort sett blir undergravet eller beriket av folk som kommer fra andre land for å bosette seg her?,
+D28,RESPONSE, Cultural life undermined, Norsk kultur blir undergravd,0
+D28,RESPONSE,1,1,1
+D28,RESPONSE,2,2,2
+D28,RESPONSE,3,3,3
+D28,RESPONSE,4,4,4
+D28,RESPONSE,5,5,5
+D28,RESPONSE,6,6,6
+D28,RESPONSE,7,7,7
+D28,RESPONSE,8,8,8
+D28,RESPONSE,9,9,9
+D28,RESPONSE, Cultural life enriched, Norsk kultur blir beriket,10
+D28,RESPONSE, (Don't know),(Vet ikke),888
+D29,REQUEST,Is country made a worse or a better place to live by people coming to live here from other countries?,Er det blitt verre eller bedre å bo i Norge på grunn av at folk kommer fra andre land for å bosette seg her?,
+D29,INSTRUCTION,Please use this card.,KORT 31,
+D29,INSTRUCTION,,Bruk dette kortet til å svare.,
+D29,RESPONSE, Worse place to live, Et verre sted å bo,0
+D29,RESPONSE,1,1,1
+D29,RESPONSE,2,2,2
+D29,RESPONSE,3,3,3
+D29,RESPONSE,4,4,4
+D29,RESPONSE,5,5,5
+D29,RESPONSE,6,6,6
+D29,RESPONSE,7,7,7
+D29,RESPONSE,8,8,8
+D29,RESPONSE,9,9,9
+D29,RESPONSE, Better place to live, Et bedre sted å bo,10
+D29,RESPONSE, (Don't know),(Vet ikke),888
+D30,REQUEST,Are country's crime problems made worse or better by people coming to live here from other countries?,Er problemene med kriminalitet i Norge blitt verre eller bedre på grunn av folk som kommer fra andre land for å bosette seg her?,
+D30,INSTRUCTION,Please use this card.,KORT 32,
+D30,RESPONSE, Crime problems made worse, Problemer med kriminalitet har blitt verre,0
+D30,RESPONSE,1,1,1
+D30,RESPONSE,2,2,2
+D30,RESPONSE,3,3,3
+D30,RESPONSE,4,4,4
+D30,RESPONSE,5,5,5
+D30,RESPONSE,6,6,6
+D30,RESPONSE,7,7,7
+D30,RESPONSE,8,8,8
+D30,RESPONSE,9,9,9
+D30,RESPONSE, Crime problems made better, Problemer med kriminalitet har blitt bedre,10
+D30,RESPONSE, (Don't know),(Vet ikke),888
+D31,REQUEST,"When people leave their countries to come to live in country, do you think it has a bad or good effect on those countries in the long run?","Når folk forlater hjemlandet sitt for å bosette seg i Norge,tror du at det har en god eller dårlig innvirkning på landene de kommer fra på lang sikt?",
+D31,INSTRUCTION,Please use this card.,KORT 33,
+D31,INSTRUCTION,,Bruk dette kortet.,
+D31,RESPONSE, Bad for those countries in the long run, Dårlig for landene de flytter fra på på lang sikt,0
+D31,RESPONSE,1,1,1
+D31,RESPONSE,2,2,2
+D31,RESPONSE,3,3,3
+D31,RESPONSE,4,4,4
+D31,RESPONSE,5,5,5
+D31,RESPONSE,6,6,6
+D31,RESPONSE,7,7,7
+D31,RESPONSE,8,8,8
+D31,RESPONSE,9,9,9
+D31,RESPONSE, Good for those countries in the long run, Bra for landene de flytter fra på lang sikt,10
+D31,RESPONSE, (Don't know),(Vet ikke),888
+D32,REQUEST,"Using this card, please say how much you agree or disagree with the following statements.",Vær snill å bruke dette kortet til neste spørsmål.,
+D32,REQUEST,Firstly...,Hvor enig eller uenig er du i følgende påstand:,
+D32,REQUEST,All countries benefit if people can move to countries where their skills are most needed,Alle land vil tjene på at folk kan flytte til land hvor ferdighetene deres trengs mest.,
+D32,RESPONSE,Agree,Svært enig,1
+D32,RESPONSE,Agree strongly,Enig,2
+D32,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D32,RESPONSE,Disagree,Uenig,4
+D32,RESPONSE,Disagree strongly,Svært uenig,5
+D32,RESPONSE,(Don't know),(Vet ikke),888
+D33,REQUEST,Richer countries have a responsibility to accept people from poorer countries,Rike land har et ansvar for å taimot folk fra fattige land.,
+D33,RESPONSE,Agree,Svært enig,1
+D33,RESPONSE,Agree strongly,Enig,2
+D33,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D33,RESPONSE,Disagree,Uenig,4
+D33,RESPONSE,Disagree strongly,Svært uenig,5
+D33,RESPONSE,(Don't know),(Vet ikke),888
+D34,REQUEST,"Now thinking again of people who have come to live in country from another country who are of the same race or ethnic group as most country people, how much would you mind or not mind if someone like this...","Tenk nå igjen på folk som har kommet fra et annet land for å bosette seg i Norge, som er av samme rase eller etninsk gruppe som de fleste i Norge.",
+D34,REQUEST,was appointed as your boss?,"Hvor mye ville du hatt imot, eller ville du ikke hatt noe imot at en slik person...",
+D34,INSTRUCTION,Please use this card for your answer.,KORT 35,
+D34,INSTRUCTION,,Bruk dette kortet til å svare,
+D34,RESPONSE, Not mind at all, Har slett ikke noe i mot,0
+D34,RESPONSE,1,1,1
+D34,RESPONSE,2,2,2
+D34,RESPONSE,3,3,3
+D34,RESPONSE,4,4,4
+D34,RESPONSE,5,5,5
+D34,RESPONSE,6,6,6
+D34,RESPONSE,7,7,7
+D34,RESPONSE,8,8,8
+D34,RESPONSE,9,9,9
+D34,RESPONSE, Mind a lot, Har mye imot,10
+D34,RESPONSE, (Don't know),(Vet ikke),888
+D35,REQUEST,married a close relative of yours?,"Hvor mye ville du hatt imot, eller ville du ikke hatt noe imot at en slik person...",
+D35,INSTRUCTION,Please use this card again.,Bruk kortet igjen.,
+D35,RESPONSE, Not mind at all, Har slett ikke noe i mot,0
+D35,RESPONSE,1,1,1
+D35,RESPONSE,2,2,2
+D35,RESPONSE,3,3,3
+D35,RESPONSE,4,4,4
+D35,RESPONSE,5,5,5
+D35,RESPONSE,6,6,6
+D35,RESPONSE,7,7,7
+D35,RESPONSE,8,8,8
+D35,RESPONSE,9,9,9
+D35,RESPONSE, Mind a lot, Har mye imot,10
+D35,RESPONSE, (Don't know),(Vet ikke),888
+D36,REQUEST,And now thinking of people who have come to live in country from another country who are of a different race or ethnic group from most country people.,Tenk nå igjen på folk som har kommet fra et annet land for å bosette seg i Norge som er av en annen rase eller etninsk gruppe enn de fleste i Norge.,
+D36,REQUEST,How much would you mind or not mind if someone like this...,Hvor mye ville du hatt imot eller ville du ikke hatt noe imot at en slik person...,
+D36,REQUEST,was appointed as your boss?,...ble satt til å være sjefen din?,
+D36,INSTRUCTION,Please use this card for your answer.,KORT 35 IGJEN,
+D36,INSTRUCTION,,Bruk dette kortet til å svare,
+D36,RESPONSE, Not mind at all, Har slett ikke noe i mot,0
+D36,RESPONSE,1,1,1
+D36,RESPONSE,2,2,2
+D36,RESPONSE,3,3,3
+D36,RESPONSE,4,4,4
+D36,RESPONSE,5,5,5
+D36,RESPONSE,6,6,6
+D36,RESPONSE,7,7,7
+D36,RESPONSE,8,8,8
+D36,RESPONSE,9,9,9
+D36,RESPONSE, Mind a lot, Har mye imot,10
+D36,RESPONSE, (Don't know),(Vet ikke),888
+D37,REQUEST,married a close relative of yours?,...giftet seg med en nær slektning av deg?,
+D37,INSTRUCTION,Please use this card again.,Bruk kortet igjen.,
+D37,RESPONSE, Not mind at all, Har slett ikke noe i mot,0
+D37,RESPONSE,1,1,1
+D37,RESPONSE,2,2,2
+D37,RESPONSE,3,3,3
+D37,RESPONSE,4,4,4
+D37,RESPONSE,5,5,5
+D37,RESPONSE,6,6,6
+D37,RESPONSE,7,7,7
+D37,RESPONSE,8,8,8
+D37,RESPONSE,9,9,9
+D37,RESPONSE, Mind a lot, Har mye imot,10
+D37,RESPONSE, (Don't know),(Vet ikke),888
+D38,REQUEST,Suppose you were choosing where to live.,"Hvis du kunne velge hvor du ville bo, i hvilket av områdene på dette kortet ville du foretrekke å bo?",
+D38,REQUEST,Which of the three types of area on this card would you ideally wish to live in?,Et område hvor...,
+D38,RESPONSE,An area where almost nobody was of a different race or ethnic group from most country people,nesten ingen er av en annen rase eller etninsk gruppe enn de fleste i Norge.,1
+D38,RESPONSE,Some people were of a different race or ethnic group from most country people,noen er av en annen rase eller etninsk gruppe enn de fleste i Norge.,2
+D38,RESPONSE,Many people were of a different race or ethnic group,mange er av en annen rase eller etninsk gruppe.,3
+D38,RESPONSE,It would make no difference,Spiller ingen rolle for meg.,4
+D38,RESPONSE,(Don't know),(Vet ikke),888
+D39,REQUEST,"And now using this card, how would you describe the area where you currently live?",Jeg bor i et område hvor...,
+D39,RESPONSE,An area where almost nobody was of a different race or ethnic group from most country people,nesten ingen er av en annen rase eller etninsk gruppe enn de fleste i Norge.,1
+D39,RESPONSE,Some people were of a different race or ethnic group from most country people,noen er av en annen rase eller etninsk gruppe enn de fleste i Norge.,2
+D39,RESPONSE,Many people were of a different race or ethnic group,mange er av en annen rase eller etninsk gruppe.,3
+D39,RESPONSE,It would make no difference,Spiller ingen rolle for meg.,4
+D39,RESPONSE,(Don't know),(Vet ikke),888
+D40,REQUEST,"Using this card, please tell me how much you agree or disagree with each of these statements.",Bruk dette kortet til å fortelle meg hvor enig eller uenig du er i følgende påstander.,
+D40,REQUEST,Firstly...,Det er best for et land at nesten alle har de samme skikkene og tradisjonene,
+D40,RESPONSE,Agree,Svært enig,1
+D40,RESPONSE,Agree strongly,Enig,2
+D40,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D40,RESPONSE,Disagree,Uenig,4
+D40,RESPONSE,Disagree strongly,Svært uenig,5
+D40,RESPONSE,(Don't know),(Vet ikke),888
+D41,REQUEST,It is better for a country if there are a variety of different religions,Det er best for et land at det er mange forskjellige religioner,
+D41,RESPONSE,Agree,Svært enig,1
+D41,RESPONSE,Agree strongly,Enig,2
+D41,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D41,RESPONSE,Disagree,Uenig,4
+D41,RESPONSE,Disagree strongly,Svært uenig,5
+D41,RESPONSE,(Don't know),(Vet ikke),888
+D42,REQUEST,It is better for a country if almost everyone is able to speak at least one common language,Det er best for et land at nesten alle kan snakke minst ett felles språk,
+D42,RESPONSE,Agree,Svært enig,1
+D42,RESPONSE,Agree strongly,Enig,2
+D42,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D42,RESPONSE,Disagree,Uenig,4
+D42,RESPONSE,Disagree strongly,Svært uenig,5
+D42,RESPONSE,(Don't know),(Vet ikke),888
+D43,REQUEST,Communities of people who have come to live here should be allowed to educate their children in their own separate schools if they wish,"Grupper av folk som har kommet for å bosette seg her, bør ha anledning til å gi barna sine undervisning i sine egne skoler hvis de ønsker det.",
+D43,RESPONSE,Agree,Svært enig,1
+D43,RESPONSE,Agree strongly,Enig,2
+D43,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D43,RESPONSE,Disagree,Uenig,4
+D43,RESPONSE,Disagree strongly,Svært uenig,5
+D43,RESPONSE,(Don't know),(Vet ikke),888
+D44,REQUEST,If a country wants to reduce tensions it should stop immigration,Hvis et land ønsker å redusere motsettninger må det stoppe innvandringen.,
+D44,RESPONSE,Agree,Svært enig,1
+D44,RESPONSE,Agree strongly,Enig,2
+D44,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D44,RESPONSE,Disagree,Uenig,4
+D44,RESPONSE,Disagree strongly,Svært uenig,5
+D44,RESPONSE,(Don't know),(Vet ikke),888
+D45,REQUEST,How good or bad are each of these things for a country?,Hvor gode eller dårlige er hver av disse tingene for et land?,
+D45,INSTRUCTION,Please use this card.,KORT 39:,
+D45,INSTRUCTION,,Bruk kortet.,
+D45,INSTRUCTION,,Velg et tall fra kortet.,
+D45,REQUEST,Firstly...,Vi begynner med...,
+D45,REQUEST,A law against racial or ethnic discrimination in the workplace.,en lov mot rasistisk og etnisk diskriminering på arbeidsplassen.,
+D45,INSTRUCTION,Please use this card for your answer.,KORT 39:,
+D45,RESPONSE, Extremely bad, Ekstremt dårlig,0
+D45,RESPONSE,1,1,1
+D45,RESPONSE,2,2,2
+D45,RESPONSE,3,3,3
+D45,RESPONSE,4,4,4
+D45,RESPONSE,5,5,5
+D45,RESPONSE,6,6,6
+D45,RESPONSE,7,7,7
+D45,RESPONSE,8,8,8
+D45,RESPONSE,9,9,9
+D45,RESPONSE, Extremely good, Ekstremt bra,10
+D45,RESPONSE, (Don't know),(Vet ikke),888
+D46,REQUEST,A law against promoting racial or ethnic hatred,en lov mot å fremme rasehat og hat mot etniske grupper.,
+D46,RESPONSE, Extremely bad, Ekstremt dårlig,0
+D46,RESPONSE,1,1,1
+D46,RESPONSE,2,2,2
+D46,RESPONSE,3,3,3
+D46,RESPONSE,4,4,4
+D46,RESPONSE,5,5,5
+D46,RESPONSE,6,6,6
+D46,RESPONSE,7,7,7
+D46,RESPONSE,8,8,8
+D46,RESPONSE,9,9,9
+D46,RESPONSE, Extremely good, Ekstremt bra,10
+D46,RESPONSE, (Don't know),(Vet ikke),888
+D47,REQUEST,Do you have any friends who have come to live in country from another country?,Har du venner fra et annet land som har kommet for å bosette seg i Norge?,
+D47,RESPONSE,"Yes, several","Ja, flere",1
+D47,RESPONSE,"Yes, a few",Ja en eller noen få,2
+D47,RESPONSE,"No, none at all","Nei, ingen",3
+D47,RESPONSE,(Don't know),(Vet ikke),888
+D48,REQUEST,Do you have any colleagues at work who have come to live in country from another country?,Har du noen arbeidskollegaer som har kommet fra et annet land for å bosette seg i. Norge?,
+D48,RESPONSE,"Yes, several","Ja, flere",1
+D48,RESPONSE,"Yes, a few",Ja en eller noen få,2
+D48,RESPONSE,"No, none at all","Nei, ingen",3
+D48,RESPONSE,(Don't know),(Vet ikke),888
+D49,REQUEST,Some people come to this country and apply for refugee status on the grounds that they fear persecution in their own country.,Noen mennesker kommer hit til landet og søker flyktningestatus fordi de frykter forfølgelse i sitt hjemland.,
+D49,REQUEST,"Using this card, please say how much you agree or disagree with the following statements.",Se på dette kortet og si hvor enig eller uenig du er i følgende påstander.,
+D49,REQUEST,Firstly...,Vi begynner med...,
+D49,REQUEST,country has more than its fair share of people applying for refugee status,Norge får flere søknader fra folk som søker om flyktningestatus enn hva som er rett og rimelig,
+D49,RESPONSE,Agree,Svært enig,1
+D49,RESPONSE,Agree strongly,Enig,2
+D49,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D49,RESPONSE,Disagree,Uenig,4
+D49,RESPONSE,Disagree strongly,Svært uenig,5
+D49,RESPONSE,(Don't know),(Vet ikke),888
+D50,REQUEST,"While their applications for refugee status are being considered, people should be allowed to work in country",Folk burde få lov til å arbeide i Norge mens søknadene deres om asyl blir behandlet,
+D50,RESPONSE,Agree,Svært enig,1
+D50,RESPONSE,Agree strongly,Enig,2
+D50,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D50,RESPONSE,Disagree,Uenig,4
+D50,RESPONSE,Disagree strongly,Svært uenig,5
+D50,RESPONSE,(Don't know),(Vet ikke),888
+D51,REQUEST,The government should be generous in judging people's applications for refugee status,Myndighetene bør vise storsinn når de vurdere folks søknader om flyktningestatus,
+D51,RESPONSE,Agree,Svært enig,1
+D51,RESPONSE,Agree strongly,Enig,2
+D51,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D51,RESPONSE,Disagree,Uenig,4
+D51,RESPONSE,Disagree strongly,Svært uenig,5
+D51,RESPONSE,(Don't know),(Vet ikke),888
+D52,REQUEST,Most applicants for refugee status aren't in real fear of persecution in their own countries,De fleste som søker flyktningestatus i Norge har ingen virkelig grunn til å frykte forfølgelse i sine egne land,
+D52,RESPONSE,Agree,Svært enig,1
+D52,RESPONSE,Agree strongly,Enig,2
+D52,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D52,RESPONSE,Disagree,Uenig,4
+D52,RESPONSE,Disagree strongly,Svært uenig,5
+D52,RESPONSE,(Don't know),(Vet ikke),888
+D53,REQUEST,"While their cases are being considered, applicants should be kept in detention centres",Mens sakene deres blir vurdert bør søkere holdes i assylmottak.,
+D53,RESPONSE,Agree,Svært enig,1
+D53,RESPONSE,Agree strongly,Enig,2
+D53,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D53,RESPONSE,Disagree,Uenig,4
+D53,RESPONSE,Disagree strongly,Svært uenig,5
+D53,RESPONSE,(Don't know),(Vet ikke),888
+D54,REQUEST,"While their cases are being considered, the country government should give financial support to applicants","Mens sakene deres blir vurdert, bør norske myndigheter gi økonomisk støtte til søkerne.",
+D54,RESPONSE,Agree,Svært enig,1
+D54,RESPONSE,Agree strongly,Enig,2
+D54,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D54,RESPONSE,Disagree,Uenig,4
+D54,RESPONSE,Disagree strongly,Svært uenig,5
+D54,RESPONSE,(Don't know),(Vet ikke),888
+D55,REQUEST,Refugees whose applications are granted should be entitled to bring in their close family members,"Flyktninger som har fått innvilget søknadene sine, bør ha lov til å ta med seg nær familie.",
+D55,RESPONSE,Agree,Svært enig,1
+D55,RESPONSE,Agree strongly,Enig,2
+D55,RESPONSE,Neither agree nor disagree,Verken enig eller uenig,3
+D55,RESPONSE,Disagree,Uenig,4
+D55,RESPONSE,Disagree strongly,Svært uenig,5
+D55,RESPONSE,(Don't know),(Vet ikke),888
+D56,REQUEST,"Out of every 100 people living in country, how many do you think were born outside country?",Av hundre personer som bor i Norge hvor mange tror du er født utenfor Norge?,
+D57,REQUEST,"Compared to other European countries of about the same size as country, do you think that more or fewer people to come and live here from other countries?","Sammenliknet med andre europeiske land på omtrent samme størrelse som Norge, hvor mange kommer fra andre land og bosetter seg her?",
+D57,INSTRUCTION,Please use this card.,KORT 41,
+D57,RESPONSE,Far more people come to live in country,Langt flere kommer og bosetter seg i Norge,1
+D57,RESPONSE,More people come to live in country,Flere kommer og bosetter seg i Norge,2
+D57,RESPONSE,About the same number of people come to live in country,Omtrent like mange kommer for å bosette seg i Norge,3
+D57,RESPONSE,Fewer people come to live in country,Færre kommer og bosetter seg i Norge,4
+D57,RESPONSE,Far fewer people come to live in country,Langt færre kommer og bosetter seg i Norge,5
+D57,RESPONSE,(Don't know),(Vet ikke),888
+D58,REQUEST,How do you think the number of people leaving country nowadays compares to the number coming to live in country?,"Hvor mange tror du forlater Norge nå for tiden, sammenlignet med hvor mange som kommer for å bo her?",
+D58,INSTRUCTION,Please use this card.,KORT 42,
+D58,INSTRUCTION,,Se på kortet.,
+D58,RESPONSE,Many more people leaving,Mange flere folk forlater Norge,1
+D58,RESPONSE,More people leaving,Flere folk forlater Norge,2
+D58,RESPONSE,About the same arriving and leaving,Omtrent like mange kommer og drar,3
+D58,RESPONSE,More people arriving,Flere folk kommer til Norge,4
+D58,RESPONSE,Many more people arriving,Mange flere folk kommer til Norge,5
+D58,RESPONSE,(Don't know),(Vet ikke),888
+H1,REQUEST,"On an average weekday, how much time, in total, do you spend watching","Hvor mye tid bruker du, alt i alt, til å se på TV en vanlig ukedag?",
+H2,REQUEST,"On an average weekday, how much time, in total, do you spend listening to the radio?","Hvor mye tid, alt i alt, bruker du til å høre på radio, på en vanlig ukedag?",
+H3,REQUEST,"On an average weekday, how much time, in total, do you spend reading the newspapers?","Hvor mye tid, alt i alt, bruker du til å lese aviser, på en vanlig ukedag?",
+H4,REQUEST,"Using this card, please say to what extent you agree or disagree with each of the following statements.",Hvor enig eller uenig er du i hvert av de følgende utsagnene?,
+H4,REQUEST,Sometimes politics seems so complicated that I can't really understand what is going on,"""Av og til virker politikk så komplisert at jeg egentlig ikke skjønner noe av det.""",
+H4,RESPONSE,Disagree strongly, Helt uenig,1
+H4,RESPONSE,Disagree, Uenig,2
+H4,RESPONSE,Neither disagree nor agree, Verken enig eller uenig,3
+H4,RESPONSE,Agree, Enig,4
+H4,RESPONSE,Agree strongly, Helt enig,5
+H4,RESPONSE,(Don't know),(Vet ikke),888
+H5,REQUEST,I think I could take an active role in a group involved with political issues,"""Jeg tror jeg hadde kunnet delta aktivt i en gruppe som arbeider med politiske saker.""",
+H5,RESPONSE,Disagree strongly, Helt uenig,1
+H5,RESPONSE,Disagree, Uenig,2
+H5,RESPONSE,Neither disagree nor agree, Verken enig eller uenig,3
+H5,RESPONSE,Agree, Enig,4
+H5,RESPONSE,Agree strongly, Helt enig,5
+H5,RESPONSE,(Don't know),(Vet ikke),888
+H6,REQUEST,I find it easy to make my mind up about political issues.,"""Jeg synes det er lett å bestemme meg for hva jeg mener om politiske saker.""",
+H6,RESPONSE,Disagree strongly, Helt uenig,1
+H6,RESPONSE,Disagree, Uenig,2
+H6,RESPONSE,Neither disagree nor agree, Verken enig eller uenig,3
+H6,RESPONSE,Agree, Enig,4
+H6,RESPONSE,Agree strongly, Helt enig,5
+H6,RESPONSE,(Don't know),(Vet ikke),888
+H7,REQUEST,On the whole how satisfied are you with the present state of the economy in country?,Hvor fornøyd er du i det store og hele med den nåværende økonomiske situasjonen i Norge?,
+H7,RESPONSE,Very dissatisfied, Veldig misfornøyd,1
+H7,RESPONSE,Fairly dissatisfied, Ganske misfornøyd,2
+H7,RESPONSE,Fairly satisfied, Ganske fornøyd,3
+H7,RESPONSE,Very satisfied, Veldig fornøyd,4
+H7,RESPONSE,(Don't know),(Vet ikke),888
+H8,REQUEST,"Now thinking about the country government, how satisfied are you with the way it is doing its job?",Tenk nå på regjeringen i Norge.,
+H8,RESPONSE,Very dissatisfied, Veldig misfornøyd,1
+H8,RESPONSE,Fairly dissatisfied, Ganske misfornøyd,2
+H8,RESPONSE,Fairly satisfied, Ganske fornøyd,3
+H8,RESPONSE,Very satisfied, Veldig fornøyd,4
+H8,RESPONSE,(Don't know),(Vet ikke),888
+H9,REQUEST,"And on the whole, how satisfied are you with the way democracy works in country?","Og sett under ett, hvor fornøyd er du med måten demokratiet fungerer på i Norge?",
+H9,RESPONSE,Very dissatisfied, Veldig misfornøyd,1
+H9,RESPONSE,Fairly dissatisfied, Ganske misfornøyd,2
+H9,RESPONSE,Fairly satisfied, Ganske fornøyd,3
+H9,RESPONSE,Very satisfied, Veldig fornøyd,4
+H9,RESPONSE,(Don't know),(Vet ikke),888
+H10,REQUEST,"Generally speaking, would you say that most people can be trusted, or that you can't be too careful in dealing with people?","Vil du stort sett si at de fleste er til å stole på, eller at en ikke kan være for forsiktig når en har med andre å gjøre?",
+H10,REQUEST,"Please tell me on a score of 0 to 5, where 0 means you can't be too careful and 5 means that most people can be trusted.",Vær så snill å vise hva som stemmer best med din mening ved å sette ett kryss på skalaen nedenfor.,
+H10,RESPONSE, You can't be too careful,En kan ikke være for forsiktig,0
+H10,RESPONSE,1,1,1
+H10,RESPONSE,2,2,2
+H10,RESPONSE,3,3,3
+H10,RESPONSE,4,4,4
+H10,RESPONSE, Most people can be trusted,De fleste er til å stole på,5
+H10,RESPONSE,(Don't know),(Vet ikke),888
+H11,REQUEST,"Do you think that most people would try to take advantage of you if they got the chance, or would they try to be fair?","Tror du at folk flest vil prøve å utnytte deg hvis de fikk sjansen, eller vil de prøve å behandle deg rimelig og rettferdig?",
+H11,RESPONSE,1,Folk flest vil prøve å utnytte meg,1
+H11,RESPONSE,2,2,2
+H11,RESPONSE,3,3,3
+H11,RESPONSE,4,4,4
+H11,RESPONSE, Most people would try to be fair,Folk flest vil prøve å være rimelige og rettferdige,5
+H11,RESPONSE,(Don't know),(Vet ikke),888
+H12,REQUEST,Would you say that most of the time people try to be helpful or that they are mostly looking out for themselves?,"Vil du si at folk for det meste prøver å være hjelpsomme, eller at de stort sett har nok med selg selv?",
+H12,RESPONSE, People mostly look out for themselves,Folk har stort sett nok med seg selv,0
+H12,RESPONSE,1,1,1
+H12,RESPONSE,2,2,2
+H12,RESPONSE,3,3,3
+H12,RESPONSE,4,4,4
+H12,RESPONSE, People mostly try to be helpful,Folk forsøker stort sett å være hjelpsomme,5
+H12,RESPONSE,(Don't know),(Vet ikke),888
+H13,INSTRUCTION,CARD G,Kryss av i ruta som stemmer best med din mening.,
+H13,REQUEST,"Using this card, please indicate on a score of 0 to 10 how much you personally trust each of the institutions I read out.",Kryss av på en skala fra 0-10 for hvor stor tillit du personlig har til hver av institusjonene nedenfor.,
+H13,REQUEST,"0 means you do not trust an institution at all, and 10 means you have complete trust.","0 står for at du ikke har noen tillit til institusjonen i det hele tatt, mens 10 står for at du stoler helt på institusjonenen.",
+H13,REQUEST,Country's parliament,Stortinget,
+H13,RESPONSE, No trust at all,Ingen tillit i det hele tatt,0
+H13,RESPONSE,1,1,1
+H13,RESPONSE,2,2,2
+H13,RESPONSE,3,3,3
+H13,RESPONSE,4,4,4
+H13,RESPONSE,5,5,5
+H13,RESPONSE,6,6,6
+H13,RESPONSE,7,7,7
+H13,RESPONSE,8,8,8
+H13,RESPONSE,9,9,9
+H13,RESPONSE, Complete trust,Full tillit,10
+H13,RESPONSE,(Don't know),(Vet ikke),888
+H14,REQUEST,The legal system,Rettsvesenet,
+H14,RESPONSE, No trust at all,Ingen tillit i det hele tatt,0
+H14,RESPONSE,1,1,1
+H14,RESPONSE,2,2,2
+H14,RESPONSE,3,3,3
+H14,RESPONSE,4,4,4
+H14,RESPONSE,5,5,5
+H14,RESPONSE,6,6,6
+H14,RESPONSE,7,7,7
+H14,RESPONSE,8,8,8
+H14,RESPONSE,9,9,9
+H14,RESPONSE, Complete trust,Full tillit,10
+H14,RESPONSE,(Don't know),(Vet ikke),888
+H15,REQUEST,The police,Politiet,
+H15,RESPONSE, No trust at all,Ingen tillit i det hele tatt,0
+H15,RESPONSE,1,1,1
+H15,RESPONSE,2,2,2
+H15,RESPONSE,3,3,3
+H15,RESPONSE,4,4,4
+H15,RESPONSE,5,5,5
+H15,RESPONSE,6,6,6
+H15,RESPONSE,7,7,7
+H15,RESPONSE,8,8,8
+H15,RESPONSE,9,9,9
+H15,RESPONSE, Complete trust,Full tillit,10
+H15,RESPONSE,(Don't know),(Vet ikke),888
+H16,REQUEST,"Using this card, please say to what extent you agree or disagree with each of the following statements.",Hvor enig eller uenig er du i hvert av de følgende utsagnene?,
+H16,REQUEST,"The less that government intervenes in the economy, the better it is for country","""Desto mindre regjeringen forsøker å styre økonomien, desto bedre er det for Norge.""",
+H16,RESPONSE,Agree strongly, Helt enig,1
+H16,RESPONSE,Agree, Enig,2
+H16,RESPONSE,Neither agree nor disagree, Verken enig eller uenig,3
+H16,RESPONSE,Disagree, Uenig,4
+H16,RESPONSE,Disagree strongly, Helt uenig,5
+H16,RESPONSE,(Don't know),(Vet ikke),888
+H17,REQUEST,The government should take measures to reduce differences in income levels.,“Regjeringen bør gjennomføre tiltak for å redusere inntektsforskjellene”.,
+H17,RESPONSE,Agree strongly, Helt enig,1
+H17,RESPONSE,Agree, Enig,2
+H17,RESPONSE,Neither agree nor disagree, Verken enig eller uenig,3
+H17,RESPONSE,Disagree, Uenig,4
+H17,RESPONSE,Disagree strongly, Helt uenig,5
+H17,RESPONSE,(Don't know),(Vet ikke),888
+H18,REQUEST,Employees need strong trade unions to protect their working conditions and wages.,“Arbeidstakere trenger sterke fagforeninger til å beskytte lønns- og arbeidsvillkår.”,
+H18,RESPONSE,Agree strongly, Helt enig,1
+H18,RESPONSE,Agree, Enig,2
+H18,RESPONSE,Neither agree nor disagree, Verken enig eller uenig,3
+H18,RESPONSE,Disagree, Uenig,4
+H18,RESPONSE,Disagree strongly, Helt uenig,5
+H18,RESPONSE,(Don't know),(Vet ikke),888
+H19,REQUEST,"On an average weekday, how much time, in total, do you spend watching television?","Hvor mye tid bruker du, alt i alt, til å se på TV en vanlig ukedag?",
+H19,RESPONSE,No time at all, Bruker ikke tid på det,1
+H19,RESPONSE,Very little time, Veldig lite tid,2
+H19,RESPONSE,A little time, Lite tid,3
+H19,RESPONSE,Some time, Ganske lite tid,4
+H19,RESPONSE,Quite a lot of time, Ganske mye tid,5
+H19,RESPONSE,A lot of time, Mye tid,6
+H19,RESPONSE,A great deal of time, Svært mye tid,7
+H19,RESPONSE,(Don't know),(Vet ikke),888
+H20,REQUEST,"On an average weekday, how much time, in total, do you spend listening to the radio?","Hvor mye tid, alt i alt, bruker du til å høre på radio, på en vanlig ukedag?",
+H20,RESPONSE,No time at all, Bruker ikke tid på det,1
+H20,RESPONSE,Very little time, Veldig lite tid,2
+H20,RESPONSE,A little time, Lite tid,3
+H20,RESPONSE,Some time, Ganske lite tid,4
+H20,RESPONSE,Quite a lot of time, Ganske mye tid,5
+H20,RESPONSE,A lot of time, Mye tid,6
+H20,RESPONSE,A great deal of time, Svært mye tid,7
+H20,RESPONSE,(Don't know),(Vet ikke),888
+H21,REQUEST,"On an average weekday, how much time, in total, do you spend reading","Hvor mye tid, alt i alt, bruker du til å lese aviser, på en vanlig ukedag?",
+H21,RESPONSE,No time at all, Bruker ikke tid på det,1
+H21,RESPONSE,Very little time, Veldig lite tid,2
+H21,RESPONSE,A little time, Lite tid,3
+H21,RESPONSE,Some time, Ganske lite tid,4
+H21,RESPONSE,Quite a lot of time, Ganske mye tid,5
+H21,RESPONSE,A lot of time, Mye tid,6
+H21,RESPONSE,A great deal of time, Svært mye tid,7
+H21,RESPONSE,(Don't know),(Vet ikke),888
+H22,REQUEST,"Using this card, please say to what extent you agree or disagree with each of the following statements.",Hvor enig eller uenig er du i hvert av de følgende utsagnene?,
+H22,REQUEST,Sometimes politics seems so complicated that I can't really understand what is going on.,"""Av og til virker politikk så komplisert at jeg egentlig ikke skjønner noe av det.""",
+H22,RESPONSE,Agree strongly, Helt enig,1
+H22,RESPONSE,Agree, Enig,2
+H22,RESPONSE,Neither agree nor disagree, Verken enig eller uenig,3
+H22,RESPONSE,Disagree, Uenig,4
+H22,RESPONSE,Disagree strongly, Helt uenig,5
+H22,RESPONSE,(Don't know),(Vet ikke),888
+H23,REQUEST,I think I could take an active role in a group involved with political issues.,"""Jeg tror jeg hadde kunnet delta aktivt i en gruppe som arbeider med politiske saker.""",
+H23,RESPONSE,Agree strongly, Helt enig,1
+H23,RESPONSE,Agree, Enig,2
+H23,RESPONSE,Neither agree nor disagree, Verken enig eller uenig,3
+H23,RESPONSE,Disagree, Uenig,4
+H23,RESPONSE,Disagree strongly, Helt uenig,5
+H23,RESPONSE,(Don't know),(Vet ikke),888
+H24,REQUEST,I find it easy to make my mind up about political issues.,"""Jeg synes det er lett å bestemme meg for hva jeg mener om politiske saker.""",
+H24,RESPONSE,Agree strongly, Helt enig,1
+H24,RESPONSE,Agree, Enig,2
+H24,RESPONSE,Neither agree nor disagree, Verken enig eller uenig,3
+H24,RESPONSE,Disagree, Uenig,4
+H24,RESPONSE,Disagree strongly, Helt uenig,5
+H24,RESPONSE,(Don't know),(Vet ikke),888
+H25,REQUEST,"On the whole, how satisfied are you with the present state of the economy in country?",Hvor fornøyd er du i det store og hele med den nåværende økonomiske situasjonen i Norge?,
+H25,REQUEST,"Please answer using this card, where 0 means extremely dissatisfied and 5 means extremely satisfied.",Vær så snill å vise hva som stemmer best med din mening ved å sette ett kryss på skalaen nedenfor.,
+H25,RESPONSE, Extremely dissatisfied,Ekstremt misfornøyd,0
+H25,RESPONSE,1,1,1
+H25,RESPONSE,2,2,2
+H25,RESPONSE,3,3,3
+H25,RESPONSE,4,4,4
+H25,RESPONSE, Extremely satisfied,Ekstremt fornøyd,5
+H25,RESPONSE,(Don't know),(Vet ikke),888
+H26,REQUEST,"Now thinking about the country government, how satisfied are you with the way it is doing its job?",Tenk nå på regjeringen i Norge.,
+H26,RESPONSE, Extremely dissatisfied,Ekstremt misfornøyd,0
+H26,RESPONSE,1,1,1
+H26,RESPONSE,2,2,2
+H26,RESPONSE,3,3,3
+H26,RESPONSE,4,4,4
+H26,RESPONSE, Extremely satisfied,Ekstremt fornøyd,5
+H26,RESPONSE,(Don't know),(Vet ikke),888
+H27,REQUEST,"And on the whole, how satisfied are you with the way democracy works in country?","Og sett under ett, hvor fornøyd er du med måten demokratiet fungerer på i Norge?",
+H27,RESPONSE, Extremely dissatisfied,Ekstremt misfornøyd,0
+H27,RESPONSE,1,1,1
+H27,RESPONSE,2,2,2
+H27,RESPONSE,3,3,3
+H27,RESPONSE,4,4,4
+H27,RESPONSE, Extremely satisfied,Ekstremt fornøyd,5
+H27,RESPONSE,(Don't know),(Vet ikke),888
+H28,REQUEST,"Generally speaking, would you say that most people can be trusted, or that you can't be too careful in dealing with people?","Vil du stort sett si at de fleste er til å stole på, eller at en ikke kan være for forsiktig når en har med andre å gjøre?",
+H28,RESPONSE,You can't be too careful, En kan ikke være for forsiktig,1
+H28,RESPONSE,Most people can be trusted, De fleste er til å stole på,2
+H28,RESPONSE,(Don't know),(Vet ikke),888
+H29,REQUEST,"Do you think that most people would try to take advantage of you if they got the chance, or would they try to be fair?","Tror du at folk flest vil prøve å utnytte deg hvis de fikk sjansen, eller vil de prøve å behandle deg rimelig og rettferdig?",
+H29,RESPONSE,Most people would try to take advantage of me, Folk flest vil prøve å utnytte meg,1
+H29,RESPONSE,Most people would try to be fair, Folk flest vil prøve å være rimelige og rettferdige,2
+H29,RESPONSE,(Don't know),(Vet ikke),888
+H30,REQUEST,Would you say that most of the time people try to be helpful or that they are mostly looking out for themselves?,"Vil du si at folk for det meste prøver å være hjelpsomme, eller at de stort sett har nok med selg selv?",
+H30,RESPONSE,People mostly look out for themselves, Folk har stort sett nok med seg selv,1
+H30,RESPONSE,People mostly try to be helpful, Folk forsøker stort sett å være hjelpsomme,2
+H30,RESPONSE,(Don't know),(Vet ikke),888
+H31,REQUEST,Would you say that most of the time people try to be helpful or that they are mostly looking out for themselves?,Vær så snill å vise for hvor stor tillit du personlig har til Stortinget ved å svare på en skala fra 0-10.,
+H32,REQUEST,Please say on a scale of 0 to 10 how much you trust the legal system.,Vær så snill å vise for hvor stor tillit du personlig har til rettsvesenet ved å svare på en skala fra 0-10.,
+H32,REQUEST,If you have no trust at all give a score of 0.,Svar 0 hvis du ikke har noen tillit og 10 hvis du stoler helt på rettsvesenet.,
+H32,REQUEST,"If you have complete trust, give a score of 10.","Desto større tillit du har, desto høyere tall skal du velge.",
+H33,REQUEST,Please say on a scale of 0 to 10 how much you trust the police.,Vær så snill å vise for hvor stor tillit du personlig har til politiet ved å svare på en skala fra 0-10.,
+H33,REQUEST,If you have no trust at all give a score of 0.,Svar 0 hvis du ikke har noen tillit og 10 hvis du stoler helt på politiet.,
+H33,REQUEST,"If you have complete trust, give a score of 10.","Desto større tillit du har, desto høyere tall skal du velge.",
+H34,REQUEST,Is it generally good for country if government intervenes less in the economy?,Er det stort sett bra for Norge hvis regjeringen forsøker å styre økonomien mindre?,
+H34,RESPONSE,Definitely, Helt sikkert,1
+H34,RESPONSE,Probably, Sannsynligvis,2
+H34,RESPONSE,Not sure either way, Vet ikke hvordan det vil virke inn,3
+H34,RESPONSE,Probably not, Sannsynligvis ikke,4
+H34,RESPONSE,Definitely not, Helt sikkert ikke,5
+H34,RESPONSE,(Don't know),(Vet ikke),888
+H35,REQUEST,Should the government take measures to reduce differences in income levels?,Bør regjeringen gjennomføre tiltak for å redusere inntektsforskjellene?,
+H35,RESPONSE,Definitely, Helt sikkert,1
+H35,RESPONSE,Probably, Sannsynligvis,2
+H35,RESPONSE,Not sure either way, Vet ikke hvordan det vil virke inn,3
+H35,RESPONSE,Probably not, Sannsynligvis ikke,4
+H35,RESPONSE,Definitely not, Helt sikkert ikke,5
+H35,RESPONSE,(Don't know),(Vet ikke),888
+H36,REQUEST,Do employees need strong trade unions to protect their working conditions and wages?,Trenger arbeidstakere sterke fagforeninger til å beskytte lønns- og arbeidsvillkår?,
+H36,RESPONSE,Definitely, Helt sikkert,1
+H36,RESPONSE,Probably, Sannsynligvis,2
+H36,RESPONSE,Not sure either way, Vet ikke hvordan det vil virke inn,3
+H36,RESPONSE,Probably not, Sannsynligvis ikke,4
+H36,RESPONSE,Definitely not, Helt sikkert ikke,5
+H36,RESPONSE,(Don't know),(Vet ikke),888
