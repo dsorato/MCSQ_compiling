@@ -60,49 +60,58 @@ def align_requests(df_source, df_target):
 
 
 def align_on_meta(df1, df2, target_language):
-	df = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value'])
+	df = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value', 
+		'source_survey_itemID', 'target_survey_itemID'])
 	for i, irow in df1.iterrows():
 		for j, jrow in df2.iterrows():
 			if jrow['item_type'] == irow['item_type']:
 				if jrow['item_type'] == 'RESPONSE':
 					if jrow['item_value'] == irow['item_value'] and jrow[target_language] not in df['target'].unique():
 						data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-						'source':irow['ENG'], 'target':jrow[target_language], 'item_value': jrow['item_value']}
+						'source':irow['ENG'], 'target':jrow[target_language], 'item_value': jrow['item_value'], 
+						'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
 						df = df.append(data, ignore_index=True)
 					
 				elif jrow['item_type'] == 'REQUEST' or jrow['item_type'] == 'INTRO' or jrow['item_type'] == 'INTRODUCTION':
 					if jrow[target_language] not in df['target'].unique() and irow['ENG'] not in df['source'].unique():
 						data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-						'source':irow['ENG'], 'target':jrow[target_language], 'item_value': None}
+						'source':irow['ENG'], 'target':jrow[target_language], 'item_value': None,
+						'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
 						df = df.append(data, ignore_index=True)
 
 				else:
 					if irow['ENG'] not in df['source'].unique():
 						data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-						'source':irow['ENG'], 'target':jrow[target_language], 'item_value': None}
+						'source':irow['ENG'], 'target':jrow[target_language], 'item_value': None,
+						'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
 						df = df.append(data, ignore_index=True)
 					else:
 						if jrow[target_language] not in df['target'].unique():
 							data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-							'source':None, 'target':jrow[target_language], 'item_value': None}
+							'source':None, 'target':jrow[target_language], 'item_value': None,
+							'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
 							df = df.append(data, ignore_index=True)
 
 	return df
 				
 
 
-def main(filename_source, filename_target):
+def main(filename_source, filename_target, study_round, target_country_language):
 	df_source = pd.read_csv(filename_source)
 	df_target = pd.read_csv(filename_target)
 
 	target_language = filename_target.replace('.csv', '')
 	target_language = target_language.split('/')[-1]
 
-	filtered_df_source = filter_dataframe_by_round(df_source, 'R01') 
-	filtered_df_target = filter_dataframe_by_round(df_target, 'R01') 
+	filtered_df_source = filter_dataframe_by_round(df_source, study_round) 
+	filtered_df_target = filter_dataframe_by_round(df_target, study_round) 
 	filtered_df_eng_source = filter_eng_version(filtered_df_source, 'ENG_SOURCE')
 	if target_language == 'GER':
-		filtered_df_target = filter_eng_version(filtered_df_target, 'GER_CH')
+		filtered_df_target = filter_eng_version(filtered_df_target, target_country_language)
+	if target_language == 'FRE':
+		filtered_df_target = filter_eng_version(filtered_df_target, target_country_language)
+	if target_language == 'RUS':
+		filtered_df_target = filter_eng_version(filtered_df_target, target_country_language)
 
 	intersection_modules = set(filtered_df_eng_source.module.unique()).intersection(set(filtered_df_target.module.unique()))
 
@@ -127,4 +136,6 @@ if __name__ == "__main__":
 	#Call script using the filenames of two files that should be aligned 
 	filename_source= str(sys.argv[1])
 	filename_target = str(sys.argv[2])
+	study_round = str(sys.argv[3])
+	target_country_language = str(sys.argv[4])
 	main(filename_source,filename_target)
