@@ -4,6 +4,7 @@ import sys
 import os
 from populate_tables import *
 from retrieve_from_tables import *
+import math
 
 
 def get_country_and_language(df, language):
@@ -40,7 +41,7 @@ def align_responses():
 		for j, jrow in df2.iterrows():
 			if jrow['item_value'] == irow['item_value']:
 					data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-					'source':irow['ENG'], 'target':jrow['NOR_NO'], 'item_value': jrow['item_value']}
+					'source':irow['ENG_SOURCE'], 'target':jrow['NOR_NO'], 'item_value': jrow['item_value']}
 					df = df.append(data, ignore_index=True)
 
 	return df
@@ -58,6 +59,17 @@ def align_requests(df_source, df_target):
 					'source':row['NOR_NO'], 'target':None, 'item_value': None}
 			df = df.append(data, ignore_index=True)
 
+def cast_item_value(value_i, value_j):
+	if isinstance(value_i, float) and math.isnan(value_i) == False:
+		value_i = int(value_i)
+	if isinstance(value_j, float) and math.isnan(value_j) == False:
+		value_j = int(value_j)
+
+	value_i = str(value_i)
+	value_j = str(value_j)
+
+	return value_i, value_j
+
 
 def align_on_meta(df1, df2, target_language):
 	df = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value', 
@@ -66,23 +78,24 @@ def align_on_meta(df1, df2, target_language):
 		for j, jrow in df2.iterrows():
 			if jrow['item_type'] == irow['item_type']:
 				if jrow['item_type'] == 'RESPONSE':
-					if jrow['item_value'] == irow['item_value'] and jrow[target_language] not in df['target'].unique():
+					value_i, value_j = cast_item_value(irow['item_value'], jrow['item_value'])
+					if value_j == value_i and jrow[target_language] not in df['target'].unique():
 						data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-						'source':irow['ENG'], 'target':jrow[target_language], 'item_value': jrow['item_value'], 
+						'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': jrow['item_value'], 
 						'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
 						df = df.append(data, ignore_index=True)
 					
 				elif jrow['item_type'] == 'REQUEST' or jrow['item_type'] == 'INTRO' or jrow['item_type'] == 'INTRODUCTION':
-					if jrow[target_language] not in df['target'].unique() and irow['ENG'] not in df['source'].unique():
+					if jrow[target_language] not in df['target'].unique() and irow['ENG_SOURCE'] not in df['source'].unique():
 						data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-						'source':irow['ENG'], 'target':jrow[target_language], 'item_value': None,
+						'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': None,
 						'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
 						df = df.append(data, ignore_index=True)
 
 				else:
-					if irow['ENG'] not in df['source'].unique():
+					if irow['ENG_SOURCE'] not in df['source'].unique():
 						data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-						'source':irow['ENG'], 'target':jrow[target_language], 'item_value': None,
+						'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': None,
 						'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
 						df = df.append(data, ignore_index=True)
 					else:
@@ -112,6 +125,8 @@ def main(filename_source, filename_target, study_round, target_country_language)
 		filtered_df_target = filter_eng_version(filtered_df_target, target_country_language)
 	if target_language == 'RUS':
 		filtered_df_target = filter_eng_version(filtered_df_target, target_country_language)
+	if target_language == 'ENG':
+		filtered_df_target = filter_eng_version(filtered_df_target, target_country_language)
 
 	intersection_modules = set(filtered_df_eng_source.module.unique()).intersection(set(filtered_df_target.module.unique()))
 
@@ -126,7 +141,7 @@ def main(filename_source, filename_target, study_round, target_country_language)
 			alignment = align_on_meta(df_source_by_item_name, df_target_by_item_name, target_language)
 			df = df.append(alignment, ignore_index=True)
 	
-	df.to_csv('ENG-'+target_language+'.csv', encoding='utf-8', index=False)
+	df.to_csv('ENG-'+target_country_language+'_'+study_round+'.csv', encoding='utf-8', index=False)
 	
 
 
@@ -134,8 +149,9 @@ def main(filename_source, filename_target, study_round, target_country_language)
 
 if __name__ == "__main__":
 	#Call script using the filenames of two files that should be aligned 
+	#python3 alignment_based_on_item_structure.py ./test_data/ENG.csv ./test_data/ENG.csv R01 ENG_GB
 	filename_source= str(sys.argv[1])
 	filename_target = str(sys.argv[2])
 	study_round = str(sys.argv[3])
 	target_country_language = str(sys.argv[4])
-	main(filename_source,filename_target)
+	main(filename_source,filename_target, study_round, target_country_language)

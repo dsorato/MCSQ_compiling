@@ -7,3 +7,15 @@ ENG_SOURCE R01: GF, GF2 changed to G
 GER_CH R01: HF changed to H
 GER_DE R01: HF changed to H
 RUS_IL R01: HS changed to H
+FRE_BE, CH and FR R01: HF changed to H
+FRE_FR R01: GF changed to G
+POR_PT R01: IF changed to H
+
+CZE_CZ R01: H changed to I
+CZE_CZ R01: HF changed to H
+CZE_CZ R01: GF, GF2 changed to G
+
+
+ENG_GB, ENG_IE R02: IS changed to I
+FRE_FR R02: IS changed to I
+NOR_NO R02: IS changed to I
