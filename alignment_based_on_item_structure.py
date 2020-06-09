@@ -5,7 +5,12 @@ import os
 from populate_tables import *
 from retrieve_from_tables import *
 import math
+from difflib import SequenceMatcher
 
+
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
 
 def get_country_and_language(df, language):
 	unique_survey_item_ids = df.survey_item_ID.unique()
@@ -35,29 +40,126 @@ def filter_by_item_name(df_source, df_target):
 	return pd.concat([df_source, df_target], sort=False)
 	# return pd.merge(df_source, df_target, on = 'item_name')
 
-def align_responses():
-	df = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value'])
-	for i, irow in df1.iterrows():
-		for j, jrow in df2.iterrows():
-			if jrow['item_value'] == irow['item_value']:
+
+
+def align_more_segments_in_source(df, df_source, df_target, target_language):
+	not_appended_data = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value', 
+	'source_survey_itemID', 'target_survey_itemID'])
+
+	for i, irow in df_source.iterrows():
+		for j, jrow in df_target.iterrows():
+			if jrow[target_language] not in df['target'].unique() and irow['ENG_SOURCE'] not in df['source'].unique():
+				div = len(irow['ENG_SOURCE'].split(' '))/len(jrow[target_language].split(' '))
+				if div >= 0.4 and 1.5 > div :
 					data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-					'source':irow['ENG_SOURCE'], 'target':jrow['NOR_NO'], 'item_value': jrow['item_value']}
+						'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': None,
+						'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
 					df = df.append(data, ignore_index=True)
+	
+	for i, irow in df_source.iterrows():
+		if irow['ENG_SOURCE'] not in df['source'].unique():
+			data = {'item_name': irow['item_name'], 'item_type':irow['item_type'], 
+			'source':irow['ENG_SOURCE'], 'target':None, 'item_value': None,
+			'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': None}
+			df = df.append(data, ignore_index=True)
 
 	return df
 
-def align_requests(df_source, df_target):
-	df = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value'])
-	if df_source.empty():
+def align_more_segments_in_target(df, df_source, df_target, target_language):
+	for i, irow in df_target.iterrows():
+		for j, jrow in df_source.iterrows():
+			if irow[target_language] not in df['target'].unique() and jrow['ENG_SOURCE'] not in df['source'].unique():
+				div = len(jrow['ENG_SOURCE'].split(' '))/len(irow[target_language].split(' '))
+				if div >= 0.4 and 1.5 > div :
+					data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
+					'source': jrow['ENG_SOURCE'], 'target':irow[target_language], 'item_value': None,
+					'source_survey_itemID': jrow['survey_item_ID'], 'target_survey_itemID': irow['survey_item_ID']}
+					df = df.append(data, ignore_index=True)
+	
+	for i, irow in df_target.iterrows():
+		if irow[target_language] not in df['target'].unique():
+			data = {'item_name': irow['item_name'], 'item_type':irow['item_type'], 
+			'source':None, 'target':irow[target_language], 'item_value': None,
+			'source_survey_itemID': None, 'target_survey_itemID': irow['survey_item_ID']}
+			df = df.append(data, ignore_index=True)
+
+
+	return df
+def align_responses(df_source, df_target, target_language, item_type):
+	df = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value', 
+		'source_survey_itemID', 'target_survey_itemID'])
+	df_source = df_source[df_source['item_type']==item_type]
+	df_target = df_target[df_target['item_type']==item_type]
+
+	for i, irow in df_source.iterrows():
+		for j, jrow in df_target.iterrows():
+			if jrow['item_type'] == irow['item_type'] and jrow['item_name'] == irow['item_name']:
+				if jrow['item_type'] == 'RESPONSE':
+					value_i, value_j = cast_item_value(irow['item_value'], jrow['item_value'])
+					if value_j == value_i and jrow[target_language] not in df['target'].unique() and irow['ENG_SOURCE'] not in df['source'].unique():
+						data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
+						'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': jrow['item_value'], 
+						'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
+						df = df.append(data, ignore_index=True)
+
+	return df
+
+def align_remaining(df_source, df_target, target_language, item_type):
+	df = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value', 
+		'source_survey_itemID', 'target_survey_itemID'])
+	df_source = df_source[df_source['item_type']==item_type]
+	df_target = df_target[df_target['item_type']==item_type]
+
+	if df_source.empty:
 		for i,row in df_target.iterrows():
 			data = {'item_name': row['item_name'], 'item_type':row['item_type'], 
-					'source':None, 'target':row['NOR_NO'], 'item_value': None}
+					'source':None, 'target':row[target_language], 'item_value': None,
+					'source_survey_itemID': None, 'target_survey_itemID': row['survey_item_ID']}
 			df = df.append(data, ignore_index=True)
-	if df_target.empty():
+		return df
+	if df_target.empty:
 		for i,row in df_source.iterrows():
 			data = {'item_name': row['item_name'], 'item_type':row['item_type'], 
-					'source':row['NOR_NO'], 'target':None, 'item_value': None}
+					'source':row['ENG_SOURCE'], 'target':None, 'item_value': None,
+					'source_survey_itemID': row['survey_item_ID'], 'target_survey_itemID': None}
 			df = df.append(data, ignore_index=True)
+		return df
+	else:
+		if len(df_source)> len(df_target):
+			df = align_more_segments_in_source(df, df_source, df_target, target_language)
+
+		elif len(df_target)> len(df_source):
+			df = align_more_segments_in_target(df, df_source, df_target, target_language)
+		else:
+			for i, irow in df_source.iterrows():
+				for j, jrow in df_target.iterrows():
+					if  jrow['item_name'] == irow['item_name']:
+						if jrow[target_language] not in df['target'].unique() and irow['ENG_SOURCE'] not in df['source'].unique():
+							div = len(irow['ENG_SOURCE'].split(' '))/len(jrow[target_language].split(' '))
+							if div >= 0.6 and 1.5 > div :
+								data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
+								'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': None,
+								'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
+								df = df.append(data, ignore_index=True)
+
+			# if jrow[target_language] not in df['target'].unique():
+			# 	data = {'item_name': jrow['item_name'], 'item_type':jrow['item_type'], 
+			# 	'source':None, 'target':jrow[target_language], 'item_value': None,
+			# 	'source_survey_itemID': None, 'target_survey_itemID': jrow['survey_item_ID']}
+			# 	df = df.append(data, ignore_index=True)
+			# if irow['ENG_SOURCE'] not in df['source'].unique():
+			# 	# if len(irow['ENG_SOURCE'].split(' '))> len(jrow[target_language].split(' ')):
+			# 	data = {'item_name': irow['item_name'], 'item_type':irow['item_type'], 
+			# 	'source':irow['ENG_SOURCE'], 'target':None, 'item_value': None,
+			# 	'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': None}
+			# 	df = df.append(data, ignore_index=True)
+
+
+
+	return df
+
+
+
 
 def cast_item_value(value_i, value_j):
 	if isinstance(value_i, float) and math.isnan(value_i) == False:
@@ -74,36 +176,15 @@ def cast_item_value(value_i, value_j):
 def align_on_meta(df1, df2, target_language):
 	df = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value', 
 		'source_survey_itemID', 'target_survey_itemID'])
-	for i, irow in df1.iterrows():
-		for j, jrow in df2.iterrows():
-			if jrow['item_type'] == irow['item_type']:
-				if jrow['item_type'] == 'RESPONSE':
-					value_i, value_j = cast_item_value(irow['item_value'], jrow['item_value'])
-					if value_j == value_i and jrow[target_language] not in df['target'].unique():
-						data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-						'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': jrow['item_value'], 
-						'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
-						df = df.append(data, ignore_index=True)
-					
-				elif jrow['item_type'] == 'REQUEST' or jrow['item_type'] == 'INTRO' or jrow['item_type'] == 'INTRODUCTION':
-					if jrow[target_language] not in df['target'].unique() and irow['ENG_SOURCE'] not in df['source'].unique():
-						data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-						'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': None,
-						'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
-						df = df.append(data, ignore_index=True)
 
-				else:
-					if irow['ENG_SOURCE'] not in df['source'].unique():
-						data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-						'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': None,
-						'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
-						df = df.append(data, ignore_index=True)
-					else:
-						if jrow[target_language] not in df['target'].unique():
-							data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-							'source':None, 'target':jrow[target_language], 'item_value': None,
-							'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
-							df = df.append(data, ignore_index=True)
+	df_introduction = align_remaining(df1, df2, target_language, 'INTRODUCTION')
+	df = df.append(df_introduction, ignore_index=True)
+	df_instruction = align_remaining(df1, df2, target_language, 'INSTRUCTION')
+	df = df.append(df_instruction, ignore_index=True)
+	df_request = align_remaining(df1, df2, target_language, 'REQUEST')
+	df = df.append(df_request, ignore_index=True)
+	df_response = align_responses(df1, df2, target_language, 'RESPONSE')
+	df = df.append(df_response, ignore_index=True)
 
 	return df
 				
@@ -138,8 +219,9 @@ def main(filename_source, filename_target, study_round, target_country_language)
 		for unique in unique_item_name_source:
 			df_source_by_item_name = df_source[df_source['item_name']==unique]
 			df_target_by_item_name = df_target[df_target['item_name']==unique]
-			alignment = align_on_meta(df_source_by_item_name, df_target_by_item_name, target_language)
-			df = df.append(alignment, ignore_index=True)
+			if df_target_by_item_name.empty == False and df_source_by_item_name.empty == False:
+				alignment = align_on_meta(df_source_by_item_name, df_target_by_item_name, target_language)
+				df = df.append(alignment, ignore_index=True)
 	
 	df.to_csv('ENG-'+target_country_language+'_'+study_round+'.csv', encoding='utf-8', index=False)
 	
