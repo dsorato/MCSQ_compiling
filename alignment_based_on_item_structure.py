@@ -43,18 +43,23 @@ def filter_by_item_name(df_source, df_target):
 
 
 def align_more_segments_in_source(df, df_source, df_target, target_language):
-	not_appended_data = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value', 
-	'source_survey_itemID', 'target_survey_itemID'])
-
 	for i, irow in df_source.iterrows():
 		for j, jrow in df_target.iterrows():
 			if jrow[target_language] not in df['target'].unique() and irow['ENG_SOURCE'] not in df['source'].unique():
 				div = len(irow['ENG_SOURCE'].split(' '))/len(jrow[target_language].split(' '))
-				if div >= 0.4 and 1.5 > div :
+				if div >= 0.5 and 1.2 > div:
 					data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
 						'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': None,
 						'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
 					df = df.append(data, ignore_index=True)
+
+	for i, irow in df_source.iterrows():
+		for j, jrow in df_target.iterrows():
+			if jrow[target_language] not in df['target'].unique() and irow['ENG_SOURCE'] not in df['source'].unique():
+				data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
+					'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': None,
+					'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
+				df = df.append(data, ignore_index=True)
 	
 	for i, irow in df_source.iterrows():
 		if irow['ENG_SOURCE'] not in df['source'].unique():
@@ -70,11 +75,19 @@ def align_more_segments_in_target(df, df_source, df_target, target_language):
 		for j, jrow in df_source.iterrows():
 			if irow[target_language] not in df['target'].unique() and jrow['ENG_SOURCE'] not in df['source'].unique():
 				div = len(jrow['ENG_SOURCE'].split(' '))/len(irow[target_language].split(' '))
-				if div >= 0.4 and 1.5 > div :
+				if div >= 0.5 and 1.2 > div:
 					data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
 					'source': jrow['ENG_SOURCE'], 'target':irow[target_language], 'item_value': None,
 					'source_survey_itemID': jrow['survey_item_ID'], 'target_survey_itemID': irow['survey_item_ID']}
 					df = df.append(data, ignore_index=True)
+
+	for i, irow in df_target.iterrows():
+		for j, jrow in df_source.iterrows():
+			if irow[target_language] not in df['target'].unique() and jrow['ENG_SOURCE'] not in df['source'].unique():
+				data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
+				'source': jrow['ENG_SOURCE'], 'target':irow[target_language], 'item_value': None,
+				'source_survey_itemID': jrow['survey_item_ID'], 'target_survey_itemID': irow['survey_item_ID']}
+				df = df.append(data, ignore_index=True)
 	
 	for i, irow in df_target.iterrows():
 		if irow[target_language] not in df['target'].unique():
@@ -135,24 +148,10 @@ def align_remaining(df_source, df_target, target_language, item_type):
 				for j, jrow in df_target.iterrows():
 					if  jrow['item_name'] == irow['item_name']:
 						if jrow[target_language] not in df['target'].unique() and irow['ENG_SOURCE'] not in df['source'].unique():
-							div = len(irow['ENG_SOURCE'].split(' '))/len(jrow[target_language].split(' '))
-							if div >= 0.6 and 1.5 > div :
 								data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
 								'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': None,
 								'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
 								df = df.append(data, ignore_index=True)
-
-			# if jrow[target_language] not in df['target'].unique():
-			# 	data = {'item_name': jrow['item_name'], 'item_type':jrow['item_type'], 
-			# 	'source':None, 'target':jrow[target_language], 'item_value': None,
-			# 	'source_survey_itemID': None, 'target_survey_itemID': jrow['survey_item_ID']}
-			# 	df = df.append(data, ignore_index=True)
-			# if irow['ENG_SOURCE'] not in df['source'].unique():
-			# 	# if len(irow['ENG_SOURCE'].split(' '))> len(jrow[target_language].split(' ')):
-			# 	data = {'item_name': irow['item_name'], 'item_type':irow['item_type'], 
-			# 	'source':irow['ENG_SOURCE'], 'target':None, 'item_value': None,
-			# 	'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': None}
-			# 	df = df.append(data, ignore_index=True)
 
 
 
@@ -190,40 +189,36 @@ def align_on_meta(df1, df2, target_language):
 				
 
 
-def main(filename_source, filename_target, study_round, target_country_language):
+def main(filename_source, filename_target):
 	df_source = pd.read_csv(filename_source)
 	df_target = pd.read_csv(filename_target)
 
-	target_language = filename_target.replace('.csv', '')
-	target_language = target_language.split('/')[-1]
+	target_language_without_extension = filename_target.replace('.csv', '')
+	target_language_file = target_language_without_extension.split('/')[-1]
+	target_language_file = target_language_file.split('_')
+	target_language = target_language_file[3]+'_'+target_language_file[4]
+	study_round = target_language_file[1]
 
-	filtered_df_source = filter_dataframe_by_round(df_source, study_round) 
-	filtered_df_target = filter_dataframe_by_round(df_target, study_round) 
-	filtered_df_eng_source = filter_eng_version(filtered_df_source, 'ENG_SOURCE')
-	if target_language == 'GER':
-		filtered_df_target = filter_eng_version(filtered_df_target, target_country_language)
-	if target_language == 'FRE':
-		filtered_df_target = filter_eng_version(filtered_df_target, target_country_language)
-	if target_language == 'RUS':
-		filtered_df_target = filter_eng_version(filtered_df_target, target_country_language)
-	if target_language == 'ENG':
-		filtered_df_target = filter_eng_version(filtered_df_target, target_country_language)
+	
 
-	intersection_modules = set(filtered_df_eng_source.module.unique()).intersection(set(filtered_df_target.module.unique()))
-
-	df = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value'])
+	intersection_modules = set(df_source.module.unique()).intersection(set(df_target.module.unique()))
+	print('Modules present in both source and target:', intersection_modules)
+	df = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value', 
+		'source_survey_itemID', 'target_survey_itemID'])
 	for module in intersection_modules:
-		df_source, df_target = filter_by_module(filtered_df_eng_source, filtered_df_target, module)
-		unique_item_name_source = df_source.item_name.unique()
-		unique_item_name_target = df_target.item_name.unique()
+		print(module)
+		df_source_filtered, df_target_filtered = filter_by_module(df_source, df_target, module)
+		unique_item_name_source = df_source_filtered.item_name.unique()
+		unique_item_name_target = df_target_filtered.item_name.unique()
 		for unique in unique_item_name_source:
-			df_source_by_item_name = df_source[df_source['item_name']==unique]
-			df_target_by_item_name = df_target[df_target['item_name']==unique]
+			df_source_by_item_name = df_source_filtered[df_source_filtered['item_name']==unique]
+			df_target_by_item_name = df_target_filtered[df_target_filtered['item_name']==unique]
 			if df_target_by_item_name.empty == False and df_source_by_item_name.empty == False:
 				alignment = align_on_meta(df_source_by_item_name, df_target_by_item_name, target_language)
+				print(alignment)
 				df = df.append(alignment, ignore_index=True)
 	
-	df.to_csv('ENG-'+target_country_language+'_'+study_round+'.csv', encoding='utf-8', index=False)
+	df.to_csv('ENG-'+target_language+'_'+study_round+'.csv', encoding='utf-8', index=False)
 	
 
 
@@ -231,9 +226,7 @@ def main(filename_source, filename_target, study_round, target_country_language)
 
 if __name__ == "__main__":
 	#Call script using the filenames of two files that should be aligned 
-	#python3 alignment_based_on_item_structure.py ./test_data/ENG.csv ./test_data/ENG.csv R01 ENG_GB
+	#python3 alignment_based_on_item_structure.py ./test_data/ESS_R01_2002_ENG_SOURCE.csv ./test_data/ESS_R01_2002_CAT_ES.csv 
 	filename_source= str(sys.argv[1])
 	filename_target = str(sys.argv[2])
-	study_round = str(sys.argv[3])
-	target_country_language = str(sys.argv[4])
-	main(filename_source,filename_target, study_round, target_country_language)
+	main(filename_source,filename_target)
