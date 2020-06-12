@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import xml.etree.ElementTree as ET
 from sentence_splitter import SentenceSplitter, split_text_into_sentences
 import pandas as pd 
@@ -7,9 +8,6 @@ import re
 import string
 import utils as ut
 
-
-# initial_request= ["Reporter sur votre: VOTRE CODE ENQUETEUR, VOTRE NOM , la date d'interview et le numéro d'interview:",
-# "Numéro d'interview", 'Interviewernummer:']
 
 dict_module_letters_1999 = {'Perceptions of Life': 'A - Perceptions of Life', 'Environment': 'B - Environment', 'Work': 'C - Work', 
 'Family': 'D - Family', 'Politics and Society': 'E - Politics and Society', 'Religion and Morale': 'F - Religion and Morale', 
@@ -34,7 +32,7 @@ def check_if_sentence_is_uppercase(text):
 
 def clean_instruction(text):
 	if isinstance(text, str):
-		text = re.sub("…", "...", text)
+		# text = re.sub("…", "...", text)
 		text = re.sub("’", "'", text)
 		text = re.sub(";", ",", text)
 		text = re.sub("[.]{4,}", "", text)

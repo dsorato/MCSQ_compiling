@@ -199,21 +199,30 @@ def main(filename_source, filename_target):
 	target_language = target_language_file[3]+'_'+target_language_file[4]
 	study_round = target_language_file[1]
 
-	
-
-	intersection_modules = set(df_source.module.unique()).intersection(set(df_target.module.unique()))
-	print('Modules present in both source and target:', intersection_modules)
 	df = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value', 
-		'source_survey_itemID', 'target_survey_itemID'])
-	for module in sorted(intersection_modules):
-		print(module)
-		df_source_filtered, df_target_filtered = filter_by_module(df_source, df_target, module)
-		unique_item_name_source = df_source_filtered.item_name.unique()
-		unique_item_name_target = df_target_filtered.item_name.unique()
-		for unique in unique_item_name_source:
-			print(unique)
-			df_source_by_item_name = df_source_filtered[df_source_filtered['item_name']==unique]
-			df_target_by_item_name = df_target_filtered[df_target_filtered['item_name']==unique]
+			'source_survey_itemID', 'target_survey_itemID'])
+
+	if 'ESS' in filename_source:
+		intersection_modules = set(df_source.module.unique()).intersection(set(df_target.module.unique()))
+		print('Modules present in both source and target:', intersection_modules)
+		for module in sorted(intersection_modules):
+			print(module)
+			df_source_filtered, df_target_filtered = filter_by_module(df_source, df_target, module)
+			unique_item_name_source = df_source_filtered.item_name.unique()
+			unique_item_name_target = df_target_filtered.item_name.unique()
+			for unique in unique_item_name_source:
+				print(unique)
+				df_source_by_item_name = df_source_filtered[df_source_filtered['item_name']==unique]
+				df_target_by_item_name = df_target_filtered[df_target_filtered['item_name']==unique]
+				if df_target_by_item_name.empty == False and df_source_by_item_name.empty == False:
+					alignment = align_on_meta(df_source_by_item_name, df_target_by_item_name, target_language)
+					print(alignment)
+					df = df.append(alignment, ignore_index=True)
+	elif 'EVS' in filename_source:
+		intersection_item_names = set(df_source.item_name.unique()).intersection(set(df_target.item_name.unique()))
+		for item_name in sorted(intersection_item_names):
+			df_source_by_item_name = df_source[df_source['item_name']==item_name]
+			df_target_by_item_name = df_target[df_target['item_name']==item_name]
 			if df_target_by_item_name.empty == False and df_source_by_item_name.empty == False:
 				alignment = align_on_meta(df_source_by_item_name, df_target_by_item_name, target_language)
 				print(alignment)
