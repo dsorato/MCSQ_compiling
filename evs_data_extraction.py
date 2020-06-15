@@ -201,22 +201,22 @@ def main(filename):
 	sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
 	tokenizer = nltk.data.load(sentence_splitter)
 
-	constants = pd.read_excel(open('data/'+str(filename), 'rb'), sheet_name='Constants')
+	constants = pd.read_excel(open(filename, 'rb'), sheet_name='Constants')
 	#dropping unecessary information
 	constants = constants.drop(['QuestionElement', 'PAPI', 'CAPI', 'CAWI', 'MAIL'], axis=1)
 
-	questionnaire = pd.read_excel(open('data/'+str(filename), 'rb'), sheet_name='Questionnaire')
+	questionnaire = pd.read_excel(open(filename, 'rb'), sheet_name='Questionnaire')
 
-	response_types = pd.read_excel(open('data/'+str(filename), 'rb'), sheet_name='AnswerTypes')
+	response_types = pd.read_excel(open(filename, 'rb'), sheet_name='AnswerTypes')
 
 	#populate survey table
 	survey_id = filename.replace('.xlsx', '')
-	get_survey_info_and_populate_table(survey_id)
+	# get_survey_info_and_populate_table(survey_id)
 	
 	#populate module table
 	list_unique_modules = questionnaire.Module.unique()
 	list_unique_modules = ['No module' if isinstance(x, float) else x for x in list_unique_modules]
-	write_module_table(list_unique_modules)
+	# write_module_table(list_unique_modules)
 
 	survey_last_id = get_survey_last_record()
 	module_dict = get_module_table_as_dict()
@@ -343,25 +343,26 @@ def main(filename):
 
 	#populate survey item table
 	for index, row in df_survey_item.iterrows():
-		survey_itemid = row['survey_itemid']
-		surveyid = row['surveyid']
-		moduleid = row['moduleid']
-		item_name = row['item_name']
-		item_type = row['item_type']
-		item_is_source = row['item_is_source']
-		write_survey_item_table(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type)
+		print(row)
+	# 	survey_itemid = row['survey_itemid']
+	# 	surveyid = row['surveyid']
+	# 	moduleid = row['moduleid']
+	# 	item_name = row['item_name']
+	# 	item_type = row['item_type']
+	# 	item_is_source = row['item_is_source']
+	# 	write_survey_item_table(survey_itemid, surveyid, moduleid, country_language, item_is_source, item_name, item_type)
 
-	#populate introduction table
-	populate_introduction_table(df_survey_item)
+	# #populate introduction table
+	# populate_introduction_table(df_survey_item)
 
-	#populate instruction table
-	populate_instruction_table(df_survey_item)
+	# #populate instruction table
+	# populate_instruction_table(df_survey_item)
 
-	#populate response table
-	populate_response_table(df_survey_item)
+	# #populate response table
+	# populate_response_table(df_survey_item)
 
-	#populate request table
-	populate_request_table(df_survey_item)
+	# #populate request table
+	# populate_request_table(df_survey_item)
 		
 
 	
