@@ -143,9 +143,13 @@ def decide_item_type_constant(constant, row):
 	return item_type
 					
 
-def replace_intro_in_item_name(next_item_name, item_name):
+def replace_intro_in_item_name(column_item_name, item_name):
+	item_name_index = column_item_name.index(item_name)
 	if 'INTRO' in item_name:
-		item_name = next_item_name
+		for i, value in enumerate(column_item_name[item_name_index:]):
+			if 'INTRO' not in value and 'SECTION' not in value:
+				item_name = value
+				break
 
 	return item_name
 
@@ -176,17 +180,15 @@ def main(filename):
 	#The prefix is study+'_'+language+'_'+country+'_'
 	prefix = filename_without_extension+'_'
 
-	if 'ENG_SOURCE' in country_language:
+	if 'ENG_GB' in country_language:
 		item_is_source = True
 	else:
 		item_is_source = False
 
 	df = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', country_language, 'item_is_source'])
-	row_iterator = questionnaire.iterrows()
-	_, last = row_iterator.__next__()
 
 	old_item_name = 'Q1'
-	for index, row in row_iterator: 
+	for index, row in questionnaire.iterrows(): 
 		#case 1: Translated row is not null = We have the tranlated text
 		if pd.isna(row['Translated']) == False and pd.isna(row['QuestionName']) == False:
 			if row['QuestionName'] != 'IWER_INTRO' and row['QuestionName'] != 'INTRO0' and 'SECTION' not in row['QuestionName']:
@@ -194,10 +196,8 @@ def main(filename):
 				if pd.notna(row['Translated']) and row['QuestionElement'] == 'Constant' and row['Translated'] not in response_constants:
 					constant = row['Translated']
 					text = extract_constant(constants, constant)
-					next_item_name = row_iterator.__next__()
-					next_item_name = next_item_name[1]['QuestionName']
-					item_name = replace_intro_in_item_name(next_item_name, row['QuestionName']) 
-					# item_name = check_item_name(row)
+					column_item_name = list(questionnaire['QuestionName'])
+					item_name = replace_intro_in_item_name(column_item_name, row['QuestionName']) 
 					if text != '':
 						data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
 						'module': row['Module'], 'item_type':decide_item_type_constant(constant, row), 'item_name': item_name, 
@@ -244,9 +244,8 @@ def main(filename):
 				else:
 					if pd.notna(row['Translated']):
 						text = clean_text(row['Translated'])
-						next_item_name = row_iterator.__next__()
-						next_item_name = next_item_name[1]['QuestionName']
-						item_name = replace_intro_in_item_name(next_item_name, row['QuestionName']) 
+						column_item_name = list(questionnaire['QuestionName'])
+						item_name = replace_intro_in_item_name(column_item_name, row['QuestionName']) 
 						split_into_sentences = tokenizer.tokenize(text)
 						for item in split_into_sentences:
 							data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
