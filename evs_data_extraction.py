@@ -13,6 +13,22 @@ response_types_dict = dict()
 instruction_constants = ['ASKALL','C_CERT','INT_INS','R_LINE','R_ONLY','SHOWC','CHECK_APP','GO_TO','SKIP_MSG']
 response_constants = ['DK', 'DKext', 'NA','NAext','NAP','OTHER','DK_cawi_mail','DKext_cawi_mail','NA_cawi_mail','NAext_cawi_mail','WOULD_NOT_MIND']
 
+
+def dk_nr_standard(item_value):
+	# Standard
+	# Refusal 777
+	# Don't know 888
+	# Does not apply 999
+	if isinstance(item_value, str) or isinstance(item_value, int):
+		item_value = str(item_value)
+		item_value = re.sub("[8]{1,}", "888", item_value)
+		item_value = re.sub("[9]{1,}", "999", item_value)
+		item_value = re.sub("[7]{1,}", "777", item_value)
+
+
+	return item_value
+
+
 def clean_text(text):
 	text = re.sub("…", "...", text)
 	text = re.sub("’", "'", text)
@@ -126,15 +142,12 @@ def decide_item_type_constant(constant, row):
 
 	return item_type
 					
-def decide_module(module_dict, row_module):
-	if isinstance(row_module, float):
-		module = module_dict['No module']
-	else:
-		module = module_dict[row_module]
 
-	return module
+def replace_intro_in_item_name(next_item_name, item_name):
+	if 'INTRO' in item_name:
+		item_name = next_item_name
 
-
+	return item_name
 
 def main(filename):
 	sentence_splitter_prefix = 'tokenizers/punkt/'
@@ -169,68 +182,78 @@ def main(filename):
 		item_is_source = False
 
 	df = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', country_language, 'item_is_source'])
+	row_iterator = questionnaire.iterrows()
+	_, last = row_iterator.__next__()
 
 	old_item_name = 'Q1'
-	#put everything in df_survey_item to attribute survey_item IDs and then extract using item_type
-	for index, row in questionnaire.iterrows(): 
+	for index, row in row_iterator: 
 		#case 1: Translated row is not null = We have the tranlated text
-		if pd.isna(row['Translated']) == False:
-			#item is a constant. A constant can be type: INSTRUCTION, INTRODUCTION or REQUEST
-			if pd.notna(row['Translated']) and row['QuestionElement'] == 'Constant' and row['Translated'] not in response_constants:
-				constant = row['Translated']
-				text = extract_constant(constants, constant)
-				item_name = check_item_name(row)
-				if text != '':
-					data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
-					'module': row['Module'], 'item_type':decide_item_type_constant(constant, row), 'item_name': item_name, 
-					'item_value':None, country_language:clean_text(text), 'item_is_source': False}
-					df = df.append(data, ignore_index = True)
-					old_item_name = item_name
-			
-			#item is a response. A response can be only type RESPONSE				
-			elif pd.notna(row['Translated']) and (row['QuestionElement'] == 'AnswerType' or row['QuestionElement'] == 'Answer' or 
-				row['Translated'] in response_constants):
-				response = row['Translated']
-				if response in response_constants:
-					text = extract_constant(constants, response)
+		if pd.isna(row['Translated']) == False and pd.isna(row['QuestionName']) == False:
+			if row['QuestionName'] != 'IWER_INTRO' and row['QuestionName'] != 'INTRO0' and 'SECTION' not in row['QuestionName']:
+				#item is a constant. A constant can be type: INSTRUCTION, INTRODUCTION or REQUEST
+				if pd.notna(row['Translated']) and row['QuestionElement'] == 'Constant' and row['Translated'] not in response_constants:
+					constant = row['Translated']
+					text = extract_constant(constants, constant)
+					next_item_name = row_iterator.__next__()
+					next_item_name = next_item_name[1]['QuestionName']
+					item_name = replace_intro_in_item_name(next_item_name, row['QuestionName']) 
+					# item_name = check_item_name(row)
 					if text != '':
-						item_name =  check_item_name(row)
 						data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
-						'module': row['Module'], 'item_type':'RESPONSE', 'item_name':item_name, 
-						'item_value':row['QuestionElementNr'], country_language:clean_text(text), 'item_is_source': False}
+						'module': row['Module'], 'item_type':decide_item_type_constant(constant, row), 'item_name': item_name, 
+						'item_value':None, country_language:clean_text(text), 'item_is_source': item_is_source}
 						df = df.append(data, ignore_index = True)
 						old_item_name = item_name
-				elif row['QuestionElement'] == 'Answer':
-					item_name =  check_item_name(row)
-					data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
-					'module': row['Module'], 'item_type':'RESPONSE', 'item_name':item_name, 
-					'item_value':row['QuestionElementNr'], country_language:clean_text(response), 'item_is_source': False}
-					df = df.append(data, ignore_index = True)
-					old_item_name = item_name
-				else:
-					text = extract_response_types(response_types, text)
-					item_name =  check_item_name(row)
-					if text != '':
-						for item in text:
+			
+				#item is a response. A response can be only type RESPONSE				
+				elif pd.notna(row['Translated']) and (row['QuestionElement'] == 'AnswerType' or row['QuestionElement'] == 'Answer' or 
+					row['Translated'] in response_constants):
+					response = row['Translated']
+					if response in response_constants:
+						text = extract_constant(constants, response)
+						if text != '':
+							item_name = row['QuestionName']
+							# item_name = check_item_name(row)
 							data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
 							'module': row['Module'], 'item_type':'RESPONSE', 'item_name':item_name, 
-							'item_value':row['QuestionElementNr'], country_language:clean_text(item), 'item_is_source': False}
+							'item_value':dk_nr_standard(row['QuestionElementNr']), country_language:clean_text(text), 'item_is_source': item_is_source}
 							df = df.append(data, ignore_index = True)
 							old_item_name = item_name
-
-			
-			# item type can be INTRODUCTION, INSTRUCTION or REQUEST
-			else:
-				if pd.notna(row['Translated']):
-					text = clean_text(row['Translated'])
-					item_name =  check_item_name(row)
-					split_into_sentences = tokenizer.tokenize(text)
-					for item in split_into_sentences:
+					elif row['QuestionElement'] == 'Answer':
+						item_name = row['QuestionName']
+						# item_name = check_item_name(row)
 						data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
-						'module': row['Module'], 'item_type':decide_item_type_other(row), 'item_name':item_name, 
-						'item_value':None, country_language:clean_text(item), 'item_is_source': False}
+						'module': row['Module'], 'item_type':'RESPONSE', 'item_name':item_name, 
+						'item_value':dk_nr_standard(row['QuestionElementNr']), country_language:clean_text(response), 'item_is_source': item_is_source}
 						df = df.append(data, ignore_index = True)
 						old_item_name = item_name
+					else:
+						text = extract_response_types(response_types, text)
+						item_name = row['QuestionName']
+						# item_name = check_item_name(row)
+						if text != '':
+							for item in text:
+								data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
+								'module': row['Module'], 'item_type':'RESPONSE', 'item_name':item_name, 
+								'item_value':dk_nr_standard(row['QuestionElementNr']), country_language:clean_text(item), 'item_is_source': item_is_source}
+								df = df.append(data, ignore_index = True)
+								old_item_name = item_name
+
+			
+				# item type can be INTRODUCTION, INSTRUCTION or REQUEST
+				else:
+					if pd.notna(row['Translated']):
+						text = clean_text(row['Translated'])
+						next_item_name = row_iterator.__next__()
+						next_item_name = next_item_name[1]['QuestionName']
+						item_name = replace_intro_in_item_name(next_item_name, row['QuestionName']) 
+						split_into_sentences = tokenizer.tokenize(text)
+						for item in split_into_sentences:
+							data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
+							'module': row['Module'], 'item_type':decide_item_type_other(row), 'item_name':item_name, 
+							'item_value':None, country_language:clean_text(item), 'item_is_source': item_is_source}
+							df = df.append(data, ignore_index = True)
+							old_item_name = item_name
 			
 	df.to_csv(filename_without_extension+'.csv', encoding='utf-8-sig', index=False)
 

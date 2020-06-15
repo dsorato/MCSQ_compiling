@@ -1,1004 +1,704 @@
 ﻿survey_item_ID,Study,module,item_type,item_name,item_value,FRE_FR,item_is_source
-EVS_R05_2017_FRE_FR_1,EVS_R05_2017,,INTRODUCTION,IWER_INTRO,,Légende,False
-EVS_R05_2017_FRE_FR_1,EVS_R05_2017,,INTRODUCTION,IWER_INTRO,,NSP = Ne sait pas,False
-EVS_R05_2017_FRE_FR_1,EVS_R05_2017,,INTRODUCTION,IWER_INTRO,,SR = Sans réponse,False
-EVS_R05_2017_FRE_FR_1,EVS_R05_2017,,INTRODUCTION,IWER_INTRO,,Non concerné = Non applicable,False
-EVS_R05_2017_FRE_FR_1,EVS_R05_2017,,INTRODUCTION,IWER_INTRO,,Attention : ces modalités correspondent à des réponses spontanées.,False
-EVS_R05_2017_FRE_FR_1,EVS_R05_2017,,INTRODUCTION,IWER_INTRO,,"Elles ne doivent pas figurer sur les cartes, ni être suggérées aux répondants.",False
-EVS_R05_2017_FRE_FR_2,EVS_R05_2017,,INTRODUCTION,INTRO0,,"Bonjour,
-
-Je travaille pour l'institut de sondage KANTAR Sofres.",False
-EVS_R05_2017_FRE_FR_2,EVS_R05_2017,,INTRODUCTION,INTRO0,,Nous réalisons la partie française d'une grande enquête européenne sur les valeurs auxquelles les gens tiennent.,False
-EVS_R05_2017_FRE_FR_2,EVS_R05_2017,,INTRODUCTION,INTRO0,,Un échantillon représentatif est interrogé dans le cadre de cette étude.,False
-EVS_R05_2017_FRE_FR_2,EVS_R05_2017,,INTRODUCTION,INTRO0,,"Votre nom a été sélectionné au hasard, vous faites donc partie de l'échantillon représentatif des personnes qui vivent en France.",False
-EVS_R05_2017_FRE_FR_2,EVS_R05_2017,,INTRODUCTION,INTRO0,,Je voudrais vous interroger sur plusieurs grands sujets de société.,False
-EVS_R05_2017_FRE_FR_2,EVS_R05_2017,,INTRODUCTION,INTRO0,,"Votre participation contribuera à une meilleure compréhension de ce que les gens, dans toute l'Europe, croient et attendent de la vie.",False
-EVS_R05_2017_FRE_FR_3,EVS_R05_2017,A,INTRODUCTION,INTRO1,,"NOUS ALLONS COMMENCER PAR QUELQUES QUESTIONS SUR LA VIE EN GÉNÉRAL, LES LOISIRS ET LE TRAVAIL.",False
-EVS_R05_2017_FRE_FR_4,EVS_R05_2017,A,INSTRUCTION,Q1,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_4,EVS_R05_2017,A,INSTRUCTION,Q1,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_4,EVS_R05_2017,A,REQUEST,Q1,,"Pour chacune des choses suivantes, pouvez-vous me dire si, dans votre vie, cela est très important, assez important, peu important ou pas important du tout ?",False
-EVS_R05_2017_FRE_FR_5,EVS_R05_2017,A,REQUEST,v1,,Travail,False
-EVS_R05_2017_FRE_FR_6,EVS_R05_2017,A,REQUEST,v2,,Famille,False
-EVS_R05_2017_FRE_FR_7,EVS_R05_2017,A,REQUEST,v3,,Amis et relations,False
-EVS_R05_2017_FRE_FR_8,EVS_R05_2017,A,REQUEST,v4,,Loisirs,False
-EVS_R05_2017_FRE_FR_9,EVS_R05_2017,A,REQUEST,v5,,Politique,False
-EVS_R05_2017_FRE_FR_10,EVS_R05_2017,A,REQUEST,v6,,Religion,False
-EVS_R05_2017_FRE_FR_11,EVS_R05_2017,A,RESPONSE,Q1,8,NSP,False
-EVS_R05_2017_FRE_FR_12,EVS_R05_2017,A,INSTRUCTION,Q2,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,REQUEST,v7,,"Tout bien considéré, diriez-vous que vous êtes...",False
-EVS_R05_2017_FRE_FR_14,EVS_R05_2017,A,RESPONSE,Q2,1,...très heureux,False
-EVS_R05_2017_FRE_FR_14,EVS_R05_2017,A,RESPONSE,Q2,2,...assez heureux,False
-EVS_R05_2017_FRE_FR_14,EVS_R05_2017,A,RESPONSE,Q2,3,...pas très heureux,False
-EVS_R05_2017_FRE_FR_14,EVS_R05_2017,A,RESPONSE,Q2,4,...pas heureux du tout,False
-EVS_R05_2017_FRE_FR_14,EVS_R05_2017,A,RESPONSE,Q2,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_14,EVS_R05_2017,A,RESPONSE,Q2,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_15,EVS_R05_2017,A,INSTRUCTION,Q3,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_16,EVS_R05_2017,A,REQUEST,v8,,"Dans l'ensemble, comment décririez-vous votre état de santé en ce moment ?",False
-EVS_R05_2017_FRE_FR_17,EVS_R05_2017,A,RESPONSE,Q3,1,... très bon,False
-EVS_R05_2017_FRE_FR_17,EVS_R05_2017,A,RESPONSE,Q3,2,... bon,False
-EVS_R05_2017_FRE_FR_17,EVS_R05_2017,A,RESPONSE,Q3,3,... acceptable,False
-EVS_R05_2017_FRE_FR_17,EVS_R05_2017,A,RESPONSE,Q3,4,... plutôt mauvais,False
-EVS_R05_2017_FRE_FR_17,EVS_R05_2017,A,RESPONSE,Q3,5,... très mauvais,False
-EVS_R05_2017_FRE_FR_17,EVS_R05_2017,A,RESPONSE,Q3,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_17,EVS_R05_2017,A,RESPONSE,Q3,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_18,EVS_R05_2017,A,INSTRUCTION,Q4,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_18,EVS_R05_2017,A,REQUEST,Q4,,NE PAS LIRE LA LISTE - CODER TOUTES LES ASSOCIATIONS CITEES - ASSUREZ-VOUS QUE LE REPONDANT LIT L'ENSEMBLE DE LA LISTE.,False
-EVS_R05_2017_FRE_FR_18,EVS_R05_2017,A,REQUEST,Q4,,"Veuillez lire attentivement cette liste d'associations et me dire s'il y en a dont vous faites partie et, si oui, lesquelles ?",False
-EVS_R05_2017_FRE_FR_19,EVS_R05_2017,A,REQUEST,v9,,Organisations religieuses ou paroissiales,False
-EVS_R05_2017_FRE_FR_20,EVS_R05_2017,A,REQUEST,v10,,"Associations dans les domaines de l'éducation, des arts, de la musique ou de la culture",False
-EVS_R05_2017_FRE_FR_21,EVS_R05_2017,A,REQUEST,v11,,Syndicats,False
-EVS_R05_2017_FRE_FR_22,EVS_R05_2017,A,REQUEST,v12,,Mouvements ou partis politiques.,False
-EVS_R05_2017_FRE_FR_23,EVS_R05_2017,A,REQUEST,v13,,"Associations pour l'environnement, l'écologie, les droits des animaux",False
-EVS_R05_2017_FRE_FR_24,EVS_R05_2017,A,REQUEST,v14,,Associations professionnelles,False
-EVS_R05_2017_FRE_FR_25,EVS_R05_2017,A,REQUEST,v15,,Associations sportives et de loisirs,False
-EVS_R05_2017_FRE_FR_26,EVS_R05_2017,A,REQUEST,v16,,Associations humanitaires ou caritatives,False
-EVS_R05_2017_FRE_FR_27,EVS_R05_2017,A,REQUEST,v17,,"Associations de consommateurs (comme l'UFC, par exemple)",False
-EVS_R05_2017_FRE_FR_28,EVS_R05_2017,A,REQUEST,v18,,Groupes d'entraide mutuelle,False
-EVS_R05_2017_FRE_FR_29,EVS_R05_2017,A,REQUEST,v19,,Autres groupes,False
-EVS_R05_2017_FRE_FR_30,EVS_R05_2017,A,REQUEST,v20,,Aucun (spontané),False
-EVS_R05_2017_FRE_FR_31,EVS_R05_2017,A,RESPONSE,Q4,1,Cité,False
-EVS_R05_2017_FRE_FR_31,EVS_R05_2017,A,RESPONSE,Q4,2,Pas cité,False
-EVS_R05_2017_FRE_FR_32,EVS_R05_2017,A,RESPONSE,v20a,8,NSP,False
-EVS_R05_2017_FRE_FR_33,EVS_R05_2017,A,REQUEST,v21,,"Au cours des six derniers mois, avez-vous effectué du travail bénévole ?",False
-EVS_R05_2017_FRE_FR_34,EVS_R05_2017,A,RESPONSE,Q5,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_34,EVS_R05_2017,A,RESPONSE,Q5,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_35,EVS_R05_2017,A,INSTRUCTION,Q6,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_35,EVS_R05_2017,A,INSTRUCTION,Q6,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_35,EVS_R05_2017,A,REQUEST,Q6,,Sur cette liste figurent différentes catégories de gens.,False
-EVS_R05_2017_FRE_FR_35,EVS_R05_2017,A,REQUEST,Q6,,Voulez-vous m'indiquer s'il y en a que vous n'aimeriez pas avoir comme voisins?,False
-EVS_R05_2017_FRE_FR_36,EVS_R05_2017,A,REQUEST,v22,,Des gens d'une autre race,False
-EVS_R05_2017_FRE_FR_37,EVS_R05_2017,A,REQUEST,v23,,Des gens portés sur la boisson,False
-EVS_R05_2017_FRE_FR_38,EVS_R05_2017,A,REQUEST,v24,,Des travailleurs étrangers ou des immigrés,False
-EVS_R05_2017_FRE_FR_39,EVS_R05_2017,A,REQUEST,v25,,Des drogués,False
-EVS_R05_2017_FRE_FR_40,EVS_R05_2017,A,REQUEST,v26,,Des homosexuels,False
-EVS_R05_2017_FRE_FR_41,EVS_R05_2017,A,REQUEST,v27,,Des chrétiens,False
-EVS_R05_2017_FRE_FR_42,EVS_R05_2017,A,REQUEST,v28,,Des musulmans,False
-EVS_R05_2017_FRE_FR_43,EVS_R05_2017,A,REQUEST,v29,,Des juifs,False
-EVS_R05_2017_FRE_FR_44,EVS_R05_2017,A,REQUEST,v30,,Des gitans,False
-EVS_R05_2017_FRE_FR_45,EVS_R05_2017,A,RESPONSE,Q6,8,NSP,False
-EVS_R05_2017_FRE_FR_46,EVS_R05_2017,A,REQUEST,v31,,"D'une manière générale, diriez-vous qu'on peut faire confiance à la plupart des gens ou qu'on n'est jamais assez prudent quand on a affaire aux autres ?",False
-EVS_R05_2017_FRE_FR_47,EVS_R05_2017,A,RESPONSE,Q7,1,On peut faire confiance à la plupart des gens,False
-EVS_R05_2017_FRE_FR_47,EVS_R05_2017,A,RESPONSE,Q7,2,On n'est jamais assez prudent quand on a affaire aux autres,False
-EVS_R05_2017_FRE_FR_47,EVS_R05_2017,A,RESPONSE,Q7,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_47,EVS_R05_2017,A,RESPONSE,Q7,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_48,EVS_R05_2017,A,INSTRUCTION,Q8,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_48,EVS_R05_2017,A,INSTRUCTION,Q8,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_48,EVS_R05_2017,A,REQUEST,Q8,,J'aimerais vous demander dans quelle mesure vous faites confiance à différentes catégories de gens.,False
-EVS_R05_2017_FRE_FR_48,EVS_R05_2017,A,REQUEST,Q8,,"Pouvez-vous me dire pour chacune, si vous lui faites...",False
-EVS_R05_2017_FRE_FR_49,EVS_R05_2017,A,REQUEST,v32,,Votre famille,False
-EVS_R05_2017_FRE_FR_50,EVS_R05_2017,A,REQUEST,v33,,Vos voisins,False
-EVS_R05_2017_FRE_FR_51,EVS_R05_2017,A,REQUEST,v34,,Les gens que vous connaissez personnellement,False
-EVS_R05_2017_FRE_FR_52,EVS_R05_2017,A,REQUEST,v35,,Les gens que vous rencontrez pour la première fois,False
-EVS_R05_2017_FRE_FR_53,EVS_R05_2017,A,REQUEST,v36,,Les gens d'une autre religion,False
-EVS_R05_2017_FRE_FR_54,EVS_R05_2017,A,REQUEST,v37,,Les gens d'une autre nationalité,False
-EVS_R05_2017_FRE_FR_55,EVS_R05_2017,A,RESPONSE,Q8,1,...tout à fait confiance,False
-EVS_R05_2017_FRE_FR_55,EVS_R05_2017,A,RESPONSE,Q8,2,...plutôt confiance,False
-EVS_R05_2017_FRE_FR_55,EVS_R05_2017,A,RESPONSE,Q8,3,...plutôt pas confiance,False
-EVS_R05_2017_FRE_FR_55,EVS_R05_2017,A,RESPONSE,Q8,4,...pas du tout confiance,False
-EVS_R05_2017_FRE_FR_55,EVS_R05_2017,A,RESPONSE,Q8,8,NSP,False
-EVS_R05_2017_FRE_FR_56,EVS_R05_2017,A,INSTRUCTION,Q9,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_57,EVS_R05_2017,A,REQUEST,v38,,Certaines personnes pensent qu'elles ont complètement leur libre arbitre et le contrôle de la manière dont leur vie se déroule.,False
-EVS_R05_2017_FRE_FR_57,EVS_R05_2017,A,REQUEST,v38,,D'autres pensent qu'elles n'ont aucun pouvoir réel sur ce qui leur arrive.,False
-EVS_R05_2017_FRE_FR_57,EVS_R05_2017,A,REQUEST,v38,,"A l'aide de cette échelle, indiquez-moi dans quelle mesure vous vous sentez libre du choix et du contrôle de la manière dont se déroule votre vie.",False
-EVS_R05_2017_FRE_FR_58,EVS_R05_2017,A,RESPONSE,Q9,1,Pas du tout libre,False
-EVS_R05_2017_FRE_FR_58,EVS_R05_2017,A,RESPONSE,Q9,10,Tout à fait libre,False
-EVS_R05_2017_FRE_FR_58,EVS_R05_2017,A,RESPONSE,Q9,88,NSP,False
-EVS_R05_2017_FRE_FR_59,EVS_R05_2017,A,INSTRUCTION,Q10,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_60,EVS_R05_2017,A,REQUEST,v39,,"Tout bien considéré, à quel point êtes-vous satisfait ou pas satisfait de la vie que vous menez en ce moment ?",False
-EVS_R05_2017_FRE_FR_60,EVS_R05_2017,A,REQUEST,v39,,Veuillez utiliser cette carte pour préciser votre réponse.,False
-EVS_R05_2017_FRE_FR_61,EVS_R05_2017,A,RESPONSE,Q10,1,Pas du tout satisfait,False
-EVS_R05_2017_FRE_FR_61,EVS_R05_2017,A,RESPONSE,Q10,10,Tout à fait satisfait,False
-EVS_R05_2017_FRE_FR_61,EVS_R05_2017,A,RESPONSE,Q10,88,NSP,False
-EVS_R05_2017_FRE_FR_62,EVS_R05_2017,A,INSTRUCTION,Q11,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_62,EVS_R05_2017,A,REQUEST,Q11,,Voici quelques aspects qui peuvent être considérés comme importants pour un emploi.,False
-EVS_R05_2017_FRE_FR_62,EVS_R05_2017,A,REQUEST,Q11,,Quels sont ceux qui vous paraissent personnellement importants ?,False
-EVS_R05_2017_FRE_FR_63,EVS_R05_2017,A,REQUEST,v40,,On gagne bien sa vie,False
-EVS_R05_2017_FRE_FR_64,EVS_R05_2017,A,REQUEST,v41,,L'horaire est satisfaisant,False
-EVS_R05_2017_FRE_FR_65,EVS_R05_2017,A,REQUEST,v42,,On a de l'initiative,False
-EVS_R05_2017_FRE_FR_66,EVS_R05_2017,A,REQUEST,v43,,Il y a de bonnes vacances,False
-EVS_R05_2017_FRE_FR_67,EVS_R05_2017,A,REQUEST,v44,,C'est un travail qui donne l'impression de réussir quelque chose,False
-EVS_R05_2017_FRE_FR_68,EVS_R05_2017,A,REQUEST,v45,,On a des responsabilités,False
-EVS_R05_2017_FRE_FR_69,EVS_R05_2017,A,REQUEST,v45a,,Aucun de ces aspects (spontané),False
-EVS_R05_2017_FRE_FR_70,EVS_R05_2017,A,RESPONSE,v45b,8,NSP,False
-EVS_R05_2017_FRE_FR_71,EVS_R05_2017,A,INSTRUCTION,Q12,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_71,EVS_R05_2017,A,INSTRUCTION,Q12,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_71,EVS_R05_2017,A,REQUEST,Q12,,Etes-vous d'accord ou pas avec les phrases suivantes ?,False
-EVS_R05_2017_FRE_FR_72,EVS_R05_2017,A,REQUEST,v46,,"Pour développer pleinement ses capacités, il faut avoir un travail",False
-EVS_R05_2017_FRE_FR_73,EVS_R05_2017,A,REQUEST,v47,,C'est humiliant de recevoir de l'argent sans avoir à travailler pour ça,False
-EVS_R05_2017_FRE_FR_74,EVS_R05_2017,A,REQUEST,v48,,Les gens qui ne travaillent pas deviennent paresseux,False
-EVS_R05_2017_FRE_FR_75,EVS_R05_2017,A,REQUEST,v49,,Travailler est un devoir vis-à-vis de la société,False
-EVS_R05_2017_FRE_FR_76,EVS_R05_2017,A,REQUEST,v50,,"Le travail devrait toujours passer en premier, même si cela veut dire moins de temps libre",False
-EVS_R05_2017_FRE_FR_77,EVS_R05_2017,A,RESPONSE,Q12,8,NSP,False
-EVS_R05_2017_FRE_FR_78,EVS_R05_2017,A,REQUEST,v51,,Considérez-vous que vous appartenez à une religion ?,False
-EVS_R05_2017_FRE_FR_79,EVS_R05_2017,A,RESPONSE,Q13,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_79,EVS_R05_2017,A,RESPONSE,Q13,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_80,EVS_R05_2017,A,INSTRUCTION,Q13a,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_81,EVS_R05_2017,A,REQUEST,v52,,Laquelle ?,False
-EVS_R05_2017_FRE_FR_82,EVS_R05_2017,A,RESPONSE,Q13a,1,Catholique,False
-EVS_R05_2017_FRE_FR_82,EVS_R05_2017,A,RESPONSE,Q13a,2,Protestante,False
-EVS_R05_2017_FRE_FR_82,EVS_R05_2017,A,RESPONSE,Q13a,3,Evangélique / Eglise libre,False
-EVS_R05_2017_FRE_FR_82,EVS_R05_2017,A,RESPONSE,Q13a,4,Juive,False
-EVS_R05_2017_FRE_FR_82,EVS_R05_2017,A,RESPONSE,Q13a,5,Musulmane,False
-EVS_R05_2017_FRE_FR_82,EVS_R05_2017,A,RESPONSE,Q13a,6,Hindoue,False
-EVS_R05_2017_FRE_FR_82,EVS_R05_2017,A,RESPONSE,Q13a,7,Bouddhiste,False
-EVS_R05_2017_FRE_FR_82,EVS_R05_2017,A,RESPONSE,Q13a,8,Orthodoxe,False
-EVS_R05_2017_FRE_FR_83,EVS_R05_2017,A,RESPONSE,v52a,30,"Une autre religion, préciser (Ecrire en clair) :",False
-EVS_R05_2017_FRE_FR_84,EVS_R05_2017,A,RESPONSE,Q13a,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_84,EVS_R05_2017,A,RESPONSE,Q13a,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_84,EVS_R05_2017,A,RESPONSE,Q13a,77,Non concerné,False
-EVS_R05_2017_FRE_FR_85,EVS_R05_2017,A,INSTRUCTION,Q14,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_85,EVS_R05_2017,A,REQUEST,Q14,,"SI LE RÉPONDANT N'APPARTIENT PAS ACTUELLEMENT À UNE RELIGION (Q131), DEMANDER :",False
-EVS_R05_2017_FRE_FR_86,EVS_R05_2017,A,REQUEST,v53,,Avez-vous appartenu à une religion ?,False
-EVS_R05_2017_FRE_FR_87,EVS_R05_2017,A,RESPONSE,Q14,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_87,EVS_R05_2017,A,RESPONSE,Q14,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_87,EVS_R05_2017,A,RESPONSE,Q14,7,Non concerné,False
-EVS_R05_2017_FRE_FR_88,EVS_R05_2017,A,INSTRUCTION,Q15,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_88,EVS_R05_2017,A,INSTRUCTION,Q15,,LIRE ET CODER UNE SEULE REPONSE,False
-EVS_R05_2017_FRE_FR_89,EVS_R05_2017,A,REQUEST,v54,,"En dehors des mariages, des enterrements et des baptêmes, tous les combien assistez-vous à un service religieux ?",False
-EVS_R05_2017_FRE_FR_90,EVS_R05_2017,A,RESPONSE,Q15,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_90,EVS_R05_2017,A,RESPONSE,Q15,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_91,EVS_R05_2017,A,INSTRUCTION,Q16,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_91,EVS_R05_2017,A,INSTRUCTION,Q16,,LIRE ET CODER UNE SEULE REPONSE,False
-EVS_R05_2017_FRE_FR_92,EVS_R05_2017,A,REQUEST,v55,,"Et lorsque vous aviez douze ans, en dehors des mariages, des enterrements et des baptêmes, tous les combien assistiez-vous à un service religieux ?",False
-EVS_R05_2017_FRE_FR_93,EVS_R05_2017,A,RESPONSE,Q16,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_94,EVS_R05_2017,A,REQUEST,v56,,"Indépendamment du fait que vous êtes pratiquant ou non, diriez-vous que vous êtes quelqu'un de religieux, de non religieux ou un athée convaincu ?",False
-EVS_R05_2017_FRE_FR_95,EVS_R05_2017,A,INSTRUCTION,Q17,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_95,EVS_R05_2017,A,INSTRUCTION,Q17,,LIRE ET CODER UNE SEULE REPONSE,False
-EVS_R05_2017_FRE_FR_95,EVS_R05_2017,A,RESPONSE,Q17,1,...quelqu'un de religieux,False
-EVS_R05_2017_FRE_FR_95,EVS_R05_2017,A,RESPONSE,Q17,2,...de non religieux,False
-EVS_R05_2017_FRE_FR_95,EVS_R05_2017,A,RESPONSE,Q17,3,...un athée convaincu,False
-EVS_R05_2017_FRE_FR_95,EVS_R05_2017,A,RESPONSE,Q17,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_95,EVS_R05_2017,A,RESPONSE,Q17,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_96,EVS_R05_2017,A,REQUEST,Q18,,Croyez-vous ou non...,False
-EVS_R05_2017_FRE_FR_96,EVS_R05_2017,A,INSTRUCTION,Q18,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_96,EVS_R05_2017,A,INSTRUCTION,Q18,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_97,EVS_R05_2017,A,REQUEST,v57,,...en Dieu,False
-EVS_R05_2017_FRE_FR_98,EVS_R05_2017,A,REQUEST,v58,,...à une vie après la mort,False
-EVS_R05_2017_FRE_FR_99,EVS_R05_2017,A,REQUEST,v59,,...à l'enfer,False
-EVS_R05_2017_FRE_FR_100,EVS_R05_2017,A,REQUEST,v60,,...au paradis,False
-EVS_R05_2017_FRE_FR_101,EVS_R05_2017,A,RESPONSE,Q18,8,NSP,False
-EVS_R05_2017_FRE_FR_102,EVS_R05_2017,A,REQUEST,v61,,"Croyez-vous à la réincarnation, c'est-à-dire que nous avons eu d'autres vies dans le passé et que nous renaîtrons à nouveau dans ce monde ?",False
-EVS_R05_2017_FRE_FR_103,EVS_R05_2017,A,RESPONSE,Q19,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_103,EVS_R05_2017,A,RESPONSE,Q19,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_104,EVS_R05_2017,A,INSTRUCTION,Q20,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_104,EVS_R05_2017,A,INSTRUCTION,Q20,,LIRE ET CODER UNE SEULE REPONSE,False
-EVS_R05_2017_FRE_FR_105,EVS_R05_2017,A,REQUEST,v62,,Laquelle de ces opinions se rapproche le plus de ce que vous croyez ?,False
-EVS_R05_2017_FRE_FR_106,EVS_R05_2017,A,RESPONSE,Q20,1,Il y a un dieu personnel,False
-EVS_R05_2017_FRE_FR_106,EVS_R05_2017,A,RESPONSE,Q20,2,Il y a une sorte d'esprit ou de force vitale,False
-EVS_R05_2017_FRE_FR_106,EVS_R05_2017,A,RESPONSE,Q20,3,Je ne sais pas trop quoi penser,False
-EVS_R05_2017_FRE_FR_106,EVS_R05_2017,A,RESPONSE,Q20,4,"Je ne pense pas qu'il existe quelque chose comme un esprit, un Dieu ou une force vitale",False
-EVS_R05_2017_FRE_FR_106,EVS_R05_2017,A,RESPONSE,Q20,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_106,EVS_R05_2017,A,RESPONSE,Q20,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_107,EVS_R05_2017,A,INSTRUCTION,Q21,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_108,EVS_R05_2017,A,REQUEST,v63,,Et à quel point Dieu est-il important dans votre vie ?,False
-EVS_R05_2017_FRE_FR_108,EVS_R05_2017,A,REQUEST,v63,,"Veuillez utiliser cette carte où 10 veut dire ""tout à fait important"" et 1 ""pas du tout important"".",False
-EVS_R05_2017_FRE_FR_109,EVS_R05_2017,A,RESPONSE,Q21,1,Pas du tout important,False
-EVS_R05_2017_FRE_FR_109,EVS_R05_2017,A,RESPONSE,Q21,10,Tout à fait important,False
-EVS_R05_2017_FRE_FR_109,EVS_R05_2017,A,RESPONSE,Q21,88,NSP,False
-EVS_R05_2017_FRE_FR_110,EVS_R05_2017,A,INSTRUCTION,Q22,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_110,EVS_R05_2017,A,INSTRUCTION,Q22,,LIRE ET CODER UNE SEULE REPONSE,False
-EVS_R05_2017_FRE_FR_111,EVS_R05_2017,A,REQUEST,v64,,"En dehors des services religieux, vous arrive-t-il de prier ?",False
-EVS_R05_2017_FRE_FR_111,EVS_R05_2017,A,REQUEST,v64,,Cela vous arrive-t-il...,False
-EVS_R05_2017_FRE_FR_112,EVS_R05_2017,A,RESPONSE,Q22,1,...tous les jours,False
-EVS_R05_2017_FRE_FR_112,EVS_R05_2017,A,RESPONSE,Q22,2,...plus d'une fois par semaine,False
-EVS_R05_2017_FRE_FR_112,EVS_R05_2017,A,RESPONSE,Q22,3,...une fois par semaine,False
-EVS_R05_2017_FRE_FR_112,EVS_R05_2017,A,RESPONSE,Q22,4,...au moins une fois par mois,False
-EVS_R05_2017_FRE_FR_112,EVS_R05_2017,A,RESPONSE,Q22,5,...plusieurs fois par an,False
-EVS_R05_2017_FRE_FR_112,EVS_R05_2017,A,RESPONSE,Q22,6,...moins souvent,False
-EVS_R05_2017_FRE_FR_112,EVS_R05_2017,A,RESPONSE,Q22,7,...jamais,False
-EVS_R05_2017_FRE_FR_112,EVS_R05_2017,A,RESPONSE,Q22,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_112,EVS_R05_2017,A,RESPONSE,Q22,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_113,EVS_R05_2017,B,INTRODUCTION,INTRO2,,LES QUESTIONS SUIVANTES PORTENT SUR LA VIE FAMILIALE ET LE MARIAGE,False
-EVS_R05_2017_FRE_FR_114,EVS_R05_2017,B,INSTRUCTION,Q23,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_114,EVS_R05_2017,B,INSTRUCTION,Q23,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_114,EVS_R05_2017,B,REQUEST,Q23,,Voici une liste de choses dont on dit qu'elles contribuent au succès d'un mariage ou d'une vie entre compagnons.,False
-EVS_R05_2017_FRE_FR_114,EVS_R05_2017,B,REQUEST,Q23,,"Veuillez me dire pour chacune si vous pensez que c'est très important, assez important ou pas très important.",False
-EVS_R05_2017_FRE_FR_115,EVS_R05_2017,B,REQUEST,v65,,La fidélité,False
-EVS_R05_2017_FRE_FR_116,EVS_R05_2017,B,REQUEST,v66,,Un revenu convenable,False
-EVS_R05_2017_FRE_FR_117,EVS_R05_2017,B,REQUEST,v67,,De bonnes conditions de logement,False
-EVS_R05_2017_FRE_FR_118,EVS_R05_2017,B,REQUEST,v68,,Partager les tâches ménagères,False
-EVS_R05_2017_FRE_FR_119,EVS_R05_2017,B,REQUEST,v69,,Avoir des enfants,False
-EVS_R05_2017_FRE_FR_120,EVS_R05_2017,B,REQUEST,v70,,Avoir chacun du temps pour ses amis et ses activités personnelles,False
-EVS_R05_2017_FRE_FR_121,EVS_R05_2017,B,RESPONSE,Q23,1,Très important,False
-EVS_R05_2017_FRE_FR_121,EVS_R05_2017,B,RESPONSE,Q23,2,Assez important,False
-EVS_R05_2017_FRE_FR_121,EVS_R05_2017,B,RESPONSE,Q23,3,Pas très important,False
-EVS_R05_2017_FRE_FR_121,EVS_R05_2017,B,RESPONSE,Q23,8,NSP,False
-EVS_R05_2017_FRE_FR_122,EVS_R05_2017,B,REQUEST,v71,,Etes-vous d'accord ou pas avec l'opinion suivante : le mariage est une institution dépassée ?,False
-EVS_R05_2017_FRE_FR_123,EVS_R05_2017,B,RESPONSE,Q24,1,D'accord,False
-EVS_R05_2017_FRE_FR_123,EVS_R05_2017,B,RESPONSE,Q24,2,Pas d'accord,False
-EVS_R05_2017_FRE_FR_123,EVS_R05_2017,B,RESPONSE,Q24,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_123,EVS_R05_2017,B,RESPONSE,Q24,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_124,EVS_R05_2017,B,INSTRUCTION,Q25,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_124,EVS_R05_2017,B,INSTRUCTION,Q25,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_124,EVS_R05_2017,B,REQUEST,Q25,,"Pour chacune des opinions que je vais vous lire, pouvez-vous me dire si vous êtes tout à fait d'accord, plutôt d'accord, plutôt pas d'accord, pas d'accord du tout ?",False
-EVS_R05_2017_FRE_FR_125,EVS_R05_2017,B,REQUEST,v72,,"Quand une mère a un emploi, les enfants en souffrent",False
-EVS_R05_2017_FRE_FR_126,EVS_R05_2017,B,REQUEST,v73,,"Avoir un travail, c'est bien, mais ce que la plupart des femmes veulent vraiment, c'est un foyer et des enfants",False
-EVS_R05_2017_FRE_FR_127,EVS_R05_2017,B,REQUEST,v74,,"En général, quand la femme a un emploi à plein temps, la vie de famille en souffre",False
-EVS_R05_2017_FRE_FR_128,EVS_R05_2017,B,REQUEST,v75,,"Le travail d'un homme, c'est de gagner de l'argent, celui d'une femme de s'occuper de la maison et de la famille",False
-EVS_R05_2017_FRE_FR_129,EVS_R05_2017,B,REQUEST,v76,,"En général, les hommes s'avèrent être de meilleurs dirigeants politiques que les femmes",False
-EVS_R05_2017_FRE_FR_130,EVS_R05_2017,B,REQUEST,v77,,Faire des études universitaires est plus important pour un garçon que pour une fille,False
-EVS_R05_2017_FRE_FR_131,EVS_R05_2017,B,REQUEST,v78,,"En général, les hommes s'avèrent être de meilleurs dirigeants d'entreprise que les femmes",False
-EVS_R05_2017_FRE_FR_132,EVS_R05_2017,B,REQUEST,v79,,Un de mes principaux objectifs dans la vie a été de rendre mes parents fiers de moi,False
-EVS_R05_2017_FRE_FR_133,EVS_R05_2017,B,RESPONSE,Q25,1,Tout à fait d'accord,False
-EVS_R05_2017_FRE_FR_133,EVS_R05_2017,B,RESPONSE,Q25,2,Plutôt d'accord,False
-EVS_R05_2017_FRE_FR_133,EVS_R05_2017,B,RESPONSE,Q25,3,Plutôt pas d'accord,False
-EVS_R05_2017_FRE_FR_133,EVS_R05_2017,B,RESPONSE,Q25,4,Pas d'accord du tout,False
-EVS_R05_2017_FRE_FR_133,EVS_R05_2017,B,RESPONSE,Q25,8,NSP,False
-EVS_R05_2017_FRE_FR_134,EVS_R05_2017,B,INSTRUCTION,Q26,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_134,EVS_R05_2017,B,INSTRUCTION,Q26,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_134,EVS_R05_2017,B,REQUEST,Q26,,Etes-vous d'accord ou pas d'accord avec les affirmations suivantes ?,False
-EVS_R05_2017_FRE_FR_135,EVS_R05_2017,B,REQUEST,v80,,"Quand les emplois sont rares, les employeurs devraient embaucher en priorité des Français",False
-EVS_R05_2017_FRE_FR_136,EVS_R05_2017,B,REQUEST,v81,,"Quand les emplois sont rares, un homme a plus droit à un travail qu'une femme",False
-EVS_R05_2017_FRE_FR_137,EVS_R05_2017,B,RESPONSE,Q26,8,NSP,False
-EVS_R05_2017_FRE_FR_138,EVS_R05_2017,B,INSTRUCTION,Q27,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_138,EVS_R05_2017,B,INSTRUCTION,Q27,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_138,EVS_R05_2017,B,REQUEST,Q27,,Et êtes-vous d'accord ou pas d'accord avec les affirmations suivantes ?,False
-EVS_R05_2017_FRE_FR_139,EVS_R05_2017,B,REQUEST,v82,,Les couples homosexuels sont d'aussi bons parents que les autres couples,False
-EVS_R05_2017_FRE_FR_140,EVS_R05_2017,B,REQUEST,v83,,Avoir des enfants est un devoir vis-à-vis de la société,False
-EVS_R05_2017_FRE_FR_141,EVS_R05_2017,B,REQUEST,v84,,Les enfants adultes ont le devoir de prendre soin de leurs parents sur le long terme,False
-EVS_R05_2017_FRE_FR_142,EVS_R05_2017,B,RESPONSE,Q27,8,NSP,False
-EVS_R05_2017_FRE_FR_143,EVS_R05_2017,B,INSTRUCTION,Q28,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_143,EVS_R05_2017,B,REQUEST,Q28,,CODER AU MAXIMUM CINQ REPONSES CITEES,False
-EVS_R05_2017_FRE_FR_143,EVS_R05_2017,B,REQUEST,Q28,,Voici une liste de qualités que les parents peuvent chercher à  encourager chez leurs enfants.,False
-EVS_R05_2017_FRE_FR_143,EVS_R05_2017,B,REQUEST,Q28,,Quelles sont les cinq qualités les plus souhaitables à acquérir pour un enfant ?,False
-EVS_R05_2017_FRE_FR_144,EVS_R05_2017,B,REQUEST,v85,,Les bonnes manières,False
-EVS_R05_2017_FRE_FR_145,EVS_R05_2017,B,REQUEST,v86,,L'indépendance,False
-EVS_R05_2017_FRE_FR_146,EVS_R05_2017,B,REQUEST,v87,,L'application au travail,False
-EVS_R05_2017_FRE_FR_147,EVS_R05_2017,B,REQUEST,v88,,Le sens des responsabilités,False
-EVS_R05_2017_FRE_FR_148,EVS_R05_2017,B,REQUEST,v89,,L'imagination,False
-EVS_R05_2017_FRE_FR_149,EVS_R05_2017,B,REQUEST,v90,,La tolérance et le respect des autres,False
-EVS_R05_2017_FRE_FR_150,EVS_R05_2017,B,REQUEST,v91,,"L'esprit d'économie, ne pas gaspiller l'argent ni les choses",False
-EVS_R05_2017_FRE_FR_151,EVS_R05_2017,B,REQUEST,v92,,"La détermination, la persévérance",False
-EVS_R05_2017_FRE_FR_152,EVS_R05_2017,B,REQUEST,v93,,La foi religieuse,False
-EVS_R05_2017_FRE_FR_153,EVS_R05_2017,B,REQUEST,v94,,La générosité,False
-EVS_R05_2017_FRE_FR_154,EVS_R05_2017,B,REQUEST,v95,,L'obéissance,False
-EVS_R05_2017_FRE_FR_155,EVS_R05_2017,B,RESPONSE,v96a,8,NSP,False
-EVS_R05_2017_FRE_FR_156,EVS_R05_2017,,INTRODUCTION,INTRO3,,JE VAIS MAINTENANT VOUS POSER QUELQUES QUESTIONS SUR DES SUJETS DE SOCIETE,False
-EVS_R05_2017_FRE_FR_157,EVS_R05_2017,C,INSTRUCTION,Q29,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_158,EVS_R05_2017,C,REQUEST,v97,,Dans quelle mesure êtes-vous intéressé par la politique ?,False
-EVS_R05_2017_FRE_FR_158,EVS_R05_2017,C,REQUEST,v97,,Vous diriez...,False
-EVS_R05_2017_FRE_FR_159,EVS_R05_2017,C,RESPONSE,Q29,1,...très intéressé,False
-EVS_R05_2017_FRE_FR_159,EVS_R05_2017,C,RESPONSE,Q29,2,...assez intéressé,False
-EVS_R05_2017_FRE_FR_159,EVS_R05_2017,C,RESPONSE,Q29,3,...pas très intéressé,False
-EVS_R05_2017_FRE_FR_159,EVS_R05_2017,C,RESPONSE,Q29,4,...pas du tout intéressé,False
-EVS_R05_2017_FRE_FR_159,EVS_R05_2017,C,RESPONSE,Q29,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_159,EVS_R05_2017,C,RESPONSE,Q29,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_160,EVS_R05_2017,C,INSTRUCTION,Q30,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_160,EVS_R05_2017,C,INSTRUCTION,Q30,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_160,EVS_R05_2017,C,REQUEST,Q30,,"Je vais vous citer plusieurs formes d'action politique, et pour chacune je vous demanderai de me dire si vous l'avez déjà fait, si vous pourriez en venir à le faire ou si vous ne le feriez jamais, quelles que soient les circonstances?",False
-EVS_R05_2017_FRE_FR_160,EVS_R05_2017,C,REQUEST,Q30,,Signer une pétition,False
-EVS_R05_2017_FRE_FR_160,EVS_R05_2017,C,REQUEST,Q30,,Participer à un boycott,False
-EVS_R05_2017_FRE_FR_160,EVS_R05_2017,C,REQUEST,Q30,,Prendre part à une manifestation autorisée,False
-EVS_R05_2017_FRE_FR_160,EVS_R05_2017,C,REQUEST,Q30,,Participer à une grève sauvage,False
-EVS_R05_2017_FRE_FR_161,EVS_R05_2017,C,REQUEST,v98,,Signer une pétition,False
-EVS_R05_2017_FRE_FR_162,EVS_R05_2017,C,REQUEST,v99,,Participer à un boycott,False
-EVS_R05_2017_FRE_FR_163,EVS_R05_2017,C,REQUEST,v100,,Prendre part à une manifestation autorisée,False
-EVS_R05_2017_FRE_FR_164,EVS_R05_2017,C,REQUEST,v101,,Participer à une grève sauvage,False
-EVS_R05_2017_FRE_FR_165,EVS_R05_2017,C,RESPONSE,Q30,1,A déjà fait,False
-EVS_R05_2017_FRE_FR_165,EVS_R05_2017,C,RESPONSE,Q30,2,Pourrait faire,False
-EVS_R05_2017_FRE_FR_165,EVS_R05_2017,C,RESPONSE,Q30,3,Ne fera jamais,False
-EVS_R05_2017_FRE_FR_165,EVS_R05_2017,C,RESPONSE,Q30,8,NSP,False
-EVS_R05_2017_FRE_FR_166,EVS_R05_2017,C,INSTRUCTION,Q31,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_167,EVS_R05_2017,C,REQUEST,v102,,"A propos de politique, les gens parlent de gauche et de droite.",False
-EVS_R05_2017_FRE_FR_167,EVS_R05_2017,C,REQUEST,v102,,"Vous-même, où vous situez-vous sur cette échelle d'une façon générale ?",False
-EVS_R05_2017_FRE_FR_168,EVS_R05_2017,C,RESPONSE,Q31,1,Gauche,False
-EVS_R05_2017_FRE_FR_168,EVS_R05_2017,C,RESPONSE,Q31,10,Droite,False
-EVS_R05_2017_FRE_FR_168,EVS_R05_2017,C,RESPONSE,Q31,88,NSP,False
-EVS_R05_2017_FRE_FR_169,EVS_R05_2017,C,INSTRUCTION,Q32,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_169,EVS_R05_2017,C,REQUEST,Q32,,LIRE,False
-EVS_R05_2017_FRE_FR_169,EVS_R05_2017,C,REQUEST,Q32,,Sur cette carte figurent des opinions opposées sur différents sujets.,False
-EVS_R05_2017_FRE_FR_169,EVS_R05_2017,C,REQUEST,Q32,,Où vous situez-vous sur cette échelle ?,False
-EVS_R05_2017_FRE_FR_170,EVS_R05_2017,C,RESPONSE,v103,1,Les individus devraient avoir davantage la responsabilité de subvenir à leurs propres besoins,False
-EVS_R05_2017_FRE_FR_170,EVS_R05_2017,C,RESPONSE,v103,10,L'État devrait avoir davantage la responsabilité d'assurer à chacun ses besoins,False
-EVS_R05_2017_FRE_FR_170,EVS_R05_2017,C,RESPONSE,v103,88,NSP,False
-EVS_R05_2017_FRE_FR_171,EVS_R05_2017,C,RESPONSE,v104,1,Les chômeurs devraient être obligés d'accepter tout emploi disponible ou bien perdre leur indemnité de chômage,False
-EVS_R05_2017_FRE_FR_171,EVS_R05_2017,C,RESPONSE,v104,10,Les chômeurs devraient avoir le droit de refuser un emploi qui ne leur convient pas,False
-EVS_R05_2017_FRE_FR_171,EVS_R05_2017,C,RESPONSE,v104,88,NSP,False
-EVS_R05_2017_FRE_FR_172,EVS_R05_2017,C,RESPONSE,v105,1,La concurrence est une bonne chose,False
-EVS_R05_2017_FRE_FR_172,EVS_R05_2017,C,RESPONSE,v105,10,La concurrence est dangereuse,False
-EVS_R05_2017_FRE_FR_172,EVS_R05_2017,C,RESPONSE,v105,88,NSP,False
-EVS_R05_2017_FRE_FR_173,EVS_R05_2017,C,RESPONSE,v106,1,Les revenus devraient être plus égalitaires,False
-EVS_R05_2017_FRE_FR_173,EVS_R05_2017,C,RESPONSE,v106,10,Il faudrait encourager davantage les efforts individuels,False
-EVS_R05_2017_FRE_FR_173,EVS_R05_2017,C,RESPONSE,v106,88,NSP,False
-EVS_R05_2017_FRE_FR_174,EVS_R05_2017,C,RESPONSE,v107,1,La propriété privée des entreprises et des industries devrait être développée,False
-EVS_R05_2017_FRE_FR_174,EVS_R05_2017,C,RESPONSE,v107,10,La nationalisation des entreprises et des industries devrait être développée,False
-EVS_R05_2017_FRE_FR_174,EVS_R05_2017,C,RESPONSE,v107,88,NSP,False
-EVS_R05_2017_FRE_FR_175,EVS_R05_2017,C,INSTRUCTION,Q33,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_175,EVS_R05_2017,C,REQUEST,Q33,,LIRE ET CODER UNE SEULE RÉPONE POUR Q33,False
-EVS_R05_2017_FRE_FR_176,EVS_R05_2017,C,REQUEST,v108,,On dit beaucoup de choses au sujet des buts que la France devrait s'efforcer d'atteindre au cours des dix prochaines années.,False
-EVS_R05_2017_FRE_FR_176,EVS_R05_2017,C,REQUEST,v108,,"Parmi les buts figurant sur cette liste, voulez-vous m'indiquer celui qui vous paraît le plus important ?",False
-EVS_R05_2017_FRE_FR_177,EVS_R05_2017,C,RESPONSE,Q33,8,NSP,False
-EVS_R05_2017_FRE_FR_178,EVS_R05_2017,C,REQUEST,Q33a,,CONTINUER A MONTRER LA CARTE 33 – LIRE ET CODER UNE SEULE RÉPONSE POUR Q33a,False
-EVS_R05_2017_FRE_FR_179,EVS_R05_2017,C,REQUEST,v109,,Et celui qui vient ensuite ?,False
-EVS_R05_2017_FRE_FR_180,EVS_R05_2017,C,RESPONSE,Q33a,8,NSP,False
-EVS_R05_2017_FRE_FR_181,EVS_R05_2017,C,INSTRUCTION,Q34,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_181,EVS_R05_2017,C,REQUEST,Q34,,LIRE ET CODER UNE SEULE RÉPONSE POUR Q34,False
-EVS_R05_2017_FRE_FR_182,EVS_R05_2017,C,REQUEST,v110,,"Si vous deviez choisir parmi les objectifs suivants, lequel vous paraît le plus important ?",False
-EVS_R05_2017_FRE_FR_182,EVS_R05_2017,C,REQUEST,v110,,Premier choix,False
-EVS_R05_2017_FRE_FR_183,EVS_R05_2017,C,RESPONSE,Q34,8,NSP,False
-EVS_R05_2017_FRE_FR_184,EVS_R05_2017,C,REQUEST,Q35,,CONTINUER A MONTRER LA CARTE 34 – LIRE ET CODER UNE SEULE RÉPONSE POUR Q35,False
-EVS_R05_2017_FRE_FR_185,EVS_R05_2017,C,REQUEST,v111,,Et lequel viendrait en second ?,False
-EVS_R05_2017_FRE_FR_185,EVS_R05_2017,C,REQUEST,v111,,Second choix,False
-EVS_R05_2017_FRE_FR_186,EVS_R05_2017,C,RESPONSE,Q35,8,NSP,False
-EVS_R05_2017_FRE_FR_187,EVS_R05_2017,C,REQUEST,v112,,"Naturellement, nous espérons tous qu'il n'y aura pas d'autre guerre ; mais si cela devait arriver, seriez-vous prêt à vous battre pour votre pays ?",False
-EVS_R05_2017_FRE_FR_188,EVS_R05_2017,C,RESPONSE,Q36,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_188,EVS_R05_2017,C,RESPONSE,Q36,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_189,EVS_R05_2017,C,INSTRUCTION,Q37,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_189,EVS_R05_2017,C,INSTRUCTION,Q37,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_189,EVS_R05_2017,C,REQUEST,Q37,,Je vais vous citer deux changements qui pourraient se produire dans notre manière de vivre d'ici quelque temps.,False
-EVS_R05_2017_FRE_FR_189,EVS_R05_2017,C,REQUEST,Q37,,"Si cela arrivait, pensez-vous que ce serait une bonne chose, une mauvaise chose ou ça vous est égal ?",False
-EVS_R05_2017_FRE_FR_189,EVS_R05_2017,C,REQUEST,Q37,,Moins d'importance donnée au travail dans nos vies,False
-EVS_R05_2017_FRE_FR_189,EVS_R05_2017,C,REQUEST,Q37,,Qu'on respecte davantage l'autorité,False
-EVS_R05_2017_FRE_FR_190,EVS_R05_2017,C,REQUEST,v113,,Moins d'importance donnée au travail dans nos vies,False
-EVS_R05_2017_FRE_FR_191,EVS_R05_2017,C,REQUEST,v114,,Qu'on respecte davantage l'autorité,False
-EVS_R05_2017_FRE_FR_192,EVS_R05_2017,C,RESPONSE,Q37,1,Une bonne chose,False
-EVS_R05_2017_FRE_FR_192,EVS_R05_2017,C,RESPONSE,Q37,2,Une mauvaise chose,False
-EVS_R05_2017_FRE_FR_192,EVS_R05_2017,C,RESPONSE,Q37,3,Ça vous est égal,False
-EVS_R05_2017_FRE_FR_192,EVS_R05_2017,C,RESPONSE,Q37,8,NSP,False
-EVS_R05_2017_FRE_FR_193,EVS_R05_2017,C,INSTRUCTION,Q38,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_193,EVS_R05_2017,C,INSTRUCTION,Q38,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_193,EVS_R05_2017,C,REQUEST,Q38,,"Pour chacune des institutions que je vais vous citer, voulez-vous me dire dans quelle mesure vous avez confiance ou pas ?",False
-EVS_R05_2017_FRE_FR_194,EVS_R05_2017,C,REQUEST,v115,,L'Eglise,False
-EVS_R05_2017_FRE_FR_195,EVS_R05_2017,C,REQUEST,v116,,L'armée,False
-EVS_R05_2017_FRE_FR_196,EVS_R05_2017,C,REQUEST,v117,,Le système d'enseignement,False
-EVS_R05_2017_FRE_FR_197,EVS_R05_2017,C,REQUEST,v118,,La presse,False
-EVS_R05_2017_FRE_FR_198,EVS_R05_2017,C,REQUEST,v119,,Les syndicats,False
-EVS_R05_2017_FRE_FR_199,EVS_R05_2017,C,REQUEST,v120,,La police,False
-EVS_R05_2017_FRE_FR_200,EVS_R05_2017,C,REQUEST,v121,,Le parlement,False
-EVS_R05_2017_FRE_FR_201,EVS_R05_2017,C,REQUEST,v122,,L'administration,False
-EVS_R05_2017_FRE_FR_202,EVS_R05_2017,C,REQUEST,v123,,Le système de sécurité sociale,False
-EVS_R05_2017_FRE_FR_203,EVS_R05_2017,C,REQUEST,v124,,L'Union européenne,False
-EVS_R05_2017_FRE_FR_204,EVS_R05_2017,C,REQUEST,v125,,L'Organisation des Nations Unies (ONU),False
-EVS_R05_2017_FRE_FR_205,EVS_R05_2017,C,REQUEST,v126,,Le système de santé,False
-EVS_R05_2017_FRE_FR_206,EVS_R05_2017,C,REQUEST,v127,,Le système judiciaire,False
-EVS_R05_2017_FRE_FR_207,EVS_R05_2017,C,REQUEST,v128,,Les grandes entreprises,False
-EVS_R05_2017_FRE_FR_208,EVS_R05_2017,C,REQUEST,v129,,Les organisations environnementales,False
-EVS_R05_2017_FRE_FR_209,EVS_R05_2017,C,REQUEST,v130,,Les partis politiques,False
-EVS_R05_2017_FRE_FR_210,EVS_R05_2017,C,REQUEST,v131,,Le gouvernement,False
-EVS_R05_2017_FRE_FR_211,EVS_R05_2017,C,REQUEST,v132,,Les réseaux sociaux,False
-EVS_R05_2017_FRE_FR_212,EVS_R05_2017,C,RESPONSE,Q38,1,Une grande confiance,False
-EVS_R05_2017_FRE_FR_212,EVS_R05_2017,C,RESPONSE,Q38,2,Une certaine confiance,False
-EVS_R05_2017_FRE_FR_212,EVS_R05_2017,C,RESPONSE,Q38,3,Peu de confiance,False
-EVS_R05_2017_FRE_FR_212,EVS_R05_2017,C,RESPONSE,Q38,4,Pas confiance du tout,False
-EVS_R05_2017_FRE_FR_212,EVS_R05_2017,C,RESPONSE,Q38,8,NSP,False
-EVS_R05_2017_FRE_FR_213,EVS_R05_2017,C,INSTRUCTION,Q39,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_213,EVS_R05_2017,C,INSTRUCTION,Q39,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_213,EVS_R05_2017,C,REQUEST,Q39,,"Beaucoup de choses sont souhaitables, mais toutes ne sont pas des caractéristiques essentielles de la démocratie.",False
-EVS_R05_2017_FRE_FR_213,EVS_R05_2017,C,REQUEST,Q39,,"Pouvez-vous me dire, pour chacun des points suivants, s'il s'agit selon vous d'une caractéristique essentielle de la démocratie ?",False
-EVS_R05_2017_FRE_FR_213,EVS_R05_2017,C,REQUEST,Q39,,Utilisez cette échelle sur laquelle 1 signifie “ce n'est pas du tout une caractéristique essentielle de la démocratie” et 10 signifie “c'est une caractéristique essentielle de la démocratie”.,False
-EVS_R05_2017_FRE_FR_214,EVS_R05_2017,C,REQUEST,v133,,Les gouvernements font payer plus d'impôts aux riches et donnent plus d'aides aux pauvres,False
-EVS_R05_2017_FRE_FR_215,EVS_R05_2017,C,REQUEST,v134,,Les autorités religieuses ont le dernier mot dans l'interprétation des lois,False
-EVS_R05_2017_FRE_FR_216,EVS_R05_2017,C,REQUEST,v135,,Les individus choisissent leurs dirigeants lors d'élections libres,False
-EVS_R05_2017_FRE_FR_217,EVS_R05_2017,C,REQUEST,v136,,L'Etat donne des aides aux chômeurs,False
-EVS_R05_2017_FRE_FR_218,EVS_R05_2017,C,REQUEST,v137,,L'armée prend le pouvoir quand le gouvernement est incompétent,False
-EVS_R05_2017_FRE_FR_219,EVS_R05_2017,C,REQUEST,v138,,Les droits civiques protègent les personnes de l'oppression de l'Etat,False
-EVS_R05_2017_FRE_FR_220,EVS_R05_2017,C,REQUEST,v139,,L'Etat fait en sorte que les individus aient des revenus égaux,False
-EVS_R05_2017_FRE_FR_221,EVS_R05_2017,C,REQUEST,v140,,Les individus obéissent aux gouvernants du pays,False
-EVS_R05_2017_FRE_FR_222,EVS_R05_2017,C,REQUEST,v141,,Les femmes ont les mêmes droits que les hommes,False
-EVS_R05_2017_FRE_FR_223,EVS_R05_2017,C,RESPONSE,Q39,1,Translation,False
-EVS_R05_2017_FRE_FR_223,EVS_R05_2017,C,RESPONSE,Q39,10,Est une caractéristique essentielle de la démocratie,False
-EVS_R05_2017_FRE_FR_223,EVS_R05_2017,C,RESPONSE,Q39,0,C'est anti-démocratique [NE PAS LIRE],False
-EVS_R05_2017_FRE_FR_223,EVS_R05_2017,C,RESPONSE,Q39,88,NSP,False
-EVS_R05_2017_FRE_FR_224,EVS_R05_2017,C,INSTRUCTION,Q40,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_225,EVS_R05_2017,C,REQUEST,v142,,Dans quelle mesure est-ce important pour vous de vivre dans un pays qui est gouverné démocratiquement ?,False
-EVS_R05_2017_FRE_FR_225,EVS_R05_2017,C,REQUEST,v142,,Sur cette échelle 1 signifie “pas du tout important” et 10 “absolument important”.,False
-EVS_R05_2017_FRE_FR_225,EVS_R05_2017,C,REQUEST,v142,,Quelle est votre position ?,False
-EVS_R05_2017_FRE_FR_226,EVS_R05_2017,C,RESPONSE,Q40,1,Pas du tout important,False
-EVS_R05_2017_FRE_FR_226,EVS_R05_2017,C,RESPONSE,Q40,10,Absolument important,False
-EVS_R05_2017_FRE_FR_226,EVS_R05_2017,C,RESPONSE,Q40,88,NSP,False
-EVS_R05_2017_FRE_FR_227,EVS_R05_2017,C,INSTRUCTION,Q41,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_228,EVS_R05_2017,C,REQUEST,v143,,"Et dans quelle mesure notre pays est-il, selon vous, gouverné démocratiquement aujourd'hui ?",False
-EVS_R05_2017_FRE_FR_228,EVS_R05_2017,C,REQUEST,v143,,"De nouveau, sur une échelle de 1 à 10, où 1 signifie « pas du tout démocratique » et 10 « complètement démocratique », comment répondez-vous ?",False
-EVS_R05_2017_FRE_FR_229,EVS_R05_2017,C,RESPONSE,Q41,1,Pas du tout démocratique,False
-EVS_R05_2017_FRE_FR_229,EVS_R05_2017,C,RESPONSE,Q41,10,Complètement démocratique,False
-EVS_R05_2017_FRE_FR_229,EVS_R05_2017,C,RESPONSE,Q41,88,NSP,False
-EVS_R05_2017_FRE_FR_230,EVS_R05_2017,C,INSTRUCTION,Q42,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_231,EVS_R05_2017,C,REQUEST,v144,,"Sur une échelle de 1 à 10 où 1 signifie «  pas satisfait du tout » et 10 « complètement  satisfait », à quel point êtes-vous satisfait de la manière dont fonctionne aujourd'hui le système politique dans notre pays ?",False
-EVS_R05_2017_FRE_FR_232,EVS_R05_2017,C,RESPONSE,Q42,1,Pas du tout satisfait,False
-EVS_R05_2017_FRE_FR_232,EVS_R05_2017,C,RESPONSE,Q42,10,Complètement satisfait,False
-EVS_R05_2017_FRE_FR_232,EVS_R05_2017,C,RESPONSE,Q42,88,NSP,False
-EVS_R05_2017_FRE_FR_233,EVS_R05_2017,C,INSTRUCTION,Q43,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_233,EVS_R05_2017,C,INSTRUCTION,Q43,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_233,EVS_R05_2017,C,REQUEST,Q43,,Je vais vous décrire différents types de systèmes politiques et vous demander ce que vous en pensez pour gouverner ce pays.,False
-EVS_R05_2017_FRE_FR_233,EVS_R05_2017,C,REQUEST,Q43,,"Pour chacun, veuillez me dire si cette façon de gouverner le pays serait très bonne, assez bonne, assez mauvaise ou très mauvaise.",False
-EVS_R05_2017_FRE_FR_234,EVS_R05_2017,C,REQUEST,v145,,Avoir à sa tête un homme fort qui n'a pas à se préoccuper du parlement ni des élections,False
-EVS_R05_2017_FRE_FR_235,EVS_R05_2017,C,REQUEST,v146,,Que ce soient des experts et non un gouvernement qui décident ce qui leur semble le meilleur pour le pays,False
-EVS_R05_2017_FRE_FR_236,EVS_R05_2017,C,REQUEST,v147,,Que l'armée dirige le pays,False
-EVS_R05_2017_FRE_FR_237,EVS_R05_2017,C,REQUEST,v148,,Avoir un système politique démocratique,False
-EVS_R05_2017_FRE_FR_238,EVS_R05_2017,C,RESPONSE,Q43,1,Très bonne,False
-EVS_R05_2017_FRE_FR_238,EVS_R05_2017,C,RESPONSE,Q43,2,Assez bonne,False
-EVS_R05_2017_FRE_FR_238,EVS_R05_2017,C,RESPONSE,Q43,3,Assez mauvaise,False
-EVS_R05_2017_FRE_FR_238,EVS_R05_2017,C,RESPONSE,Q43,4,Très mauvaise,False
-EVS_R05_2017_FRE_FR_238,EVS_R05_2017,C,RESPONSE,Q43,8,NSP,False
-EVS_R05_2017_FRE_FR_239,EVS_R05_2017,C,INSTRUCTION,Q44,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_239,EVS_R05_2017,C,INSTRUCTION,Q44,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_239,EVS_R05_2017,C,REQUEST,Q44,,"Pour chacune des choses que je vais vous citer, voulez-vous me dire en vous plaçant sur cette échelle si vous pensez que cela peut toujours se justifier, que cela ne peut jamais se justifier ou que c'est entre les deux ?",False
-EVS_R05_2017_FRE_FR_240,EVS_R05_2017,C,REQUEST,v149,,Demander des indemnités au-delà de ce à quoi on a droit,False
-EVS_R05_2017_FRE_FR_241,EVS_R05_2017,C,REQUEST,v150,,Tricher dans sa déclaration d'impôt si on en a la possibilité,False
-EVS_R05_2017_FRE_FR_242,EVS_R05_2017,C,REQUEST,v151,,"Prendre de la drogue, marijuana ou haschich",False
-EVS_R05_2017_FRE_FR_243,EVS_R05_2017,C,REQUEST,v152,,Accepter un pot de vin dans l'exercice de ses fonctions,False
-EVS_R05_2017_FRE_FR_244,EVS_R05_2017,C,REQUEST,v153,,L'homosexualité,False
-EVS_R05_2017_FRE_FR_245,EVS_R05_2017,C,REQUEST,v154,,L'avortement,False
-EVS_R05_2017_FRE_FR_246,EVS_R05_2017,C,REQUEST,v155,,Le divorce,False
-EVS_R05_2017_FRE_FR_247,EVS_R05_2017,C,REQUEST,v156,,L'euthanasie (c'est-à-dire mettre fin aux jours de quelqu'un qui est incurable),False
-EVS_R05_2017_FRE_FR_248,EVS_R05_2017,C,REQUEST,v157,,Le suicide,False
-EVS_R05_2017_FRE_FR_249,EVS_R05_2017,C,REQUEST,v158,,Avoir des relations sexuelles avec des personnes de rencontre,False
-EVS_R05_2017_FRE_FR_250,EVS_R05_2017,C,REQUEST,v159,,S'arranger pour ne pas payer son billet dans le train ou l'autobus,False
-EVS_R05_2017_FRE_FR_251,EVS_R05_2017,C,REQUEST,v160,,La prostitution,False
-EVS_R05_2017_FRE_FR_252,EVS_R05_2017,C,REQUEST,v161,,L'insémination artificielle ou la fécondation in-vitro,False
-EVS_R05_2017_FRE_FR_253,EVS_R05_2017,C,REQUEST,v162,,La violence politique,False
-EVS_R05_2017_FRE_FR_254,EVS_R05_2017,C,REQUEST,v163,,La peine de mort,False
-EVS_R05_2017_FRE_FR_255,EVS_R05_2017,C,RESPONSE,Q44,1,Jamais justifié,False
-EVS_R05_2017_FRE_FR_255,EVS_R05_2017,C,RESPONSE,Q44,10,Toujours justifié,False
-EVS_R05_2017_FRE_FR_255,EVS_R05_2017,C,RESPONSE,Q44,88,NSP,False
-EVS_R05_2017_FRE_FR_256,EVS_R05_2017,C,INSTRUCTION,Q45,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_256,EVS_R05_2017,C,INSTRUCTION,Q45,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_256,EVS_R05_2017,C,REQUEST,Q45,,Les gens ont différentes perceptions d'eux-mêmes et de leur relation au monde qui les entoure.,False
-EVS_R05_2017_FRE_FR_256,EVS_R05_2017,C,REQUEST,Q45,,"En utilisant cette carte, pouvez-vous me dire à quel point vous vous sentez attaché à :",False
-EVS_R05_2017_FRE_FR_257,EVS_R05_2017,C,REQUEST,v164,,votre ville ou votre village,False
-EVS_R05_2017_FRE_FR_258,EVS_R05_2017,C,REQUEST,v165,,votre région,False
-EVS_R05_2017_FRE_FR_259,EVS_R05_2017,C,REQUEST,v166,,La France,False
-EVS_R05_2017_FRE_FR_260,EVS_R05_2017,C,REQUEST,v167,,L'Europe,False
-EVS_R05_2017_FRE_FR_261,EVS_R05_2017,C,REQUEST,v168,,le monde,False
-EVS_R05_2017_FRE_FR_262,EVS_R05_2017,C,RESPONSE,Q45,1,Très attaché,False
-EVS_R05_2017_FRE_FR_262,EVS_R05_2017,C,RESPONSE,Q45,2,Assez attaché,False
-EVS_R05_2017_FRE_FR_262,EVS_R05_2017,C,RESPONSE,Q45,3,Pas très attaché,False
-EVS_R05_2017_FRE_FR_262,EVS_R05_2017,C,RESPONSE,Q45,4,Pas attaché du tout,False
-EVS_R05_2017_FRE_FR_262,EVS_R05_2017,C,RESPONSE,Q45,8,NSP,False
-EVS_R05_2017_FRE_FR_263,EVS_R05_2017,C,REQUEST,v169,,Avez-vous la nationalité française ?,False
-EVS_R05_2017_FRE_FR_264,EVS_R05_2017,C,INSTRUCTION,Q46,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_264,EVS_R05_2017,C,REQUEST,Q46,,LA NATIONALITÉ EST DÉFINIE PAR LA CARTE D'IDENTITÉ OU LE PASSEPORT !,False
-EVS_R05_2017_FRE_FR_264,EVS_R05_2017,C,RESPONSE,Q46,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_264,EVS_R05_2017,C,RESPONSE,Q46,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_265,EVS_R05_2017,C,REQUEST,v170,,Diriez-vous que vous êtes fier d'être citoyen français ?,False
-EVS_R05_2017_FRE_FR_265,EVS_R05_2017,C,REQUEST,v170,,"Diriez-vous très fier, assez fier, pas très fier, pas fier du tout ?",False
-EVS_R05_2017_FRE_FR_266,EVS_R05_2017,C,RESPONSE,Q47,1,Très fier,False
-EVS_R05_2017_FRE_FR_266,EVS_R05_2017,C,RESPONSE,Q47,2,Assez fier,False
-EVS_R05_2017_FRE_FR_266,EVS_R05_2017,C,RESPONSE,Q47,3,Pas très fier,False
-EVS_R05_2017_FRE_FR_266,EVS_R05_2017,C,RESPONSE,Q47,4,Pas fier du tout,False
-EVS_R05_2017_FRE_FR_266,EVS_R05_2017,C,RESPONSE,Q47,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_266,EVS_R05_2017,C,RESPONSE,Q47,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_266,EVS_R05_2017,C,RESPONSE,Q47,7,Non concerné,False
-EVS_R05_2017_FRE_FR_267,EVS_R05_2017,C,REQUEST,Q48,,"Lorsqu'il y a des élections, votez-vous toujours, souvent ou jamais ?",False
-EVS_R05_2017_FRE_FR_267,EVS_R05_2017,C,REQUEST,Q48,,Pouvez-vous me répondre pour chaque niveau électoral ?,False
-EVS_R05_2017_FRE_FR_267,EVS_R05_2017,C,INSTRUCTION,Q48,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_267,EVS_R05_2017,C,INSTRUCTION,Q48,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_268,EVS_R05_2017,C,REQUEST,v171,,Aux élections locales,False
-EVS_R05_2017_FRE_FR_269,EVS_R05_2017,C,REQUEST,v172,,Aux élections nationales,False
-EVS_R05_2017_FRE_FR_270,EVS_R05_2017,C,REQUEST,v173,,Au niveau européen,False
-EVS_R05_2017_FRE_FR_271,EVS_R05_2017,C,RESPONSE,Q48,1,Toujours,False
-EVS_R05_2017_FRE_FR_271,EVS_R05_2017,C,RESPONSE,Q48,2,Souvent,False
-EVS_R05_2017_FRE_FR_271,EVS_R05_2017,C,RESPONSE,Q48,3,Jamais,False
-EVS_R05_2017_FRE_FR_271,EVS_R05_2017,C,RESPONSE,Q48,8,NSP,False
-EVS_R05_2017_FRE_FR_271,EVS_R05_2017,C,RESPONSE,Q48,7,N'a pas / n'avait pas le droit de vote,False
-EVS_R05_2017_FRE_FR_272,EVS_R05_2017,C,INSTRUCTION,Q49,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_273,EVS_R05_2017,C,REQUEST,v174,,De quel parti politique vous sentez-vous le plus proche ?,False
-EVS_R05_2017_FRE_FR_274,EVS_R05_2017,C,RESPONSE,Q49,66,Translation,False
-EVS_R05_2017_FRE_FR_274,EVS_R05_2017,C,RESPONSE,Q49,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_274,EVS_R05_2017,C,RESPONSE,Q49,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_275,EVS_R05_2017,C,INSTRUCTION,Q49a,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_276,EVS_R05_2017,C,REQUEST,v175,,Y a-t-il un autre parti dont vous vous sentez proche ?,False
-EVS_R05_2017_FRE_FR_277,EVS_R05_2017,C,RESPONSE,Q49a,66,Translation,False
-EVS_R05_2017_FRE_FR_277,EVS_R05_2017,C,RESPONSE,Q49a,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_277,EVS_R05_2017,C,RESPONSE,Q49a,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_278,EVS_R05_2017,C,INSTRUCTION,Q50,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_278,EVS_R05_2017,C,INSTRUCTION,Q50,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_278,EVS_R05_2017,C,REQUEST,Q50,,"Selon vous, lors d'élections dans notre pays, les situations suivantes arrivent-elles très souvent, assez souvent, pas très souvent, ou pas du tout souvent ?",False
-EVS_R05_2017_FRE_FR_279,EVS_R05_2017,C,REQUEST,v176,,Le comptage des votes est juste,False
-EVS_R05_2017_FRE_FR_280,EVS_R05_2017,C,REQUEST,v177,,Les candidats d'opposition sont empêchés de poser leur candidature,False
-EVS_R05_2017_FRE_FR_281,EVS_R05_2017,C,REQUEST,v178,,Les nouvelles télévisées favorisent le parti au pouvoir,False
-EVS_R05_2017_FRE_FR_282,EVS_R05_2017,C,REQUEST,v179,,Il y a des achats de voix,False
-EVS_R05_2017_FRE_FR_283,EVS_R05_2017,C,REQUEST,v180,,Les journalistes rendent compte des élections de manière équilibrée,False
-EVS_R05_2017_FRE_FR_284,EVS_R05_2017,C,REQUEST,v181,,Les organisateurs des élections sont équitables,False
-EVS_R05_2017_FRE_FR_285,EVS_R05_2017,C,REQUEST,v182,,Des gens riches achètent les résultats des élections,False
-EVS_R05_2017_FRE_FR_286,EVS_R05_2017,C,REQUEST,v183,,Des menaces violentes sont exercées sur les électeurs,False
-EVS_R05_2017_FRE_FR_287,EVS_R05_2017,C,RESPONSE,Q50,1,Très souvent,False
-EVS_R05_2017_FRE_FR_287,EVS_R05_2017,C,RESPONSE,Q50,2,Assez souvent,False
-EVS_R05_2017_FRE_FR_287,EVS_R05_2017,C,RESPONSE,Q50,3,Pas très souvent,False
-EVS_R05_2017_FRE_FR_287,EVS_R05_2017,C,RESPONSE,Q50,4,Pas du tout souvent,False
-EVS_R05_2017_FRE_FR_287,EVS_R05_2017,C,RESPONSE,Q50,8,NSP,False
-EVS_R05_2017_FRE_FR_288,EVS_R05_2017,C,INSTRUCTION,Q51,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_289,EVS_R05_2017,C,REQUEST,v184,,Nous aimerions connaître votre opinion à propos des personnes d'autres pays qui viennent vivre en France - les immigrés.,False
-EVS_R05_2017_FRE_FR_289,EVS_R05_2017,C,REQUEST,v184,,Comment évaluez-vous l'impact de ces personnes sur le développement de la France?,False
-EVS_R05_2017_FRE_FR_290,EVS_R05_2017,C,RESPONSE,Q51,5,Très bon,False
-EVS_R05_2017_FRE_FR_290,EVS_R05_2017,C,RESPONSE,Q51,4,Assez bon,False
-EVS_R05_2017_FRE_FR_290,EVS_R05_2017,C,RESPONSE,Q51,3,"Ni bon, ni mauvais",False
-EVS_R05_2017_FRE_FR_290,EVS_R05_2017,C,RESPONSE,Q51,2,Assez mauvais,False
-EVS_R05_2017_FRE_FR_290,EVS_R05_2017,C,RESPONSE,Q51,1,Très mauvais,False
-EVS_R05_2017_FRE_FR_290,EVS_R05_2017,C,RESPONSE,Q51,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_290,EVS_R05_2017,C,RESPONSE,Q51,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_291,EVS_R05_2017,C,INSTRUCTION,Q52,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_291,EVS_R05_2017,C,REQUEST,Q52,,LIRE,False
-EVS_R05_2017_FRE_FR_291,EVS_R05_2017,C,REQUEST,Q52,,Voici différentes phrases.,False
-EVS_R05_2017_FRE_FR_291,EVS_R05_2017,C,REQUEST,Q52,,"Personnellement, où vous situez-vous sur ces échelles ?",False
-EVS_R05_2017_FRE_FR_292,EVS_R05_2017,C,RESPONSE,v185,1,Les immigrés prennent les emplois des Français,False
-EVS_R05_2017_FRE_FR_292,EVS_R05_2017,C,RESPONSE,v185,10,Les immigrés ne prennent pas les emplois des Français,False
-EVS_R05_2017_FRE_FR_292,EVS_R05_2017,C,RESPONSE,v185,88,NSP,False
-EVS_R05_2017_FRE_FR_293,EVS_R05_2017,C,RESPONSE,v186,1,Les immigrés accentuent  les problèmes de criminalité,False
-EVS_R05_2017_FRE_FR_293,EVS_R05_2017,C,RESPONSE,v186,10,Les immigrés n'accentuent  pas les problèmes de criminalité,False
-EVS_R05_2017_FRE_FR_293,EVS_R05_2017,C,RESPONSE,v186,88,NSP,False
-EVS_R05_2017_FRE_FR_294,EVS_R05_2017,C,RESPONSE,v187,1,Les immigrés sont une charge pour la sécurité sociale d'un pays,False
-EVS_R05_2017_FRE_FR_294,EVS_R05_2017,C,RESPONSE,v187,10,Les immigrés ne sont pas une charge pour la sécurité sociale d'un pays,False
-EVS_R05_2017_FRE_FR_294,EVS_R05_2017,C,RESPONSE,v187,88,NSP,False
-EVS_R05_2017_FRE_FR_295,EVS_R05_2017,C,RESPONSE,v188,1,Il vaut mieux que les immigrés conservent leurs propres coutumes et traditions,False
-EVS_R05_2017_FRE_FR_295,EVS_R05_2017,C,RESPONSE,v188,10,Translation,False
-EVS_R05_2017_FRE_FR_295,EVS_R05_2017,C,RESPONSE,v188,88,NSP,False
-EVS_R05_2017_FRE_FR_296,EVS_R05_2017,C,INSTRUCTION,Q53 ,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_296,EVS_R05_2017,C,INSTRUCTION,Q53 ,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_296,EVS_R05_2017,C,REQUEST,Q53 ,,"Certaines personnes estiment que pour être vraiment Français, il est important de posséder certaines des caractéristiques suivantes.",False
-EVS_R05_2017_FRE_FR_296,EVS_R05_2017,C,REQUEST,Q53 ,,"Pour d'autres, cela n'est pas important.",False
-EVS_R05_2017_FRE_FR_296,EVS_R05_2017,C,REQUEST,Q53 ,,"A votre avis, pour être vraiment Français, est-il important...",False
-EVS_R05_2017_FRE_FR_297,EVS_R05_2017,C,REQUEST,v189,,... d'être né en France,False
-EVS_R05_2017_FRE_FR_298,EVS_R05_2017,C,REQUEST,v190,,... de respecter la loi et les institutions françaises,False
-EVS_R05_2017_FRE_FR_299,EVS_R05_2017,C,REQUEST,v191,,... d'avoir des origines françaises,False
-EVS_R05_2017_FRE_FR_300,EVS_R05_2017,C,REQUEST,v192,,... d'être capable de parler fançais,False
-EVS_R05_2017_FRE_FR_301,EVS_R05_2017,C,REQUEST,v193,,...de partager la culture française,False
-EVS_R05_2017_FRE_FR_302,EVS_R05_2017,C,RESPONSE,Q53 ,8,NSP,False
-EVS_R05_2017_FRE_FR_303,EVS_R05_2017,C,INSTRUCTION,Q54,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_303,EVS_R05_2017,C,INSTRUCTION,Q54,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_303,EVS_R05_2017,C,REQUEST,Q54,,Les gens ont différentes manières de définir un Européen.,False
-EVS_R05_2017_FRE_FR_303,EVS_R05_2017,C,REQUEST,Q54,,"Selon vous, pour être Européen, dans quelle mesure est-il important...",False
-EVS_R05_2017_FRE_FR_304,EVS_R05_2017,C,REQUEST,v194,,...d'être né en Europe,False
-EVS_R05_2017_FRE_FR_305,EVS_R05_2017,C,REQUEST,v195,,...d'avoir des origines européennes,False
-EVS_R05_2017_FRE_FR_306,EVS_R05_2017,C,REQUEST,v196,,...d'être chrétien,False
-EVS_R05_2017_FRE_FR_307,EVS_R05_2017,C,REQUEST,v197,,...de partager la culture européenne,False
-EVS_R05_2017_FRE_FR_308,EVS_R05_2017,C,RESPONSE,Q54,8,NSP,False
-EVS_R05_2017_FRE_FR_309,EVS_R05_2017,C,INSTRUCTION,Q55,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_310,EVS_R05_2017,C,REQUEST,v198,,Certains pensent que l'élargissement de l'Union européenne devrait continuer.,False
-EVS_R05_2017_FRE_FR_310,EVS_R05_2017,C,REQUEST,v198,,D'autres estiment qu'on est déjà allé trop loin.,False
-EVS_R05_2017_FRE_FR_310,EVS_R05_2017,C,REQUEST,v198,,Situez votre opinion sur cette échelle :,False
-EVS_R05_2017_FRE_FR_311,EVS_R05_2017,C,RESPONSE,Q55,1,L'élargissement devrait continuer,False
-EVS_R05_2017_FRE_FR_311,EVS_R05_2017,C,RESPONSE,Q55,10,L'élargissement est allé trop loin,False
-EVS_R05_2017_FRE_FR_311,EVS_R05_2017,C,RESPONSE,Q55,88,NSP,False
-EVS_R05_2017_FRE_FR_312,EVS_R05_2017,C,INSTRUCTION,Q56,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_312,EVS_R05_2017,C,INSTRUCTION,Q56,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_312,EVS_R05_2017,C,REQUEST,Q56,,Ja vais maintenant vous lire plusieurs affirmations au sujet de l'environnement.,False
-EVS_R05_2017_FRE_FR_312,EVS_R05_2017,C,REQUEST,Q56,,"Pour chacune d'entre elles, pourriez-vous me dire dans quelle mesure vous êtes d'accord ou pas d'accord ?",False
-EVS_R05_2017_FRE_FR_313,EVS_R05_2017,C,REQUEST,v199,,Je donnerais une partie de mes revenus si j'étais sûr que l'argent soit utilisé pour éviter la pollution de l'environnement,False
-EVS_R05_2017_FRE_FR_314,EVS_R05_2017,C,REQUEST,v200,,C'est juste trop difficile pour les gens comme moi de vraiment agir pour l'environnement,False
-EVS_R05_2017_FRE_FR_315,EVS_R05_2017,C,REQUEST,v201,,Il y a plus important à faire dans la vie que de protéger l'environnement,False
-EVS_R05_2017_FRE_FR_316,EVS_R05_2017,C,REQUEST,v202,,Ça ne sert à rien de faire ce que je peux pour l'environnement si les autres ne font pas la même chose,False
-EVS_R05_2017_FRE_FR_317,EVS_R05_2017,C,REQUEST,v203,,Beaucoup des affirmations sur les menaces environnementales sont exagérées,False
-EVS_R05_2017_FRE_FR_318,EVS_R05_2017,C,RESPONSE,Q56,8,NSP,False
-EVS_R05_2017_FRE_FR_319,EVS_R05_2017,C,INSTRUCTION,Q57,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_319,EVS_R05_2017,C,REQUEST,Q57,,LIRE ET CODER UNE REPONSE,False
-EVS_R05_2017_FRE_FR_320,EVS_R05_2017,C,REQUEST,v204,,Voici deux affirmations qu'on entend parfois quand les gens discutent de l'environnement et de la croissance économique.,False
-EVS_R05_2017_FRE_FR_320,EVS_R05_2017,C,REQUEST,v204,,Laquelle se rapproche le plus de votre point de vue ?,False
-EVS_R05_2017_FRE_FR_321,EVS_R05_2017,C,RESPONSE,Q57,1,"A. On devrait donner la priorité à la protection de l'environnement, même si cela ralentit la croissance économique et si certains perdent leur emploi",False
-EVS_R05_2017_FRE_FR_321,EVS_R05_2017,C,RESPONSE,Q57,2,"B. On devrait donner la priorité à la croissance économique et à la création d'emplois, même si l'environnement en souffre d'une manière ou d'une autre",False
-EVS_R05_2017_FRE_FR_321,EVS_R05_2017,C,RESPONSE,Q57,3,Autre réponse (spontanée),False
-EVS_R05_2017_FRE_FR_321,EVS_R05_2017,C,RESPONSE,Q57,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_321,EVS_R05_2017,C,RESPONSE,Q57,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_322,EVS_R05_2017,C,INSTRUCTION,Q58,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_322,EVS_R05_2017,C,INSTRUCTION,Q58,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_322,EVS_R05_2017,C,REQUEST,Q58,,"Selon vous, le gouvernement français devrait-il ou non avoir le droit de...",False
-EVS_R05_2017_FRE_FR_323,EVS_R05_2017,C,REQUEST,v205,,... mettre les individus sous vidéo-surveillance dans les espaces publics ?,False
-EVS_R05_2017_FRE_FR_324,EVS_R05_2017,C,REQUEST,v206,,... surveiller tous les e-mails et autres informations échangées sur Internet ?,False
-EVS_R05_2017_FRE_FR_325,EVS_R05_2017,C,REQUEST,v207,,... récolter des informations sur toute personne vivant en France sans qu'elle le sache ?,False
-EVS_R05_2017_FRE_FR_326,EVS_R05_2017,C,RESPONSE,Q58,1,Devrait absolument avoir le droit,False
-EVS_R05_2017_FRE_FR_326,EVS_R05_2017,C,RESPONSE,Q58,2,Devrait probablement avoir le droit,False
-EVS_R05_2017_FRE_FR_326,EVS_R05_2017,C,RESPONSE,Q58,3,Ne devrait probablement pas avoir  le droit,False
-EVS_R05_2017_FRE_FR_326,EVS_R05_2017,C,RESPONSE,Q58,4,Ne devrait absolument pas avoir le droit,False
-EVS_R05_2017_FRE_FR_326,EVS_R05_2017,C,RESPONSE,Q58,8,NSP,False
-EVS_R05_2017_FRE_FR_327,EVS_R05_2017,C,INSTRUCTION,Q59,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_327,EVS_R05_2017,C,INSTRUCTION,Q59,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_327,EVS_R05_2017,C,REQUEST,Q59,,À quelle fréquence suivez-vous la politique...,False
-EVS_R05_2017_FRE_FR_328,EVS_R05_2017,C,REQUEST,v208,,...à la télévision,False
-EVS_R05_2017_FRE_FR_329,EVS_R05_2017,C,REQUEST,v209,,...à la radio,False
-EVS_R05_2017_FRE_FR_330,EVS_R05_2017,C,REQUEST,v210,,...dans les journaux quotidiens,False
-EVS_R05_2017_FRE_FR_331,EVS_R05_2017,C,REQUEST,v211,,...sur les réseaux sociaux,False
-EVS_R05_2017_FRE_FR_332,EVS_R05_2017,C,RESPONSE,Q59,1,Tous les jours,False
-EVS_R05_2017_FRE_FR_332,EVS_R05_2017,C,RESPONSE,Q59,2,Plusieurs fois par semaine,False
-EVS_R05_2017_FRE_FR_332,EVS_R05_2017,C,RESPONSE,Q59,3,Une ou deux fois par semaine,False
-EVS_R05_2017_FRE_FR_332,EVS_R05_2017,C,RESPONSE,Q59,4,Moins souvent,False
-EVS_R05_2017_FRE_FR_332,EVS_R05_2017,C,RESPONSE,Q59,5,Jamais,False
-EVS_R05_2017_FRE_FR_332,EVS_R05_2017,C,RESPONSE,Q59,8,NSP,False
-EVS_R05_2017_FRE_FR_333,EVS_R05_2017,C,INSTRUCTION,Q60,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_333,EVS_R05_2017,C,INSTRUCTION,Q60,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_333,EVS_R05_2017,C,REQUEST,Q60,,Dans quelle mesure vous sentez-vous concerné par les conditions de vie :,False
-EVS_R05_2017_FRE_FR_334,EVS_R05_2017,C,REQUEST,v212,,...des gens de votre voisinage ?,False
-EVS_R05_2017_FRE_FR_335,EVS_R05_2017,C,REQUEST,v213,,...des gens de la région où vous habitez ?,False
-EVS_R05_2017_FRE_FR_336,EVS_R05_2017,C,REQUEST,v214,,...de vos concitoyens ?,False
-EVS_R05_2017_FRE_FR_337,EVS_R05_2017,C,REQUEST,v215,,...des Européens ?,False
-EVS_R05_2017_FRE_FR_338,EVS_R05_2017,C,REQUEST,v216,,...de l'humanité tout entière ?,False
-EVS_R05_2017_FRE_FR_339,EVS_R05_2017,C,RESPONSE,Q60,8,NSP,False
-EVS_R05_2017_FRE_FR_340,EVS_R05_2017,C,INSTRUCTION,Q61,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_340,EVS_R05_2017,C,INSTRUCTION,Q61,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_340,EVS_R05_2017,C,REQUEST,Q61,,Dans quelle mesure vous sentez-vous concerné par les conditions de vie ...,False
-EVS_R05_2017_FRE_FR_341,EVS_R05_2017,C,REQUEST,v217,,...des personnes âgées,False
-EVS_R05_2017_FRE_FR_342,EVS_R05_2017,C,REQUEST,v218,,...des chômeurs,False
-EVS_R05_2017_FRE_FR_343,EVS_R05_2017,C,REQUEST,v219,,...des immigrés,False
-EVS_R05_2017_FRE_FR_344,EVS_R05_2017,C,REQUEST,v220,,...des malades ou handicapés,False
-EVS_R05_2017_FRE_FR_345,EVS_R05_2017,C,RESPONSE,Q61,8,NSP,False
-EVS_R05_2017_FRE_FR_346,EVS_R05_2017,C,INSTRUCTION,Q62,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_346,EVS_R05_2017,C,INSTRUCTION,Q62,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
-EVS_R05_2017_FRE_FR_346,EVS_R05_2017,C,REQUEST,Q62,,Qu'est ce qu'une société devrait assurer à ses membres ?,False
-EVS_R05_2017_FRE_FR_346,EVS_R05_2017,C,REQUEST,Q62,,"Pour chaque affirmation, pouvez-vous me dire si vous la considérez comme importante ou pas ?",False
-EVS_R05_2017_FRE_FR_347,EVS_R05_2017,C,REQUEST,v221,,Eliminer les grandes inégalités de revenus entre citoyens,False
-EVS_R05_2017_FRE_FR_348,EVS_R05_2017,C,REQUEST,v222,,"Garantir les besoins de base pour tous : nourriture, logement, habillement, éducation, santé",False
-EVS_R05_2017_FRE_FR_349,EVS_R05_2017,C,REQUEST,v223,,Reconnaître les gens selon leurs mérites,False
-EVS_R05_2017_FRE_FR_350,EVS_R05_2017,C,REQUEST,v224,,Protéger contre le terrorisme,False
-EVS_R05_2017_FRE_FR_351,EVS_R05_2017,D,INTRODUCTION,INTRO4,,CARACTÉRISTIQUES DÉMOGRAPHIQUES,False
-EVS_R05_2017_FRE_FR_351,EVS_R05_2017,D,INSTRUCTION,INTRO4,,DEMANDER A TOUS,False
-EVS_R05_2017_FRE_FR_352,EVS_R05_2017,D,REQUEST,v225,,Sexe de la personne interrogée,False
-EVS_R05_2017_FRE_FR_353,EVS_R05_2017,D,RESPONSE,Q63,1,Homme,False
-EVS_R05_2017_FRE_FR_353,EVS_R05_2017,D,RESPONSE,Q63,2,Femme,False
-EVS_R05_2017_FRE_FR_353,EVS_R05_2017,D,RESPONSE,Q63,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_353,EVS_R05_2017,D,RESPONSE,Q63,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_354,EVS_R05_2017,D,REQUEST,v226,,Quelle est votre année de naissance ?,False
-EVS_R05_2017_FRE_FR_355,EVS_R05_2017,D,RESPONSE,Q64,8888,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_355,EVS_R05_2017,D,RESPONSE,Q64,9999,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_356,EVS_R05_2017,D,REQUEST,v227,,Etes-vous né en France métropolitaine ?,False
-EVS_R05_2017_FRE_FR_357,EVS_R05_2017,D,RESPONSE,Q65,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_357,EVS_R05_2017,D,RESPONSE,Q65,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_358,EVS_R05_2017,D,REQUEST,Q66,,Dans quel pays ou territoire êtes-vous né ?,False
-EVS_R05_2017_FRE_FR_359,EVS_R05_2017,D,RESPONSE,v228a,1,Écrire en clair :,False
-EVS_R05_2017_FRE_FR_360,EVS_R05_2017,D,INSTRUCTION,Q66,,INSTITUT : PRE-CODER SELON LA NOMENCLATURE ISO 3166-1 (SUR 2 POSITIONS) /,False
-EVS_R05_2017_FRE_FR_360,EVS_R05_2017,D,INSTRUCTION,Q66,,ISO 3166-3 (SUR 4 POSITIONS POUR LES ANCIENS NOMS DE PAYS),False
-EVS_R05_2017_FRE_FR_361,EVS_R05_2017,D,RESPONSE,v228b,2,Code :,False
-EVS_R05_2017_FRE_FR_362,EVS_R05_2017,D,RESPONSE,Q66,8888,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_362,EVS_R05_2017,D,RESPONSE,Q66,9999,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_362,EVS_R05_2017,D,RESPONSE,Q66,7777,Non concerné,False
-EVS_R05_2017_FRE_FR_363,EVS_R05_2017,D,REQUEST,v229,,Dites-moi en quelle année vous êtes venu vivre en France pour la première fois ?,False
-EVS_R05_2017_FRE_FR_364,EVS_R05_2017,D,RESPONSE,Q67,1,Ecrire l'année :,False
-EVS_R05_2017_FRE_FR_364,EVS_R05_2017,D,RESPONSE,Q67,8888,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_364,EVS_R05_2017,D,RESPONSE,Q67,9999,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_364,EVS_R05_2017,D,RESPONSE,Q67,7777,Non concerné,False
-EVS_R05_2017_FRE_FR_365,EVS_R05_2017,D,INSTRUCTION,Q68,,DEMANDER A TOUS,False
-EVS_R05_2017_FRE_FR_366,EVS_R05_2017,D,REQUEST,v230,,Votre père est-il né en France métropolitaine ?,False
-EVS_R05_2017_FRE_FR_367,EVS_R05_2017,D,RESPONSE,Q68,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_367,EVS_R05_2017,D,RESPONSE,Q68,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_368,EVS_R05_2017,D,REQUEST,Q69,,Dans quel pays ou territoire votre père est-il né ?,False
-EVS_R05_2017_FRE_FR_369,EVS_R05_2017,D,RESPONSE,v231a,1,Écrire en clair :,False
-EVS_R05_2017_FRE_FR_370,EVS_R05_2017,D,INSTRUCTION,Q69,,INSTITUT : PRE-CODER SELON LA NOMENCLATURE ISO 3166-1 (SUR 2 POSITIONS) /,False
-EVS_R05_2017_FRE_FR_370,EVS_R05_2017,D,INSTRUCTION,Q69,,ISO 3166-3 (SUR 4 POSITIONS POUR LES ANCIENS NOMS DE PAYS),False
-EVS_R05_2017_FRE_FR_371,EVS_R05_2017,D,RESPONSE,v231b,2,Code :,False
-EVS_R05_2017_FRE_FR_372,EVS_R05_2017,D,RESPONSE,Q69,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_372,EVS_R05_2017,D,RESPONSE,Q69,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_372,EVS_R05_2017,D,RESPONSE,Q69,77,Non concerné,False
-EVS_R05_2017_FRE_FR_373,EVS_R05_2017,D,INSTRUCTION,Q70,,DEMANDER A TOUS,False
-EVS_R05_2017_FRE_FR_374,EVS_R05_2017,D,REQUEST,v232,,Votre mère est-elle née en France métropolitaine ?,False
-EVS_R05_2017_FRE_FR_375,EVS_R05_2017,D,RESPONSE,Q70,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_375,EVS_R05_2017,D,RESPONSE,Q70,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_376,EVS_R05_2017,D,REQUEST,Q71,,Dans quel pays ou territoire votre mère est-elle née ?,False
-EVS_R05_2017_FRE_FR_377,EVS_R05_2017,D,RESPONSE,v233a,1,Écrire en clair :,False
-EVS_R05_2017_FRE_FR_378,EVS_R05_2017,D,INSTRUCTION,Q71,,INSTITUT : PRE-CODER SELON LA NOMENCLATURE ISO 3166-1 (SUR 2 POSITIONS) /,False
-EVS_R05_2017_FRE_FR_378,EVS_R05_2017,D,INSTRUCTION,Q71,,ISO 3166-3 (SUR 4 POSITIONS POUR LES ANCIENS NOMS DE PAYS),False
-EVS_R05_2017_FRE_FR_379,EVS_R05_2017,D,RESPONSE,v233b,2,Code :,False
-EVS_R05_2017_FRE_FR_380,EVS_R05_2017,D,RESPONSE,Q71,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_380,EVS_R05_2017,D,RESPONSE,Q71,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_380,EVS_R05_2017,D,RESPONSE,Q71,77,Non concerné,False
-EVS_R05_2017_FRE_FR_381,EVS_R05_2017,D,INSTRUCTION,Q72,,DEMANDER A TOUS,False
-EVS_R05_2017_FRE_FR_382,EVS_R05_2017,D,REQUEST,v234,,Quel est votre statut matrimonial actuel ?,False
-EVS_R05_2017_FRE_FR_383,EVS_R05_2017,D,REQUEST,Q72,,"VEUF OU DIVORCE D'UN MARIAGE OU D'UN PACS, PAS D'UNE COHABITATION - SI CELIBATAIRE, CONCUBIN, COUPLE EN UNION LIBRE : CODER 6 « n'a jamais été marié ou pacsé auparavant »",False
-EVS_R05_2017_FRE_FR_383,EVS_R05_2017,D,RESPONSE,Q72,1,Marié,False
-EVS_R05_2017_FRE_FR_383,EVS_R05_2017,D,RESPONSE,Q72,2,Pacsé,False
-EVS_R05_2017_FRE_FR_383,EVS_R05_2017,D,RESPONSE,Q72,3,Veuf,False
-EVS_R05_2017_FRE_FR_383,EVS_R05_2017,D,RESPONSE,Q72,4,Divorcé,False
-EVS_R05_2017_FRE_FR_383,EVS_R05_2017,D,RESPONSE,Q72,5,Séparé,False
-EVS_R05_2017_FRE_FR_383,EVS_R05_2017,D,RESPONSE,Q72,6,N'a jamais été marié ou pacsé auparavant,False
-EVS_R05_2017_FRE_FR_383,EVS_R05_2017,D,RESPONSE,Q72,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_383,EVS_R05_2017,D,RESPONSE,Q72,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_384,EVS_R05_2017,D,REQUEST,v235,,Avez-vous vécu ensemble avec votre conjoint avant votre mariage / avant votre Pacs ?,False
-EVS_R05_2017_FRE_FR_385,EVS_R05_2017,D,RESPONSE,Q73,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_385,EVS_R05_2017,D,RESPONSE,Q73,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_385,EVS_R05_2017,D,RESPONSE,Q73,7,Non concerné,False
-EVS_R05_2017_FRE_FR_386,EVS_R05_2017,D,INSTRUCTION,,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_387,EVS_R05_2017,D,REQUEST,v236,,Vivez-vous avec un conjoint ou un compagnon ?,False
-EVS_R05_2017_FRE_FR_388,EVS_R05_2017,D,RESPONSE,Q74,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_388,EVS_R05_2017,D,RESPONSE,Q74,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_388,EVS_R05_2017,D,RESPONSE,Q74,7,Non concerné,False
-EVS_R05_2017_FRE_FR_389,EVS_R05_2017,D,REQUEST,v237,,Avez-vous une relation stable ?,False
-EVS_R05_2017_FRE_FR_390,EVS_R05_2017,D,RESPONSE,Q75,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_390,EVS_R05_2017,D,RESPONSE,Q75,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_390,EVS_R05_2017,D,RESPONSE,Q75,7,Non concerné,False
-EVS_R05_2017_FRE_FR_391,EVS_R05_2017,D,INSTRUCTION,Q76,,DEMANDER A TOUS,False
-EVS_R05_2017_FRE_FR_392,EVS_R05_2017,D,REQUEST,v238,,Habitez-vous avec vos parents ou vos beaux-parents ?,False
-EVS_R05_2017_FRE_FR_393,EVS_R05_2017,D,INSTRUCTION,Q76,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_393,EVS_R05_2017,D,REQUEST,Q76,,CODER UNE REPONSE,False
-EVS_R05_2017_FRE_FR_393,EVS_R05_2017,D,RESPONSE,Q76,1,Non,False
-EVS_R05_2017_FRE_FR_393,EVS_R05_2017,D,RESPONSE,Q76,2,"Oui, mes parents",False
-EVS_R05_2017_FRE_FR_393,EVS_R05_2017,D,RESPONSE,Q76,3,"Oui, mes beaux-parents",False
-EVS_R05_2017_FRE_FR_393,EVS_R05_2017,D,RESPONSE,Q76,4,"Oui, mes parents et beaux-parents",False
-EVS_R05_2017_FRE_FR_393,EVS_R05_2017,D,RESPONSE,Q76,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_393,EVS_R05_2017,D,RESPONSE,Q76,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_394,EVS_R05_2017,D,REQUEST,Q77,,Combien d'enfants avez-vous ?,False
-EVS_R05_2017_FRE_FR_394,EVS_R05_2017,D,REQUEST,Q77,,Combien habitent chez vous et combien vivent en dehors ?,False
-EVS_R05_2017_FRE_FR_395,EVS_R05_2017,D,RESPONSE,v239a,1,Nombre d'enfants vivant au foyer :,False
-EVS_R05_2017_FRE_FR_396,EVS_R05_2017,D,RESPONSE,v239b,2,Nombre d'enfants vivant ailleurs :,False
-EVS_R05_2017_FRE_FR_397,EVS_R05_2017,D,RESPONSE,Q77,66,Je n'ai pas d'enfants,False
-EVS_R05_2017_FRE_FR_397,EVS_R05_2017,D,RESPONSE,Q77,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_398,EVS_R05_2017,D,REQUEST,v240,,"Combien de personnes, adultes et enfants, vous compris, vivent de façon régulière dans votre foyer ?",False
-EVS_R05_2017_FRE_FR_399,EVS_R05_2017,D,RESPONSE,Q78,,Ecrire :,False
-EVS_R05_2017_FRE_FR_399,EVS_R05_2017,D,RESPONSE,Q78,01,Je vis seul,False
-EVS_R05_2017_FRE_FR_399,EVS_R05_2017,D,RESPONSE,Q78,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_400,EVS_R05_2017,D,REQUEST,v241,,Quel est l'âge du plus jeune membre de votre foyer ?,False
-EVS_R05_2017_FRE_FR_401,EVS_R05_2017,D,RESPONSE,Q79,,Ecrire :,False
-EVS_R05_2017_FRE_FR_401,EVS_R05_2017,D,RESPONSE,Q79,777,Non concerné,False
-EVS_R05_2017_FRE_FR_401,EVS_R05_2017,D,RESPONSE,Q79,999,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_402,EVS_R05_2017,D,INSTRUCTION,Q80,,DEMANDER A TOUS,False
-EVS_R05_2017_FRE_FR_403,EVS_R05_2017,D,REQUEST,v242,,"A quel âge avez-vous terminé vos études à plein temps, que ce soit à l'école ou à l'université, mais sans compter les années d'apprentissage ?",False
-EVS_R05_2017_FRE_FR_404,EVS_R05_2017,D,INSTRUCTION,Q80,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_404,EVS_R05_2017,D,REQUEST,Q80,,"SI LE REPONDANT EST ENCORE A L'ÉCOLE OU A L'UNIVERSITÉ, DEMANDER :",False
-EVS_R05_2017_FRE_FR_405,EVS_R05_2017,D,REQUEST,v242,,A quel âge comptez-vous terminer vos études ?,False
-EVS_R05_2017_FRE_FR_406,EVS_R05_2017,D,RESPONSE,Q80,888,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_406,EVS_R05_2017,D,RESPONSE,Q80,999,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_407,EVS_R05_2017,D,INSTRUCTION,Q81,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_407,EVS_R05_2017,D,INSTRUCTION,Q81,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_407,EVS_R05_2017,D,INSTRUCTION,Q81,,"""ATTEINT"" SIGNIFIE AVEC UN DIPLÔME OU UN CERTIFICAT",False
-EVS_R05_2017_FRE_FR_407,EVS_R05_2017,D,RESPONSE,Q81,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_407,EVS_R05_2017,D,RESPONSE,Q81,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_408,EVS_R05_2017,D,INSTRUCTION,Q82,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_409,EVS_R05_2017,D,REQUEST,v244,,Avez-vous actuellement une activité professionnelle rémunérée ?,False
-EVS_R05_2017_FRE_FR_410,EVS_R05_2017,D,INSTRUCTION,Q82,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_410,EVS_R05_2017,D,REQUEST,Q82,,"SI PLUS D'UN EMPLOI, RÉPONDRE POUR L'EMPLOI PRINCIPAL",False
-EVS_R05_2017_FRE_FR_410,EVS_R05_2017,D,INSTRUCTION,Q82,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_410,EVS_R05_2017,D,REQUEST,Q82,,CAS DES PERSONNES ACTIVES ATTEINTES D'UN HANDICAP PERMANENT NE LEUR PERMETTANT PAS OU PLUS D'EXERCER UNE ACTIVITE PROFESSIONNELLE !,False
-EVS_R05_2017_FRE_FR_410,EVS_R05_2017,D,RESPONSE,Q82,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_410,EVS_R05_2017,D,RESPONSE,Q82,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_411,EVS_R05_2017,D,REQUEST,v245,,"Dans votre DERNIER emploi (à temps plein ou partiel), étiez-vous salarié ou à votre compte ?",False
-EVS_R05_2017_FRE_FR_412,EVS_R05_2017,D,RESPONSE,Q83,1,Salarié,False
-EVS_R05_2017_FRE_FR_412,EVS_R05_2017,D,RESPONSE,Q83,2,A votre compte,False
-EVS_R05_2017_FRE_FR_412,EVS_R05_2017,D,RESPONSE,Q83,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_412,EVS_R05_2017,D,RESPONSE,Q83,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_412,EVS_R05_2017,D,RESPONSE,Q83,6,N'a jamais eu d'emploi,False
-EVS_R05_2017_FRE_FR_412,EVS_R05_2017,D,RESPONSE,Q83,7,Non concerné,False
-EVS_R05_2017_FRE_FR_413,EVS_R05_2017,D,INSTRUCTION,Q84,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_413,EVS_R05_2017,D,REQUEST,Q84,,"SI LE REPONDANT A ACTUELLEMENT UN EMPLOI RÉMUNÉRÉ (Q82 = 1 à 3), DEMANDER :",False
-EVS_R05_2017_FRE_FR_413,EVS_R05_2017,D,REQUEST,Q84,,Quelle est précisément votre profession ?,False
-EVS_R05_2017_FRE_FR_413,EVS_R05_2017,D,INSTRUCTION,Q84,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_413,EVS_R05_2017,D,REQUEST,Q84,,Quelle était précisément votre profession ?,False
-EVS_R05_2017_FRE_FR_413,EVS_R05_2017,D,INSTRUCTION,Q84,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_413,EVS_R05_2017,D,REQUEST,Q84,,"SI LE REPONDANT A OU A EU PLUS D'UN EMPLOI, DEMANDER LUI SA PROFESSION POUR SON EMPLOI PRINCIPAL !",False
-EVS_R05_2017_FRE_FR_413,EVS_R05_2017,D,REQUEST,Q84,,ECRIRE LA REPONSE DE MANIERE TRES DETAILLEE,False
-EVS_R05_2017_FRE_FR_414,EVS_R05_2017,D,RESPONSE,v246a,1,Ecrire en clair :,False
-EVS_R05_2017_FRE_FR_415,EVS_R05_2017,D,REQUEST,Q84a,,"Dans votre emploi principal, quel genre de travail faites-vous/faisiez-vous ?",False
-EVS_R05_2017_FRE_FR_415,EVS_R05_2017,D,INSTRUCTION,Q84a,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_415,EVS_R05_2017,D,REQUEST,Q84a,,ECRIRE LA REPONSE DE MANIERE TRES DETAILLEE,False
-EVS_R05_2017_FRE_FR_416,EVS_R05_2017,D,RESPONSE,v246b,1,Ecrire en clair :,False
-EVS_R05_2017_FRE_FR_417,EVS_R05_2017,D,INSTRUCTION,Q84a,,"INSTITUT : CODER SELON LA NOMENCLATURE ISCO08 (A 4 CHIFFRES) APRES L'INTERVIEW, SUR LA BASE DE Q84 ET Q84A",False
-EVS_R05_2017_FRE_FR_418,EVS_R05_2017,D,RESPONSE,v246c,1,Code :,False
-EVS_R05_2017_FRE_FR_419,EVS_R05_2017,D,RESPONSE,Q84a,88888,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_419,EVS_R05_2017,D,RESPONSE,Q84a,99999,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_419,EVS_R05_2017,D,RESPONSE,Q84a,77777,Non concerné,False
-EVS_R05_2017_FRE_FR_420,EVS_R05_2017,D,INSTRUCTION,Q85,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_420,EVS_R05_2017,D,REQUEST,Q85,,A DEMANDER AUX PERSONNES ACTUELLEMENT A LEUR COMPTE (Q82=3) OU QUI L'ETAIENT DANS LEUR DERNIER EMPLOI (Q83=2),False
-EVS_R05_2017_FRE_FR_421,EVS_R05_2017,D,REQUEST,v247,,Combien d'employés avez-vous/aviez-vous ?,False
-EVS_R05_2017_FRE_FR_422,EVS_R05_2017,D,RESPONSE,Q85,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_422,EVS_R05_2017,D,RESPONSE,Q85,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_422,EVS_R05_2017,D,RESPONSE,Q85,7,Non concerné,False
-EVS_R05_2017_FRE_FR_423,EVS_R05_2017,D,INSTRUCTION,Q86,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_423,EVS_R05_2017,D,REQUEST,Q86,,A DEMANDER AUX ACTUELS SALARIES (Q82=1 OU 2) OU A CEUX QUI N'ETAIENT PAS A LEUR COMPTE DANS LEUR DERNIER EMPLOI (Q83=1),False
-EVS_R05_2017_FRE_FR_424,EVS_R05_2017,D,REQUEST,v248,,Encadrez-vous/avez-vous encadré le travail d'une ou plusieurs personnes ?,False
-EVS_R05_2017_FRE_FR_425,EVS_R05_2017,D,RESPONSE,Q86,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_425,EVS_R05_2017,D,RESPONSE,Q86,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_425,EVS_R05_2017,D,RESPONSE,Q86,7,Non concerné,False
-EVS_R05_2017_FRE_FR_426,EVS_R05_2017,D,REQUEST,v248a,,Combien de personnes encadrez-vous ou encadriez-vous ?,False
-EVS_R05_2017_FRE_FR_427,EVS_R05_2017,D,RESPONSE,Q86a,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_427,EVS_R05_2017,D,RESPONSE,Q86a,7,Non concerné,False
-EVS_R05_2017_FRE_FR_428,EVS_R05_2017,D,REQUEST,v249,,Travaillez-vous pour...,False
-EVS_R05_2017_FRE_FR_429,EVS_R05_2017,D,RESPONSE,Q87,1,"... l'administration ou la fonction publique (Etat, collectivités territoriales, hôpitaux)",False
-EVS_R05_2017_FRE_FR_429,EVS_R05_2017,D,RESPONSE,Q87,2,... une entreprise privée,False
-EVS_R05_2017_FRE_FR_429,EVS_R05_2017,D,RESPONSE,Q87,3,"... une organisation privée à but non lucratif (association, mutuelle, coopérative...)",False
-EVS_R05_2017_FRE_FR_429,EVS_R05_2017,D,RESPONSE,Q87,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_429,EVS_R05_2017,D,RESPONSE,Q87,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_429,EVS_R05_2017,D,RESPONSE,Q87,7,Non concerné,False
-EVS_R05_2017_FRE_FR_430,EVS_R05_2017,D,INSTRUCTION,SECTION14,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_430,EVS_R05_2017,D,REQUEST,SECTION14,,A POSER AUX REPONDANTS QUI VIVENT AVEC UN CONJOINT OU UN PARTENAIRE (Q72=1 OU 2 OU Q74=1).,False
-EVS_R05_2017_FRE_FR_430,EVS_R05_2017,D,REQUEST,SECTION14,,"SINON, ALLER A Q96",False
-EVS_R05_2017_FRE_FR_431,EVS_R05_2017,D,REQUEST,v250,,Votre conjoint ou compagnon est-il né en France métropolitaine ?,False
-EVS_R05_2017_FRE_FR_432,EVS_R05_2017,D,RESPONSE,Q88,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_432,EVS_R05_2017,D,RESPONSE,Q88,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_432,EVS_R05_2017,D,RESPONSE,Q88,7,Non concerné,False
-EVS_R05_2017_FRE_FR_433,EVS_R05_2017,D,REQUEST,Q88a,,Dans quel pays ou territoire est-il né ?,False
-EVS_R05_2017_FRE_FR_433,EVS_R05_2017,D,INSTRUCTION,Q88a,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_433,EVS_R05_2017,D,REQUEST,Q88a,,ECRIRE DE FAÇON DETAILLEE,False
-EVS_R05_2017_FRE_FR_434,EVS_R05_2017,D,RESPONSE,v251a,1,Ecrire en clair :,False
-EVS_R05_2017_FRE_FR_435,EVS_R05_2017,D,INSTRUCTION,Q88a,,INSTITUT : PRE-CODER SELON LA NOMENCLATURE ISO 3166-1 (SUR 2 POSITIONS) /,False
-EVS_R05_2017_FRE_FR_435,EVS_R05_2017,D,INSTRUCTION,Q88a,,ISO 3166-3 (SUR 4 POSITIONS POUR LES ANCIENS NOMS DE PAYS),False
-EVS_R05_2017_FRE_FR_436,EVS_R05_2017,D,RESPONSE,v251b,2,Code :,False
-EVS_R05_2017_FRE_FR_437,EVS_R05_2017,D,RESPONSE,Q88a,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_437,EVS_R05_2017,D,RESPONSE,Q88a,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_437,EVS_R05_2017,D,RESPONSE,Q88a,77,Non concerné,False
-EVS_R05_2017_FRE_FR_438,EVS_R05_2017,D,INSTRUCTION,Q89,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_439,EVS_R05_2017,D,REQUEST,v252,,Quel est le plus haut niveau que votre conjoint/compagnon ait atteint dans ses études ?,False
-EVS_R05_2017_FRE_FR_440,EVS_R05_2017,D,INSTRUCTION,Q89,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_440,EVS_R05_2017,D,INSTRUCTION,Q89,,"""ATTEINT"" SIGNIFIE AVEC UN DIPLÔME OU UN CERTIFICAT",False
-EVS_R05_2017_FRE_FR_440,EVS_R05_2017,D,RESPONSE,Q89,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_440,EVS_R05_2017,D,RESPONSE,Q89,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_440,EVS_R05_2017,D,RESPONSE,Q89,77,Non concerné,False
-EVS_R05_2017_FRE_FR_441,EVS_R05_2017,D,INSTRUCTION,Q90,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_442,EVS_R05_2017,D,REQUEST,v253,,Votre conjoint/compagnon a-t-il actuellement une activité professionnelle rémunérée ?,False
-EVS_R05_2017_FRE_FR_443,EVS_R05_2017,D,INSTRUCTION,Q90,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_443,EVS_R05_2017,D,REQUEST,Q90,,"SI PLUS D'UN EMPLOI, REPONDRE POUR L'EMLOI PRINCIPAL",False
-EVS_R05_2017_FRE_FR_443,EVS_R05_2017,D,INSTRUCTION,Q90,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_443,EVS_R05_2017,D,REQUEST,Q90,,CAS DES PERSONNES ACTIVES ATTEINTES D'UN HANDICAP PERMANENT NE LEUR PERMETTANT PAS OU PLUS D'EXERCER UNE ACTIVITE PROFESSIONNELLE !,False
-EVS_R05_2017_FRE_FR_443,EVS_R05_2017,D,RESPONSE,Q90,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_443,EVS_R05_2017,D,RESPONSE,Q90,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_443,EVS_R05_2017,D,RESPONSE,Q90,77,Non concerné,False
-EVS_R05_2017_FRE_FR_444,EVS_R05_2017,D,REQUEST,v254,,"Dans son dernier emploi (à temps plein ou à temps partiel), était-il salarié ou à son compte ?",False
-EVS_R05_2017_FRE_FR_445,EVS_R05_2017,D,RESPONSE,Q91,1,Salarié,False
-EVS_R05_2017_FRE_FR_445,EVS_R05_2017,D,RESPONSE,Q91,2,A votre compte,False
-EVS_R05_2017_FRE_FR_445,EVS_R05_2017,D,RESPONSE,Q91,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_445,EVS_R05_2017,D,RESPONSE,Q91,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_445,EVS_R05_2017,D,RESPONSE,Q91,7,Non concerné,False
-EVS_R05_2017_FRE_FR_446,EVS_R05_2017,D,INSTRUCTION,Q92,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_446,EVS_R05_2017,D,REQUEST,Q92,,"SI LE PARTENAIRE A AUJOURD'HUI UN EMPLOI (Q90=1 A 3), DEMANDER :",False
-EVS_R05_2017_FRE_FR_446,EVS_R05_2017,D,REQUEST,Q92,,Quelle est précisément sa profession ?,False
-EVS_R05_2017_FRE_FR_446,EVS_R05_2017,D,INSTRUCTION,Q92,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_446,EVS_R05_2017,D,REQUEST,Q92,,"SI LE PARTENAIRE AVAIT AVANT UN EMPLOI (Q91= 1 ou 2), DEMANDER :",False
-EVS_R05_2017_FRE_FR_446,EVS_R05_2017,D,REQUEST,Q92,,Quelle était précisément sa profession ?,False
-EVS_R05_2017_FRE_FR_446,EVS_R05_2017,D,INSTRUCTION,Q92,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_446,EVS_R05_2017,D,REQUEST,Q92,,SI LE PARTENAIRE A/A EU PLUSIEURS EMPLOIS.,False
-EVS_R05_2017_FRE_FR_446,EVS_R05_2017,D,REQUEST,Q92,,DEMANDEZ-LUI SON EMPLOI PRINCIPAL !,False
-EVS_R05_2017_FRE_FR_446,EVS_R05_2017,D,REQUEST,Q92,,ECRIRE LA REPONSE DE MANIERE DETAILLEE !,False
-EVS_R05_2017_FRE_FR_447,EVS_R05_2017,D,RESPONSE,v255a,1,Ecrire en clair :,False
-EVS_R05_2017_FRE_FR_448,EVS_R05_2017,D,REQUEST,Q92a,,"Dans son emploi principal, quel genre de travail fait-il (faisait-il) ?",False
-EVS_R05_2017_FRE_FR_448,EVS_R05_2017,D,INSTRUCTION,Q92a,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_448,EVS_R05_2017,D,REQUEST,Q92a,,Ecrire en clair :,False
-EVS_R05_2017_FRE_FR_449,EVS_R05_2017,D,RESPONSE,v255b,1,Ecrire en clair :,False
-EVS_R05_2017_FRE_FR_450,EVS_R05_2017,D,INSTRUCTION,Q92a,,"INSTITUT : CODER SELON LA NOMENCLATURE ISCO08 (A 4 CHIFFRES) APRES L'INTERVIEW, SUR LA BASE DE Q92 ET Q92A",False
-EVS_R05_2017_FRE_FR_451,EVS_R05_2017,D,RESPONSE,v255c,1,Code :,False
-EVS_R05_2017_FRE_FR_452,EVS_R05_2017,D,RESPONSE,Q92a,88888,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_452,EVS_R05_2017,D,RESPONSE,Q92a,99999,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_452,EVS_R05_2017,D,RESPONSE,Q92a,77777,Non concerné,False
-EVS_R05_2017_FRE_FR_453,EVS_R05_2017,D,INSTRUCTION,Q93,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_453,EVS_R05_2017,D,REQUEST,Q93,,A DEMANDER SI LE CONJOINT/PARTENAIRE EST ACTUELLEMENT A SON COMPTE (Q90=3) OU SI LE PARTENAIRE ETAIT A SON COMPTE DANS SON DERNIER EMPLOI (Q91=2),False
-EVS_R05_2017_FRE_FR_454,EVS_R05_2017,D,REQUEST,v256,,Combien de personnes travaillent/travaillaient dans son entreprise ?,False
-EVS_R05_2017_FRE_FR_455,EVS_R05_2017,D,RESPONSE,Q93,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_455,EVS_R05_2017,D,RESPONSE,Q93,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_455,EVS_R05_2017,D,RESPONSE,Q93,7,Non concerné,False
-EVS_R05_2017_FRE_FR_456,EVS_R05_2017,D,INSTRUCTION,Q94,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_456,EVS_R05_2017,D,REQUEST,Q94,,"A DEMANDER SI LE CONJOINT/PARTENAIRE EST ACTUELLEMENT SALARIE (Q90=1 OU 2), OU SI IL/ELLE N'ETAIT PAS A SON COMPTE DANS SON DERNIER EMPLOI (Q91=1)",False
-EVS_R05_2017_FRE_FR_457,EVS_R05_2017,D,REQUEST,v257,,Encadre/encadrait-il le travail d'une ou plusieurs personnes ?,False
-EVS_R05_2017_FRE_FR_458,EVS_R05_2017,D,RESPONSE,Q94,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_458,EVS_R05_2017,D,RESPONSE,Q94,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_458,EVS_R05_2017,D,RESPONSE,Q94,7,Non concerné,False
-EVS_R05_2017_FRE_FR_459,EVS_R05_2017,D,REQUEST,v258,,Combien d'employés encadre/encadrait-il ?,False
-EVS_R05_2017_FRE_FR_460,EVS_R05_2017,D,RESPONSE,Q95,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_460,EVS_R05_2017,D,RESPONSE,Q95,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_460,EVS_R05_2017,D,RESPONSE,Q95,7,Non concerné,False
-EVS_R05_2017_FRE_FR_461,EVS_R05_2017,D,INSTRUCTION,Q96,,DEMANDER A TOUS,False
-EVS_R05_2017_FRE_FR_462,EVS_R05_2017,D,REQUEST,v259,,"Durant les cinq dernières années, avez-vous été au chômage pendant une période de plus de trois mois ininterrompus ?",False
-EVS_R05_2017_FRE_FR_463,EVS_R05_2017,D,RESPONSE,Q96,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_463,EVS_R05_2017,D,RESPONSE,Q96,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_464,EVS_R05_2017,D,REQUEST,v260,,"Au cours des cinq dernières années, avez-vous, à un moment ou un autre, été dépendant des aides sociales ?",False
-EVS_R05_2017_FRE_FR_465,EVS_R05_2017,D,INSTRUCTION,Q97,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_465,EVS_R05_2017,D,REQUEST,Q97,,"NOUS ENTENDONS PAR AIDES SOCIALES, LES MINIMA SOCIAUX.",False
-EVS_R05_2017_FRE_FR_465,EVS_R05_2017,D,REQUEST,Q97,,CELA N'INCLUT PAS LES ALLOCATIONS DE CHOMAGE ET LES RETRAITES.,False
-EVS_R05_2017_FRE_FR_465,EVS_R05_2017,D,REQUEST,Q97,,"PAR CONTRE,SONT CONCERNES : LE RSA, LA PRIME D'ACTIVITE, l'ASS, l'ASPA, l'AAH, l'ASI, l'ATA, l'ADA, l'AV.",False
-EVS_R05_2017_FRE_FR_465,EVS_R05_2017,D,RESPONSE,Q97,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_465,EVS_R05_2017,D,RESPONSE,Q97,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_466,EVS_R05_2017,D,INSTRUCTION,Q98,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_467,EVS_R05_2017,D,REQUEST,v261,,Nous désirons analyser les résultats de cette étude en fonction des revenus familiaux.,False
-EVS_R05_2017_FRE_FR_467,EVS_R05_2017,D,REQUEST,v261,,Voici une échelle de revenus mensuels et annuels NETS.,False
-EVS_R05_2017_FRE_FR_467,EVS_R05_2017,D,REQUEST,v261,,"Pouvez-vous me dire à quel niveau se situe votre foyer, en comptant toutes les rentrées d'argent de ses membres : salaires, allocations familiales, pensions, autres revenus... Quelle est la lettre qui correspond à la situation de votre foyer ?",False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,11,moins de 1 135 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,12,de 1 135 à moins de 1 440 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,13,de 1 440 à moins de 1 750 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,14,de 1 750 à moins de 2 100 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,15,de 2 100 à moins de 2 480 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,16,de 2 480 à moins de 2 910 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,17,de 2 910 à moins de 3 420 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,18,de 3 420 à moins de 4 090 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,19,de 4 090 à moins de 5 250 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,20,5 250 euros et plus,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,21,moins de 13 620 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,22,de 13 620 à moins 17 290 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,23,de 17 290 à moins de 20 980 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,24,de 20 980 à moins de 25 250 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,25,de 25 250 à moins 29 730 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,26,de 29 730 à moins de 34 920 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,27,de 34 920 à moins de 41 040 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,28,de 41 040 à moins de 49 050 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,29,de 49 050 à moins de 62 960 euros,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,30,62 960 euros et plus,False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_468,EVS_R05_2017,D,RESPONSE,Q98,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_469,EVS_R05_2017,D,INSTRUCTION,Q99,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_470,EVS_R05_2017,D,REQUEST,v262,,Quel est le plus haut niveau que votre père a atteint dans ses études ?,False
-EVS_R05_2017_FRE_FR_471,EVS_R05_2017,D,INSTRUCTION,Q99,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_471,EVS_R05_2017,D,INSTRUCTION,Q99,,"""ATTEINT"" SIGNIFIE AVEC UN DIPLÔME OU UN CERTIFICAT",False
-EVS_R05_2017_FRE_FR_471,EVS_R05_2017,D,RESPONSE,Q99,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_471,EVS_R05_2017,D,RESPONSE,Q99,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_472,EVS_R05_2017,D,INSTRUCTION,Q100,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_473,EVS_R05_2017,D,REQUEST,v263,,Quel est le plus haut niveau que votre mère a atteint dans ses études ?,False
-EVS_R05_2017_FRE_FR_474,EVS_R05_2017,D,INSTRUCTION,Q100,,INSTRUCTION ENQUÊTEUR :,False
-EVS_R05_2017_FRE_FR_474,EVS_R05_2017,D,INSTRUCTION,Q100,,"""ATTEINT"" SIGNIFIE AVEC UN DIPLÔME OU UN CERTIFICAT",False
-EVS_R05_2017_FRE_FR_474,EVS_R05_2017,D,RESPONSE,Q100,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_474,EVS_R05_2017,D,RESPONSE,Q100,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_475,EVS_R05_2017,D,REQUEST,v264,,"Quand vous aviez 14 ans, votre père était-il employé ou à son compte ou sans emploi ?",False
-EVS_R05_2017_FRE_FR_476,EVS_R05_2017,D,RESPONSE,Q101,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_476,EVS_R05_2017,D,RESPONSE,Q101,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_476,EVS_R05_2017,D,RESPONSE,Q101,6,Translation,False
-EVS_R05_2017_FRE_FR_477,EVS_R05_2017,D,REQUEST,v265,,"Quand vous aviez 14 ans, votre mère était-elle employée ou à son compte ou sans emploi ?",False
-EVS_R05_2017_FRE_FR_478,EVS_R05_2017,D,RESPONSE,Q102,8,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_478,EVS_R05_2017,D,RESPONSE,Q102,9,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_478,EVS_R05_2017,D,RESPONSE,Q102,6,Translation,False
-EVS_R05_2017_FRE_FR_479,EVS_R05_2017,D,INSTRUCTION,Q103,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_480,EVS_R05_2017,D,REQUEST,v266,,"Quand vous aviez 14 ans, parmi les groupes suivants auxquels  appartenait celui de vos parents qui gagnait le plus ?",False
-EVS_R05_2017_FRE_FR_481,EVS_R05_2017,D,RESPONSE,Q103,1,"Professions libérales, intellectuelles, scientifiques et assimilées comme médecin, enseignant, ingénieur, artiste ou expert-comptable",False
-EVS_R05_2017_FRE_FR_481,EVS_R05_2017,D,RESPONSE,Q103,2,"Directeurs, cadres supérieurs comme banquier, directeur dans une grande entreprise, haut fonctionnaire, dirigeant syndical",False
-EVS_R05_2017_FRE_FR_481,EVS_R05_2017,D,RESPONSE,Q103,3,"Employés de bureau et administratifs comme secrétaire, assistant de direction, aide comptable",False
-EVS_R05_2017_FRE_FR_481,EVS_R05_2017,D,RESPONSE,Q103,4,"Métiers de la vente comme responsable commercial, commerçant, vendeur, agent d'assurances",False
-EVS_R05_2017_FRE_FR_481,EVS_R05_2017,D,RESPONSE,Q103,5,"Métiers des services comme propriétaire de restaurant, serveur, gardien d'immeuble, coiffeur, agent de police, militaire",False
-EVS_R05_2017_FRE_FR_481,EVS_R05_2017,D,RESPONSE,Q103,6,"Contremaîtres et ouvriers qualifiés comme agents de maîtrise, mécanicien automobile, imprimeur, électricien",False
-EVS_R05_2017_FRE_FR_481,EVS_R05_2017,D,RESPONSE,Q103,7,"Ouvriers semi-qualifiés comme maçon, conducteur d'autobus, charpentier, plombier ou boulanger",False
-EVS_R05_2017_FRE_FR_481,EVS_R05_2017,D,RESPONSE,Q103,8,"Ouvriers non qualifiés comme manœuvre, manutentionnaire, ouvrier non qualifié en usine, agent de nettoyage",False
-EVS_R05_2017_FRE_FR_481,EVS_R05_2017,D,RESPONSE,Q103,9,Ouvriers agricoles,False
-EVS_R05_2017_FRE_FR_481,EVS_R05_2017,D,RESPONSE,Q103,10,"Agriculteurs exploitants, responsables de grande exploitation",False
-EVS_R05_2017_FRE_FR_481,EVS_R05_2017,D,RESPONSE,Q103,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_481,EVS_R05_2017,D,RESPONSE,Q103,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_481,EVS_R05_2017,D,RESPONSE,Q103,66,Translation,False
-EVS_R05_2017_FRE_FR_482,EVS_R05_2017,D,INSTRUCTION,Q104,,MONTRER CARTE,False
-EVS_R05_2017_FRE_FR_482,EVS_R05_2017,D,REQUEST,Q104,,"En repensant à la vie de vos parents quand vous aviez 14 ans, dites-moi dans quelle mesure les phrases suivantes leur correspondent ?",False
-EVS_R05_2017_FRE_FR_483,EVS_R05_2017,D,REQUEST,v267,,Ma mère aimait lire des livres,False
-EVS_R05_2017_FRE_FR_484,EVS_R05_2017,D,REQUEST,v268,,Je discutais politique à la maison avec ma mère,False
-EVS_R05_2017_FRE_FR_485,EVS_R05_2017,D,REQUEST,v269,,Ma mère aimait suivre l'actualité,False
-EVS_R05_2017_FRE_FR_486,EVS_R05_2017,D,REQUEST,v270,,Mes parents avaient du mal à joindre les deux bouts,False
-EVS_R05_2017_FRE_FR_487,EVS_R05_2017,D,REQUEST,v271,,Mon père aimait lire des livres,False
-EVS_R05_2017_FRE_FR_488,EVS_R05_2017,D,REQUEST,v272,,Je discutais politique à la maison avec mon père,False
-EVS_R05_2017_FRE_FR_489,EVS_R05_2017,D,REQUEST,v273,,Mon père aimait suivre l'actualité,False
-EVS_R05_2017_FRE_FR_490,EVS_R05_2017,D,REQUEST,v274,,Mes parents avaient du mal à remplacer les choses cassées,False
-EVS_R05_2017_FRE_FR_491,EVS_R05_2017,D,RESPONSE,Q104,1,"Oui, vraiment",False
-EVS_R05_2017_FRE_FR_491,EVS_R05_2017,D,RESPONSE,Q104,2,"Oui, plutôt",False
-EVS_R05_2017_FRE_FR_491,EVS_R05_2017,D,RESPONSE,Q104,3,Peu,False
-EVS_R05_2017_FRE_FR_491,EVS_R05_2017,D,RESPONSE,Q104,4,"Non, vraiment pas",False
-EVS_R05_2017_FRE_FR_491,EVS_R05_2017,D,RESPONSE,Q104,8,NSP,False
-EVS_R05_2017_FRE_FR_491,EVS_R05_2017,D,RESPONSE,Q104,6,Translation,False
-EVS_R05_2017_FRE_FR_492,EVS_R05_2017,E,INTRODUCTION,INTRO5,,A REMPLI PAR L'ENQUETEUR,False
-EVS_R05_2017_FRE_FR_493,EVS_R05_2017,E,REQUEST,Q105,,Département de résidence,False
-EVS_R05_2017_FRE_FR_494,EVS_R05_2017,E,RESPONSE,v275a,1,Ecrire en clair :,False
-EVS_R05_2017_FRE_FR_495,EVS_R05_2017,E,INSTRUCTION,Q105,,institut : PRE-CODER selon LA NOMENCLATURE NUTS 3 (SUR 5 POSITIONS),False
-EVS_R05_2017_FRE_FR_496,EVS_R05_2017,E,RESPONSE,v275b,1,Code :,False
-EVS_R05_2017_FRE_FR_497,EVS_R05_2017,E,REQUEST,v276,,Nombre d'habitants de la commune,False
-EVS_R05_2017_FRE_FR_498,EVS_R05_2017,E,RESPONSE,Q106,1,Moins de 2 000 habitants,False
-EVS_R05_2017_FRE_FR_498,EVS_R05_2017,E,RESPONSE,Q106,2,2 - 5000,False
-EVS_R05_2017_FRE_FR_498,EVS_R05_2017,E,RESPONSE,Q106,3,5 - 10 000,False
-EVS_R05_2017_FRE_FR_498,EVS_R05_2017,E,RESPONSE,Q106,4,10 - 20 000,False
-EVS_R05_2017_FRE_FR_498,EVS_R05_2017,E,RESPONSE,Q106,5,20 - 50 000,False
-EVS_R05_2017_FRE_FR_498,EVS_R05_2017,E,RESPONSE,Q106,6,50 - 100 000,False
-EVS_R05_2017_FRE_FR_498,EVS_R05_2017,E,RESPONSE,Q106,7,100 - 500 000,False
-EVS_R05_2017_FRE_FR_498,EVS_R05_2017,E,RESPONSE,Q106,8,500 000 et plus,False
-EVS_R05_2017_FRE_FR_498,EVS_R05_2017,E,RESPONSE,Q106,88,Ne sait pas (spontané),False
-EVS_R05_2017_FRE_FR_498,EVS_R05_2017,E,RESPONSE,Q106,99,Non réponse (spontané),False
-EVS_R05_2017_FRE_FR_499,EVS_R05_2017,E,REQUEST,v277,,Date de l'interview,False
-EVS_R05_2017_FRE_FR_500,EVS_R05_2017,E,RESPONSE,Q107,1,Jour :,False
-EVS_R05_2017_FRE_FR_500,EVS_R05_2017,E,RESPONSE,Q107,2,Mois :,False
-EVS_R05_2017_FRE_FR_500,EVS_R05_2017,E,RESPONSE,Q107,3,Année :,False
-EVS_R05_2017_FRE_FR_501,EVS_R05_2017,E,REQUEST,Q108,,Durée totale de l'interview,False
-EVS_R05_2017_FRE_FR_502,EVS_R05_2017,E,RESPONSE,v278a,1,Heure de début :,False
-EVS_R05_2017_FRE_FR_503,EVS_R05_2017,E,RESPONSE,v278b,2,Minute de début :,False
-EVS_R05_2017_FRE_FR_504,EVS_R05_2017,E,RESPONSE,v279a,3,Heure de fin :,False
-EVS_R05_2017_FRE_FR_505,EVS_R05_2017,E,RESPONSE,v279b,4,Minute de fin :,False
-EVS_R05_2017_FRE_FR_506,EVS_R05_2017,E,REQUEST,v280,,"Pendant l'interview, la personne interrogée a paru...",False
-EVS_R05_2017_FRE_FR_507,EVS_R05_2017,E,RESPONSE,Q109,1,...très intéressée,False
-EVS_R05_2017_FRE_FR_507,EVS_R05_2017,E,RESPONSE,Q109,2,...assez intéressée,False
-EVS_R05_2017_FRE_FR_507,EVS_R05_2017,E,RESPONSE,Q109,3,...pas très intéressée,False
-EVS_R05_2017_FRE_FR_507,EVS_R05_2017,E,RESPONSE,Q109,8,NSP,False
-EVS_R05_2017_FRE_FR_508,EVS_R05_2017,E,REQUEST,Q110,,Langue utilisée pendant l'entretien :,False
-EVS_R05_2017_FRE_FR_509,EVS_R05_2017,E,RESPONSE,v281,1,Ecrire en clair :,False
-EVS_R05_2017_FRE_FR_510,EVS_R05_2017,E,INSTRUCTION,Q110,,INSTITUT : CODER SELON NOMENCLATURE ISO 639-1 POUR TOUTES LES LANGUES DANS LESQUELLES LE QUESTIONNAIRE EST TRADUIT,False
-EVS_R05_2017_FRE_FR_511,EVS_R05_2017,E,RESPONSE,v281a,1,Code :,False
-EVS_R05_2017_FRE_FR_512,EVS_R05_2017,E,REQUEST,v282,,Numéro d'enquêteur :,False
-EVS_R05_2017_FRE_FR_513,EVS_R05_2017,E,RESPONSE,Q111,1,,False
+EVS_R05_2017_FRE_FR_0,EVS_R05_2017,A,INTRODUCTION,Q1,,"NOUS ALLONS COMMENCER PAR QUELQUES QUESTIONS SUR LA VIE EN GÉNÉRAL, LES LOISIRS ET LE TRAVAIL.",False
+EVS_R05_2017_FRE_FR_0,EVS_R05_2017,A,INSTRUCTION,Q1,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
+EVS_R05_2017_FRE_FR_0,EVS_R05_2017,A,REQUEST,Q1,,Travail,False
+EVS_R05_2017_FRE_FR_0,EVS_R05_2017,A,REQUEST,Q1,,Famille,False
+EVS_R05_2017_FRE_FR_0,EVS_R05_2017,A,REQUEST,Q1,,Amis et relations,False
+EVS_R05_2017_FRE_FR_0,EVS_R05_2017,A,REQUEST,Q1,,Loisirs,False
+EVS_R05_2017_FRE_FR_0,EVS_R05_2017,A,REQUEST,Q1,,Politique,False
+EVS_R05_2017_FRE_FR_0,EVS_R05_2017,A,REQUEST,Q1,,Religion,False
+EVS_R05_2017_FRE_FR_0,EVS_R05_2017,A,RESPONSE,Q1,888,NSP,False
+EVS_R05_2017_FRE_FR_1,EVS_R05_2017,A,INSTRUCTION,Q2,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_1,EVS_R05_2017,A,RESPONSE,Q2,1,...très heureux,False
+EVS_R05_2017_FRE_FR_1,EVS_R05_2017,A,RESPONSE,Q2,2,...assez heureux,False
+EVS_R05_2017_FRE_FR_1,EVS_R05_2017,A,RESPONSE,Q2,3,...pas très heureux,False
+EVS_R05_2017_FRE_FR_1,EVS_R05_2017,A,RESPONSE,Q2,4,...pas heureux du tout,False
+EVS_R05_2017_FRE_FR_1,EVS_R05_2017,A,RESPONSE,Q2,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_1,EVS_R05_2017,A,RESPONSE,Q2,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_2,EVS_R05_2017,A,INSTRUCTION,Q3,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_2,EVS_R05_2017,A,RESPONSE,Q3,1,... très bon,False
+EVS_R05_2017_FRE_FR_2,EVS_R05_2017,A,RESPONSE,Q3,2,... bon,False
+EVS_R05_2017_FRE_FR_2,EVS_R05_2017,A,RESPONSE,Q3,3,... acceptable,False
+EVS_R05_2017_FRE_FR_2,EVS_R05_2017,A,RESPONSE,Q3,4,... plutôt mauvais,False
+EVS_R05_2017_FRE_FR_2,EVS_R05_2017,A,RESPONSE,Q3,5,... très mauvais,False
+EVS_R05_2017_FRE_FR_2,EVS_R05_2017,A,RESPONSE,Q3,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_2,EVS_R05_2017,A,RESPONSE,Q3,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_3,EVS_R05_2017,A,INSTRUCTION,Q4,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_3,EVS_R05_2017,A,REQUEST,Q4,,"Veuillez lire attentivement cette liste d'associations et me dire s'il y en a dont vous faites partie et, si oui, lesquelles ?",False
+EVS_R05_2017_FRE_FR_3,EVS_R05_2017,A,REQUEST,Q4,,Aucun (spontané),False
+EVS_R05_2017_FRE_FR_3,EVS_R05_2017,A,RESPONSE,Q4,2,Pas cité,False
+EVS_R05_2017_FRE_FR_3,EVS_R05_2017,A,RESPONSE,Q4,888,NSP,False
+EVS_R05_2017_FRE_FR_4,EVS_R05_2017,A,REQUEST,Q5,,"Au cours des six derniers mois, avez-vous effectué du travail bénévole ?",False
+EVS_R05_2017_FRE_FR_4,EVS_R05_2017,A,RESPONSE,Q5,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_4,EVS_R05_2017,A,RESPONSE,Q5,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_5,EVS_R05_2017,A,INSTRUCTION,Q6,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_5,EVS_R05_2017,A,REQUEST,Q6,,Sur cette liste figurent différentes catégories de gens.,False
+EVS_R05_2017_FRE_FR_5,EVS_R05_2017,A,REQUEST,Q6,,Voulez-vous m'indiquer s'il y en a que vous n'aimeriez pas avoir comme voisins?,False
+EVS_R05_2017_FRE_FR_5,EVS_R05_2017,A,REQUEST,Q6,,Des gens d'une autre race,False
+EVS_R05_2017_FRE_FR_5,EVS_R05_2017,A,REQUEST,Q6,,Des travailleurs étrangers ou des immigrés,False
+EVS_R05_2017_FRE_FR_5,EVS_R05_2017,A,REQUEST,Q6,,Des homosexuels,False
+EVS_R05_2017_FRE_FR_5,EVS_R05_2017,A,REQUEST,Q6,,Des musulmans,False
+EVS_R05_2017_FRE_FR_5,EVS_R05_2017,A,REQUEST,Q6,,Des gitans,False
+EVS_R05_2017_FRE_FR_5,EVS_R05_2017,A,RESPONSE,Q6,888,NSP,False
+EVS_R05_2017_FRE_FR_6,EVS_R05_2017,A,REQUEST,Q7,,"D'une manière générale, diriez-vous qu'on peut faire confiance à la plupart des gens ou qu'on n'est jamais assez prudent quand on a affaire aux autres ?",False
+EVS_R05_2017_FRE_FR_6,EVS_R05_2017,A,RESPONSE,Q7,2,On n'est jamais assez prudent quand on a affaire aux autres,False
+EVS_R05_2017_FRE_FR_6,EVS_R05_2017,A,RESPONSE,Q7,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_6,EVS_R05_2017,A,RESPONSE,Q7,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_7,EVS_R05_2017,A,INSTRUCTION,Q8,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_7,EVS_R05_2017,A,REQUEST,Q8,,J'aimerais vous demander dans quelle mesure vous faites confiance à différentes catégories de gens.,False
+EVS_R05_2017_FRE_FR_7,EVS_R05_2017,A,REQUEST,Q8,,"Pouvez-vous me dire pour chacune, si vous lui faites...",False
+EVS_R05_2017_FRE_FR_7,EVS_R05_2017,A,RESPONSE,Q8,1,...tout à fait confiance,False
+EVS_R05_2017_FRE_FR_7,EVS_R05_2017,A,RESPONSE,Q8,2,...plutôt confiance,False
+EVS_R05_2017_FRE_FR_7,EVS_R05_2017,A,RESPONSE,Q8,3,...plutôt pas confiance,False
+EVS_R05_2017_FRE_FR_7,EVS_R05_2017,A,RESPONSE,Q8,4,...pas du tout confiance,False
+EVS_R05_2017_FRE_FR_7,EVS_R05_2017,A,RESPONSE,Q8,888,NSP,False
+EVS_R05_2017_FRE_FR_8,EVS_R05_2017,A,INSTRUCTION,Q9,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_8,EVS_R05_2017,A,RESPONSE,Q9,1,Pas du tout libre,False
+EVS_R05_2017_FRE_FR_8,EVS_R05_2017,A,RESPONSE,Q9,10,Tout à fait libre,False
+EVS_R05_2017_FRE_FR_8,EVS_R05_2017,A,RESPONSE,Q9,888,NSP,False
+EVS_R05_2017_FRE_FR_9,EVS_R05_2017,A,INSTRUCTION,Q10,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_9,EVS_R05_2017,A,RESPONSE,Q10,1,Pas du tout satisfait,False
+EVS_R05_2017_FRE_FR_9,EVS_R05_2017,A,RESPONSE,Q10,10,Tout à fait satisfait,False
+EVS_R05_2017_FRE_FR_9,EVS_R05_2017,A,RESPONSE,Q10,888,NSP,False
+EVS_R05_2017_FRE_FR_10,EVS_R05_2017,A,INSTRUCTION,Q11,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_10,EVS_R05_2017,A,REQUEST,Q11,,Voici quelques aspects qui peuvent être considérés comme importants pour un emploi.,False
+EVS_R05_2017_FRE_FR_10,EVS_R05_2017,A,REQUEST,Q11,,Quels sont ceux qui vous paraissent personnellement importants ?,False
+EVS_R05_2017_FRE_FR_10,EVS_R05_2017,A,REQUEST,Q11,,L'horaire est satisfaisant,False
+EVS_R05_2017_FRE_FR_10,EVS_R05_2017,A,REQUEST,Q11,,Il y a de bonnes vacances,False
+EVS_R05_2017_FRE_FR_10,EVS_R05_2017,A,REQUEST,Q11,,On a des responsabilités,False
+EVS_R05_2017_FRE_FR_10,EVS_R05_2017,A,RESPONSE,Q11,888,NSP,False
+EVS_R05_2017_FRE_FR_11,EVS_R05_2017,A,INSTRUCTION,Q12,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_11,EVS_R05_2017,A,REQUEST,Q12,,Etes-vous d'accord ou pas avec les phrases suivantes ?,False
+EVS_R05_2017_FRE_FR_11,EVS_R05_2017,A,RESPONSE,Q12,888,NSP,False
+EVS_R05_2017_FRE_FR_12,EVS_R05_2017,A,REQUEST,Q13,,Considérez-vous que vous appartenez à une religion ?,False
+EVS_R05_2017_FRE_FR_12,EVS_R05_2017,A,RESPONSE,Q13,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_12,EVS_R05_2017,A,RESPONSE,Q13,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,INSTRUCTION,Q13a,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,RESPONSE,Q13a,1,Catholique,False
+EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,RESPONSE,Q13a,2,Protestante,False
+EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,RESPONSE,Q13a,3,Evangélique / Eglise libre,False
+EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,RESPONSE,Q13a,4,Juive,False
+EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,RESPONSE,Q13a,5,Musulmane,False
+EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,RESPONSE,Q13a,6,Hindoue,False
+EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,RESPONSE,Q13a,777,Bouddhiste,False
+EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,RESPONSE,Q13a,888,Orthodoxe,False
+EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,RESPONSE,Q13a,30,"Une autre religion, préciser (Ecrire en clair) :",False
+EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,RESPONSE,Q13a,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,RESPONSE,Q13a,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_13,EVS_R05_2017,A,RESPONSE,Q13a,777,Non concerné,False
+EVS_R05_2017_FRE_FR_14,EVS_R05_2017,A,INSTRUCTION,Q14,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_14,EVS_R05_2017,A,REQUEST,Q14,,Avez-vous appartenu à une religion ?,False
+EVS_R05_2017_FRE_FR_14,EVS_R05_2017,A,RESPONSE,Q14,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_14,EVS_R05_2017,A,RESPONSE,Q14,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_14,EVS_R05_2017,A,RESPONSE,Q14,777,Non concerné,False
+EVS_R05_2017_FRE_FR_15,EVS_R05_2017,A,INSTRUCTION,Q15,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_15,EVS_R05_2017,A,REQUEST,Q15,,"En dehors des mariages, des enterrements et des baptêmes, tous les combien assistez-vous à un service religieux ?",False
+EVS_R05_2017_FRE_FR_15,EVS_R05_2017,A,RESPONSE,Q15,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_15,EVS_R05_2017,A,RESPONSE,Q15,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_16,EVS_R05_2017,A,INSTRUCTION,Q16,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_16,EVS_R05_2017,A,REQUEST,Q16,,"Et lorsque vous aviez douze ans, en dehors des mariages, des enterrements et des baptêmes, tous les combien assistiez-vous à un service religieux ?",False
+EVS_R05_2017_FRE_FR_16,EVS_R05_2017,A,RESPONSE,Q16,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_17,EVS_R05_2017,A,REQUEST,Q17,,"Indépendamment du fait que vous êtes pratiquant ou non, diriez-vous que vous êtes quelqu'un de religieux, de non religieux ou un athée convaincu ?",False
+EVS_R05_2017_FRE_FR_17,EVS_R05_2017,A,INSTRUCTION,Q17,,LIRE ET CODER UNE SEULE REPONSE,False
+EVS_R05_2017_FRE_FR_17,EVS_R05_2017,A,RESPONSE,Q17,2,...de non religieux,False
+EVS_R05_2017_FRE_FR_17,EVS_R05_2017,A,RESPONSE,Q17,3,...un athée convaincu,False
+EVS_R05_2017_FRE_FR_17,EVS_R05_2017,A,RESPONSE,Q17,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_17,EVS_R05_2017,A,RESPONSE,Q17,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_18,EVS_R05_2017,A,REQUEST,Q18,,Croyez-vous ou non...,False
+EVS_R05_2017_FRE_FR_18,EVS_R05_2017,A,INSTRUCTION,Q18,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
+EVS_R05_2017_FRE_FR_18,EVS_R05_2017,A,REQUEST,Q18,,...en Dieu,False
+EVS_R05_2017_FRE_FR_18,EVS_R05_2017,A,REQUEST,Q18,,...à une vie après la mort,False
+EVS_R05_2017_FRE_FR_18,EVS_R05_2017,A,REQUEST,Q18,,...à l'enfer,False
+EVS_R05_2017_FRE_FR_18,EVS_R05_2017,A,REQUEST,Q18,,...au paradis,False
+EVS_R05_2017_FRE_FR_18,EVS_R05_2017,A,RESPONSE,Q18,888,NSP,False
+EVS_R05_2017_FRE_FR_19,EVS_R05_2017,A,REQUEST,Q19,,"Croyez-vous à la réincarnation, c'est-à-dire que nous avons eu d'autres vies dans le passé et que nous renaîtrons à nouveau dans ce monde ?",False
+EVS_R05_2017_FRE_FR_19,EVS_R05_2017,A,RESPONSE,Q19,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_19,EVS_R05_2017,A,RESPONSE,Q19,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_20,EVS_R05_2017,A,INSTRUCTION,Q20,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_20,EVS_R05_2017,A,REQUEST,Q20,,Laquelle de ces opinions se rapproche le plus de ce que vous croyez ?,False
+EVS_R05_2017_FRE_FR_20,EVS_R05_2017,A,RESPONSE,Q20,2,Il y a une sorte d'esprit ou de force vitale,False
+EVS_R05_2017_FRE_FR_20,EVS_R05_2017,A,RESPONSE,Q20,3,Je ne sais pas trop quoi penser,False
+EVS_R05_2017_FRE_FR_20,EVS_R05_2017,A,RESPONSE,Q20,4,"Je ne pense pas qu'il existe quelque chose comme un esprit, un Dieu ou une force vitale",False
+EVS_R05_2017_FRE_FR_20,EVS_R05_2017,A,RESPONSE,Q20,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_20,EVS_R05_2017,A,RESPONSE,Q20,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_21,EVS_R05_2017,A,INSTRUCTION,Q21,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_21,EVS_R05_2017,A,RESPONSE,Q21,1,Pas du tout important,False
+EVS_R05_2017_FRE_FR_21,EVS_R05_2017,A,RESPONSE,Q21,10,Tout à fait important,False
+EVS_R05_2017_FRE_FR_21,EVS_R05_2017,A,RESPONSE,Q21,888,NSP,False
+EVS_R05_2017_FRE_FR_22,EVS_R05_2017,A,INSTRUCTION,Q22,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_22,EVS_R05_2017,A,REQUEST,Q22,,"En dehors des services religieux, vous arrive-t-il de prier ?",False
+EVS_R05_2017_FRE_FR_22,EVS_R05_2017,A,REQUEST,Q22,,Cela vous arrive-t-il...,False
+EVS_R05_2017_FRE_FR_22,EVS_R05_2017,A,RESPONSE,Q22,2,...plus d'une fois par semaine,False
+EVS_R05_2017_FRE_FR_22,EVS_R05_2017,A,RESPONSE,Q22,3,...une fois par semaine,False
+EVS_R05_2017_FRE_FR_22,EVS_R05_2017,A,RESPONSE,Q22,4,...au moins une fois par mois,False
+EVS_R05_2017_FRE_FR_22,EVS_R05_2017,A,RESPONSE,Q22,5,...plusieurs fois par an,False
+EVS_R05_2017_FRE_FR_22,EVS_R05_2017,A,RESPONSE,Q22,6,...moins souvent,False
+EVS_R05_2017_FRE_FR_22,EVS_R05_2017,A,RESPONSE,Q22,777,...jamais,False
+EVS_R05_2017_FRE_FR_22,EVS_R05_2017,A,RESPONSE,Q22,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_22,EVS_R05_2017,A,RESPONSE,Q22,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_23,EVS_R05_2017,B,INTRODUCTION,Q23,,LES QUESTIONS SUIVANTES PORTENT SUR LA VIE FAMILIALE ET LE MARIAGE,False
+EVS_R05_2017_FRE_FR_23,EVS_R05_2017,B,INSTRUCTION,Q23,,LIRE ET CODER UNE REPONSE PAR LIGNE,False
+EVS_R05_2017_FRE_FR_23,EVS_R05_2017,B,RESPONSE,Q23,1,Très important,False
+EVS_R05_2017_FRE_FR_23,EVS_R05_2017,B,RESPONSE,Q23,2,Assez important,False
+EVS_R05_2017_FRE_FR_23,EVS_R05_2017,B,RESPONSE,Q23,3,Pas très important,False
+EVS_R05_2017_FRE_FR_23,EVS_R05_2017,B,RESPONSE,Q23,888,NSP,False
+EVS_R05_2017_FRE_FR_24,EVS_R05_2017,B,REQUEST,Q24,,Etes-vous d'accord ou pas avec l'opinion suivante : le mariage est une institution dépassée ?,False
+EVS_R05_2017_FRE_FR_24,EVS_R05_2017,B,RESPONSE,Q24,2,Pas d'accord,False
+EVS_R05_2017_FRE_FR_24,EVS_R05_2017,B,RESPONSE,Q24,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_24,EVS_R05_2017,B,RESPONSE,Q24,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_25,EVS_R05_2017,B,INSTRUCTION,Q25,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_25,EVS_R05_2017,B,REQUEST,Q25,,"Pour chacune des opinions que je vais vous lire, pouvez-vous me dire si vous êtes tout à fait d'accord, plutôt d'accord, plutôt pas d'accord, pas d'accord du tout ?",False
+EVS_R05_2017_FRE_FR_25,EVS_R05_2017,B,RESPONSE,Q25,1,Tout à fait d'accord,False
+EVS_R05_2017_FRE_FR_25,EVS_R05_2017,B,RESPONSE,Q25,2,Plutôt d'accord,False
+EVS_R05_2017_FRE_FR_25,EVS_R05_2017,B,RESPONSE,Q25,3,Plutôt pas d'accord,False
+EVS_R05_2017_FRE_FR_25,EVS_R05_2017,B,RESPONSE,Q25,4,Pas d'accord du tout,False
+EVS_R05_2017_FRE_FR_25,EVS_R05_2017,B,RESPONSE,Q25,888,NSP,False
+EVS_R05_2017_FRE_FR_26,EVS_R05_2017,B,INSTRUCTION,Q26,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_26,EVS_R05_2017,B,REQUEST,Q26,,Etes-vous d'accord ou pas d'accord avec les affirmations suivantes ?,False
+EVS_R05_2017_FRE_FR_26,EVS_R05_2017,B,RESPONSE,Q26,888,NSP,False
+EVS_R05_2017_FRE_FR_27,EVS_R05_2017,B,INSTRUCTION,Q27,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_27,EVS_R05_2017,B,REQUEST,Q27,,Et êtes-vous d'accord ou pas d'accord avec les affirmations suivantes ?,False
+EVS_R05_2017_FRE_FR_27,EVS_R05_2017,B,RESPONSE,Q27,888,NSP,False
+EVS_R05_2017_FRE_FR_28,EVS_R05_2017,B,INSTRUCTION,Q28,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_28,EVS_R05_2017,B,REQUEST,Q28,,Voici une liste de qualités que les parents peuvent chercher à  encourager chez leurs enfants.,False
+EVS_R05_2017_FRE_FR_28,EVS_R05_2017,B,REQUEST,Q28,,Quelles sont les cinq qualités les plus souhaitables à acquérir pour un enfant ?,False
+EVS_R05_2017_FRE_FR_28,EVS_R05_2017,B,REQUEST,Q28,,Les bonnes manières,False
+EVS_R05_2017_FRE_FR_28,EVS_R05_2017,B,REQUEST,Q28,,L'application au travail,False
+EVS_R05_2017_FRE_FR_28,EVS_R05_2017,B,REQUEST,Q28,,L'imagination,False
+EVS_R05_2017_FRE_FR_28,EVS_R05_2017,B,REQUEST,Q28,,"L'esprit d'économie, ne pas gaspiller l'argent ni les choses",False
+EVS_R05_2017_FRE_FR_28,EVS_R05_2017,B,REQUEST,Q28,,La foi religieuse,False
+EVS_R05_2017_FRE_FR_28,EVS_R05_2017,B,REQUEST,Q28,,L'obéissance,False
+EVS_R05_2017_FRE_FR_28,EVS_R05_2017,B,RESPONSE,Q28,888,NSP,False
+EVS_R05_2017_FRE_FR_29,EVS_R05_2017,,INTRODUCTION,INTRO3,,JE VAIS MAINTENANT VOUS POSER QUELQUES QUESTIONS SUR DES SUJETS DE SOCIETE,False
+EVS_R05_2017_FRE_FR_30,EVS_R05_2017,C,INSTRUCTION,Q29,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_30,EVS_R05_2017,C,RESPONSE,Q29,1,...très intéressé,False
+EVS_R05_2017_FRE_FR_30,EVS_R05_2017,C,RESPONSE,Q29,2,...assez intéressé,False
+EVS_R05_2017_FRE_FR_30,EVS_R05_2017,C,RESPONSE,Q29,3,...pas très intéressé,False
+EVS_R05_2017_FRE_FR_30,EVS_R05_2017,C,RESPONSE,Q29,4,...pas du tout intéressé,False
+EVS_R05_2017_FRE_FR_30,EVS_R05_2017,C,RESPONSE,Q29,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_30,EVS_R05_2017,C,RESPONSE,Q29,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_31,EVS_R05_2017,C,INSTRUCTION,Q30,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_31,EVS_R05_2017,C,REQUEST,Q30,,"Je vais vous citer plusieurs formes d'action politique, et pour chacune je vous demanderai de me dire si vous l'avez déjà fait, si vous pourriez en venir à le faire ou si vous ne le feriez jamais, quelles que soient les circonstances?",False
+EVS_R05_2017_FRE_FR_31,EVS_R05_2017,C,REQUEST,Q30,,Signer une pétition,False
+EVS_R05_2017_FRE_FR_31,EVS_R05_2017,C,REQUEST,Q30,,Prendre part à une manifestation autorisée,False
+EVS_R05_2017_FRE_FR_31,EVS_R05_2017,C,RESPONSE,Q30,1,A déjà fait,False
+EVS_R05_2017_FRE_FR_31,EVS_R05_2017,C,RESPONSE,Q30,2,Pourrait faire,False
+EVS_R05_2017_FRE_FR_31,EVS_R05_2017,C,RESPONSE,Q30,3,Ne fera jamais,False
+EVS_R05_2017_FRE_FR_31,EVS_R05_2017,C,RESPONSE,Q30,888,NSP,False
+EVS_R05_2017_FRE_FR_32,EVS_R05_2017,C,INSTRUCTION,Q31,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_32,EVS_R05_2017,C,RESPONSE,Q31,1,Gauche,False
+EVS_R05_2017_FRE_FR_32,EVS_R05_2017,C,RESPONSE,Q31,10,Droite,False
+EVS_R05_2017_FRE_FR_32,EVS_R05_2017,C,RESPONSE,Q31,888,NSP,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,INSTRUCTION,Q32,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,REQUEST,Q32,,Sur cette carte figurent des opinions opposées sur différents sujets.,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,REQUEST,Q32,,Où vous situez-vous sur cette échelle ?,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,1,Les individus devraient avoir davantage la responsabilité de subvenir à leurs propres besoins,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,10,L'État devrait avoir davantage la responsabilité d'assurer à chacun ses besoins,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,888,NSP,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,1,Les chômeurs devraient être obligés d'accepter tout emploi disponible ou bien perdre leur indemnité de chômage,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,10,Les chômeurs devraient avoir le droit de refuser un emploi qui ne leur convient pas,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,888,NSP,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,1,La concurrence est une bonne chose,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,10,La concurrence est dangereuse,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,888,NSP,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,1,Les revenus devraient être plus égalitaires,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,10,Il faudrait encourager davantage les efforts individuels,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,888,NSP,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,1,La propriété privée des entreprises et des industries devrait être développée,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,10,La nationalisation des entreprises et des industries devrait être développée,False
+EVS_R05_2017_FRE_FR_33,EVS_R05_2017,C,RESPONSE,Q32,888,NSP,False
+EVS_R05_2017_FRE_FR_34,EVS_R05_2017,C,INSTRUCTION,Q33,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_34,EVS_R05_2017,C,REQUEST,Q33,,On dit beaucoup de choses au sujet des buts que la France devrait s'efforcer d'atteindre au cours des dix prochaines années.,False
+EVS_R05_2017_FRE_FR_34,EVS_R05_2017,C,REQUEST,Q33,,"Parmi les buts figurant sur cette liste, voulez-vous m'indiquer celui qui vous paraît le plus important ?",False
+EVS_R05_2017_FRE_FR_34,EVS_R05_2017,C,RESPONSE,Q33,888,NSP,False
+EVS_R05_2017_FRE_FR_35,EVS_R05_2017,C,REQUEST,Q33a,,CONTINUER A MONTRER LA CARTE 33 – LIRE ET CODER UNE SEULE RÉPONSE POUR Q33a,False
+EVS_R05_2017_FRE_FR_35,EVS_R05_2017,C,RESPONSE,Q33a,888,NSP,False
+EVS_R05_2017_FRE_FR_36,EVS_R05_2017,C,INSTRUCTION,Q34,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_36,EVS_R05_2017,C,REQUEST,Q34,,"Si vous deviez choisir parmi les objectifs suivants, lequel vous paraît le plus important ?",False
+EVS_R05_2017_FRE_FR_36,EVS_R05_2017,C,REQUEST,Q34,,Premier choix,False
+EVS_R05_2017_FRE_FR_36,EVS_R05_2017,C,RESPONSE,Q34,888,NSP,False
+EVS_R05_2017_FRE_FR_37,EVS_R05_2017,C,REQUEST,Q35,,CONTINUER A MONTRER LA CARTE 34 – LIRE ET CODER UNE SEULE RÉPONSE POUR Q35,False
+EVS_R05_2017_FRE_FR_37,EVS_R05_2017,C,REQUEST,Q35,,Second choix,False
+EVS_R05_2017_FRE_FR_37,EVS_R05_2017,C,RESPONSE,Q35,888,NSP,False
+EVS_R05_2017_FRE_FR_38,EVS_R05_2017,C,REQUEST,Q36,,"Naturellement, nous espérons tous qu'il n'y aura pas d'autre guerre ; mais si cela devait arriver, seriez-vous prêt à vous battre pour votre pays ?",False
+EVS_R05_2017_FRE_FR_38,EVS_R05_2017,C,RESPONSE,Q36,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_38,EVS_R05_2017,C,RESPONSE,Q36,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_39,EVS_R05_2017,C,INSTRUCTION,Q37,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_39,EVS_R05_2017,C,REQUEST,Q37,,Je vais vous citer deux changements qui pourraient se produire dans notre manière de vivre d'ici quelque temps.,False
+EVS_R05_2017_FRE_FR_39,EVS_R05_2017,C,REQUEST,Q37,,"Si cela arrivait, pensez-vous que ce serait une bonne chose, une mauvaise chose ou ça vous est égal ?",False
+EVS_R05_2017_FRE_FR_39,EVS_R05_2017,C,REQUEST,Q37,,Moins d'importance donnée au travail dans nos vies,False
+EVS_R05_2017_FRE_FR_39,EVS_R05_2017,C,RESPONSE,Q37,1,Une bonne chose,False
+EVS_R05_2017_FRE_FR_39,EVS_R05_2017,C,RESPONSE,Q37,2,Une mauvaise chose,False
+EVS_R05_2017_FRE_FR_39,EVS_R05_2017,C,RESPONSE,Q37,3,Ça vous est égal,False
+EVS_R05_2017_FRE_FR_39,EVS_R05_2017,C,RESPONSE,Q37,888,NSP,False
+EVS_R05_2017_FRE_FR_40,EVS_R05_2017,C,INSTRUCTION,Q38,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_40,EVS_R05_2017,C,REQUEST,Q38,,"Pour chacune des institutions que je vais vous citer, voulez-vous me dire dans quelle mesure vous avez confiance ou pas ?",False
+EVS_R05_2017_FRE_FR_40,EVS_R05_2017,C,RESPONSE,Q38,1,Une grande confiance,False
+EVS_R05_2017_FRE_FR_40,EVS_R05_2017,C,RESPONSE,Q38,2,Une certaine confiance,False
+EVS_R05_2017_FRE_FR_40,EVS_R05_2017,C,RESPONSE,Q38,3,Peu de confiance,False
+EVS_R05_2017_FRE_FR_40,EVS_R05_2017,C,RESPONSE,Q38,4,Pas confiance du tout,False
+EVS_R05_2017_FRE_FR_40,EVS_R05_2017,C,RESPONSE,Q38,888,NSP,False
+EVS_R05_2017_FRE_FR_41,EVS_R05_2017,C,INSTRUCTION,Q39,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_41,EVS_R05_2017,C,REQUEST,Q39,,"Beaucoup de choses sont souhaitables, mais toutes ne sont pas des caractéristiques essentielles de la démocratie.",False
+EVS_R05_2017_FRE_FR_41,EVS_R05_2017,C,REQUEST,Q39,,"Pouvez-vous me dire, pour chacun des points suivants, s'il s'agit selon vous d'une caractéristique essentielle de la démocratie ?",False
+EVS_R05_2017_FRE_FR_41,EVS_R05_2017,C,REQUEST,Q39,,Utilisez cette échelle sur laquelle 1 signifie “ce n'est pas du tout une caractéristique essentielle de la démocratie” et 10 signifie “c'est une caractéristique essentielle de la démocratie”.,False
+EVS_R05_2017_FRE_FR_41,EVS_R05_2017,C,RESPONSE,Q39,1,Translation,False
+EVS_R05_2017_FRE_FR_41,EVS_R05_2017,C,RESPONSE,Q39,10,Est une caractéristique essentielle de la démocratie,False
+EVS_R05_2017_FRE_FR_41,EVS_R05_2017,C,RESPONSE,Q39,0,C'est anti-démocratique [NE PAS LIRE],False
+EVS_R05_2017_FRE_FR_41,EVS_R05_2017,C,RESPONSE,Q39,888,NSP,False
+EVS_R05_2017_FRE_FR_42,EVS_R05_2017,C,INSTRUCTION,Q40,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_42,EVS_R05_2017,C,RESPONSE,Q40,1,Pas du tout important,False
+EVS_R05_2017_FRE_FR_42,EVS_R05_2017,C,RESPONSE,Q40,10,Absolument important,False
+EVS_R05_2017_FRE_FR_42,EVS_R05_2017,C,RESPONSE,Q40,888,NSP,False
+EVS_R05_2017_FRE_FR_43,EVS_R05_2017,C,INSTRUCTION,Q41,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_43,EVS_R05_2017,C,RESPONSE,Q41,1,Pas du tout démocratique,False
+EVS_R05_2017_FRE_FR_43,EVS_R05_2017,C,RESPONSE,Q41,10,Complètement démocratique,False
+EVS_R05_2017_FRE_FR_43,EVS_R05_2017,C,RESPONSE,Q41,888,NSP,False
+EVS_R05_2017_FRE_FR_44,EVS_R05_2017,C,INSTRUCTION,Q42,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_44,EVS_R05_2017,C,RESPONSE,Q42,1,Pas du tout satisfait,False
+EVS_R05_2017_FRE_FR_44,EVS_R05_2017,C,RESPONSE,Q42,10,Complètement satisfait,False
+EVS_R05_2017_FRE_FR_44,EVS_R05_2017,C,RESPONSE,Q42,888,NSP,False
+EVS_R05_2017_FRE_FR_45,EVS_R05_2017,C,INSTRUCTION,Q43,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_45,EVS_R05_2017,C,REQUEST,Q43,,Je vais vous décrire différents types de systèmes politiques et vous demander ce que vous en pensez pour gouverner ce pays.,False
+EVS_R05_2017_FRE_FR_45,EVS_R05_2017,C,REQUEST,Q43,,"Pour chacun, veuillez me dire si cette façon de gouverner le pays serait très bonne, assez bonne, assez mauvaise ou très mauvaise.",False
+EVS_R05_2017_FRE_FR_45,EVS_R05_2017,C,RESPONSE,Q43,1,Très bonne,False
+EVS_R05_2017_FRE_FR_45,EVS_R05_2017,C,RESPONSE,Q43,2,Assez bonne,False
+EVS_R05_2017_FRE_FR_45,EVS_R05_2017,C,RESPONSE,Q43,3,Assez mauvaise,False
+EVS_R05_2017_FRE_FR_45,EVS_R05_2017,C,RESPONSE,Q43,4,Très mauvaise,False
+EVS_R05_2017_FRE_FR_45,EVS_R05_2017,C,RESPONSE,Q43,888,NSP,False
+EVS_R05_2017_FRE_FR_46,EVS_R05_2017,C,INSTRUCTION,Q44,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_46,EVS_R05_2017,C,REQUEST,Q44,,"Pour chacune des choses que je vais vous citer, voulez-vous me dire en vous plaçant sur cette échelle si vous pensez que cela peut toujours se justifier, que cela ne peut jamais se justifier ou que c'est entre les deux ?",False
+EVS_R05_2017_FRE_FR_46,EVS_R05_2017,C,RESPONSE,Q44,1,Jamais justifié,False
+EVS_R05_2017_FRE_FR_46,EVS_R05_2017,C,RESPONSE,Q44,10,Toujours justifié,False
+EVS_R05_2017_FRE_FR_46,EVS_R05_2017,C,RESPONSE,Q44,888,NSP,False
+EVS_R05_2017_FRE_FR_47,EVS_R05_2017,C,INSTRUCTION,Q45,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_47,EVS_R05_2017,C,REQUEST,Q45,,Les gens ont différentes perceptions d'eux-mêmes et de leur relation au monde qui les entoure.,False
+EVS_R05_2017_FRE_FR_47,EVS_R05_2017,C,REQUEST,Q45,,"En utilisant cette carte, pouvez-vous me dire à quel point vous vous sentez attaché à :",False
+EVS_R05_2017_FRE_FR_47,EVS_R05_2017,C,RESPONSE,Q45,1,Très attaché,False
+EVS_R05_2017_FRE_FR_47,EVS_R05_2017,C,RESPONSE,Q45,2,Assez attaché,False
+EVS_R05_2017_FRE_FR_47,EVS_R05_2017,C,RESPONSE,Q45,3,Pas très attaché,False
+EVS_R05_2017_FRE_FR_47,EVS_R05_2017,C,RESPONSE,Q45,4,Pas attaché du tout,False
+EVS_R05_2017_FRE_FR_47,EVS_R05_2017,C,RESPONSE,Q45,888,NSP,False
+EVS_R05_2017_FRE_FR_48,EVS_R05_2017,C,REQUEST,Q46,,Avez-vous la nationalité française ?,False
+EVS_R05_2017_FRE_FR_48,EVS_R05_2017,C,REQUEST,Q46,,LA NATIONALITÉ EST DÉFINIE PAR LA CARTE D'IDENTITÉ OU LE PASSEPORT !,False
+EVS_R05_2017_FRE_FR_48,EVS_R05_2017,C,RESPONSE,Q46,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_48,EVS_R05_2017,C,RESPONSE,Q46,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_49,EVS_R05_2017,C,REQUEST,Q47,,Diriez-vous que vous êtes fier d'être citoyen français ?,False
+EVS_R05_2017_FRE_FR_49,EVS_R05_2017,C,REQUEST,Q47,,"Diriez-vous très fier, assez fier, pas très fier, pas fier du tout ?",False
+EVS_R05_2017_FRE_FR_49,EVS_R05_2017,C,RESPONSE,Q47,2,Assez fier,False
+EVS_R05_2017_FRE_FR_49,EVS_R05_2017,C,RESPONSE,Q47,3,Pas très fier,False
+EVS_R05_2017_FRE_FR_49,EVS_R05_2017,C,RESPONSE,Q47,4,Pas fier du tout,False
+EVS_R05_2017_FRE_FR_49,EVS_R05_2017,C,RESPONSE,Q47,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_49,EVS_R05_2017,C,RESPONSE,Q47,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_49,EVS_R05_2017,C,RESPONSE,Q47,777,Non concerné,False
+EVS_R05_2017_FRE_FR_50,EVS_R05_2017,C,REQUEST,Q48,,"Lorsqu'il y a des élections, votez-vous toujours, souvent ou jamais ?",False
+EVS_R05_2017_FRE_FR_50,EVS_R05_2017,C,REQUEST,Q48,,Pouvez-vous me répondre pour chaque niveau électoral ?,False
+EVS_R05_2017_FRE_FR_50,EVS_R05_2017,C,INSTRUCTION,Q48,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_50,EVS_R05_2017,C,RESPONSE,Q48,1,Toujours,False
+EVS_R05_2017_FRE_FR_50,EVS_R05_2017,C,RESPONSE,Q48,2,Souvent,False
+EVS_R05_2017_FRE_FR_50,EVS_R05_2017,C,RESPONSE,Q48,3,Jamais,False
+EVS_R05_2017_FRE_FR_50,EVS_R05_2017,C,RESPONSE,Q48,888,NSP,False
+EVS_R05_2017_FRE_FR_50,EVS_R05_2017,C,RESPONSE,Q48,777,N'a pas / n'avait pas le droit de vote,False
+EVS_R05_2017_FRE_FR_51,EVS_R05_2017,C,INSTRUCTION,Q49,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_51,EVS_R05_2017,C,RESPONSE,Q49,66,Translation,False
+EVS_R05_2017_FRE_FR_51,EVS_R05_2017,C,RESPONSE,Q49,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_51,EVS_R05_2017,C,RESPONSE,Q49,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_52,EVS_R05_2017,C,INSTRUCTION,Q49a,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_52,EVS_R05_2017,C,RESPONSE,Q49a,66,Translation,False
+EVS_R05_2017_FRE_FR_52,EVS_R05_2017,C,RESPONSE,Q49a,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_52,EVS_R05_2017,C,RESPONSE,Q49a,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,INSTRUCTION,Q50,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,REQUEST,Q50,,"Selon vous, lors d'élections dans notre pays, les situations suivantes arrivent-elles très souvent, assez souvent, pas très souvent, ou pas du tout souvent ?",False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,REQUEST,Q50,,Le comptage des votes est juste,False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,REQUEST,Q50,,Les candidats d'opposition sont empêchés de poser leur candidature,False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,REQUEST,Q50,,Les nouvelles télévisées favorisent le parti au pouvoir,False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,REQUEST,Q50,,Il y a des achats de voix,False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,REQUEST,Q50,,Les journalistes rendent compte des élections de manière équilibrée,False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,REQUEST,Q50,,Les organisateurs des élections sont équitables,False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,REQUEST,Q50,,Des gens riches achètent les résultats des élections,False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,REQUEST,Q50,,Des menaces violentes sont exercées sur les électeurs,False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,RESPONSE,Q50,2,Assez souvent,False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,RESPONSE,Q50,3,Pas très souvent,False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,RESPONSE,Q50,4,Pas du tout souvent,False
+EVS_R05_2017_FRE_FR_53,EVS_R05_2017,C,RESPONSE,Q50,888,NSP,False
+EVS_R05_2017_FRE_FR_54,EVS_R05_2017,C,INSTRUCTION,Q51,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_54,EVS_R05_2017,C,RESPONSE,Q51,5,Très bon,False
+EVS_R05_2017_FRE_FR_54,EVS_R05_2017,C,RESPONSE,Q51,4,Assez bon,False
+EVS_R05_2017_FRE_FR_54,EVS_R05_2017,C,RESPONSE,Q51,3,"Ni bon, ni mauvais",False
+EVS_R05_2017_FRE_FR_54,EVS_R05_2017,C,RESPONSE,Q51,2,Assez mauvais,False
+EVS_R05_2017_FRE_FR_54,EVS_R05_2017,C,RESPONSE,Q51,1,Très mauvais,False
+EVS_R05_2017_FRE_FR_54,EVS_R05_2017,C,RESPONSE,Q51,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_54,EVS_R05_2017,C,RESPONSE,Q51,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_55,EVS_R05_2017,C,INSTRUCTION,Q52,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_55,EVS_R05_2017,C,REQUEST,Q52,,Voici différentes phrases.,False
+EVS_R05_2017_FRE_FR_55,EVS_R05_2017,C,REQUEST,Q52,,"Personnellement, où vous situez-vous sur ces échelles ?",False
+EVS_R05_2017_FRE_FR_55,EVS_R05_2017,C,RESPONSE,Q52,1,Les immigrés prennent les emplois des Français,False
+EVS_R05_2017_FRE_FR_55,EVS_R05_2017,C,RESPONSE,Q52,10,Les immigrés ne prennent pas les emplois des Français,False
+EVS_R05_2017_FRE_FR_55,EVS_R05_2017,C,RESPONSE,Q52,888,NSP,False
+EVS_R05_2017_FRE_FR_55,EVS_R05_2017,C,RESPONSE,Q52,10,Les immigrés n'accentuent  pas les problèmes de criminalité,False
+EVS_R05_2017_FRE_FR_55,EVS_R05_2017,C,RESPONSE,Q52,888,NSP,False
+EVS_R05_2017_FRE_FR_55,EVS_R05_2017,C,RESPONSE,Q52,10,Les immigrés ne sont pas une charge pour la sécurité sociale d'un pays,False
+EVS_R05_2017_FRE_FR_55,EVS_R05_2017,C,RESPONSE,Q52,888,NSP,False
+EVS_R05_2017_FRE_FR_55,EVS_R05_2017,C,RESPONSE,Q52,10,Translation,False
+EVS_R05_2017_FRE_FR_55,EVS_R05_2017,C,RESPONSE,Q52,888,NSP,False
+EVS_R05_2017_FRE_FR_56,EVS_R05_2017,C,INSTRUCTION,Q53 ,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_56,EVS_R05_2017,C,REQUEST,Q53 ,,"Certaines personnes estiment que pour être vraiment Français, il est important de posséder certaines des caractéristiques suivantes.",False
+EVS_R05_2017_FRE_FR_56,EVS_R05_2017,C,REQUEST,Q53 ,,"Pour d'autres, cela n'est pas important.",False
+EVS_R05_2017_FRE_FR_56,EVS_R05_2017,C,REQUEST,Q53 ,,"A votre avis, pour être vraiment Français, est-il important...",False
+EVS_R05_2017_FRE_FR_56,EVS_R05_2017,C,REQUEST,Q53 ,,... d'être né en France,False
+EVS_R05_2017_FRE_FR_57,EVS_R05_2017,C,REQUEST,Q53,,... de respecter la loi et les institutions françaises,False
+EVS_R05_2017_FRE_FR_57,EVS_R05_2017,C,REQUEST,Q53,,... d'avoir des origines françaises,False
+EVS_R05_2017_FRE_FR_57,EVS_R05_2017,C,REQUEST,Q53,,... d'être capable de parler fançais,False
+EVS_R05_2017_FRE_FR_57,EVS_R05_2017,C,REQUEST,Q53,,...de partager la culture française,False
+EVS_R05_2017_FRE_FR_58,EVS_R05_2017,C,RESPONSE,Q53 ,888,NSP,False
+EVS_R05_2017_FRE_FR_59,EVS_R05_2017,C,INSTRUCTION,Q54,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_59,EVS_R05_2017,C,REQUEST,Q54,,Les gens ont différentes manières de définir un Européen.,False
+EVS_R05_2017_FRE_FR_59,EVS_R05_2017,C,REQUEST,Q54,,"Selon vous, pour être Européen, dans quelle mesure est-il important...",False
+EVS_R05_2017_FRE_FR_59,EVS_R05_2017,C,REQUEST,Q54,,...d'être né en Europe,False
+EVS_R05_2017_FRE_FR_59,EVS_R05_2017,C,REQUEST,Q54,,...d'avoir des origines européennes,False
+EVS_R05_2017_FRE_FR_59,EVS_R05_2017,C,REQUEST,Q54,,...d'être chrétien,False
+EVS_R05_2017_FRE_FR_59,EVS_R05_2017,C,REQUEST,Q54,,...de partager la culture européenne,False
+EVS_R05_2017_FRE_FR_59,EVS_R05_2017,C,RESPONSE,Q54,888,NSP,False
+EVS_R05_2017_FRE_FR_60,EVS_R05_2017,C,INSTRUCTION,Q55,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_60,EVS_R05_2017,C,RESPONSE,Q55,1,L'élargissement devrait continuer,False
+EVS_R05_2017_FRE_FR_60,EVS_R05_2017,C,RESPONSE,Q55,10,L'élargissement est allé trop loin,False
+EVS_R05_2017_FRE_FR_60,EVS_R05_2017,C,RESPONSE,Q55,888,NSP,False
+EVS_R05_2017_FRE_FR_61,EVS_R05_2017,C,INSTRUCTION,Q56,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_61,EVS_R05_2017,C,REQUEST,Q56,,Ja vais maintenant vous lire plusieurs affirmations au sujet de l'environnement.,False
+EVS_R05_2017_FRE_FR_61,EVS_R05_2017,C,REQUEST,Q56,,"Pour chacune d'entre elles, pourriez-vous me dire dans quelle mesure vous êtes d'accord ou pas d'accord ?",False
+EVS_R05_2017_FRE_FR_61,EVS_R05_2017,C,REQUEST,Q56,,Je donnerais une partie de mes revenus si j'étais sûr que l'argent soit utilisé pour éviter la pollution de l'environnement,False
+EVS_R05_2017_FRE_FR_61,EVS_R05_2017,C,REQUEST,Q56,,C'est juste trop difficile pour les gens comme moi de vraiment agir pour l'environnement,False
+EVS_R05_2017_FRE_FR_61,EVS_R05_2017,C,REQUEST,Q56,,Il y a plus important à faire dans la vie que de protéger l'environnement,False
+EVS_R05_2017_FRE_FR_61,EVS_R05_2017,C,REQUEST,Q56,,Ça ne sert à rien de faire ce que je peux pour l'environnement si les autres ne font pas la même chose,False
+EVS_R05_2017_FRE_FR_61,EVS_R05_2017,C,REQUEST,Q56,,Beaucoup des affirmations sur les menaces environnementales sont exagérées,False
+EVS_R05_2017_FRE_FR_61,EVS_R05_2017,C,RESPONSE,Q56,888,NSP,False
+EVS_R05_2017_FRE_FR_62,EVS_R05_2017,C,INSTRUCTION,Q57,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_62,EVS_R05_2017,C,REQUEST,Q57,,Voici deux affirmations qu'on entend parfois quand les gens discutent de l'environnement et de la croissance économique.,False
+EVS_R05_2017_FRE_FR_62,EVS_R05_2017,C,REQUEST,Q57,,Laquelle se rapproche le plus de votre point de vue ?,False
+EVS_R05_2017_FRE_FR_62,EVS_R05_2017,C,RESPONSE,Q57,2,"B. On devrait donner la priorité à la croissance économique et à la création d'emplois, même si l'environnement en souffre d'une manière ou d'une autre",False
+EVS_R05_2017_FRE_FR_62,EVS_R05_2017,C,RESPONSE,Q57,3,Autre réponse (spontanée),False
+EVS_R05_2017_FRE_FR_62,EVS_R05_2017,C,RESPONSE,Q57,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_62,EVS_R05_2017,C,RESPONSE,Q57,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_63,EVS_R05_2017,C,INSTRUCTION,Q58,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_63,EVS_R05_2017,C,REQUEST,Q58,,"Selon vous, le gouvernement français devrait-il ou non avoir le droit de...",False
+EVS_R05_2017_FRE_FR_63,EVS_R05_2017,C,REQUEST,Q58,,... mettre les individus sous vidéo-surveillance dans les espaces publics ?,False
+EVS_R05_2017_FRE_FR_63,EVS_R05_2017,C,REQUEST,Q58,,... surveiller tous les e-mails et autres informations échangées sur Internet ?,False
+EVS_R05_2017_FRE_FR_63,EVS_R05_2017,C,REQUEST,Q58,,... récolter des informations sur toute personne vivant en France sans qu'elle le sache ?,False
+EVS_R05_2017_FRE_FR_63,EVS_R05_2017,C,RESPONSE,Q58,2,Devrait probablement avoir le droit,False
+EVS_R05_2017_FRE_FR_63,EVS_R05_2017,C,RESPONSE,Q58,3,Ne devrait probablement pas avoir  le droit,False
+EVS_R05_2017_FRE_FR_63,EVS_R05_2017,C,RESPONSE,Q58,4,Ne devrait absolument pas avoir le droit,False
+EVS_R05_2017_FRE_FR_63,EVS_R05_2017,C,RESPONSE,Q58,888,NSP,False
+EVS_R05_2017_FRE_FR_64,EVS_R05_2017,C,INSTRUCTION,Q59,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_64,EVS_R05_2017,C,REQUEST,Q59,,À quelle fréquence suivez-vous la politique...,False
+EVS_R05_2017_FRE_FR_64,EVS_R05_2017,C,REQUEST,Q59,,...à la télévision,False
+EVS_R05_2017_FRE_FR_64,EVS_R05_2017,C,REQUEST,Q59,,...à la radio,False
+EVS_R05_2017_FRE_FR_64,EVS_R05_2017,C,REQUEST,Q59,,...dans les journaux quotidiens,False
+EVS_R05_2017_FRE_FR_64,EVS_R05_2017,C,REQUEST,Q59,,...sur les réseaux sociaux,False
+EVS_R05_2017_FRE_FR_64,EVS_R05_2017,C,RESPONSE,Q59,2,Plusieurs fois par semaine,False
+EVS_R05_2017_FRE_FR_64,EVS_R05_2017,C,RESPONSE,Q59,3,Une ou deux fois par semaine,False
+EVS_R05_2017_FRE_FR_64,EVS_R05_2017,C,RESPONSE,Q59,4,Moins souvent,False
+EVS_R05_2017_FRE_FR_64,EVS_R05_2017,C,RESPONSE,Q59,5,Jamais,False
+EVS_R05_2017_FRE_FR_64,EVS_R05_2017,C,RESPONSE,Q59,888,NSP,False
+EVS_R05_2017_FRE_FR_65,EVS_R05_2017,C,INSTRUCTION,Q60,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_65,EVS_R05_2017,C,REQUEST,Q60,,Dans quelle mesure vous sentez-vous concerné par les conditions de vie :,False
+EVS_R05_2017_FRE_FR_65,EVS_R05_2017,C,REQUEST,Q60,,...des gens de votre voisinage ?,False
+EVS_R05_2017_FRE_FR_65,EVS_R05_2017,C,REQUEST,Q60,,...des gens de la région où vous habitez ?,False
+EVS_R05_2017_FRE_FR_65,EVS_R05_2017,C,REQUEST,Q60,,...de vos concitoyens ?,False
+EVS_R05_2017_FRE_FR_65,EVS_R05_2017,C,REQUEST,Q60,,...des Européens ?,False
+EVS_R05_2017_FRE_FR_65,EVS_R05_2017,C,REQUEST,Q60,,...de l'humanité tout entière ?,False
+EVS_R05_2017_FRE_FR_65,EVS_R05_2017,C,RESPONSE,Q60,888,NSP,False
+EVS_R05_2017_FRE_FR_66,EVS_R05_2017,C,INSTRUCTION,Q61,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_66,EVS_R05_2017,C,REQUEST,Q61,,Dans quelle mesure vous sentez-vous concerné par les conditions de vie ...,False
+EVS_R05_2017_FRE_FR_66,EVS_R05_2017,C,REQUEST,Q61,,...des personnes âgées,False
+EVS_R05_2017_FRE_FR_66,EVS_R05_2017,C,REQUEST,Q61,,...des chômeurs,False
+EVS_R05_2017_FRE_FR_66,EVS_R05_2017,C,REQUEST,Q61,,...des immigrés,False
+EVS_R05_2017_FRE_FR_66,EVS_R05_2017,C,REQUEST,Q61,,...des malades ou handicapés,False
+EVS_R05_2017_FRE_FR_66,EVS_R05_2017,C,RESPONSE,Q61,888,NSP,False
+EVS_R05_2017_FRE_FR_67,EVS_R05_2017,C,INSTRUCTION,Q62,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_67,EVS_R05_2017,C,REQUEST,Q62,,Qu'est ce qu'une société devrait assurer à ses membres ?,False
+EVS_R05_2017_FRE_FR_67,EVS_R05_2017,C,REQUEST,Q62,,"Pour chaque affirmation, pouvez-vous me dire si vous la considérez comme importante ou pas ?",False
+EVS_R05_2017_FRE_FR_68,EVS_R05_2017,D,INTRODUCTION,INTRO4,,CARACTÉRISTIQUES DÉMOGRAPHIQUES,False
+EVS_R05_2017_FRE_FR_69,EVS_R05_2017,D,REQUEST,Q63,,Sexe de la personne interrogée,False
+EVS_R05_2017_FRE_FR_69,EVS_R05_2017,D,RESPONSE,Q63,1,Homme,False
+EVS_R05_2017_FRE_FR_69,EVS_R05_2017,D,RESPONSE,Q63,2,Femme,False
+EVS_R05_2017_FRE_FR_69,EVS_R05_2017,D,RESPONSE,Q63,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_69,EVS_R05_2017,D,RESPONSE,Q63,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_70,EVS_R05_2017,D,REQUEST,Q64,,Quelle est votre année de naissance ?,False
+EVS_R05_2017_FRE_FR_70,EVS_R05_2017,D,RESPONSE,Q64,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_70,EVS_R05_2017,D,RESPONSE,Q64,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_71,EVS_R05_2017,D,REQUEST,Q65,,Etes-vous né en France métropolitaine ?,False
+EVS_R05_2017_FRE_FR_71,EVS_R05_2017,D,RESPONSE,Q65,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_71,EVS_R05_2017,D,RESPONSE,Q65,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_72,EVS_R05_2017,D,REQUEST,Q66,,Dans quel pays ou territoire êtes-vous né ?,False
+EVS_R05_2017_FRE_FR_72,EVS_R05_2017,D,INSTRUCTION,Q66,,INSTITUT : PRE-CODER SELON LA NOMENCLATURE ISO 3166-1 (SUR 2 POSITIONS) /,False
+EVS_R05_2017_FRE_FR_72,EVS_R05_2017,D,RESPONSE,Q66,2,Code :,False
+EVS_R05_2017_FRE_FR_72,EVS_R05_2017,D,RESPONSE,Q66,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_72,EVS_R05_2017,D,RESPONSE,Q66,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_72,EVS_R05_2017,D,RESPONSE,Q66,777,Non concerné,False
+EVS_R05_2017_FRE_FR_73,EVS_R05_2017,D,REQUEST,Q67,,Dites-moi en quelle année vous êtes venu vivre en France pour la première fois ?,False
+EVS_R05_2017_FRE_FR_73,EVS_R05_2017,D,RESPONSE,Q67,1,Ecrire l'année :,False
+EVS_R05_2017_FRE_FR_73,EVS_R05_2017,D,RESPONSE,Q67,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_73,EVS_R05_2017,D,RESPONSE,Q67,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_73,EVS_R05_2017,D,RESPONSE,Q67,777,Non concerné,False
+EVS_R05_2017_FRE_FR_74,EVS_R05_2017,D,INSTRUCTION,Q68,,DEMANDER A TOUS,False
+EVS_R05_2017_FRE_FR_74,EVS_R05_2017,D,RESPONSE,Q68,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_74,EVS_R05_2017,D,RESPONSE,Q68,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_75,EVS_R05_2017,D,REQUEST,Q69,,Dans quel pays ou territoire votre père est-il né ?,False
+EVS_R05_2017_FRE_FR_75,EVS_R05_2017,D,INSTRUCTION,Q69,,INSTITUT : PRE-CODER SELON LA NOMENCLATURE ISO 3166-1 (SUR 2 POSITIONS) /,False
+EVS_R05_2017_FRE_FR_75,EVS_R05_2017,D,RESPONSE,Q69,2,Code :,False
+EVS_R05_2017_FRE_FR_75,EVS_R05_2017,D,RESPONSE,Q69,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_75,EVS_R05_2017,D,RESPONSE,Q69,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_75,EVS_R05_2017,D,RESPONSE,Q69,777,Non concerné,False
+EVS_R05_2017_FRE_FR_76,EVS_R05_2017,D,INSTRUCTION,Q70,,DEMANDER A TOUS,False
+EVS_R05_2017_FRE_FR_76,EVS_R05_2017,D,RESPONSE,Q70,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_76,EVS_R05_2017,D,RESPONSE,Q70,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_77,EVS_R05_2017,D,REQUEST,Q71,,Dans quel pays ou territoire votre mère est-elle née ?,False
+EVS_R05_2017_FRE_FR_77,EVS_R05_2017,D,INSTRUCTION,Q71,,INSTITUT : PRE-CODER SELON LA NOMENCLATURE ISO 3166-1 (SUR 2 POSITIONS) /,False
+EVS_R05_2017_FRE_FR_77,EVS_R05_2017,D,RESPONSE,Q71,2,Code :,False
+EVS_R05_2017_FRE_FR_77,EVS_R05_2017,D,RESPONSE,Q71,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_77,EVS_R05_2017,D,RESPONSE,Q71,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_77,EVS_R05_2017,D,RESPONSE,Q71,777,Non concerné,False
+EVS_R05_2017_FRE_FR_78,EVS_R05_2017,D,INSTRUCTION,Q72,,DEMANDER A TOUS,False
+EVS_R05_2017_FRE_FR_78,EVS_R05_2017,D,REQUEST,Q72,,"VEUF OU DIVORCE D'UN MARIAGE OU D'UN PACS, PAS D'UNE COHABITATION - SI CELIBATAIRE, CONCUBIN, COUPLE EN UNION LIBRE : CODER 6 « n'a jamais été marié ou pacsé auparavant »",False
+EVS_R05_2017_FRE_FR_78,EVS_R05_2017,D,RESPONSE,Q72,2,Pacsé,False
+EVS_R05_2017_FRE_FR_78,EVS_R05_2017,D,RESPONSE,Q72,3,Veuf,False
+EVS_R05_2017_FRE_FR_78,EVS_R05_2017,D,RESPONSE,Q72,4,Divorcé,False
+EVS_R05_2017_FRE_FR_78,EVS_R05_2017,D,RESPONSE,Q72,5,Séparé,False
+EVS_R05_2017_FRE_FR_78,EVS_R05_2017,D,RESPONSE,Q72,6,N'a jamais été marié ou pacsé auparavant,False
+EVS_R05_2017_FRE_FR_78,EVS_R05_2017,D,RESPONSE,Q72,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_78,EVS_R05_2017,D,RESPONSE,Q72,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_79,EVS_R05_2017,D,REQUEST,Q73,,Avez-vous vécu ensemble avec votre conjoint avant votre mariage / avant votre Pacs ?,False
+EVS_R05_2017_FRE_FR_79,EVS_R05_2017,D,RESPONSE,Q73,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_79,EVS_R05_2017,D,RESPONSE,Q73,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_79,EVS_R05_2017,D,RESPONSE,Q73,777,Non concerné,False
+EVS_R05_2017_FRE_FR_80,EVS_R05_2017,D,REQUEST,Q74,,Vivez-vous avec un conjoint ou un compagnon ?,False
+EVS_R05_2017_FRE_FR_80,EVS_R05_2017,D,RESPONSE,Q74,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_80,EVS_R05_2017,D,RESPONSE,Q74,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_80,EVS_R05_2017,D,RESPONSE,Q74,777,Non concerné,False
+EVS_R05_2017_FRE_FR_81,EVS_R05_2017,D,REQUEST,Q75,,Avez-vous une relation stable ?,False
+EVS_R05_2017_FRE_FR_81,EVS_R05_2017,D,RESPONSE,Q75,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_81,EVS_R05_2017,D,RESPONSE,Q75,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_81,EVS_R05_2017,D,RESPONSE,Q75,777,Non concerné,False
+EVS_R05_2017_FRE_FR_82,EVS_R05_2017,D,INSTRUCTION,Q76,,DEMANDER A TOUS,False
+EVS_R05_2017_FRE_FR_82,EVS_R05_2017,D,INSTRUCTION,Q76,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_82,EVS_R05_2017,D,RESPONSE,Q76,1,Non,False
+EVS_R05_2017_FRE_FR_82,EVS_R05_2017,D,RESPONSE,Q76,2,"Oui, mes parents",False
+EVS_R05_2017_FRE_FR_82,EVS_R05_2017,D,RESPONSE,Q76,3,"Oui, mes beaux-parents",False
+EVS_R05_2017_FRE_FR_82,EVS_R05_2017,D,RESPONSE,Q76,4,"Oui, mes parents et beaux-parents",False
+EVS_R05_2017_FRE_FR_82,EVS_R05_2017,D,RESPONSE,Q76,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_82,EVS_R05_2017,D,RESPONSE,Q76,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_83,EVS_R05_2017,D,REQUEST,Q77,,Combien d'enfants avez-vous ?,False
+EVS_R05_2017_FRE_FR_83,EVS_R05_2017,D,REQUEST,Q77,,Combien habitent chez vous et combien vivent en dehors ?,False
+EVS_R05_2017_FRE_FR_83,EVS_R05_2017,D,RESPONSE,Q77,1,Nombre d'enfants vivant au foyer :,False
+EVS_R05_2017_FRE_FR_83,EVS_R05_2017,D,RESPONSE,Q77,2,Nombre d'enfants vivant ailleurs :,False
+EVS_R05_2017_FRE_FR_83,EVS_R05_2017,D,RESPONSE,Q77,66,Je n'ai pas d'enfants,False
+EVS_R05_2017_FRE_FR_83,EVS_R05_2017,D,RESPONSE,Q77,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_84,EVS_R05_2017,D,REQUEST,Q78,,"Combien de personnes, adultes et enfants, vous compris, vivent de façon régulière dans votre foyer ?",False
+EVS_R05_2017_FRE_FR_84,EVS_R05_2017,D,RESPONSE,Q78,,Ecrire :,False
+EVS_R05_2017_FRE_FR_84,EVS_R05_2017,D,RESPONSE,Q78,01,Je vis seul,False
+EVS_R05_2017_FRE_FR_84,EVS_R05_2017,D,RESPONSE,Q78,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_85,EVS_R05_2017,D,REQUEST,Q79,,Quel est l'âge du plus jeune membre de votre foyer ?,False
+EVS_R05_2017_FRE_FR_85,EVS_R05_2017,D,RESPONSE,Q79,777,Non concerné,False
+EVS_R05_2017_FRE_FR_85,EVS_R05_2017,D,RESPONSE,Q79,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_86,EVS_R05_2017,D,INSTRUCTION,Q80,,DEMANDER A TOUS,False
+EVS_R05_2017_FRE_FR_86,EVS_R05_2017,D,INSTRUCTION,Q80,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_86,EVS_R05_2017,D,REQUEST,Q80,,A quel âge comptez-vous terminer vos études ?,False
+EVS_R05_2017_FRE_FR_86,EVS_R05_2017,D,RESPONSE,Q80,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_86,EVS_R05_2017,D,RESPONSE,Q80,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_87,EVS_R05_2017,D,INSTRUCTION,Q81,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_87,EVS_R05_2017,D,INSTRUCTION,Q81,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_87,EVS_R05_2017,D,RESPONSE,Q81,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_87,EVS_R05_2017,D,RESPONSE,Q81,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_88,EVS_R05_2017,D,INSTRUCTION,Q82,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_88,EVS_R05_2017,D,INSTRUCTION,Q82,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_88,EVS_R05_2017,D,INSTRUCTION,Q82,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_88,EVS_R05_2017,D,RESPONSE,Q82,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_88,EVS_R05_2017,D,RESPONSE,Q82,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_89,EVS_R05_2017,D,REQUEST,Q83,,"Dans votre DERNIER emploi (à temps plein ou partiel), étiez-vous salarié ou à votre compte ?",False
+EVS_R05_2017_FRE_FR_89,EVS_R05_2017,D,RESPONSE,Q83,2,A votre compte,False
+EVS_R05_2017_FRE_FR_89,EVS_R05_2017,D,RESPONSE,Q83,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_89,EVS_R05_2017,D,RESPONSE,Q83,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_89,EVS_R05_2017,D,RESPONSE,Q83,6,N'a jamais eu d'emploi,False
+EVS_R05_2017_FRE_FR_89,EVS_R05_2017,D,RESPONSE,Q83,777,Non concerné,False
+EVS_R05_2017_FRE_FR_90,EVS_R05_2017,D,INSTRUCTION,Q84,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_90,EVS_R05_2017,D,REQUEST,Q84,,Quelle est précisément votre profession ?,False
+EVS_R05_2017_FRE_FR_90,EVS_R05_2017,D,REQUEST,Q84,,Quelle était précisément votre profession ?,False
+EVS_R05_2017_FRE_FR_90,EVS_R05_2017,D,INSTRUCTION,Q84,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_90,EVS_R05_2017,D,REQUEST,Q84,,ECRIRE LA REPONSE DE MANIERE TRES DETAILLEE,False
+EVS_R05_2017_FRE_FR_90,EVS_R05_2017,D,RESPONSE,Q84,1,Ecrire en clair :,False
+EVS_R05_2017_FRE_FR_91,EVS_R05_2017,D,REQUEST,Q84a,,"Dans votre emploi principal, quel genre de travail faites-vous/faisiez-vous ?",False
+EVS_R05_2017_FRE_FR_91,EVS_R05_2017,D,REQUEST,Q84a,,ECRIRE LA REPONSE DE MANIERE TRES DETAILLEE,False
+EVS_R05_2017_FRE_FR_91,EVS_R05_2017,D,RESPONSE,Q84a,1,Ecrire en clair :,False
+EVS_R05_2017_FRE_FR_91,EVS_R05_2017,D,INSTRUCTION,Q84a,,"INSTITUT : CODER SELON LA NOMENCLATURE ISCO08 (A 4 CHIFFRES) APRES L'INTERVIEW, SUR LA BASE DE Q84 ET Q84A",False
+EVS_R05_2017_FRE_FR_91,EVS_R05_2017,D,RESPONSE,Q84a,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_91,EVS_R05_2017,D,RESPONSE,Q84a,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_91,EVS_R05_2017,D,RESPONSE,Q84a,777,Non concerné,False
+EVS_R05_2017_FRE_FR_92,EVS_R05_2017,D,INSTRUCTION,Q85,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_92,EVS_R05_2017,D,REQUEST,Q85,,Combien d'employés avez-vous/aviez-vous ?,False
+EVS_R05_2017_FRE_FR_92,EVS_R05_2017,D,RESPONSE,Q85,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_92,EVS_R05_2017,D,RESPONSE,Q85,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_92,EVS_R05_2017,D,RESPONSE,Q85,777,Non concerné,False
+EVS_R05_2017_FRE_FR_93,EVS_R05_2017,D,INSTRUCTION,Q86,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_93,EVS_R05_2017,D,REQUEST,Q86,,Encadrez-vous/avez-vous encadré le travail d'une ou plusieurs personnes ?,False
+EVS_R05_2017_FRE_FR_93,EVS_R05_2017,D,RESPONSE,Q86,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_93,EVS_R05_2017,D,RESPONSE,Q86,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_93,EVS_R05_2017,D,RESPONSE,Q86,777,Non concerné,False
+EVS_R05_2017_FRE_FR_94,EVS_R05_2017,D,REQUEST,Q86a,,Combien de personnes encadrez-vous ou encadriez-vous ?,False
+EVS_R05_2017_FRE_FR_94,EVS_R05_2017,D,RESPONSE,Q86a,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_94,EVS_R05_2017,D,RESPONSE,Q86a,777,Non concerné,False
+EVS_R05_2017_FRE_FR_95,EVS_R05_2017,D,REQUEST,Q87,,Travaillez-vous pour...,False
+EVS_R05_2017_FRE_FR_95,EVS_R05_2017,D,RESPONSE,Q87,2,... une entreprise privée,False
+EVS_R05_2017_FRE_FR_95,EVS_R05_2017,D,RESPONSE,Q87,3,"... une organisation privée à but non lucratif (association, mutuelle, coopérative...)",False
+EVS_R05_2017_FRE_FR_95,EVS_R05_2017,D,RESPONSE,Q87,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_95,EVS_R05_2017,D,RESPONSE,Q87,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_95,EVS_R05_2017,D,RESPONSE,Q87,777,Non concerné,False
+EVS_R05_2017_FRE_FR_96,EVS_R05_2017,D,REQUEST,Q88,,Votre conjoint ou compagnon est-il né en France métropolitaine ?,False
+EVS_R05_2017_FRE_FR_96,EVS_R05_2017,D,RESPONSE,Q88,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_96,EVS_R05_2017,D,RESPONSE,Q88,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_96,EVS_R05_2017,D,RESPONSE,Q88,777,Non concerné,False
+EVS_R05_2017_FRE_FR_97,EVS_R05_2017,D,REQUEST,Q88a,,Dans quel pays ou territoire est-il né ?,False
+EVS_R05_2017_FRE_FR_97,EVS_R05_2017,D,REQUEST,Q88a,,ECRIRE DE FAÇON DETAILLEE,False
+EVS_R05_2017_FRE_FR_97,EVS_R05_2017,D,INSTRUCTION,Q88a,,INSTITUT : PRE-CODER SELON LA NOMENCLATURE ISO 3166-1 (SUR 2 POSITIONS) /,False
+EVS_R05_2017_FRE_FR_97,EVS_R05_2017,D,RESPONSE,Q88a,2,Code :,False
+EVS_R05_2017_FRE_FR_97,EVS_R05_2017,D,RESPONSE,Q88a,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_97,EVS_R05_2017,D,RESPONSE,Q88a,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_97,EVS_R05_2017,D,RESPONSE,Q88a,777,Non concerné,False
+EVS_R05_2017_FRE_FR_98,EVS_R05_2017,D,INSTRUCTION,Q89,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_98,EVS_R05_2017,D,INSTRUCTION,Q89,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_98,EVS_R05_2017,D,RESPONSE,Q89,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_98,EVS_R05_2017,D,RESPONSE,Q89,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_98,EVS_R05_2017,D,RESPONSE,Q89,777,Non concerné,False
+EVS_R05_2017_FRE_FR_99,EVS_R05_2017,D,INSTRUCTION,Q90,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_99,EVS_R05_2017,D,INSTRUCTION,Q90,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_99,EVS_R05_2017,D,INSTRUCTION,Q90,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_99,EVS_R05_2017,D,RESPONSE,Q90,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_99,EVS_R05_2017,D,RESPONSE,Q90,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_99,EVS_R05_2017,D,RESPONSE,Q90,777,Non concerné,False
+EVS_R05_2017_FRE_FR_100,EVS_R05_2017,D,REQUEST,Q91,,"Dans son dernier emploi (à temps plein ou à temps partiel), était-il salarié ou à son compte ?",False
+EVS_R05_2017_FRE_FR_100,EVS_R05_2017,D,RESPONSE,Q91,2,A votre compte,False
+EVS_R05_2017_FRE_FR_100,EVS_R05_2017,D,RESPONSE,Q91,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_100,EVS_R05_2017,D,RESPONSE,Q91,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_100,EVS_R05_2017,D,RESPONSE,Q91,777,Non concerné,False
+EVS_R05_2017_FRE_FR_101,EVS_R05_2017,D,INSTRUCTION,Q92,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_101,EVS_R05_2017,D,REQUEST,Q92,,Quelle est précisément sa profession ?,False
+EVS_R05_2017_FRE_FR_101,EVS_R05_2017,D,REQUEST,Q92,,"SI LE PARTENAIRE AVAIT AVANT UN EMPLOI (Q91= 1 ou 2), DEMANDER :",False
+EVS_R05_2017_FRE_FR_101,EVS_R05_2017,D,INSTRUCTION,Q92,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_101,EVS_R05_2017,D,REQUEST,Q92,,ECRIRE LA REPONSE DE MANIERE DETAILLEE !,False
+EVS_R05_2017_FRE_FR_101,EVS_R05_2017,D,RESPONSE,Q92,1,Ecrire en clair :,False
+EVS_R05_2017_FRE_FR_102,EVS_R05_2017,D,REQUEST,Q92a,,"Dans son emploi principal, quel genre de travail fait-il (faisait-il) ?",False
+EVS_R05_2017_FRE_FR_102,EVS_R05_2017,D,REQUEST,Q92a,,Ecrire en clair :,False
+EVS_R05_2017_FRE_FR_102,EVS_R05_2017,D,INSTRUCTION,Q92a,,"INSTITUT : CODER SELON LA NOMENCLATURE ISCO08 (A 4 CHIFFRES) APRES L'INTERVIEW, SUR LA BASE DE Q92 ET Q92A",False
+EVS_R05_2017_FRE_FR_102,EVS_R05_2017,D,RESPONSE,Q92a,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_102,EVS_R05_2017,D,RESPONSE,Q92a,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_102,EVS_R05_2017,D,RESPONSE,Q92a,777,Non concerné,False
+EVS_R05_2017_FRE_FR_103,EVS_R05_2017,D,INSTRUCTION,Q93,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_103,EVS_R05_2017,D,REQUEST,Q93,,Combien de personnes travaillent/travaillaient dans son entreprise ?,False
+EVS_R05_2017_FRE_FR_103,EVS_R05_2017,D,RESPONSE,Q93,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_103,EVS_R05_2017,D,RESPONSE,Q93,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_103,EVS_R05_2017,D,RESPONSE,Q93,777,Non concerné,False
+EVS_R05_2017_FRE_FR_104,EVS_R05_2017,D,INSTRUCTION,Q94,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_104,EVS_R05_2017,D,REQUEST,Q94,,Encadre/encadrait-il le travail d'une ou plusieurs personnes ?,False
+EVS_R05_2017_FRE_FR_104,EVS_R05_2017,D,RESPONSE,Q94,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_104,EVS_R05_2017,D,RESPONSE,Q94,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_104,EVS_R05_2017,D,RESPONSE,Q94,777,Non concerné,False
+EVS_R05_2017_FRE_FR_105,EVS_R05_2017,D,REQUEST,Q95,,Combien d'employés encadre/encadrait-il ?,False
+EVS_R05_2017_FRE_FR_105,EVS_R05_2017,D,RESPONSE,Q95,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_105,EVS_R05_2017,D,RESPONSE,Q95,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_105,EVS_R05_2017,D,RESPONSE,Q95,777,Non concerné,False
+EVS_R05_2017_FRE_FR_106,EVS_R05_2017,D,INSTRUCTION,Q96,,DEMANDER A TOUS,False
+EVS_R05_2017_FRE_FR_106,EVS_R05_2017,D,RESPONSE,Q96,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_106,EVS_R05_2017,D,RESPONSE,Q96,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_107,EVS_R05_2017,D,REQUEST,Q97,,"Au cours des cinq dernières années, avez-vous, à un moment ou un autre, été dépendant des aides sociales ?",False
+EVS_R05_2017_FRE_FR_107,EVS_R05_2017,D,REQUEST,Q97,,"NOUS ENTENDONS PAR AIDES SOCIALES, LES MINIMA SOCIAUX.",False
+EVS_R05_2017_FRE_FR_107,EVS_R05_2017,D,REQUEST,Q97,,CELA N'INCLUT PAS LES ALLOCATIONS DE CHOMAGE ET LES RETRAITES.,False
+EVS_R05_2017_FRE_FR_107,EVS_R05_2017,D,REQUEST,Q97,,"PAR CONTRE,SONT CONCERNES : LE RSA, LA PRIME D'ACTIVITE, l'ASS, l'ASPA, l'AAH, l'ASI, l'ATA, l'ADA, l'AV.",False
+EVS_R05_2017_FRE_FR_107,EVS_R05_2017,D,RESPONSE,Q97,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_107,EVS_R05_2017,D,RESPONSE,Q97,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,INSTRUCTION,Q98,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,11,moins de 1 135 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,12,de 1 135 à moins de 1 440 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,13,de 1 440 à moins de 1 750 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,14,de 1 750 à moins de 2 100 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,15,de 2 100 à moins de 2 480 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,16,de 2 480 à moins de 2 910 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,1777,de 2 910 à moins de 3 420 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,1888,de 3 420 à moins de 4 090 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,1999,de 4 090 à moins de 5 250 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,20,5 250 euros et plus,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,21,moins de 13 620 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,22,de 13 620 à moins 17 290 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,23,de 17 290 à moins de 20 980 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,24,de 20 980 à moins de 25 250 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,25,de 25 250 à moins 29 730 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,26,de 29 730 à moins de 34 920 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,2777,de 34 920 à moins de 41 040 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,2888,de 41 040 à moins de 49 050 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,2999,de 49 050 à moins de 62 960 euros,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,30,62 960 euros et plus,False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_108,EVS_R05_2017,D,RESPONSE,Q98,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_109,EVS_R05_2017,D,INSTRUCTION,Q99,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_109,EVS_R05_2017,D,INSTRUCTION,Q99,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_109,EVS_R05_2017,D,RESPONSE,Q99,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_109,EVS_R05_2017,D,RESPONSE,Q99,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_110,EVS_R05_2017,D,INSTRUCTION,Q100,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_110,EVS_R05_2017,D,INSTRUCTION,Q100,,INSTRUCTION ENQUÊTEUR :,False
+EVS_R05_2017_FRE_FR_110,EVS_R05_2017,D,RESPONSE,Q100,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_110,EVS_R05_2017,D,RESPONSE,Q100,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_111,EVS_R05_2017,D,REQUEST,Q101,,"Quand vous aviez 14 ans, votre père était-il employé ou à son compte ou sans emploi ?",False
+EVS_R05_2017_FRE_FR_111,EVS_R05_2017,D,RESPONSE,Q101,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_111,EVS_R05_2017,D,RESPONSE,Q101,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_111,EVS_R05_2017,D,RESPONSE,Q101,6,Translation,False
+EVS_R05_2017_FRE_FR_112,EVS_R05_2017,D,REQUEST,Q102,,"Quand vous aviez 14 ans, votre mère était-elle employée ou à son compte ou sans emploi ?",False
+EVS_R05_2017_FRE_FR_112,EVS_R05_2017,D,RESPONSE,Q102,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_112,EVS_R05_2017,D,RESPONSE,Q102,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_112,EVS_R05_2017,D,RESPONSE,Q102,6,Translation,False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,INSTRUCTION,Q103,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,RESPONSE,Q103,1,"Professions libérales, intellectuelles, scientifiques et assimilées comme médecin, enseignant, ingénieur, artiste ou expert-comptable",False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,RESPONSE,Q103,2,"Directeurs, cadres supérieurs comme banquier, directeur dans une grande entreprise, haut fonctionnaire, dirigeant syndical",False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,RESPONSE,Q103,3,"Employés de bureau et administratifs comme secrétaire, assistant de direction, aide comptable",False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,RESPONSE,Q103,4,"Métiers de la vente comme responsable commercial, commerçant, vendeur, agent d'assurances",False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,RESPONSE,Q103,5,"Métiers des services comme propriétaire de restaurant, serveur, gardien d'immeuble, coiffeur, agent de police, militaire",False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,RESPONSE,Q103,6,"Contremaîtres et ouvriers qualifiés comme agents de maîtrise, mécanicien automobile, imprimeur, électricien",False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,RESPONSE,Q103,777,"Ouvriers semi-qualifiés comme maçon, conducteur d'autobus, charpentier, plombier ou boulanger",False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,RESPONSE,Q103,888,"Ouvriers non qualifiés comme manœuvre, manutentionnaire, ouvrier non qualifié en usine, agent de nettoyage",False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,RESPONSE,Q103,999,Ouvriers agricoles,False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,RESPONSE,Q103,10,"Agriculteurs exploitants, responsables de grande exploitation",False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,RESPONSE,Q103,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,RESPONSE,Q103,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_113,EVS_R05_2017,D,RESPONSE,Q103,66,Translation,False
+EVS_R05_2017_FRE_FR_114,EVS_R05_2017,D,INSTRUCTION,Q104,,MONTRER CARTE,False
+EVS_R05_2017_FRE_FR_114,EVS_R05_2017,D,RESPONSE,Q104,1,"Oui, vraiment",False
+EVS_R05_2017_FRE_FR_114,EVS_R05_2017,D,RESPONSE,Q104,2,"Oui, plutôt",False
+EVS_R05_2017_FRE_FR_114,EVS_R05_2017,D,RESPONSE,Q104,3,Peu,False
+EVS_R05_2017_FRE_FR_114,EVS_R05_2017,D,RESPONSE,Q104,4,"Non, vraiment pas",False
+EVS_R05_2017_FRE_FR_114,EVS_R05_2017,D,RESPONSE,Q104,888,NSP,False
+EVS_R05_2017_FRE_FR_114,EVS_R05_2017,D,RESPONSE,Q104,6,Translation,False
+EVS_R05_2017_FRE_FR_115,EVS_R05_2017,E,INTRODUCTION,Q105,,A REMPLI PAR L'ENQUETEUR,False
+EVS_R05_2017_FRE_FR_115,EVS_R05_2017,E,RESPONSE,Q105,1,Ecrire en clair :,False
+EVS_R05_2017_FRE_FR_115,EVS_R05_2017,E,INSTRUCTION,Q105,,institut : PRE-CODER selon LA NOMENCLATURE NUTS 3 (SUR 5 POSITIONS),False
+EVS_R05_2017_FRE_FR_116,EVS_R05_2017,E,REQUEST,Q106,,Nombre d'habitants de la commune,False
+EVS_R05_2017_FRE_FR_116,EVS_R05_2017,E,RESPONSE,Q106,2,2 - 5000,False
+EVS_R05_2017_FRE_FR_116,EVS_R05_2017,E,RESPONSE,Q106,3,5 - 10 000,False
+EVS_R05_2017_FRE_FR_116,EVS_R05_2017,E,RESPONSE,Q106,4,10 - 20 000,False
+EVS_R05_2017_FRE_FR_116,EVS_R05_2017,E,RESPONSE,Q106,5,20 - 50 000,False
+EVS_R05_2017_FRE_FR_116,EVS_R05_2017,E,RESPONSE,Q106,6,50 - 100 000,False
+EVS_R05_2017_FRE_FR_116,EVS_R05_2017,E,RESPONSE,Q106,777,100 - 500 000,False
+EVS_R05_2017_FRE_FR_116,EVS_R05_2017,E,RESPONSE,Q106,888,500 000 et plus,False
+EVS_R05_2017_FRE_FR_116,EVS_R05_2017,E,RESPONSE,Q106,888,Ne sait pas (spontané),False
+EVS_R05_2017_FRE_FR_116,EVS_R05_2017,E,RESPONSE,Q106,999,Non réponse (spontané),False
+EVS_R05_2017_FRE_FR_117,EVS_R05_2017,E,REQUEST,Q107,,Date de l'interview,False
+EVS_R05_2017_FRE_FR_117,EVS_R05_2017,E,RESPONSE,Q107,2,Mois :,False
+EVS_R05_2017_FRE_FR_117,EVS_R05_2017,E,RESPONSE,Q107,3,Année :,False
+EVS_R05_2017_FRE_FR_118,EVS_R05_2017,E,REQUEST,Q108,,Durée totale de l'interview,False
+EVS_R05_2017_FRE_FR_118,EVS_R05_2017,E,RESPONSE,Q108,2,Minute de début :,False
+EVS_R05_2017_FRE_FR_118,EVS_R05_2017,E,RESPONSE,Q108,3,Heure de fin :,False
+EVS_R05_2017_FRE_FR_118,EVS_R05_2017,E,RESPONSE,Q108,4,Minute de fin :,False
+EVS_R05_2017_FRE_FR_119,EVS_R05_2017,E,REQUEST,Q109,,"Pendant l'interview, la personne interrogée a paru...",False
+EVS_R05_2017_FRE_FR_119,EVS_R05_2017,E,RESPONSE,Q109,1,...très intéressée,False
+EVS_R05_2017_FRE_FR_119,EVS_R05_2017,E,RESPONSE,Q109,2,...assez intéressée,False
+EVS_R05_2017_FRE_FR_119,EVS_R05_2017,E,RESPONSE,Q109,3,...pas très intéressée,False
+EVS_R05_2017_FRE_FR_119,EVS_R05_2017,E,RESPONSE,Q109,888,NSP,False
+EVS_R05_2017_FRE_FR_120,EVS_R05_2017,E,REQUEST,Q110,,Langue utilisée pendant l'entretien :,False
+EVS_R05_2017_FRE_FR_120,EVS_R05_2017,E,INSTRUCTION,Q110,,INSTITUT : CODER SELON NOMENCLATURE ISO 639-1 POUR TOUTES LES LANGUES DANS LESQUELLES LE QUESTIONNAIRE EST TRADUIT,False
+EVS_R05_2017_FRE_FR_121,EVS_R05_2017,E,REQUEST,Q111,,Numéro d'enquêteur :,False
