@@ -1,4 +1,4 @@
-#python3.6 script for ESS dataset inclusion in the MCSQ database
+#python script for ESS dataset inclusion in the MCSQ database
 #Author: Danielly Sorato
 #Before running the script, install pandas, numpy, SQLAlchemy, psycopg2
 import pandas as pd
@@ -47,17 +47,17 @@ def update_request_id():
 #Function responsible for getting the module description in a given study/round.
 def get_module_description(study, wave_round):
 	if study == 'ESS':
-		#Module descriptions for ESS. Have to check later if everything is correct with the IF/IS/HS modules
+		#Module descriptions for ESS. 
 		module_description = {'A': 'Media; social trust', 'B': 'Politics, including: political interest, efficacy, trust, electoral and other forms of participation, party allegiance, socio-political evaluations/orientations, multi-level governance',
 		'C': 'Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity', 'D': 'Immigration and asylum issues, including: attitudes, perceptions, policy preferences and knowledge',
 		'E': 'Citizen involvement: including organisational membership, family and friendship bonds, citizenship values, working environment', 
 		'F': 'Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status',
-		'SUPP_G': 'Human values scale', 'SUPP_IS': 'Human values scale', 'SUPP_G1': 'Human values scale','SUPP_G2': 'Human values scale', 'SUPP_GF1': 'Human values scale','SUPP_GF2': 'Human values scale', 'SUPP_GF': 'Human values scale', 'SUPP_GS': 'Human values scale', 'SUPP_H': 'Test questions', 'SUPP_I': 'Interviewer questions', 
-		'INTRO_MODULE': 'Specific from MCSQ database: text that introduces a given module', 'N':'National Module',
-		'SUPP_A': 'Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'Supplementary questions with module B equivalents (from SQP database) - R01',
-		'SUPP_C': 'Supplementary questions with module C equivalents (from SQP database)', 'SUPP_D': 'Supplementary questions with module D equivalents (from SQP database) - R01',
-		'SUPP_E': 'Supplementary questions with module E equivalents (from SQP database)', 'SUPP_F': 'Supplementary questions with module F equivalents (from SQP database) - R01',
-		'SUPP_HF': 'Human values scale', 'SUPP_HS': 'Human values scale', 'SUPP_IF': 'Test questions', 'SUPP_K': 'Administration', 'SUPP_N':'Nationales Modul Deutschland'}
+		'SUPP_G': 'Human values scale',  'SUPP_H': 'Test questions', 'SUPP_I': 'Interviewer questions', 
+		'INTRO_MODULE': 'Specific from MCSQ database: text that introduces a given module', 'SUPP_N':'National Module',
+		'SUPP_A': 'Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'Supplementary questions with module B equivalents (from SQP database)',
+		'SUPP_C': 'Supplementary questions with module C equivalents (from SQP database)', 'SUPP_D': 'Supplementary questions with module D equivalents (from SQP database)',
+		'SUPP_E': 'Supplementary questions with module E equivalents (from SQP database)', 'SUPP_F': 'Supplementary questions with module F equivalents (from SQP database)',
+		'SUPP_HF': 'Human values scale','SUPP_IF': 'Test questions', 'SUPP_K': 'Administration'}
 
 		if wave_round == 'R02':
 			module_description['D'] = 'Health and care seekin health, medicine, and doctor/patient relations'
