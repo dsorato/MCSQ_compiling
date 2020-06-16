@@ -1,4 +1,8 @@
 __pycache__/*
+preprocessing/__pycache__/*
+DB/__pycache__/*
+alignment/__pycache__/*
+*.pyc
 *.xlsx
 evs_data/*
 
