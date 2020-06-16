@@ -1,5 +1,4 @@
 import pandas as pd
-from populate_tables import *
 import nltk.data
 import numpy as np
 import sys
@@ -21,21 +20,22 @@ def dk_nr_standard(item_value):
 	# Does not apply 999
 	if isinstance(item_value, str) or isinstance(item_value, int):
 		item_value = str(item_value)
-		item_value = re.sub("[8]{1,}", "888", item_value)
-		item_value = re.sub("[9]{1,}", "999", item_value)
-		item_value = re.sub("[7]{1,}", "777", item_value)
+		item_value = re.sub("[8]{2,}", "888", item_value)
+		item_value = re.sub("[9]{2,}", "999", item_value)
+		item_value = re.sub("[7]{2,}", "777", item_value)
 
 
 	return item_value
 
 
 def clean_text(text):
-	text = re.sub("…", "...", text)
-	text = re.sub("’", "'", text)
-	text = re.sub("[.]{4,}", "", text)
-	tags = re.compile(r'<.*?>')
-	text = tags.sub('', text)
-	text = text.rstrip()
+	if isinstance(text, str):
+		text = re.sub("…", "...", text)
+		text = re.sub("’", "'", text)
+		text = re.sub("[.]{4,}", "", text)
+		tags = re.compile(r'<.*?>')
+		text = tags.sub('', text)
+		text = text.rstrip()
 
 
 	return text
@@ -213,15 +213,14 @@ def main(filename):
 						text = extract_constant(constants, response)
 						if text != '':
 							item_name = row['QuestionName']
-							# item_name = check_item_name(row)
 							data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
 							'module': row['Module'], 'item_type':'RESPONSE', 'item_name':item_name, 
 							'item_value':dk_nr_standard(row['QuestionElementNr']), country_language:clean_text(text), 'item_is_source': item_is_source}
 							df = df.append(data, ignore_index = True)
-							old_item_name = item_name
-					elif row['QuestionElement'] == 'Answer':
+							old_item_name = item_name               
+					#response != 'Translation' is a workaround to deal with incorrecly translated segments
+					elif row['QuestionElement'] == 'Answer' and response != 'Translation':
 						item_name = row['QuestionName']
-						# item_name = check_item_name(row)
 						data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
 						'module': row['Module'], 'item_type':'RESPONSE', 'item_name':item_name, 
 						'item_value':dk_nr_standard(row['QuestionElementNr']), country_language:clean_text(response), 'item_is_source': item_is_source}
@@ -230,14 +229,14 @@ def main(filename):
 					else:
 						text = extract_response_types(response_types, text)
 						item_name = row['QuestionName']
-						# item_name = check_item_name(row)
 						if text != '':
 							for item in text:
-								data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
-								'module': row['Module'], 'item_type':'RESPONSE', 'item_name':item_name, 
-								'item_value':dk_nr_standard(row['QuestionElementNr']), country_language:clean_text(item), 'item_is_source': item_is_source}
-								df = df.append(data, ignore_index = True)
-								old_item_name = item_name
+								if item != 'Translation':
+									data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
+									'module': row['Module'], 'item_type':'RESPONSE', 'item_name':item_name, 
+									'item_value':dk_nr_standard(row['QuestionElementNr']), country_language:clean_text(item), 'item_is_source': item_is_source}
+									df = df.append(data, ignore_index = True)
+									old_item_name = item_name
 
 			
 				# item type can be INTRODUCTION, INSTRUCTION or REQUEST
@@ -260,7 +259,7 @@ def main(filename):
 
 if __name__ == "__main__":
 	#Call script using filename. 
-	#For instance: reset && python3 evs_data_extraction.py EVS_FRE_FR_R05_2017.xlsx
+	#For instance: reset && python3 evs_data_extraction.py EVS_R05_2017_POR_LU.xls
 	filename = str(sys.argv[1])
 	print("Executing data cleaning/extraction script for EVS 2017")
 	main(filename)
