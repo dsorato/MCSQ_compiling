@@ -1,6 +1,7 @@
 #python script for ESS dataset inclusion in the MCSQ database
-#Author: Danielly Sorato
-#Before running the script, install pandas, numpy, SQLAlchemy, psycopg2
+#Author: Danielly Sorato 
+#Author contact: danielly.sorato@gmail.com
+#Before running the script, install requirements: pandas, numpy, SQLAlchemy, psycopg2
 import pandas as pd
 import numpy as np
 import sys

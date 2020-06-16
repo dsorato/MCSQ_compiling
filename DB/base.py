@@ -1,3 +1,7 @@
+#python script for ESS dataset inclusion in the MCSQ database
+#Author: Danielly Sorato 
+#Author contact: danielly.sorato@gmail.com
+
 from sqlalchemy.orm import *
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base

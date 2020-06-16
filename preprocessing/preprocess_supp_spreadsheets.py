@@ -1,3 +1,7 @@
+#python script for ESS dataset inclusion in the MCSQ database
+#Author: Danielly Sorato 
+#Author contact: danielly.sorato@gmail.com
+
 import os
 import sys
 import pandas as pd

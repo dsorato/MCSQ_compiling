@@ -1,3 +1,7 @@
+#python script for ESS dataset inclusion in the MCSQ database
+#Author: Danielly Sorato 
+#Author contact: danielly.sorato@gmail.com
+
 from DB.base import *
 from DB.survey import *
 from DB.survey_item import *

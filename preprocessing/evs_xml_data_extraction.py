@@ -1,3 +1,7 @@
+#python script for ESS dataset inclusion in the MCSQ database
+#Author: Danielly Sorato 
+#Author contact: danielly.sorato@gmail.com
+
 # -*- coding: utf-8 -*-
 import xml.etree.ElementTree as ET
 from sentence_splitter import SentenceSplitter, split_text_into_sentences
