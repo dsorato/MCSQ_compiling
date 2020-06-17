@@ -567,19 +567,19 @@ def main(folder_path, concatenate):
 	if concatenate_files:
 		preparation_to_include_data(folder_path)
 		
-	# os.chdir(folder_path)
-	# files = os.listdir(folder_path)
-	# for index, file in enumerate(files):
-	# 	if file.endswith(".csv"):
-	# 		print(file)
-	# 		is_country_and_language = False
-	# 		meta_about_country_language = file.replace('.csv', '')
-	# 		more_contries_with_same_language = meta_about_country_language.split('_')
-	# 		if len(more_contries_with_same_language) == 2:
-	# 			is_country_and_language = True
+	os.chdir(folder_path)
+	files = os.listdir(folder_path)
+	for index, file in enumerate(files):
+		if file.endswith(".csv"):
+			print(file)
+			is_country_and_language = False
+			meta_about_country_language = file.replace('.csv', '')
+			more_contries_with_same_language = meta_about_country_language.split('_')
+			if len(more_contries_with_same_language) == 2:
+				is_country_and_language = True
 
-	# 		df = preparation_to_populate_survey_and_module_table(file, meta_about_country_language, is_country_and_language)
-	# 		preparation_to_populate_remaining_table(df, meta_about_country_language, is_country_and_language)
+			df = preparation_to_populate_survey_and_module_table(file, meta_about_country_language, is_country_and_language)
+			preparation_to_populate_remaining_table(df, meta_about_country_language, is_country_and_language)
 
 				
 
