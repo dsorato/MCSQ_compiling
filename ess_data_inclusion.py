@@ -54,55 +54,82 @@ Gets the module description for a given study/round.
 
 Args:
     param1: Study
-    param1: Wave/round
+    param2: Wave/round
 
 Returns:
     Module description
 """
 
 def get_module_description(study, wave_round):
+	#Module descriptions for ESS.
 	if study == 'ESS':
-		#Module descriptions for ESS. 
-		module_description = {'A': 'Media; social trust', 'B': 'Politics, including: political interest, efficacy, trust, electoral and other forms of participation, party allegiance, socio-political evaluations/orientations, multi-level governance',
-		'C': 'Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity', 'D': 'Immigration and asylum issues, including: attitudes, perceptions, policy preferences and knowledge',
-		'E': 'Citizen involvement: including organisational membership, family and friendship bonds, citizenship values, working environment', 
-		'F': 'Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status',
-		'SUPP_G': 'Human values scale',  'SUPP_H': 'Test questions', 'SUPP_I': 'Interviewer questions', 
-		'INTRO_MODULE': 'Specific from MCSQ database: text that introduces a given module', 'SUPP_N':'National Module',
-		'SUPP_A': 'Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'Supplementary questions with module B equivalents (from SQP database)',
+		module_description = {'A': 'ESS module about Media; social trust', 'B': 'ESS module about Politics, including: political interest, efficacy, trust, electoral and other forms of participation, party allegiance, socio-political evaluations/orientations, multi-level governance',
+		'C': 'ESS module about Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity', 'D': 'Immigration and asylum issues, including: attitudes, perceptions, policy preferences and knowledge',
+		'E': 'ESS module about Citizen involvement: including organisational membership, family and friendship bonds, citizenship values, working environment', 
+		'F': 'ESS module about Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status',
+		'SUPP_G': 'ESS module about Human values scale',  'SUPP_H': 'Test questions', 'SUPP_I': 'Interviewer questions', 'SUPP_N':'National Module',
+		'SUPP_A': 'ESS module about Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'Supplementary questions with module B equivalents (from SQP database)',
 		'SUPP_C': 'Supplementary questions with module C equivalents (from SQP database)', 'SUPP_D': 'Supplementary questions with module D equivalents (from SQP database)',
 		'SUPP_E': 'Supplementary questions with module E equivalents (from SQP database)', 'SUPP_F': 'Supplementary questions with module F equivalents (from SQP database)',
 		'SUPP_HF': 'Human values scale','SUPP_IF': 'Test questions', 'SUPP_K': 'Administration'}
 
 		if wave_round == 'R02':
-			module_description['D'] = 'Health and care seekin health, medicine, and doctor/patient relations'
-			module_description['E'] = 'Economic morality Trust and interactions between producers and consumers'
-			module_description['SUPP_G'] = 'Family Work and Wellbeing work-life balance'
-			module_description['SUPP_H'] = 'Human values scale'
-			module_description['SUPP_I'] = 'Test questions'
-			module_description['SUPP_J'] = 'Interviewer self-completion questions'
+			module_description['D'] = 'ESS R02 module about Health and care seekin health, medicine, and doctor/patient relations'
+			module_description['E'] = 'ESS R02 module about Economic morality Trust and interactions between producers and consumers'
+			module_description['SUPP_G'] = 'ESS R02 module about Family Work and Wellbeing work-life balance'
+			module_description['SUPP_H'] = 'ESS R02 Human values scale'
+			module_description['SUPP_I'] = 'ESS R02 Test questions'
+			module_description['SUPP_J'] = 'ESS R02 Interviewer self-completion questions'
 
 		elif wave_round == 'R03':
-			module_description['D'] = 'Timing of life; the life course; timing of key life events, attitudes to ideal age, youngest age and oldest age of life events, planning for retirement'
-			module_description['E'] = 'Personal and social well-being, helping others, feelings in the last week, life satisfaction, satisfaction with work.'
-			module_description['SUPP_I'] = 'Interviewer self-completion questions'
+			module_description['D'] = 'ESS R03 module about Timing of life; the life course; timing of key life events, attitudes to ideal age, youngest age and oldest age of life events, planning for retirement'
+			module_description['E'] = 'ESS R03 module about Personal and social well-being, helping others, feelings in the last week, life satisfaction, satisfaction with work.'
+			module_description['SUPP_I'] = 'ESS R03 module about Interviewer self-completion questions'
 
 		
 		elif wave_round == 'R04':
-			module_description['D'] = 'Welfare includes attitudes towards welfare provision, size of claimant groups, views on taxation, attitudes towards service delivery and likely future dependence on welfare.'
-			module_description['E'] = 'Ageism covers attitudes towards and experiences of ageism, age related status, stereotypes, experience of discrimination and contact with people in other age groups.'
-			module_description['SUPP_I'] = 'Interviewer self-completion questions'
+			module_description['D'] = 'ESS R04 module about Welfare includes attitudes towards welfare provision, size of claimant groups, views on taxation, attitudes towards service delivery and likely future dependence on welfare.'
+			module_description['E'] = 'ESS R04 module about Ageism covers attitudes towards and experiences of ageism, age related status, stereotypes, experience of discrimination and contact with people in other age groups.'
+			module_description['SUPP_I'] = 'ESS R04 Interviewer self-completion questions'
 
 		elif wave_round == 'R05':
-			module_description['D'] = 'Trust in the Police and Courts, including: confidence in the police and courts, cooperation with the police and courts, contact with the police and attitudes towards punishment.'
-			module_description['SUPP_I'] = 'Interviewer self-completion questions'
-			module_description['SUPP_G'] = 'Work, Family and Wellbeing, including: impact of the recession on households and work, job security, housework, wellbeing, experiences of unemployment and work-life balance.'
-			module_description['SUPP_H'] = 'Human values scale'
-			module_description['SUPP_I'] = 'Test questions'
-			module_description['SUPP_J'] = 'Interviewer self-completion questions'
+			module_description['D'] = 'ESS R05 module about Trust in the Police and Courts, including: confidence in the police and courts, cooperation with the police and courts, contact with the police and attitudes towards punishment.'
+			module_description['SUPP_I'] = 'ESS R05 Interviewer self-completion questions'
+			module_description['SUPP_G'] = 'ESS R05 module about Work, Family and Wellbeing, including: impact of the recession on households and work, job security, housework, wellbeing, experiences of unemployment and work-life balance.'
+			module_description['SUPP_H'] = 'ESS R05 Human values scale'
+			module_description['SUPP_I'] = 'ESS R05 Test questions'
+			module_description['SUPP_J'] = 'ESS R05 Interviewer self-completion questions'
+
+	#Module descriptions for EVS.
+	if study == 'EVS':
+		if wave_round == 'R03':
+			module_description = {'A - Perceptions of Life': 'EVS R03 module about Perceptions of Life', 'B - Environment':  'EVS R03 module about Environment',
+			'C - Work': 'EVS R03 module about Work', 'D - Family': 'EVS R03 module about Family', 'E - Politics and Society': 'EVS R03 module about Politics and Society',
+			'F - Religion and Morale': 'EVS R03 module about Religion and Morale','G - National Identity': 'EVS R03 module about National Identity',
+			'H - Socio Demographics and Interview Characteristics': 'EVS R03 module about Socio Demographics and Interview Characteristics',
+			'I - Additional country-specific variables':'EVS R03 Additional country-specific variables'}
+
+		elif wave_round == 'R04':
+			module_description = {'A - Perceptions of Life': 'EVS R04 module about Perceptions of Life', 'B - Politics and Society':  'EVS R04 module about Politics and Society',
+			'C - Work': 'EVS R04 module about Work', 'D - Religion and Morale': 'EVS R04 module about Religion and Morale', 'E - Family': 'EVS R04 module about Family',
+			'F - National Identity': 'EVS R04 module about National Identity','G - Environment': 'EVS R04 module about Environment',
+			'H - Life experiences': 'EVS R04 module about Life experiences',
+			"I - Respondent's parents":"EVS R04 module about Respondent's parents", "J - Respondent's partner":"EVS R04 module about Respondent's partner",
+			'K - Socio Demographics and Interview Characteristics': 'EVS R04 module about Socio Demographics and Interview Characteristics'}
+
 	
 	return module_description 
 
+"""
+Gets the Country/language metadata.
+
+Args:
+    param1: df with data
+    param2: language
+
+Returns:
+    Country/language metadata
+"""
 def get_country_and_language(df, language):
 	unique_survey_item_ids = df.survey_item_ID.unique()
 	unique_country_language = []
@@ -318,11 +345,6 @@ def find_unique_responses(responses, country_language):
 					d_r_with_multiple_values[survey_item_id] = len(responses_with_multiple_values) -1 
 				elif df_in_list[0] == True:
 					d_r_with_multiple_values[survey_item_id] = df_in_list[1]
-
-			# print('***************')
-			# print(responses_with_multiple_values_aux)
-			# print(responses_with_multiple_values)
-
 
 	return responses_with_unique_values, responses_with_multiple_values, d_r_with_unique_values, d_r_with_multiple_values
 
