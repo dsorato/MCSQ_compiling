@@ -1,3 +1,8 @@
+"""
+Main file that calls text to spreadsheet algorithm
+Author: Danielly Sorato 
+Author contact: danielly.sorato@gmail.com
+"""
 import os
 import sys
 sys.path.insert(0, 'txt2spr')

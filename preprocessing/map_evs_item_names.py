@@ -1,3 +1,9 @@
+"""
+Utilitary script to map EVS 'v' item names to 'Q' item names
+Author: Danielly Sorato 
+Author contact: danielly.sorato@gmail.com
+""" 
+
 import xml.etree.ElementTree as ET
 import sys
 import re

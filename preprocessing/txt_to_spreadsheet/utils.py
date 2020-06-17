@@ -1,3 +1,9 @@
+"""
+Utility functions for the text to spreadsheet transformation algorithm
+Author: Danielly Sorato 
+Author contact: danielly.sorato@gmail.com
+"""
+
 import re
 import string
 

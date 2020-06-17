@@ -1,3 +1,9 @@
+"""
+Python3 script  to transform EVS spreadsheet data (from TMT) into spreadsheet format used as input for MCSQ
+Author: Danielly Sorato 
+Author contact: danielly.sorato@gmail.com
+"""
+
 import pandas as pd
 import nltk.data
 import numpy as np

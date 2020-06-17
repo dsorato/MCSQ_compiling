@@ -1,7 +1,8 @@
-#python script for ESS dataset inclusion in the MCSQ database
-#Author: Danielly Sorato 
-#Author contact: danielly.sorato@gmail.com
-
+"""
+Main method that calls for EVS/ESS scripts to generate MCSQ spreadsheet inputs
+Author: Danielly Sorato 
+Author contact: danielly.sorato@gmail.com
+""" 
 import os
 import sys
 sys.path.insert(0, 'evs_xml_data_extraction')

@@ -1,19 +1,19 @@
-#python script for ESS dataset inclusion in the MCSQ database
-#Author: Danielly Sorato 
-#Author contact: danielly.sorato@gmail.com
+"""
+Python3 script developed using spreadsheets retrieved from the SQP database as input.
+This script read the contents of the raw spreadsheets of supplementary questions, 
+split the contents by round and preprocess the contents for each round.
+After the preprocessing, distinct spreadsheets are created with the cleaned contents.
+Author: Danielly Sorato 
+Author contact: danielly.sorato@gmail.com
+""" 
+
 
 import os
 import sys
 import pandas as pd
 import nltk.data
 import re
-
-###############README###############
-# Script developed using spreadsheets retrieved from the SQP database as input.
-# This script read the contents of the raw spreadsheets of supplementary questions, 
-# split the contents by round and preprocess the contents for each round.
-# After the preprocessing, distinct spreadsheets are created with the cleaned contents.
-###############README###############
+#
 
 #Determine which of the sentence segmentation modules will be loaded based on filename
 def determine_sentence_tokenizer(filename):

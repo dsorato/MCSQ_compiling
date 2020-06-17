@@ -1,3 +1,10 @@
+"""
+Text to spreadsheet algorithm. It takes as input txt ESS files (must obey project specification) 
+and transforms it to spreadsheet format that are used for inclusion in the MCSQ model.
+Author: Danielly Sorato 
+Author contact: danielly.sorato@gmail.com
+"""
+
 import pandas as pd
 import csv
 import re
