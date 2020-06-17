@@ -50,8 +50,8 @@ def update_request_id():
 	return request_id
 
 """
-Gets the module description for a given study/round.
-
+Gets the module description based on a hard-coded dictionary for a given study and round.
+Some ESS modules don't change with the round, such as modules A, B, C and F.
 Args:
     param1: Study
     param2: Wave/round
@@ -59,7 +59,6 @@ Args:
 Returns:
     Module description
 """
-
 def get_module_description(study, wave_round):
 	#Module descriptions for ESS.
 	if study == 'ESS':
@@ -67,11 +66,11 @@ def get_module_description(study, wave_round):
 		'C': 'ESS module about Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity', 'D': 'Immigration and asylum issues, including: attitudes, perceptions, policy preferences and knowledge',
 		'E': 'ESS module about Citizen involvement: including organisational membership, family and friendship bonds, citizenship values, working environment', 
 		'F': 'ESS module about Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status',
-		'SUPP_G': 'ESS module about Human values scale',  'SUPP_H': 'Test questions', 'SUPP_I': 'Interviewer questions', 'SUPP_N':'National Module',
-		'SUPP_A': 'ESS module about Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'Supplementary questions with module B equivalents (from SQP database)',
-		'SUPP_C': 'Supplementary questions with module C equivalents (from SQP database)', 'SUPP_D': 'Supplementary questions with module D equivalents (from SQP database)',
-		'SUPP_E': 'Supplementary questions with module E equivalents (from SQP database)', 'SUPP_F': 'Supplementary questions with module F equivalents (from SQP database)',
-		'SUPP_HF': 'Human values scale','SUPP_IF': 'Test questions', 'SUPP_K': 'Administration'}
+		'SUPP_G': 'ESS Human values scale',  'SUPP_H': 'ESS Test questions', 'SUPP_I': 'ESS Interviewer questions', 'SUPP_N':'ESS National Module',
+		'SUPP_A': 'ESS Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'ESS Supplementary questions with module B equivalents (from SQP database)',
+		'SUPP_C': 'ESS Supplementary questions with module C equivalents (from SQP database)', 'SUPP_D': 'ESS Supplementary questions with module D equivalents (from SQP database)',
+		'SUPP_E': 'ESS Supplementary questions with module E equivalents (from SQP database)', 'SUPP_F': 'ESS Supplementary questions with module F equivalents (from SQP database)',
+		'SUPP_HF': 'ESS Human values scale','SUPP_IF': 'ESS Test questions', 'SUPP_K': 'ESS Administration'}
 
 		if wave_round == 'R02':
 			module_description['D'] = 'ESS R02 module about Health and care seekin health, medicine, and doctor/patient relations'
@@ -142,7 +141,12 @@ def get_country_and_language(df, language):
 
 	return unique_country_language
 
-
+"""
+Data preparation and calls to functions that populate Survey and Module tables.
+Args:
+    param1: dataframe with data
+    param2: country/language
+"""
 def populate_survey_and_module_table(df, country_language):
 	unique_studies = df.Study.unique()
 	for study in unique_studies:
