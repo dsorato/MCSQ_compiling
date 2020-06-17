@@ -246,7 +246,7 @@ def main(filename):
 	dict_category_values = dict()
 	study, country_language = get_country_language_and_study_info(filename)
 
-	df_survey_item = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module','item_type', 'item_name', 'item_value', country_language,  'item_is_source'])
+	df_survey_item = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module','item_type', 'item_name', 'item_value', country_language])
 
 	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
 	ut.reset_initial_sufix()
@@ -352,7 +352,7 @@ def main(filename):
 
 				for item in split_into_sentences:
 					data = {"survey_item_ID": survey_item_id,'Study': study, 'module': module,'item_type': item_type, 
-					'item_name': item_name, 'item_value': item_value,  country_language: item, 'item_is_source': False}
+					'item_name': item_name, 'item_value': item_value,  country_language: item}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 				last_tag = node.tag
 
@@ -381,7 +381,7 @@ def main(filename):
 
 				for item in split_into_sentences:
 					data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module,'item_type': item_type, 
-					'item_name': item_name, 'item_value': item_value,  country_language: item, 'item_is_source': False}
+					'item_name': item_name, 'item_value': item_value,  country_language: item}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 				last_tag = node.tag
 
@@ -406,7 +406,7 @@ def main(filename):
 
 					for item in split_into_sentences:
 						data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module,'item_type': item_type, 
-						'item_name': item_name, 'item_value': item_value,  country_language: item, 'item_is_source': False}
+						'item_name': item_name, 'item_value': item_value,  country_language: item}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 					last_tag = node.tag
 
@@ -430,7 +430,7 @@ def main(filename):
 
 					for item in split_into_sentences:
 						data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module, 'item_type': item_type, 
-						'item_name': item_name, 'item_value': item_value,  country_language: item, 'item_is_source': False}
+						'item_name': item_name, 'item_value': item_value,  country_language: item}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 					last_tag = node.tag
 					last_text = node.text
@@ -475,7 +475,7 @@ def main(filename):
 								split_into_sentences = tokenizer.tokenize(text)
 							for item in split_into_sentences:
 								data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module, 'item_type': item_type, 
-								'item_name': item_name, 'item_value': item_value,  country_language: item, 'item_is_source': False}
+								'item_name': item_name, 'item_value': item_value,  country_language: item}
 								df_survey_item = df_survey_item.append(data, ignore_index = True)
 							last_tag = node.tag
 

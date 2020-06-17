@@ -539,7 +539,7 @@ def concatenate_files(files, metainfo, folder_path):
 		file_list.append(df)
 
 	all_files = pd.concat(file_list, axis=0, ignore_index=True)
-	all_files.to_csv(folder_path+'/'+metainfo+".csv")
+	all_files.to_csv(folder_path+'/'+metainfo+".csv", index=False)
 
 	
 def get_directory_list(folder_path):
@@ -554,14 +554,18 @@ def get_directory_list(folder_path):
 def preparation_to_include_data(folder_path):
 	directory_list = get_directory_list(folder_path)
 	for directory in directory_list:
-		metainfo = directory.split('ESS_')[1]
+		if 'ESS' in folder_path:
+			metainfo = directory.split('ESS_')[1]
+		elif 'EVS' in folder_path:
+			metainfo = directory.split('EVS_')[1]
 		files = os.listdir(directory)
 		os.chdir(directory)
 		concatenate_files(files, metainfo, folder_path)
 		os.chdir(folder_path)
 
-def main(folder_path):
-	# preparation_to_include_data(folder_path)
+def main(folder_path, concatenate):
+	if concatenate_files:
+		preparation_to_include_data(folder_path)
 		
 	os.chdir(folder_path)
 	files = os.listdir(folder_path)
@@ -581,4 +585,5 @@ def main(folder_path):
 
 if __name__ == "__main__":
 	folder_path = str(sys.argv[1])
-	main(folder_path)
+	concatenate = str(sys.argv[2])
+	main(folder_path,concatenate)

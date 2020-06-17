@@ -5,4 +5,5 @@ alignment/__pycache__/*
 *.pyc
 *.xlsx
 evs_data/*
+data/*
 
