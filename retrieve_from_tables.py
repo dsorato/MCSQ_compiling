@@ -1,4 +1,4 @@
-#python script for ESS dataset inclusion in the MCSQ database
+#python script for retrieving data from MCSQ database
 #Author: Danielly Sorato 
 #Author contact: danielly.sorato@gmail.com
 
@@ -14,6 +14,15 @@ from sqlalchemy import MetaData
 import pandas as pd
 from sqlalchemy.sql import select
 
+"""
+This function retrieves a response based in its ID on the database.
+
+Args:
+    param1: responseid
+
+Returns:
+    Response text
+"""
 def get_response_from_id(responseid):
 	session = session_factory()
 	response = []
@@ -25,7 +34,15 @@ def get_response_from_id(responseid):
 
 	return response
 
+"""
+This function retrieves response IDs for a given language and round.
 
+Args:
+    param1: language
+
+Returns:
+    Response IDs
+"""
 def retrieve_responseids(language):
 	responseids = []
 	session = session_factory()
@@ -48,15 +65,15 @@ def retrieve_responses_as_df():
 
 	return df_requests
 
+"""
+This function retrieves the last response item ID inserted in the database
+Returns:
+    Last response item ID
+"""
 def retrieve_response_item_last_record():
 	session = session_factory()
 	last_response_item_id = session.query(Response).order_by(Response.response_item_id.desc()).first()
 	last_response_item_id = last_response_item_id.response_item_id
-	# response_item_id = 0
-	# result = session.execute('SELECT last_value FROM response_item_id_seq;')
-	# for i in result:
-	# 	response_item_id = i[0]
-	# session.close()
 	session.close()
 
 	return last_response_item_id
