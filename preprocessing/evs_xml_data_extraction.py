@@ -221,15 +221,35 @@ def dk_nr_standard(filename, catValu, text):
 
 	return item_value
 
+"""
+This function retrieves the country/language and study metadata based on the input filename.
+
+Args:
+    param1: filename
+
+Returns:
+    country/language and study metadata.
+"""
+def get_country_language_and_study_info(filename):
+	filename_without_extension = re.sub('\.xml', '', filename)
+	filename_split = filename_without_extension.split('_')
+
+	study = filename_split[0]+'_'+filename_split[1]+'_'+filename_split[2]
+	country_language = filename_split[3]+'_'+filename_split[4]
+
+	return study, country_language
+
 
 def main(filename):
 	dict_answers = dict()
 	dict_category_values = dict()
-	df_survey_item = pd.DataFrame(columns=['survey_itemid', 'module','item_type', 'item_name', 'item_value', 'text',  'item_is_source'])
+	study, country_language = get_country_language_and_study_info(filename)
+
+	df_survey_item = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module','item_type', 'item_name', 'item_value', country_language,  'item_is_source'])
 
 	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
 	ut.reset_initial_sufix()
-
+	
 	#Decide on a (sentence) spliter based on the language.
 	#ICE, HUN, LAV, LIT and SLO languages are not present in the NLTK library, 
 	#so another splitter library is necessary 
@@ -330,8 +350,8 @@ def main(filename):
 					split_into_sentences = tokenizer.tokenize(text)
 
 				for item in split_into_sentences:
-					data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
-					'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
+					data = {"survey_item_ID": survey_item_id,'Study': study, 'module': module,'item_type': item_type, 
+					'item_name': item_name, 'item_value': item_value,  country_language: item, 'item_is_source': False}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 				last_tag = node.tag
 
@@ -359,8 +379,8 @@ def main(filename):
 					split_into_sentences = tokenizer.tokenize(text)
 
 				for item in split_into_sentences:
-					data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
-					'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
+					data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module,'item_type': item_type, 
+					'item_name': item_name, 'item_value': item_value,  country_language: item, 'item_is_source': False}
 					df_survey_item = df_survey_item.append(data, ignore_index = True)
 				last_tag = node.tag
 
@@ -384,8 +404,8 @@ def main(filename):
 						split_into_sentences = tokenizer.tokenize(text)
 
 					for item in split_into_sentences:
-						data = {"survey_itemid": survey_item_id, 'module': module,'item_type': item_type, 
-						'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
+						data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module,'item_type': item_type, 
+						'item_name': item_name, 'item_value': item_value,  country_language: item, 'item_is_source': False}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 					last_tag = node.tag
 
@@ -408,8 +428,8 @@ def main(filename):
 						split_into_sentences = tokenizer.tokenize(text)
 
 					for item in split_into_sentences:
-						data = {"survey_itemid": survey_item_id, 'module': module, 'item_type': item_type, 
-						'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
+						data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module, 'item_type': item_type, 
+						'item_name': item_name, 'item_value': item_value,  country_language: item, 'item_is_source': False}
 						df_survey_item = df_survey_item.append(data, ignore_index = True)
 					last_tag = node.tag
 					last_text = node.text
@@ -453,8 +473,8 @@ def main(filename):
 							else:
 								split_into_sentences = tokenizer.tokenize(text)
 							for item in split_into_sentences:
-								data = {"survey_itemid": survey_item_id, 'module': module, 'item_type': item_type, 
-								'item_name': item_name, 'item_value': item_value,  'text': item, 'item_is_source': False}
+								data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module, 'item_type': item_type, 
+								'item_name': item_name, 'item_value': item_value,  country_language: item, 'item_is_source': False}
 								df_survey_item = df_survey_item.append(data, ignore_index = True)
 							last_tag = node.tag
 

@@ -45,7 +45,17 @@ def update_request_id():
 	request_id = request_id +1
 	return request_id
 
-#Function responsible for getting the module description in a given study/round.
+"""
+Gets the module description for a given study/round.
+
+Args:
+    param1: Study
+    param1: Wave/round
+
+Returns:
+    Module description
+"""
+
 def get_module_description(study, wave_round):
 	if study == 'ESS':
 		#Module descriptions for ESS. 
