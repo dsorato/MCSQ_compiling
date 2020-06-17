@@ -102,14 +102,14 @@ def get_module_description(study, wave_round):
 	#Module descriptions for EVS.
 	if study == 'EVS':
 		if wave_round == 'R03':
-			module_description = {'A - Perceptions of Life': 'EVS R03 module about Perceptions of Life', 'B - Environment':  'EVS R03 module about Environment',
+			module_description = {'No module': 'No module EVS', 'A - Perceptions of Life': 'EVS R03 module about Perceptions of Life', 'B - Environment':  'EVS R03 module about Environment',
 			'C - Work': 'EVS R03 module about Work', 'D - Family': 'EVS R03 module about Family', 'E - Politics and Society': 'EVS R03 module about Politics and Society',
 			'F - Religion and Morale': 'EVS R03 module about Religion and Morale','G - National Identity': 'EVS R03 module about National Identity',
 			'H - Socio Demographics and Interview Characteristics': 'EVS R03 module about Socio Demographics and Interview Characteristics',
 			'I - Additional country-specific variables':'EVS R03 Additional country-specific variables'}
 
 		elif wave_round == 'R04':
-			module_description = {'A - Perceptions of Life': 'EVS R04 module about Perceptions of Life', 'B - Politics and Society':  'EVS R04 module about Politics and Society',
+			module_description = {'No module': 'No module EVS','A - Perceptions of Life': 'EVS R04 module about Perceptions of Life', 'B - Politics and Society':  'EVS R04 module about Politics and Society',
 			'C - Work': 'EVS R04 module about Work', 'D - Religion and Morale': 'EVS R04 module about Religion and Morale', 'E - Family': 'EVS R04 module about Family',
 			'F - National Identity': 'EVS R04 module about National Identity','G - Environment': 'EVS R04 module about Environment',
 			'H - Life experiences': 'EVS R04 module about Life experiences',
@@ -567,19 +567,19 @@ def main(folder_path, concatenate):
 	if concatenate_files:
 		preparation_to_include_data(folder_path)
 		
-	os.chdir(folder_path)
-	files = os.listdir(folder_path)
-	for index, file in enumerate(files):
-		if file.endswith(".csv"):
-			print(file)
-			is_country_and_language = False
-			meta_about_country_language = file.replace('.csv', '')
-			more_contries_with_same_language = meta_about_country_language.split('_')
-			if len(more_contries_with_same_language) == 2:
-				is_country_and_language = True
+	# os.chdir(folder_path)
+	# files = os.listdir(folder_path)
+	# for index, file in enumerate(files):
+	# 	if file.endswith(".csv"):
+	# 		print(file)
+	# 		is_country_and_language = False
+	# 		meta_about_country_language = file.replace('.csv', '')
+	# 		more_contries_with_same_language = meta_about_country_language.split('_')
+	# 		if len(more_contries_with_same_language) == 2:
+	# 			is_country_and_language = True
 
-			df = preparation_to_populate_survey_and_module_table(file, meta_about_country_language, is_country_and_language)
-			preparation_to_populate_remaining_table(df, meta_about_country_language, is_country_and_language)
+	# 		df = preparation_to_populate_survey_and_module_table(file, meta_about_country_language, is_country_and_language)
+	# 		preparation_to_populate_remaining_table(df, meta_about_country_language, is_country_and_language)
 
 				
 
