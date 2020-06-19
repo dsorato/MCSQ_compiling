@@ -70,7 +70,7 @@ def get_module_description(study, wave_round):
 		'SUPP_A': 'ESS Supplementary questions with module A equivalents (from SQP database)', 'SUPP_B': 'ESS Supplementary questions with module B equivalents (from SQP database)',
 		'SUPP_C': 'ESS Supplementary questions with module C equivalents (from SQP database)', 'SUPP_D': 'ESS Supplementary questions with module D equivalents (from SQP database)',
 		'SUPP_E': 'ESS Supplementary questions with module E equivalents (from SQP database)', 'SUPP_F': 'ESS Supplementary questions with module F equivalents (from SQP database)',
-		'SUPP_HF': 'ESS Human values scale','SUPP_IF': 'ESS Test questions', 'SUPP_K': 'ESS Administration'}
+		'SUPP_HF': 'ESS Human values scale','SUPP_HS': 'ESS Human values scale','SUPP_IF': 'ESS Test questions', 'SUPP_K': 'ESS Administration'}
 
 		if wave_round == 'R02':
 			module_description['D'] = 'ESS R02 module about Health and care seekin health, medicine, and doctor/patient relations'
