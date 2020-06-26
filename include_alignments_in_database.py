@@ -15,13 +15,13 @@ from retrieve_from_tables import *
 def retrieve_based_on_item_type(text, item_type):
 	if item_type == 'INSTRUCTION':
 		item_id =  get_instruction_id(text)
-
+		t = get_survey_item_info_from_id(item_id, 'instructionid')
 	elif item_type == 'REQUEST':
 		item_id =  get_request_id(text)
 	elif item_type == 'INTRODUCTION':
 		item_id =  get_introduction_id(text)
 
-	print(item_id)
+	
 
 def get_alignment_per_row(df):
 	for i, row in df.iterrows():
