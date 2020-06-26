@@ -14,10 +14,9 @@ from DB.instruction import *
 from DB.response import *
 from DB.request import *
 
-def write_alignment_table(source_text, target_text, source_survey_itemid, target_survey_itemid,
-	source_survey_item_elementid,target_survey_item_elementid):
+def write_alignment_table(source_text, target_text, source_survey_item_elementid,target_survey_item_elementid):
 	session = session_factory()
-	item = Alignment(source_text, target_text, source_survey_itemid, target_survey_itemid, source_survey_item_elementid,target_survey_item_elementid)
+	item = Alignment(source_text, target_text, source_survey_item_elementid,target_survey_item_elementid)
 	session.add(item)
 	session.commit()
 	session.close()

@@ -32,17 +32,17 @@ def get_alignment_per_row(df):
 			if pd.isnull(row['source']):
 				items_to_include = retrieve_based_on_item_type(row['target'], row['item_type']) 
 				for i in items_to_include:
-					write_alignment_table(None, row['target'], None, i[0], None,i[1])
+					write_alignment_table(None, row['target'], None, i[0])
 			elif pd.isnull(row['target']):
+				items_to_include = retrieve_based_on_item_type(row['source'], row['item_type']) 
 				for i in items_to_include:
-					write_alignment_table(row['source'], None, i[0], None, i[1], None)
-				text, items_to_include = retrieve_based_on_item_type(row['source'], row['item_type']) 
+					write_alignment_table(row['source'], None, i[0], None)
 			else:
 				items_to_include_source = retrieve_based_on_item_type(row['source'], row['item_type']) 
 				items_to_include_target = retrieve_based_on_item_type(row['target'], row['item_type'])
 
 				for source, target in zip(items_to_include_source, items_to_include_target):
-					write_alignment_table(row['source'], row['target'], source[0], target[0], source[1], target[1])
+					write_alignment_table(row['source'], row['target'], source[0], target[0])
 
 		# print(row['item_type'], row['source'], row['target'])
 

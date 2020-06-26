@@ -21,7 +21,7 @@ from sqlalchemy.sql import select
 def get_survey_item_info_from_id(item_id, column):
 	session = session_factory()
 	items = []
-	result = session.execute("select survey_itemid,survey_item_elementid from survey_item where "+column+'='+str(item_id))
+	result = session.execute("select survey_item_elementid from survey_item where "+column+'='+str(item_id))
 	
 
 	for i in result:
@@ -65,6 +65,11 @@ def get_introduction_id(text):
 	session.close()
 
 	return introductionid
+
+def get_response_ids(survey_itemid, text):
+	session = session_factory()
+
+	session.close()
 
 
 """
