@@ -18,10 +18,10 @@ import pandas as pd
 from sqlalchemy.sql import select
 
 
-def get_survey_item_info_from_id(item_id, table):
+def get_survey_item_info_from_id(item_id, column):
 	session = session_factory()
 	response = []
-	result = session.execute("select survey_item_elementid, survey_itemid from survey_item where "+table+'='+item_id)
+	result = session.execute("select survey_item_elementid, survey_itemid from survey_item where "+column+'='+item_id)
 	
 	for i in result:
 		print(i)
@@ -43,10 +43,13 @@ def get_id_from_text(text, item_type):
 	session = session_factory()
 	if item_type == 'INSTRUCTION':
 		itemid = session.query(Instruction.instructionid).filter_by(text=text)
+		get_survey_item_info_from_id(item_id, instructionid)
 	elif item_type == 'REQUEST':
 		itemid = session.query(Request.requestid).filter_by(text=text)
+		get_survey_item_info_from_id(item_id, requestid)
 	elif item_type == 'INTRODUCTION':
 		itemid = session.query(Introduction.introductionid).filter_by(text=text)
+		get_survey_item_info_from_id(item_id, introductionid)
 	
 	session.close()
 
