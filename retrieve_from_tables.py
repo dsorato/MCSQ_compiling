@@ -25,7 +25,7 @@ def get_survey_item_info_from_id(item_id, column):
 	
 
 	for i in result:
-		items.append[i]
+		items.append(i)
 	session.close()
 
 	return items
