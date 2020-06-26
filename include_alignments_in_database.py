@@ -26,29 +26,32 @@ def retrieve_based_on_item_type(text, item_type, survey_itemid):
 		item_id =  get_introduction_id(text)
 		if item_id is not None:
 			items_to_include = get_survey_item_info_from_id(item_id, 'introductionid', survey_itemid)
+	elif item_type == 'RESPONSE':
+		item_id =  get_response_id(text)
+		if item_id is not None:
+			items_to_include = get_survey_item_info_from_id(item_id, 'responseid', survey_itemid)
 
 	return items_to_include
 	
 
 def get_alignment_per_row(df):
 	for i, row in df.iterrows():
-		if row['item_type'] != 'RESPONSE':
-			if pd.isnull(row['source']):
-				items_to_include = retrieve_based_on_item_type(row['target'], row['item_type'], row['target_survey_itemID']) 
-				if items_to_include != '':
-					for i in items_to_include:
-						write_alignment_table(None, row['target'], None, i[0])
-			elif pd.isnull(row['target']):
-				items_to_include = retrieve_based_on_item_type(row['source'], row['item_type'], row['source_survey_itemID']) 
-				if items_to_include != '':
-					for i in items_to_include:
-						write_alignment_table(row['source'], None, i[0], None)
-			else:
-				items_to_include_source = retrieve_based_on_item_type(row['source'], row['item_type'], row['source_survey_itemID']) 
-				items_to_include_target = retrieve_based_on_item_type(row['target'], row['item_type'], row['target_survey_itemID'])
-				if items_to_include_source != '' and items_to_include_target != '':
-					for source, target in zip(items_to_include_source, items_to_include_target):
-						write_alignment_table(row['source'], row['target'], source[0], target[0])
+		if pd.isnull(row['source']):
+			items_to_include = retrieve_based_on_item_type(row['target'], row['item_type'], row['target_survey_itemID']) 
+			if items_to_include != '':
+				for i in items_to_include:
+					write_alignment_table(None, row['target'], None, i[0])
+		elif pd.isnull(row['target']):
+			items_to_include = retrieve_based_on_item_type(row['source'], row['item_type'], row['source_survey_itemID']) 
+			if items_to_include != '':
+				for i in items_to_include:
+					write_alignment_table(row['source'], None, i[0], None)
+		else:
+			items_to_include_source = retrieve_based_on_item_type(row['source'], row['item_type'], row['source_survey_itemID']) 
+			items_to_include_target = retrieve_based_on_item_type(row['target'], row['item_type'], row['target_survey_itemID'])
+			if items_to_include_source != '' and items_to_include_target != '':
+				for source, target in zip(items_to_include_source, items_to_include_target):
+					write_alignment_table(row['source'], row['target'], source[0], target[0])
 
 		# print(row['item_type'], row['source'], row['target'])
 
