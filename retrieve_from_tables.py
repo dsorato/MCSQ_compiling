@@ -40,7 +40,7 @@ def get_response_id(text, survey_itemid):
 	
 	session.close()
 
-	return result
+	return result[0]
 
 
 def get_request_id(text):
