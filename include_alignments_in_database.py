@@ -11,16 +11,27 @@ import os
 from populate_tables import *
 from retrieve_from_tables import *
 
+
+def retrieve_based_on_item_type(text, item_type):
+	if item_type == 'INSTRUCTION':
+		item_id = get_instructionid_from_text(text)
+	elif item_type == 'REQUEST':
+		item_id = get_requestid_from_text(text)
+	elif item_type == 'INTRODUCTION':
+		item_id = get_introductionid_from_text(text)
+
+	print(item_id)
+
 def get_alignment_per_row(df):
 	for i, row in df.iterrows():
 		if row['item_type'] != 'RESPONSE':
 			if pd.isnull(row['source']):
-				item_id = get_id_from_text(row['target'], row['item_type']) 
+				retrieve_based_on_item_type(row['target'], row['item_type']) 
 			elif pd.isnull(row['target']):
-				item_id = get_id_from_text(row['source'], row['item_type']) 
+				retrieve_based_on_item_type(row['source'], row['item_type']) 
 			else:
-				item_id_source = get_id_from_text(row['source'], row['item_type']) 
-				item_id_target = get_id_from_text(row['target'], row['item_type']) 
+				retrieve_based_on_item_type(row['source'], row['item_type']) 
+				retrieve_based_on_item_type(row['target'], row['item_type']) 
 
 		# print(row['item_type'], row['source'], row['target'])
 

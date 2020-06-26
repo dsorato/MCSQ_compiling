@@ -30,38 +30,52 @@ def get_survey_item_info_from_id(item_id, column):
 
 
 """
-This function retrieves the ID of an item based on its text and item_type
+This function retrieves the ID of an introduction based on its text
 
 Args:
     param1: text
-    param2: item_type
 
 Returns:
-    Response text
+    introductionid
 """
-def get_id_from_text(text, item_type):
-	if item_type == 'INSTRUCTION':
-		session = session_factory()
-		item_id = session.query(Instruction.instructionid).filter_by(text=text)
-		session.close()
-		print(item_id)
-		get_survey_item_info_from_id(item_id, 'instructionid')
-	elif item_type == 'REQUEST':
-		session = session_factory()
-		item_id = session.query(Request.requestid).filter_by(text=text)
-		session.close()
-		print(item_id)
-		get_survey_item_info_from_id(item_id, 'requestid')
-	elif item_type == 'INTRODUCTION':
-		session = session_factory()
-		item_id = session.query(Introduction.introductionid).filter_by(text=text)
-		session.close()
-		print(item_id)
-		get_survey_item_info_from_id(item_id, 'introductionid')
-	
-	
+def get_introductionid_from_text(text):
+	session = session_factory()
+	item_id = session.query(Introduction.introductionid).filter_by(text=text)
+	session.close()
 
-	return item_id
+	return introductionid
+
+"""
+This function retrieves the ID of a request based on its text
+
+Args:
+    param1: text
+
+Returns:
+    requestid
+"""
+def get_requestid_from_text(text):
+	session = session_factory()
+	requestid = session.query(Request.requestid).filter_by(text=text)
+	session.close()
+	
+	return requestid
+
+"""
+This function retrieves the ID of an instruction based on its text
+
+Args:
+    param1: text
+
+Returns:
+    instructionid
+"""
+def get_instructionid_from_text(text):
+	session = session_factory()
+	instructionid = session.query(Instruction.instructionid).filter_by(text=text)
+	session.close()
+
+	return instructionid
 
 
 
