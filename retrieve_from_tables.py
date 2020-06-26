@@ -30,10 +30,19 @@ def get_survey_item_info_from_id(item_id, column, survey_itemid):
 
 	return items
 
+def find_occurrences(s, ch):
+    return [i for i, letter in enumerate(s) if letter == ch]
+
 def get_response_id(text, survey_itemid):
 	session = session_factory()
 	items = []
-	result = session.execute('select r.response_item_id from survey_item s, response r where r.responseid = s.responseid and r.response_item_id = s.response_item_id and s.survey_itemid like "'+survey_itemid+'" and r.text="'+text+'"')
+	if "'" in text:
+		occurrences = find_occurrences(text, "'")
+		if occurrences:
+			for o in occurrences:
+				text = text[:o]+"'"+text[o:]
+				
+	result = session.execute("select r.response_item_id from survey_item s, response r where r.responseid = s.responseid and r.response_item_id = s.response_item_id and s.survey_itemid like '"+survey_itemid+"' and r.text='"+text+"'")
 	
 	for i in result:
 		items.append(i)
