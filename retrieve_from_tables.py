@@ -18,10 +18,10 @@ import pandas as pd
 from sqlalchemy.sql import select
 
 
-def get_survey_item_info_from_id(item_id, column):
+def get_survey_item_info_from_id(item_id, column, survey_itemid):
 	session = session_factory()
 	items = []
-	result = session.execute("select survey_item_elementid from survey_item where "+column+'='+str(item_id))
+	result = session.execute("select survey_item_elementid from survey_item where "+column+'='+str(item_id)+' and survey_itemid ilike '+survey_itemid)
 	
 
 	for i in result:
