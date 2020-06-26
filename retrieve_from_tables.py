@@ -43,13 +43,16 @@ def get_id_from_text(text, item_type):
 	session = session_factory()
 	if item_type == 'INSTRUCTION':
 		item_id = session.query(Instruction.instructionid).filter_by(text=text)
-		get_survey_item_info_from_id(item_id, instructionid)
+		print(item_id)
+		get_survey_item_info_from_id(item_id, 'instructionid')
 	elif item_type == 'REQUEST':
 		item_id = session.query(Request.requestid).filter_by(text=text)
-		get_survey_item_info_from_id(item_id, requestid)
+		print(item_id)
+		get_survey_item_info_from_id(item_id, 'requestid')
 	elif item_type == 'INTRODUCTION':
 		item_id = session.query(Introduction.introductionid).filter_by(text=text)
-		get_survey_item_info_from_id(item_id, introductionid)
+		print(item_id)
+		get_survey_item_info_from_id(item_id, 'introductionid')
 	
 	session.close()
 
