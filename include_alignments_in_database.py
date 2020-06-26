@@ -13,13 +13,14 @@ from retrieve_from_tables import *
 
 def get_alignment_per_row(df):
 	for i, row in df.iterrows():
-		if pd.isnull(row['source']):
-			item_id = get_id_from_text(row['target'], row['item_type']) 
-		elif pd.isnull(row['target']):
-			item_id = get_id_from_text(row['source'], row['item_type']) 
-		else:
-			item_id_source = get_id_from_text(row['source'], row['item_type']) 
-			item_id_target = get_id_from_text(row['target'], row['item_type']) 
+		if row['item_type'] != 'RESPONSE':
+			if pd.isnull(row['source']):
+				item_id = get_id_from_text(row['target'], row['item_type']) 
+			elif pd.isnull(row['target']):
+				item_id = get_id_from_text(row['source'], row['item_type']) 
+			else:
+				item_id_source = get_id_from_text(row['source'], row['item_type']) 
+				item_id_target = get_id_from_text(row['target'], row['item_type']) 
 
 		# print(row['item_type'], row['source'], row['target'])
 

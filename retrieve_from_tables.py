@@ -45,8 +45,8 @@ def get_id_from_text(text, item_type):
 		itemid = session.query(Instruction.instructionid).filter_by(text=text)
 	elif item_type == 'REQUEST':
 		itemid = session.query(Request.requestid).filter_by(text=text)
-	elif item_type == 'REQUEST':
-		itemid = session.query(Request.requestid).filter_by(text=text)
+	elif item_type == 'INTRODUCTION':
+		itemid = session.query(Introduction.introductionid).filter_by(text=text)
 	
 	session.close()
 
