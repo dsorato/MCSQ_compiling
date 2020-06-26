@@ -48,7 +48,7 @@ def get_request_id(text):
 	if "'" in text:
 		text = text.replace("'", "''")
 
-	result = session.execute("select requestid from request where text="+text)
+	result = session.execute("select requestid from request where text='"+text+"'")
 	
 	session.close()
 
