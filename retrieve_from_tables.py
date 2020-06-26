@@ -40,7 +40,10 @@ Returns:
 def retrieve_request_id(text):
 	session = session_factory()
 	requestid = session.query(Request.requestid).filter_by(text=text)
+	survey_item = session.query(Survey_item.survey_item_elementid,Survey_item.survey_itemid).filter_by(requestid=requestid)
 	session.close()
+
+	print(survey_item)
 
 	return requestid
 

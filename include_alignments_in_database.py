@@ -20,7 +20,7 @@ def retrieve_based_on_item_type(text, item_type):
 	elif item_type == 'INTRODUCTION':
 		item_id = retrieve_introduction_id(text)
 
-	print(item_id)
+	# print(item_id)
 
 def get_alignment_per_row(df):
 	for i, row in df.iterrows():
