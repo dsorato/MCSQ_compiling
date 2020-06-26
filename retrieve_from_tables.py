@@ -61,7 +61,7 @@ def get_instruction_id(text):
 	if "'" in text:
 		text = text.replace("'", "''")
 
-	result = session.execute("select instructionid from request where text='"+text+"'")
+	result = session.execute("select instructionid from instruction where text='"+text+"'")
 	
 	session.close()
 
@@ -74,7 +74,7 @@ def get_introduction_id(text):
 	if "'" in text:
 		text = text.replace("'", "''")
 
-	result = session.execute("select introductionid from request where text='"+text+"'")
+	result = session.execute("select introductionid from introduction where text='"+text+"'")
 	
 	session.close()
 
