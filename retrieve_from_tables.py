@@ -40,21 +40,26 @@ Returns:
     Response text
 """
 def get_id_from_text(text, item_type):
-	session = session_factory()
 	if item_type == 'INSTRUCTION':
+		session = session_factory()
 		item_id = session.query(Instruction.instructionid).filter_by(text=text)
+		session.close()
 		print(item_id)
 		get_survey_item_info_from_id(item_id, 'instructionid')
 	elif item_type == 'REQUEST':
+		session = session_factory()
 		item_id = session.query(Request.requestid).filter_by(text=text)
+		session.close()
 		print(item_id)
 		get_survey_item_info_from_id(item_id, 'requestid')
 	elif item_type == 'INTRODUCTION':
+		session = session_factory()
 		item_id = session.query(Introduction.introductionid).filter_by(text=text)
+		session.close()
 		print(item_id)
 		get_survey_item_info_from_id(item_id, 'introductionid')
 	
-	session.close()
+	
 
 	return item_id
 
