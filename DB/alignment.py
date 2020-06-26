@@ -18,10 +18,10 @@ class Alignment(Base):
     target_text = Column(String)
     source_survey_itemid = Column(String)
     target_survey_itemid = Column(String)
-    source_survey_item_elementid = Column(Integer, ForeignKey('survey_item.survey_item_elementid'))
-    target_survey_item_elementid = Column(Integer, ForeignKey('survey_item.survey_item_elementid'))
+    source_survey_item_elementid = Column(Integer)
+    target_survey_item_elementid = Column(Integer)
 
-    survey_item = relationship("Survey_item", backref="survey_item")
+    # survey_item = relationship("Survey_item", backref="survey_item")
    
 
     def __init__(self,source_text, target_text, source_survey_itemid, target_survey_itemid, source_survey_item_elementid,target_survey_item_elementid):
