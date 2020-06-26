@@ -14,11 +14,11 @@ from retrieve_from_tables import *
 
 def retrieve_based_on_item_type(text, item_type):
 	if item_type == 'INSTRUCTION':
-		item_id = get_instructionid_from_text(text)
+		item_id = retrieve_instruction_id(text)
 	elif item_type == 'REQUEST':
-		item_id = get_requestid_from_text(text)
+		item_id = retrieve_request_id(text)
 	elif item_type == 'INTRODUCTION':
-		item_id = get_introductionid_from_text(text)
+		item_id = retrieve_introduction_id(text)
 
 	print(item_id)
 

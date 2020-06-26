@@ -28,23 +28,6 @@ def get_survey_item_info_from_id(item_id, column):
 	session.close()
 
 
-
-"""
-This function retrieves the ID of an introduction based on its text
-
-Args:
-    param1: text
-
-Returns:
-    introductionid
-"""
-def get_introductionid_from_text(text):
-	session = session_factory()
-	introductionid = session.query(Introduction.introductionid).filter_by(text=text)
-	session.close()
-
-	return introductionid
-
 """
 This function retrieves the ID of a request based on its text
 
@@ -54,11 +37,11 @@ Args:
 Returns:
     requestid
 """
-def get_requestid_from_text(text):
+def retrieve_request_id(text):
 	session = session_factory()
 	requestid = session.query(Request.requestid).filter_by(text=text)
 	session.close()
-	
+
 	return requestid
 
 """
@@ -70,13 +53,28 @@ Args:
 Returns:
     instructionid
 """
-def get_instructionid_from_text(text):
+def retrieve_instruction_id(text):
 	session = session_factory()
 	instructionid = session.query(Instruction.instructionid).filter_by(text=text)
 	session.close()
 
 	return instructionid
 
+"""
+This function retrieves the ID of an introduction based on its text
+
+Args:
+    param1: text
+
+Returns:
+    introductionid
+"""
+def retrieve_introduction_id(text):
+	session = session_factory()
+	introductionid = session.query(Introduction.introductionid).filter_by(text=text)
+	session.close()
+
+	return introductionid
 
 
 """
@@ -173,26 +171,7 @@ def retrieve_survey_item_last_record():
 
 	return last_survey_item_id.survey_unique_itemid
 
-def retrieve_request_id(text):
-	session = session_factory()
-	requestid = session.query(Request.requestid).filter_by(text=text)
-	session.close()
 
-	return requestid
-
-def retrieve_instruction_id(text):
-	session = session_factory()
-	instructionid = session.query(Instruction.instructionid).filter_by(text=text)
-	session.close()
-
-	return instructionid
-
-def retrieve_introduction_id(text):
-	session = session_factory()
-	introductionid = session.query(Introduction.introductionid).filter_by(text=text)
-	session.close()
-
-	return introductionid
 
 # def get_document_item_id():
 # 	documentitemid = 0
