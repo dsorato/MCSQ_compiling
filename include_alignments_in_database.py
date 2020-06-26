@@ -27,7 +27,7 @@ def retrieve_based_on_item_type(text, item_type, survey_itemid):
 		if item_id is not None:
 			items_to_include = get_survey_item_info_from_id(item_id, 'introductionid', survey_itemid)
 	elif item_type == 'RESPONSE':
-		item_id =  get_response_id(text)
+		item_id =  get_response_id(text, survey_itemid)
 		if item_id is not None:
 			items_to_include = get_survey_item_info_from_id(item_id, 'responseid', survey_itemid)
 
