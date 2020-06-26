@@ -46,7 +46,7 @@ def get_alignment_per_row(df):
 			else:
 				items_to_include_source = retrieve_based_on_item_type(row['source'], row['item_type'], row['source_survey_itemID']) 
 				items_to_include_target = retrieve_based_on_item_type(row['target'], row['item_type'], row['target_survey_itemID'])
-				if items_to_include != '':
+				if items_to_include_source != '' and items_to_include_target != '':
 					for source, target in zip(items_to_include_source, items_to_include_target):
 						write_alignment_table(row['source'], row['target'], source[0], target[0])
 
