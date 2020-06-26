@@ -40,7 +40,7 @@ Returns:
 """
 def get_introductionid_from_text(text):
 	session = session_factory()
-	item_id = session.query(Introduction.introductionid).filter_by(text=text)
+	introductionid = session.query(Introduction.introductionid).filter_by(text=text)
 	session.close()
 
 	return introductionid
