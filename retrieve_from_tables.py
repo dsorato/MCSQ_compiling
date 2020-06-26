@@ -38,11 +38,9 @@ def get_response_id(text, survey_itemid):
 
 	result = session.execute("select r.response_item_id from survey_item s, response r where r.responseid = s.responseid and r.response_item_id = s.response_item_id and s.survey_itemid like '"+survey_itemid+"' and r.text='"+text+"'")
 	
-	for i in result:
-		items.append(i)
 	session.close()
 
-	return items
+	return result
 
 
 def get_request_id(text):
