@@ -42,18 +42,18 @@ Returns:
 def get_id_from_text(text, item_type):
 	session = session_factory()
 	if item_type == 'INSTRUCTION':
-		itemid = session.query(Instruction.instructionid).filter_by(text=text)
+		item_id = session.query(Instruction.instructionid).filter_by(text=text)
 		get_survey_item_info_from_id(item_id, instructionid)
 	elif item_type == 'REQUEST':
-		itemid = session.query(Request.requestid).filter_by(text=text)
+		item_id = session.query(Request.requestid).filter_by(text=text)
 		get_survey_item_info_from_id(item_id, requestid)
 	elif item_type == 'INTRODUCTION':
-		itemid = session.query(Introduction.introductionid).filter_by(text=text)
+		item_id = session.query(Introduction.introductionid).filter_by(text=text)
 		get_survey_item_info_from_id(item_id, introductionid)
 	
 	session.close()
 
-	return itemid
+	return item_id
 
 
 
