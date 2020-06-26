@@ -4,7 +4,7 @@ Before running the script, install requirements: pandas, numpy, SQLAlchemy, psyc
 Author: Danielly Sorato 
 Author contact: danielly.sorato@gmail.com
 """ 
-from DB.alignent import *
+from DB.alignment import *
 from DB.base import *
 from DB.survey import *
 from DB.survey_item import *
