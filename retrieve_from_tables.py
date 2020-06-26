@@ -28,6 +28,42 @@ def get_survey_item_info_from_id(item_id, column):
 	session.close()
 
 
+def get_request_id(text):
+	session = session_factory()
+	requestid = session.query(Request.requestid).filter_by(text=text).first()
+	if requestid:
+		requestid =requestid[0]
+	else:
+		print(text)
+	session.close()
+
+	return requestid
+
+
+def get_instruction_id(text):
+	session = session_factory()
+	instructionid = session.query(Instruction.instructionid).filter_by(text=text).first()
+	if instructionid:
+		instructionid =instructionid[0]
+	else:
+		print(text)
+	session.close()
+
+	return instructionid
+
+
+def get_introduction_id(text):
+	session = session_factory()
+	introductionid = session.query(Introduction.introductionid).filter_by(text=text).first()
+	if introductionid:
+		introductionid =introductionid[0]
+	else:
+		print(text)
+	session.close()
+
+	return introductionid
+
+
 """
 This function retrieves the ID of a request based on its text
 
