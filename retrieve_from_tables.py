@@ -20,12 +20,15 @@ from sqlalchemy.sql import select
 
 def get_survey_item_info_from_id(item_id, column):
 	session = session_factory()
-	response = []
-	result = session.execute("select survey_item_elementid, survey_itemid from survey_item where "+column+'='+str(item_id))
+	items = []
+	result = session.execute("select survey_itemid,survey_item_elementid from survey_item where "+column+'='+str(item_id))
 	
+
 	for i in result:
-		print(i)
+		items.append[i]
 	session.close()
+
+	return items
 
 
 def get_request_id(text):
