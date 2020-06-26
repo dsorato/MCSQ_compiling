@@ -32,7 +32,6 @@ def get_survey_item_info_from_id(item_id, column, survey_itemid):
 
 def get_response_id(text, survey_itemid):
 	session = session_factory()
-	items = []
 	if "'" in text:
 		text = text.replace("'", "''")
 
@@ -46,14 +45,24 @@ def get_response_id(text, survey_itemid):
 
 def get_request_id(text):
 	session = session_factory()
-	requestid = session.query(Request.requestid).filter_by(text=text).first()
-	if requestid:
-		requestid =requestid[0]
-	else:
-		print(text)
+	if "'" in text:
+		text = text.replace("'", "''")
+
+	result = session.execute("select requestid from request where text="+text)
+	
 	session.close()
 
-	return requestid
+	for i in result:
+		return i[0]
+
+	# requestid = session.query(Request.requestid).filter_by(text=text).first()
+	# if requestid:
+	# 	requestid =requestid[0]
+	# else:
+	# 	print(text)
+	# session.close()
+
+	# return requestid
 
 
 def get_instruction_id(text):
