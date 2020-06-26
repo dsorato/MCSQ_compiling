@@ -39,11 +39,9 @@ Returns:
 """
 def retrieve_request_id(text):
 	session = session_factory()
-	requestid = session.query(Request.requestid).filter_by(text=text).first()
-	# survey_item_elementid, survey_itemid = session.query(Survey_item.survey_item_elementid,Survey_item.survey_itemid).filter_by(requestid=requestid)
+	requestid = session.query(Request.requestid).filter_by(text=text)
 	session.close()
 
-	print(requestid)
 	return requestid
 
 """
