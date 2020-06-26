@@ -55,43 +55,32 @@ def get_request_id(text):
 	for i in result:
 		return i[0]
 
-	# requestid = session.query(Request.requestid).filter_by(text=text).first()
-	# if requestid:
-	# 	requestid =requestid[0]
-	# else:
-	# 	print(text)
-	# session.close()
-
-	# return requestid
-
 
 def get_instruction_id(text):
 	session = session_factory()
-	instructionid = session.query(Instruction.instructionid).filter_by(text=text).first()
-	if instructionid:
-		instructionid =instructionid[0]
-	else:
-		print(text)
+	if "'" in text:
+		text = text.replace("'", "''")
+
+	result = session.execute("select instructionid from request where text='"+text+"'")
+	
 	session.close()
 
-	return instructionid
+	for i in result:
+		return i[0]
 
 
 def get_introduction_id(text):
 	session = session_factory()
-	introductionid = session.query(Introduction.introductionid).filter_by(text=text).first()
-	if introductionid:
-		introductionid =introductionid[0]
-	else:
-		print(text)
+	if "'" in text:
+		text = text.replace("'", "''")
+
+	result = session.execute("select introductionid from request where text='"+text+"'")
+	
 	session.close()
 
-	return introductionid
+	for i in result:
+		return i[0]
 
-def get_response_ids(survey_itemid, text):
-	session = session_factory()
-
-	session.close()
 
 
 """
