@@ -7,12 +7,18 @@ import os
 import sys
 sys.path.insert(0, 'evs_xml_data_extraction')
 sys.path.insert(0, 'ess_xml_data_extraction')
+sys.path.insert(0, 'share_xml_data_extraction')
 import evs_xml_data_extraction 
 import ess_xml_data_extraction 
+import share_xml_data_extraction 
 
 """
-This main file calls the transformation algorithms inside evs_xml_data_extraction 
-and ess_xml_data_extraction scripts.
+This main file calls the transformation algorithms inside evs_xml_data_extraction,
+ess_xml_data_extraction and ess_xml_data_extraction scripts.
+
+evs_xml_data_extraction is called for EVS files
+ess_xml_data_extraction is called for ESS files
+share_xml_data_extraction is called for SHARE files
 
 The algorithm transforms a XML file to a structured spreadsheet format
 with valuable metadata.
@@ -29,10 +35,12 @@ def main(folder_path):
 
 	for index, file in enumerate(files):
 		if file.endswith(".xml"):
-			print('Filename:', file)
+			print('Transforming XML file:', file)
 			if 'EVS' in file:
 				evs_xml_data_extraction.main(file)
 			elif 'ESS' in file:
+				ess_xml_data_extraction.main(file)
+			elif 'SHA' in file:
 				ess_xml_data_extraction.main(file)
 
 
