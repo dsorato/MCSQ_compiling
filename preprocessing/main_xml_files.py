@@ -10,9 +10,20 @@ sys.path.insert(0, 'ess_xml_data_extraction')
 import evs_xml_data_extraction 
 import ess_xml_data_extraction 
 
+"""
+This main file calls the transformation algorithms inside evs_xml_data_extraction 
+and ess_xml_data_extraction scripts.
 
+The algorithm transforms a XML file to a structured spreadsheet format
+with valuable metadata.
+
+Call main script using folder_path, for instance: 
+reset && python3 main.py /path/to/your/data
+
+:param folder_path: the path of the directory containing the files to tranform
+
+"""
 def main(folder_path):
-	# print("Current Working Directory " , os.getcwd()) 
 	path = os.chdir(folder_path)
 	files = os.listdir(path)
 
@@ -27,7 +38,5 @@ def main(folder_path):
 
 
 if __name__ == "__main__":
-	#Call script using folder_path
-	#For instance: reset && python3 main.py /home/upf/workspace/PCSQ/clean_and_populate/data
 	folder_path = str(sys.argv[1])
 	main(folder_path)
