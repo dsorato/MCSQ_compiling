@@ -41,7 +41,7 @@ def main(folder_path):
 			elif 'ESS' in file:
 				ess_xml_data_extraction.main(file)
 			elif 'SHA' in file:
-				ess_xml_data_extraction.main(file)
+				share_xml_data_extraction.main(file)
 
 
 
