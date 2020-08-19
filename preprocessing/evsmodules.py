@@ -29,6 +29,33 @@ class EVSModules2008():
 	'V242','V243','V244','V235','V236','V237','V238','V245','V246','V249','V250','V251','V252']
 	religion_and_morale = [x.lower() for x in religion_and_morale]
 
+	national_identity = ['V253','f253','V254','V255','V256','V276','V277','V278','V279','V280','V268','V269',
+	'V270','V271','V272','V273','V274','V275','V257','V258','V259','V260','V261','V262']
+	national_identity = [x.lower() for x in national_identity]
+
+	life_experiences = ['V329a','V329b','V330a','V330b','V331a','V331b','V332a','V332b','V333a','V333b',
+	'V334a','V334b']
+	life_experiences = [x.lower() for x in life_experiences]
+
+	socio_demographics = ['V302','V303','V304','V305b','V306','V307b','V308','AGE','AGE_r','AGE_r2',
+	'V316','V317','V318','V319','V313','V314','V315','V320','V321','V322','V323','V324a','V324b',
+	'V325a','V325b','V326a','V326b','V327a','V327b','V328a','V328b','V335','V335_r','V336_4','V336',
+	'V336_2','V336_3','v336_cs','V336_r','V337','V338','V341','V341a','V340','V339_2','V339_3',
+	'V339ISCO','v339SIOPS','v339ISEI','v339egp','v339ESeC','V349','V351','v353WK','v353W_cs','v353MM',
+	'v353M_cs','v353YR','v353Y_cs','V353M_ppp','V353_r','v371b_N1','v371b_N2','v371b_N3','v368b_CC',
+	'v368b_N1','v368b_N2','V368b_N3','V370']
+	socio_demographics = [x.lower() for x in socio_demographics]
+
+	respondent_parents = ['V309','V310b','V311','V312b','V354','V355','v355_2','v355_3','v355_cs',
+	'V355_4','V355_r','V356','V357_2','V357_3','V357ISCO','v357SIOPS','v357ISEI','v357ESeC','v357egp',
+	'V358','V359','V359a','V360','V361','V362','V363','V364','V365','V366','V367']
+	respondent_parents = [x.lower() for x in respondent_parents]
+
+	respondent_partner = ['V342','V343b','V344','v344_2','v344_3','v344_cs','V344_4','V344_r','V345',
+	'V345a','V346_2','V346_3','V346ISCO','v346SIOPS','v346ISEI','v346ESeC','v346egp','V347','V348',
+	'V348a','V350','V352']
+	respondent_partner = [x.lower() for x in respondent_partner]
+
 class EVSModules1999():
 	perceptions_of_life = ['V2','V3','V4','V5','V1','V6','V11','V162','V163','V164','V165','V166','V167','V168',
 	'V169','V170','V171','V172','V173','V174','f174','V177','V178','V48','V49','V50','V51','V7','V12','V13','V14',
@@ -63,3 +90,13 @@ class EVSModules1999():
 	'V132','O12','O13','O14','O15','V225','O33','V226','V231','V232','O35','V233','V234','V235','V236',
 	'V227','V228','V229','V230','V237','V238','V239','V240','V241','V242','O34','O36','O37','O38','V243',
 	'V244','V245','V246','V247','V248','V249','V250','O39','O40','O41','O42','O43','O44']
+	religion_and_morale = [x.lower() for x in religion_and_morale]
+
+	national_identity = ['V251','V251_MT','V252','V252_MT','V253','V253_MT','V254','V255','O45','O46']
+	national_identity = [x.lower() for x in national_identity]
+
+	socio_demographics = ['V291','V292','AGE','AGE_r','AGE_r2','V293','V294','V295','V296','V297','V298',
+	'V299','V300','V301','V302','V303','V303_r','V304','V304_r','V305','V306','V307','V308','V308_r','V309',
+	'V309_r','V310','V310_r','V310_r2','V311_2','V311_3','V311','V312','V314','V315','V316','V317_2',
+	'V317_3','V317','V318','O49','V320','V320_CS','V320_ppp','V320_r','V323','V322']
+	socio_demographics = [x.lower() for x in socio_demographics]

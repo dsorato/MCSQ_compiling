@@ -19,6 +19,12 @@ def retrieve_item_module(study, country_language, name):
 
 		if '2008' in study:
 			evsmodules = EVSModules2008()
+			if name.lower() in evsmodules.life_experiences:
+				return 'Life Experiences'
+			elif name.lower() in evsmodules.respondent_parents:
+				return "Respondent's parents"
+			elif name.lower() in evsmodules.respondent_partner:
+				return "Respondent's partner"
 
 		elif '1999' in study:
 			evsmodules = EVSModules1999()
@@ -35,6 +41,13 @@ def retrieve_item_module(study, country_language, name):
 				return 'Work'
 		elif name.lower() in evsmodules.religion_and_morale:
 				return 'Religion and Morale'
+		elif name.lower() in evsmodules.national_identity:
+				return 'National Identity'
+		elif name.lower() in evsmodules.socio_demographics:
+				return 'Socio Demographics and Interview Characteristics'
+		else:
+			return 'NO MODULE', name
+
 
 
 
@@ -72,8 +85,9 @@ def main(filename):
 	for var in evs_vars:
 		for node in var.getiterator():
 			if 'name' in node.attrib:
-				if node.attrib['name'].lower() in evsmodules.perceptions_of_life: 
-					print(node.attrib['name'])
+				if node.attrib['name'].lower() in evsmodules.perceptions_of_life:
+					module = retrieve_item_module(study, country_language, node.attrib['name'])
+					print(module)
 
 
 
