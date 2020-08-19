@@ -312,178 +312,175 @@ def main(filename):
 			item_type = ''
 			item_value = ''
 
-			if 'name' in node.attrib:
-				print(node.attrib['name'])
+			qstn = var.find('qstn')
+			if node.tag=='txt' and 'level' in node.attrib:
+				item_name = node.attrib['level']
 
-			# qstn = var.find('qstn')
-			# if node.tag=='txt' and 'level' in node.attrib:
-			# 	item_name = node.attrib['level']
+			elif qstn is not None and 'seqNo' in qstn.attrib and 'level' not in node.attrib:
+				item_name = qstn.attrib['seqNo'] 
 
-			# elif qstn is not None and 'seqNo' in qstn.attrib and 'level' not in node.attrib:
-			# 	item_name = qstn.attrib['seqNo'] 
-
-			# if item_name:
-			# 	item_name = standartize_item_name(item_name)
+			if item_name:
+				item_name = standartize_item_name(item_name)
 				
 	
-	# 		if node.tag=='preQTxt':
-	# 			survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
-	# 			old_item_name = item_name
+			if node.tag=='preQTxt':
+				survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+				old_item_name = item_name
 
-	# 			if check_if_sentence_is_uppercase(node.text) == True and '?' not in node.text:
-	# 				item_type = 'INSTRUCTION'
-	# 				text = clean_instruction(node.text)
-	# 			elif '?' in node.text:
-	# 				text = clean_text(node.text, filename)
-	# 				item_type = 'REQUEST'
-	# 			else:
-	# 				text = clean_text(node.text, filename)
-	# 				item_type = 'INTRODUCTION'
+				if check_if_sentence_is_uppercase(node.text) == True and '?' not in node.text:
+					item_type = 'INSTRUCTION'
+					text = clean_instruction(node.text)
+				elif '?' in node.text:
+					text = clean_text(node.text, filename)
+					item_type = 'REQUEST'
+				else:
+					text = clean_text(node.text, filename)
+					item_type = 'INTRODUCTION'
 				
-	# 			if item_name == 'Q1':
-	# 				module = 'A - Perceptions of Life'
-	# 			else:
-	# 				parent_id = parent_map[node].attrib['ID']
-	# 				module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
+				if item_name == 'Q1':
+					module = 'A - Perceptions of Life'
+				else:
+					parent_id = parent_map[node].attrib['ID']
+					module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
 
 
-	# 			if splitter:
-	# 				split_into_sentences = splitter.split(text=text)
-	# 			else:
-	# 				split_into_sentences = tokenizer.tokenize(text)
+				if splitter:
+					split_into_sentences = splitter.split(text=text)
+				else:
+					split_into_sentences = tokenizer.tokenize(text)
 
-	# 			for item in split_into_sentences:
-	# 				data = {"survey_item_ID": survey_item_id,'Study': study, 'module': module,'item_type': item_type, 
-	# 				'item_name': item_name, 'item_value': item_value,  country_language: item}
-	# 				df_survey_item = df_survey_item.append(data, ignore_index = True)
-	# 			last_tag = node.tag
+				for item in split_into_sentences:
+					data = {"survey_item_ID": survey_item_id,'Study': study, 'module': module,'item_type': item_type, 
+					'item_name': item_name, 'item_value': item_value,  country_language: item}
+					df_survey_item = df_survey_item.append(data, ignore_index = True)
+				last_tag = node.tag
 
-	# 		if node.tag=='ivuInstr':
+			if node.tag=='ivuInstr':
 				
 
-	# 			text = clean_instruction(node.text)
-	# 			if 	'?' in text:
-	# 				item_type = 'REQUEST'
-	# 			else:
-	# 				item_type = 'INSTRUCTION'
+				text = clean_instruction(node.text)
+				if 	'?' in text:
+					item_type = 'REQUEST'
+				else:
+					item_type = 'INSTRUCTION'
 
-	# 			if item_name == 'Q1':
-	# 				module = 'A - Perceptions of Life'
-	# 			else:
-	# 				parent_id = parent_map[node].attrib['ID']
-	# 				module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
+				if item_name == 'Q1':
+					module = 'A - Perceptions of Life'
+				else:
+					parent_id = parent_map[node].attrib['ID']
+					module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
 
-	# 			survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
-	# 			old_item_name = item_name
+				survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+				old_item_name = item_name
 
-	# 			if splitter:
-	# 				split_into_sentences = splitter.split(text=text)
-	# 			else:
-	# 				split_into_sentences = tokenizer.tokenize(text)
+				if splitter:
+					split_into_sentences = splitter.split(text=text)
+				else:
+					split_into_sentences = tokenizer.tokenize(text)
 
-	# 			for item in split_into_sentences:
-	# 				data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module,'item_type': item_type, 
-	# 				'item_name': item_name, 'item_value': item_value,  country_language: item}
-	# 				df_survey_item = df_survey_item.append(data, ignore_index = True)
-	# 			last_tag = node.tag
+				for item in split_into_sentences:
+					data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module,'item_type': item_type, 
+					'item_name': item_name, 'item_value': item_value,  country_language: item}
+					df_survey_item = df_survey_item.append(data, ignore_index = True)
+				last_tag = node.tag
 
-	# 		if node.tag=='qstnLit':
-	# 			text = clean_text(node.text, filename)
+			if node.tag=='qstnLit':
+				text = clean_text(node.text, filename)
 				
-	# 			if len(text) != 1 and text.isnumeric() == False:
-	# 				if item_name == 'Q1':
-	# 					module = 'A - Perceptions of Life'
-	# 				else:
-	# 					parent_id = parent_map[node].attrib['ID']
-	# 					module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
+				if len(text) != 1 and text.isnumeric() == False:
+					if item_name == 'Q1':
+						module = 'A - Perceptions of Life'
+					else:
+						parent_id = parent_map[node].attrib['ID']
+						module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
 						
-	# 				survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
-	# 				item_type = 'REQUEST'
-	# 				old_item_name = item_name
+					survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+					item_type = 'REQUEST'
+					old_item_name = item_name
 
-	# 				if splitter:
-	# 					split_into_sentences = splitter.split(text=text)
-	# 				else:
-	# 					split_into_sentences = tokenizer.tokenize(text)
+					if splitter:
+						split_into_sentences = splitter.split(text=text)
+					else:
+						split_into_sentences = tokenizer.tokenize(text)
 
-	# 				for item in split_into_sentences:
-	# 					data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module,'item_type': item_type, 
-	# 					'item_name': item_name, 'item_value': item_value,  country_language: item}
-	# 					df_survey_item = df_survey_item.append(data, ignore_index = True)
-	# 				last_tag = node.tag
+					for item in split_into_sentences:
+						data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module,'item_type': item_type, 
+						'item_name': item_name, 'item_value': item_value,  country_language: item}
+						df_survey_item = df_survey_item.append(data, ignore_index = True)
+					last_tag = node.tag
 
-	# 		if node.tag=='txt' and 'split' not in item_name and 'name' in parent_map[node].attrib:
-	# 			is_uppercase = check_if_sentence_is_uppercase(node.text)
-	# 			text = clean_text(node.text, filename)
-	# 			item_type = 'REQUEST'
+			if node.tag=='txt' and 'split' not in item_name and 'name' in parent_map[node].attrib:
+				is_uppercase = check_if_sentence_is_uppercase(node.text)
+				text = clean_text(node.text, filename)
+				item_type = 'REQUEST'
 
-	# 			parent_id = parent_map[node].attrib['ID']
-	# 			module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
+				parent_id = parent_map[node].attrib['ID']
+				module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
 
-	# 			if 'sample' not in text and text != country: 
+				if 'sample' not in text and text != country: 
 					
-	# 				survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
-	# 				old_item_name = item_name
+					survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+					old_item_name = item_name
 
-	# 				if splitter:
-	# 					split_into_sentences = splitter.split(text=text)
-	# 				else:
-	# 					split_into_sentences = tokenizer.tokenize(text)
+					if splitter:
+						split_into_sentences = splitter.split(text=text)
+					else:
+						split_into_sentences = tokenizer.tokenize(text)
 
-	# 				for item in split_into_sentences:
-	# 					data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module, 'item_type': item_type, 
-	# 					'item_name': item_name, 'item_value': item_value,  country_language: item}
-	# 					df_survey_item = df_survey_item.append(data, ignore_index = True)
-	# 				last_tag = node.tag
-	# 				last_text = node.text
+					for item in split_into_sentences:
+						data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module, 'item_type': item_type, 
+						'item_name': item_name, 'item_value': item_value,  country_language: item}
+						df_survey_item = df_survey_item.append(data, ignore_index = True)
+					last_tag = node.tag
+					last_text = node.text
 
-	# 		if node.tag=='catgry' and 'country' not in item_name and 'split' not in item_name:
-	# 			txt = node.find('txt')
+			if node.tag=='catgry' and 'country' not in item_name and 'split' not in item_name:
+				txt = node.find('txt')
 
-	# 			if df_survey_item.empty==False:
-	# 				item_name = df_survey_item['item_name'].iloc[-1]
+				if df_survey_item.empty==False:
+					item_name = df_survey_item['item_name'].iloc[-1]
 
-	# 			if txt is not None:
-	# 				text = clean_text(txt.text, filename)
-	# 				catValu = node.find('catValu')
+				if txt is not None:
+					text = clean_text(txt.text, filename)
+					catValu = node.find('catValu')
 
-	# 				dict_answers[node.attrib['ID']] = text
-	# 				dict_category_values[node.attrib['ID']] = catValu
+					dict_answers[node.attrib['ID']] = text
+					dict_category_values[node.attrib['ID']] = catValu
 			
-	# 			elif txt is None and 'sdatrefs' in node.attrib:
-	# 				if node.attrib['sdatrefs'] in dict_answers:
-	# 					text = dict_answers[node.attrib['sdatrefs']]
-	# 					catValu = dict_category_values[node.attrib['sdatrefs']]
+				elif txt is None and 'sdatrefs' in node.attrib:
+					if node.attrib['sdatrefs'] in dict_answers:
+						text = dict_answers[node.attrib['sdatrefs']]
+						catValu = dict_category_values[node.attrib['sdatrefs']]
 
-	# 			if text:
-	# 				if 'sample' not in text and text != country and text != '':
+				if text:
+					if 'sample' not in text and text != country and text != '':
 
-	# 					if 'SOURCE' in filename and ("cntry" in parent_map[node].attrib['name'] or "country" in parent_map[node].attrib['name']):
-	# 						pass
-	# 					else:
-	# 						survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
-	# 						old_item_name = item_name
+						if 'SOURCE' in filename and ("cntry" in parent_map[node].attrib['name'] or "country" in parent_map[node].attrib['name']):
+							pass
+						else:
+							survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
+							old_item_name = item_name
 
 						
-	# 						parent_id = parent_map[node].attrib['ID']
-	# 						module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
+							parent_id = parent_map[node].attrib['ID']
+							module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
 							
-	# 						item_type = 'RESPONSE'
-	# 						item_value = dk_nr_standard(filename, catValu.text, text)
+							item_type = 'RESPONSE'
+							item_value = dk_nr_standard(filename, catValu.text, text)
 
-	# 						if splitter:
-	# 							split_into_sentences = splitter.split(text=text)
-	# 						else:
-	# 							split_into_sentences = tokenizer.tokenize(text)
-	# 						for item in split_into_sentences:
-	# 							data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module, 'item_type': item_type, 
-	# 							'item_name': item_name, 'item_value': item_value,  country_language: item}
-	# 							df_survey_item = df_survey_item.append(data, ignore_index = True)
-	# 						last_tag = node.tag
+							if splitter:
+								split_into_sentences = splitter.split(text=text)
+							else:
+								split_into_sentences = tokenizer.tokenize(text)
+							for item in split_into_sentences:
+								data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module, 'item_type': item_type, 
+								'item_name': item_name, 'item_value': item_value,  country_language: item}
+								df_survey_item = df_survey_item.append(data, ignore_index = True)
+							last_tag = node.tag
 
 
-	# file_to_csv_name = filename.replace('.xml', '')
-	# df_survey_item.to_csv(str(file_to_csv_name)+'.csv', encoding='utf-8-sig', index=False)
+	file_to_csv_name = filename.replace('.xml', '')
+	df_survey_item.to_csv(str(file_to_csv_name)+'.csv', encoding='utf-8-sig', index=False)
 
 		
 

@@ -6,23 +6,10 @@ Author contact: danielly.sorato@gmail.com
 import re
 from itertools import groupby
 import pandas as pd
-
-main_languages_prefix = ['GER', 'ENG', 'FRE', 'RUS']
+import nltk
 
 initial_sufix = 0
 
-def ignore_interviewer_number_segment(filename, item_name, text):
-	ignore_item = False
-
-	if '2008_FRE_CH' in filename:
-		if text == "Numéro d'interviewer" or item_name == 'Q141':
-			ignore_item = True
-	elif '2008_FRE_LU' in filename:
-		if text == "Numéro d'enquêteur" or item_name == 'Q141':
-			ignore_item = True
-
-
-	return ignore_item
 
 def reset_initial_sufix():
 	global initial_sufix
@@ -612,124 +599,6 @@ def determine_sentence_tokenizer(filename):
 
 	return sentence_splitter_suffix
 
-def split_response_options_by_language_country(dfs_names, dfs_by_language_country):
-	#Create a dictionary of dataframes (dfs_scales_by_language_country) with only response options for each language/country in the file
-	dfs_scales_by_language_country = dict()
-	dfs_scales_names = []
-	for name in dfs_names:
-		prefix = name.split('_')[0]
-		#for now, we consider only ENG, GER, FRE and RUS
-		if name != 'item_name' and prefix in main_languages_prefix:
-			dfs_scales_names.append(name)
-			working_df = dfs_by_language_country[name]
-			is_response_option = working_df['item_type']=='Response option'
-			response_options = working_df[is_response_option]
-			if name == 'RUS_RU':
-				response_options_mod = response_options.dropna(how='any', subset=['RUS_RU_ReviewAdjudication'])
-			elif name == 'RUS_LT':
-				response_options_mod = response_options.dropna(how='any', subset=['RUS_LT_ReviewAdjudication'])
-			else:
-				response_options_mod = response_options.dropna(how='any', subset=[name])
-			dfs_scales_by_language_country[name] = response_options_mod
-
-	return dfs_scales_names, dfs_scales_by_language_country
-
-
-def split_data_by_language_country(groups, df_metadata, data):
-	#Create a dictionary of dataframes (dfs_by_language_country) for each language/country in the file
-	dfs_by_language_country = dict()
-	dfs_names = []
-	for item in groups:
-		df_name = get_code(item[0])
-		dfs_names.append(df_name)
-		df_new = pd.concat([df_metadata, data[item]], axis=1)
-		dfs_by_language_country[df_name] = df_new
-
-	return dfs_names, dfs_by_language_country
-
-def get_item_name(item_name_unique):
-	item_names = []
-	for item in item_name_unique:
-		if type(item) is str:
-			split_item = item.split(' ')
-			if (re.findall("[a-zA-Z]\d{1}", item) or len(split_item) == 1) and item != '-':
-				item_names.append(item)
-
-	return item_names
-
-def get_item_type(item_type_unique):
-	item_types = []
-	for item in item_type_unique:
-		if type(item) is str:
-			if len(item.split()) <= 2:
-				item_types.append(item)
-
-	return item_types
-
-def get_module_name(module_unique):
-	module_names = []
-	for item in module_unique:
-		if type(item) is str:
-			name = re.findall("[A-Z] -", item)
-			if name:
-				module_names.append(item)
-
-	return module_names
-
-def get_module_enum(module_name, enum):
-	module_name = module_name.strip()
-	if module_name == "A - MEDIA USE" or module_name == 'A':
-		enum_number = enum.a
-	elif module_name == "B - POLITICS" or module_name == 'B':
-		enum_number = enum.b
-	elif module_name == "C - SUBJECTIVE WELLBEING" or module_name == 'C':
-		enum_number = enum.c
-	elif module_name == "D - CLIMATE" or module_name == 'D':
-		enum_number = enum.d
-	elif module_name == "E - WELFARE" or module_name == 'E':
-		enum_number = enum.e
-	elif module_name == "F - SOCIO-DEMOGRAPHICS":
-		enum_number = enum.f
-	elif module_name == "H - HUMAN VALUES SCALE":
-		enum_number = enum.h
-	elif module_name == "I - TEST QUESTIONS":
-		enum_number = enum.j
-	else:
-		enum_number = enum.no_module
-
-	return enum_number
-
-
-def get_item_type_enum(item_type_name, enum):
-	if type(item_type_name) is str:
-		item_type_name = item_type_name.strip()
-		if item_type_name == "Fill":
-			enum_number = enum.fill
-		elif item_type_name == "Question":
-			enum_number = enum.question
-		elif item_type_name == "QInstruction":
-			enum_number = enum.qinstruction
-		elif item_type_name == "QText":
-			enum_number = enum.qtext
-		elif item_type_name == "TranslatorNote":
-			enum_number = enum.translatornote
-		elif item_type_name == "Response":
-			enum_number = enum.response
-		elif item_type_name == "Response option":
-			enum_number = enum.responseoption
-		elif item_type_name == "IWER":
-			enum_number = enum.iwer
-		elif item_type_name == "Header":
-			enum_number = enum.header
-		elif item_type_name == "QCodingInstruction":
-			enum_number = enum.qcodinginstruction
-		else:
-			enum_number = enum.notype
-	else:
-		enum_number = enum.notype
-
-	return enum_number
-
 
 def get_code(a):
 
@@ -738,32 +607,14 @@ def get_code(a):
 
 	return first+'_'+second
 
-def group_by_prefix(translations_list):
-	groups = [list(i) for j, i in groupby(translations_list, lambda a: get_code(a))]
 
-	return groups
+def get_sentence_splitter(filename):
+	"""
+	Instantiate Punkt Sentence Tokenizer from NLTK	
+	"""
+	sentence_splitter_prefix = 'tokenizers/punkt/'
+	sentence_splitter_suffix = determine_sentence_tokenizer(filename)
+	sentence_splitter_path = sentence_splitter_prefix+sentence_splitter_suffix
+	sentence_splitter = nltk.data.load(sentence_splitter_path)
 
-def get_id_column_name(columns):
-	column_id = ''
-	for c in columns:
-		if 'id' in c.lower() and c != 'doc_id' and c != 'generic description id':
-			column_id = c
-	
-	return column_id
-
-
-def get_generic_module_name(module_names):
-	new_names = []
-	for module in module_names:
-		name = module.split('-')
-		name[0] = name[0].strip()
-		if len(name) == 3:
-			aux = [name[1], name[2]]
-			name[1] = ' '.join(aux)
-			name[1].strip()
-			name.remove(name[2])
-		if len(name) == 2:
-			name[1] = name[1].strip()
-		new_names.append(name[0])
-
-	return new_names
+	return sentence_splitter

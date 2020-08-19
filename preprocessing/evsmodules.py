@@ -13,7 +13,7 @@ class EVSModules2008():
 	'V293','V294','V263','V264','V264_LR','V265','V265_LR','V67','V68','f67','V267','V202_4']
 	politics_and_society = [x.lower() for x in politics_and_society]
 
-	environment ['v295', 'v296', 'v297', 'v298', 'v299', 'v300', 'v301']
+	environment = ['v295', 'v296', 'v297', 'v298', 'v299', 'v300', 'v301']
 
 	family = ['V148','V149','V152','V150','V151','V153','V154','V155','V156','V157','V158','V136','V137','V138','V139',
 	'V140','V141','V142','V143','V144','V145','V146','V147','V159','V162','V164','V160','V161','V163','V165','V166']
@@ -56,6 +56,9 @@ class EVSModules2008():
 	'V348a','V350','V352']
 	respondent_partner = [x.lower() for x in respondent_partner]
 
+	administrative = ['V374','V373a','V373b','V374a','V374b','V374c','V372','V375','V376','V377','V378']
+	administrative = [x.lower() for x in administrative]
+
 class EVSModules1999():
 	perceptions_of_life = ['V2','V3','V4','V5','V1','V6','V11','V162','V163','V164','V165','V166','V167','V168',
 	'V169','V170','V171','V172','V173','V174','f174','V177','V178','V48','V49','V50','V51','V7','V12','V13','V14',
@@ -73,7 +76,7 @@ class EVSModules1999():
 	'V282','V283','V284','V285','V286','V287','V288','V289','V290','V256','V257','V69','V70','f69','V191_4']
 	politics_and_society = [x.lower() for x in politics_and_society]
 
-	environment ['v10', 'v8', 'v9']
+	environment = ['v10', 'v8', 'v9']
 
 	family = ['V148','V149','V152','V150','V151','V153','V133','V134','V135','V136','V137','V138','V139',
 	'V140','V141','V142','V143','V144','V145','V146','V147','O16','V154','V157','V159','V155','V156','V158',
@@ -100,3 +103,14 @@ class EVSModules1999():
 	'V309_r','V310','V310_r','V310_r2','V311_2','V311_3','V311','V312','V314','V315','V316','V317_2',
 	'V317_3','V317','V318','O49','V320','V320_CS','V320_ppp','V320_r','V323','V322']
 	socio_demographics = [x.lower() for x in socio_demographics]
+
+	administrative = ['O52_r','O50','O53','V324','V325']
+	administrative = [x.lower() for x in administrative]
+
+
+	
+
+
+
+
+
