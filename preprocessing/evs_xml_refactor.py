@@ -12,7 +12,6 @@ def retrieve_item_module(study, country_language, name):
 		return 'National Module'
 
 	else:
-		name = fix_variable_name_inconsistencies(name)
 		"""
 		Instantiate either EVSModules2008 or EVSModules1999 class, depending on the study year.
 		The EVSModulesYYYY class holds information about EVS modules for the year YYYY. 
@@ -25,7 +24,17 @@ def retrieve_item_module(study, country_language, name):
 			evsmodules = EVSModules1999()
 
 		if name.lower() in evsmodules.perceptions_of_life:
-				return 'A - Perceptions of Life'
+				return 'Perceptions of Life'
+		elif name.lower() in evsmodules.politics_and_society:
+				return 'Politics and Society'
+		elif name.lower() in evsmodules.environment:
+				return 'Environment'
+		elif name.lower() in evsmodules.family:
+				return 'Family'
+		elif name.lower() in evsmodules.work:
+				return 'Work'
+		elif name.lower() in evsmodules.religion_and_morale:
+				return 'Religion and Morale'
 
 
 

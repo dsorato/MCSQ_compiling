@@ -13,10 +13,3 @@ def get_country_language_and_study_info(filename):
 	country_language = filename_split[3]+'_'+filename_split[4]
 
 	return study, country_language
-
-
-def fix_variable_name_inconsistencies(name):
-	if '_' in name:
-		name = name.split('_')[0]
-
-	return name
