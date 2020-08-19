@@ -52,24 +52,6 @@ def retrieve_item_module(study, country_language, name):
 			return None
 
 
-def retrieve_item_name(node):
-	item_name = ''
-	qstn = node.find('qstn')
-	txt = node.find('txt')
-
-	if txt is not None and qstn is None and 'level' in txt.attrib:
-		item_name = txt.attrib['level']
-	
-	else:
-		if qstn is not None and 'seqNo' in qstn.attrib:
-			item_name = qstn.attrib['seqNo'] 
-	
-	if item_name:
-		return standartize_item_name(item_name)
-	else:
-		return None
-
-
 def process_preqtxt_node(filename, preQTxt, survey_item_prefix, study, item_name, module, df_questionnaire):
 	splitter = ut.get_sentence_splitter(filename)
 
