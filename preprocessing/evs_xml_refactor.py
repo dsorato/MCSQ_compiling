@@ -224,35 +224,34 @@ def process_valid_node(filename, node, survey_item_prefix, study, module, df_que
 	A valid node can have qstn or txt (or both inside the same node) child nodes.
 	The attribute that stores the item_name depends on the type of the node (qstn or txt).
 	"""
-	qstn = node.find('qstn')
-	if qstn is not None and 'seqNo' in qstn.attrib:
-		item_name = qstn.attrib['seqNo']
-		item_name = standartize_item_name(item_name)
+	for child in node.getiterator():
+		if child.tag == 'qstn' and 'seqNo' in child.attrib:
+			item_name = child.attrib['seqNo']
+			item_name = standartize_item_name(item_name)
 
-		"""
-		qstn nodes can have preQTxt (requests or introductions), ivuInstr (instructions) or
-		qstnLit (requests) child nodes.
-		"""
-		preQTxt = qstn.find('preQTxt')
-		if preQTxt is not None:
-			df_questionnaire= process_preqtxt_node(filename,preQTxt, survey_item_prefix, study, item_name, module, df_questionnaire)
-		ivuInstr = qstn.find('ivuInstr')
-		if ivuInstr is not None:
-			df_questionnaire = process_ivuinstr_node(filename,ivuInstr, survey_item_prefix, study, item_name, module, df_questionnaire)
-		qstnLit = qstn.find('qstnLit')
-		if qstnLit is not None:
-			df_questionnaire = process_qstnLit_node(filename,qstnLit, survey_item_prefix, study, item_name, module, df_questionnaire)
+			"""
+			qstn nodes can have preQTxt (requests or introductions), ivuInstr (instructions) or
+			qstnLit (requests) child nodes.
+			"""
+			for grandchild in child.getiterator():
+				if grandchild.tag == 'preQTxt':
+					df_questionnaire= process_preqtxt_node(filename,grandchild, survey_item_prefix, study, item_name, module, df_questionnaire)
+				
+				if grandchild.tag == 'ivuInstr':
+					df_questionnaire = process_ivuinstr_node(filename,grandchild, survey_item_prefix, study, item_name, module, df_questionnaire)
+				
+				if grandchild.tag == 'qstnLit':
+					df_questionnaire = process_qstnLit_node(filename,grandchild, survey_item_prefix, study, item_name, module, df_questionnaire)
 
-	txt = node.find('txt')
-	if txt is not None and 'level' in txt.attrib:
-		item_name = txt.attrib['level']
-		item_name = standartize_item_name(item_name)
+		elif child.tag == 'txt' and 'level' in child.attrib:
+			item_name = child.attrib['level']
+			item_name = standartize_item_name(item_name)
 
-		"""
-		txt nodes do not have children.
-		"""
-		text = txt.text
-		df_questionnaire = process_txt_node(filename,txt, survey_item_prefix, study, item_name, module, df_questionnaire)
+			"""
+			txt nodes do not have children.
+			"""
+			text = child.text
+			df_questionnaire = process_txt_node(filename,child, survey_item_prefix, study, item_name, module, df_questionnaire)
 
 
 	return df_questionnaire
@@ -309,29 +308,25 @@ def main(filename):
 				if module != None:
 					df_questionnaire = process_valid_node(filename, node, survey_item_prefix, study, module, df_questionnaire)
 
-			if node.tag=='catgry' and 'ID' in node.attrib:
-				txt = node.find('txt')
-				catValu = node.find('catValu')
-				if df_questionnaire.empty:
-					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
-				else:
-					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+			# if node.tag=='catgry' and 'ID' in node.attrib:
+			# 	txt = node.find('txt')
+			# 	catValu = node.find('catValu')
+			# 	if df_questionnaire.empty:
+			# 		survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+			# 	else:
+			# 		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-				if txt is not None and txt.text != country and txt.text is not None:
-					last_row = df_questionnaire.tail(1)
-					module = last_row['module'].values
-					module = "".join(module)
-					item_name = last_row['item_name'].values
-					item_name = "".join(item_name)
+			# 	if txt is not None and txt.text != country and txt.text is not None:
+			# 		last_row = df_questionnaire.tail(1)
+			# 		module = last_row['module'].values
+			# 		module = "".join(module)
+			# 		item_name = last_row['item_name'].values
+			# 		item_name = "".join(item_name)
 
-					data = {"survey_item_ID": survey_item_id,'Study': study, 'module':module,
-					'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': catValu.text,  
-					'text': clean_text(txt.text, filename)}
-					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
-
-					# print(txt.text, catValu.text, node.attrib['ID'], parent_map[node].attrib['name'])
-
-
+			# 		data = {"survey_item_ID": survey_item_id,'Study': study, 'module':module,
+			# 		'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': int(catValu.text),  
+			# 		'text': clean_text(txt.text, filename)}
+			# 		df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
 			
 
