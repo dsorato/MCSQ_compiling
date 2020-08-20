@@ -254,6 +254,7 @@ def process_valid_node(filename, node, survey_item_prefix, study, module, df_que
 		text = txt.text
 		df_questionnaire = process_txt_node(filename,txt, survey_item_prefix, study, item_name, module, df_questionnaire)
 
+
 	return df_questionnaire
 
 def main(filename):
@@ -272,7 +273,12 @@ def main(filename):
 	"""
 	study, country_language = get_country_language_and_study_info(filename)
 	
-	
+	"""
+	Determine the country using the information contained in the filename.
+	Information needed to exclude some unecessary segments of the EVS XML file.
+	"""
+	country = ut.determine_country(filename)
+
 	"""
 	A pandas dataframe to store the questionnaire data being extracted. 
 	"""
@@ -297,10 +303,37 @@ def main(filename):
 
 	for var in evs_vars:
 		for node in var.getiterator():
+			# print(node.attrib)
 			if 'name' in node.attrib:
 				module = retrieve_item_module(study, country_language, node.attrib['name'])
 				if module != None:
 					df_questionnaire = process_valid_node(filename, node, survey_item_prefix, study, module, df_questionnaire)
+
+			if node.tag=='catgry' and 'ID' in node.attrib:
+				txt = node.find('txt')
+				catValu = node.find('catValu')
+				if df_questionnaire.empty:
+					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+				else:
+					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+				if txt is not None and txt.text != country and txt.text is not None:
+					last_row = df_questionnaire.tail(1)
+					module = last_row['module'].values
+					module = "".join(module)
+					item_name = last_row['item_name'].values
+					item_name = "".join(item_name)
+
+					data = {"survey_item_ID": survey_item_id,'Study': study, 'module':module,
+					'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': catValu.text,  
+					'text': clean_text(txt.text, filename)}
+					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+					# print(txt.text, catValu.text, node.attrib['ID'], parent_map[node].attrib['name'])
+
+
+
+			
 
 	csv_name = filename.replace('.xml', '')
 	df_questionnaire.to_csv(str(csv_name)+'.csv', encoding='utf-8-sig', index=False)

@@ -28,6 +28,10 @@ def standartize_item_name(item_name):
 		item_name = item_name.split('.')
 		item_name = item_name[0]+item_name[1].lower()
 
+	if '_' in item_name and re.findall(r"^Q", item_name):
+		item_name = item_name.split('_')
+		item_name = item_name[0]+item_name[1].lower()
+
 	if item_name[0].isdigit() or len(item_name)==1:
 		item_name = 'Q'+item_name
 
@@ -125,6 +129,9 @@ def clean_text(text, filename):
 			text = re.sub('^NS', "Não sabe",text, flags=re.IGNORECASE)
 			text = re.sub('^Nr', "Não responde",text, flags=re.IGNORECASE)
 			text = re.sub('^NR', "Não responde",text, flags=re.IGNORECASE)
+			text = re.sub('Não se aplica (não se aplica)', "Não se aplica",text, flags=re.IGNORECASE)
+			text = re.sub('Não sabe (não sabe)', "Não sabe",text, flags=re.IGNORECASE)
+			text = re.sub('Não responde (não responde)', "Não responde",text, flags=re.IGNORECASE)
 
 		if 'SPA' in filename:
 			text = re.sub('^NS', "No sabe",text)
