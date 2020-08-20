@@ -1,4 +1,28 @@
 import re
+import utils as ut
+
+"""
+Standartizes a response category value, if it is a special response category.
+:param filename: name of the input file.
+:param catValu: response category value, extracted from input file.
+:param text: text of response category, to test against special response category patterns.
+:returns: standartized response category value. 
+"""
+def standartize_special_response_category_value(filename, catValu, text):
+	"""
+	Standard:
+	Refusal=777
+	Don't know=888
+	Does not apply=999
+	"""
+	if ut.recognize_standard_response_scales(filename, text)=='refusal':
+		catValu = '777'
+	elif ut.recognize_standard_response_scales(filename, text)=='dk':
+		catValu = '888'
+	elif ut.recognize_standard_response_scales(filename, text)=='dontapply':
+		catValu = '999'
+
+	return catValu
 
 """
 Retrieves the country/language and study metadata based on the input filename.

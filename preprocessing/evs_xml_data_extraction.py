@@ -1,489 +1,403 @@
-"""
-Python3 script to transform XML EVS data into spreadsheet format used as input for MCSQ
-Author: Danielly Sorato 
-Author contact: danielly.sorato@gmail.com
-"""
-# -*- coding: utf-8 -*-
+import pandas as pd
 import xml.etree.ElementTree as ET
-from sentence_splitter import SentenceSplitter, split_text_into_sentences
-import pandas as pd 
-import nltk.data
-import sys
-import re
-import string
 import utils as ut
-
-
-dict_module_letters_1999 = {'Perceptions of Life': 'A - Perceptions of Life', 'Environment': 'B - Environment', 'Work': 'C - Work', 
-'Family': 'D - Family', 'Politics and Society': 'E - Politics and Society', 'Religion and Morale': 'F - Religion and Morale', 
-'National Identity': 'G - National Identity', 'Socio Demographics and Interview char.': 'H - Socio Demographics and Interview Characteristics', 
-'Additional country-specific variables': 'I - Additional country-specific variables'}
-
-dict_module_letters_2008 = {'Perceptions of Life': 'A - Perceptions of Life', 'Politics and Society': 'B - Politics and Society', 'Work': 'C - Work', 
-'Religion and Morale': 'D - Religion and Morale', 'Family': 'E - Family', 'National Identity': 'F - National Identity',  'Environment': 'G - Environment',
-'Life experiences': 'H - Life experiences', "Respondent's parents": "I - Respondent's parents", "Respondent's partner": "J - Respondent's partner",
-  'Socio Demographics and Interview Characteristics': 'K - Socio Demographics and Interview Characteristics'}
-
-def check_if_sentence_is_uppercase(text):
-	is_uppercase = False
-	if isinstance(text, str):
-		for word in text:
-			if word.isupper() and word not in string.punctuation:
-				is_uppercase = True
-
-	return is_uppercase
-
-def clean_instruction(text):
-	if isinstance(text, str):
-		# text = re.sub("…", "...", text)
-		text = re.sub("’", "'", text)
-		text = re.sub(";", ",", text)
-		text = re.sub("[.]{4,}", "", text)
-		text = re.sub('>', "",text)
-		text = re.sub('<', "",text)
-		text = re.sub('Q[0-9]*\.', "",text)
-		text = re.sub('\[', "",text)
-		text = re.sub('\]', "",text)
-		text = text.replace('\n',' ')
-		text = text.rstrip()
-		text = text.lstrip()
-	else:
-		text = ''
-
-
-	return text
-
-
-
-def clean_text(text, filename):
-	if isinstance(text, str):
-		text = re.sub(r'\s([?.!"](?:\s|$))', r'\1', text)
-		text = re.sub("…", "...", text)
-		text = re.sub(" :", ":", text)
-		text = re.sub(";", ",", text)
-		text = re.sub("’", "'", text)
-		text = re.sub("[.]{4,}", "", text)
-		text = re.sub("[_]{2,}", "", text)
-		text = re.sub('>', "",text)
-		text = re.sub('<', "",text)
-		text = re.sub('Q[0-9]*\.', "",text)
-		text = re.sub('\[', "",text)
-		text = re.sub('\]', "",text)
-		text = re.sub('^[A-Z]\.\s', "",text)
-		text = re.sub('^[A-Z]\s', "",text)
-		text = re.sub('e\.g\.', "e.g.,",text)
-
-
-		if 'ITA' in filename:
-			text = re.sub('^NS', "Non so",text)
-			text = re.sub('^NR', "Non risponde",text)
-			text = re.sub('^NP', "Non pertinente",text)
-		if 'FRE' in filename:
-			text = re.sub('^NSP', "Ne sait pas",text, flags=re.IGNORECASE)
-			text = re.sub('^S\.R\.', "Pas de réponse",text)
-			text = re.sub('^S\.R', "Pas de réponse",text)
-			text = re.sub('^SR\.', "Pas de réponse",text)
-			text = re.sub('^s\.r', "Pas de réponse",text)
-			text = re.sub('^s\.r\.', "Pas de réponse",text)
-			text = re.sub('^S\.r', "Pas de réponse",text)
-			text = re.sub('^SR', "Pas de réponse",text)
-		if 'GER' in filename:
-			text = re.sub('^TNZ', "Trifft nicht zu",text)
-			text = re.sub('^WN', "weiß nicht",text)
-			text = re.sub('^KA', "keine antwort",text)
-			text = re.sub('^NZT', "nicht zutreffend",text)
-
-		if 'HRV' in filename:
-			text = re.sub('^n\.o\.', "nema odgovora",text)
-			text = re.sub('^n\.z\.', "ne znam",text)
-			
-
-		if 'ENG' in filename:
-			text = re.sub('^NAP', "Not applicable",text)
-			text = re.sub('^DK', "Don't know",text)
-			text = re.sub('^na', "No answer",text)
-			text = re.sub('^NA', "No answer",text)
-			text = re.sub('^nap', "Not applicable",text)
-			text = re.sub('^dk', "Don't know",text)
-			text = re.sub('^N/A', "Not applicable",text)
-			
-		if 'POR' in filename:
-			text = re.sub('^Na\b', "Não se aplica",text, flags=re.IGNORECASE)
-			text = re.sub('^NAP', "Não se aplica",text)
-			text = re.sub('^Ns', "Não sabe",text, flags=re.IGNORECASE)
-			text = re.sub('^NS', "Não sabe",text, flags=re.IGNORECASE)
-			text = re.sub('^Nr', "Não responde",text, flags=re.IGNORECASE)
-			text = re.sub('^NR', "Não responde",text, flags=re.IGNORECASE)
-
-		if 'SPA' in filename:
-			text = re.sub('^NS', "No sabe",text)
-			text = re.sub('^NC', "No contesta",text)
-		
-		if 'DUT' in filename:
-			text = re.sub('^nap', "niet van toepassing",text, flags=re.IGNORECASE)
-
-		if 'FIN' in filename:
-			text = re.sub('^EOS', "Ei osaa sanoa",text, flags=re.IGNORECASE)
-
-		if 'LTZ' in filename:
-			text = re.sub('^NSP', "Ne sait pas",text)
-			text = re.sub('^SR', "Pas de réponse",text)
-			text = re.sub('^S\.R\.', "Pas de réponse",text)
-		if 'TUR' in filename:
-			text = re.sub('^FY', "BİLMİYOR-FİKRİ YOK",text, flags=re.IGNORECASE)
-			text = re.sub('^CY', "CEVAP VERMİYOR",text, flags=re.IGNORECASE)
-			text = re.sub('^SS', "Soru Sorulmadı",text, flags=re.IGNORECASE)
-
-		if 'RUS_EE' in filename or 'RUS_AZ' in filename or 'RUS_GE' in filename or 'RUS_MD' in filename:
-			text = re.sub('^Н.О.', "Нет ответа",text)
-			text = re.sub('^З.О.', "Затрудняюсь ответить",text)
-			text = re.sub('^Н.П.', "Не подходит",text)
-			text = re.sub('^Н.О', "Нет ответа",text)
-			text = re.sub('^З.О', "Затрудняюсь ответить",text)
-			text = re.sub('^Н.П', "Не подходит",text)
-			text = re.sub('^ЗО', "Затрудняюсь ответить",text)
-
-		if 'RUS_BY' in filename:
-			text = re.sub('^НО', "Нет ответа",text)
-			text = re.sub('^НЗ', "НЕ ЗНАЮ",text)
-
-		if 'RUS_UA' in filename:
-			text = re.sub('^ЗО', "затрудняюсь ответить",text)
-			text = re.sub('^ООО', "отказ от ответа",text)
-
-
-
-		text = text.replace('\n',' ')
-		text = text.rstrip()
-	else:
-		text = ''
-
-
-
-	return text
-
-def standartize_item_name(item_name):
-	item_name = re.sub("\.", "", item_name)
-	item_name = item_name.lower()
-	item_name = re.sub("^q", "Q", item_name)
-	item_name = re.sub("^f", "Q", item_name)
-	# item_name = re.sub(")", "", item_name)
-
-	if '_'  in item_name:
-		item_name = item_name.split('_')
-		item_name = item_name[0]+item_name[1].lower()
-
-	if item_name[0].isdigit() or len(item_name)==1:
-		item_name = 'Q'+item_name
-
-	return item_name
-
-
-def determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item):
-	module = 'No module'
-
-	if '1999' in filename:
-		dictionary = dict_module_letters_1999
-	elif '2008' in filename:
-		dictionary = dict_module_letters_2008
-
-
-	for k, v in list(dictionary_vars_in_module.items()):
-		sp = v.split(' ')
-		for value in sp:
-			if value == parent_id:
-				return dictionary[k]
-			
-
-
-	if module == 'No module' and df_survey_item.empty == False:
-		module = df_survey_item['module'].iloc[-1]
-
-
-	return module
-
-def dk_nr_standard(filename, catValu, text):
-	# Standard
-	# Refusal 777
-	# Don't know 888
-	# Does not apply 999
-	print('text', text)
-
-	if ut.recognize_standard_response_scales(filename, text)=='refusal':
-		item_value = '777'
-	elif ut.recognize_standard_response_scales(filename, text)=='dk':
-		item_value = '888'
-	elif ut.recognize_standard_response_scales(filename, text)=='dontapply':
-		item_value = '999'
-	else:
-		item_value = catValu
-
-	return item_value
+from preprocessing_evs_utils import *
+from evsmodules import * 
 
 """
-This function retrieves the country/language and study metadata based on the input filename.
+Retrieves the module of the survey_item, based on information from the EVSModulesYYYY objects.
+This information comes from the EVS_modules_reference.xlsx file, sent by Evelyn.
+:param study:
+:param country_language:
+:param name: attribute 'name' of the analyzed node, which is an EVS variable. 
+The interest variables are listed in the EVSModulesYYYY objects.
 
-Args:
-    param1: filename
-
-Returns:
-    country/language and study metadata.
+:returns: module of survey_item in string format.
 """
-def get_country_language_and_study_info(filename):
-	filename_without_extension = re.sub('\.xml', '', filename)
-	filename_split = filename_without_extension.split('_')
+def retrieve_item_module(study, country_language, name):
+	"""
+	Names such as PT26, PT11-PT12 will be attributed to a National Module.
+	Such variables are not referenced in the EVS_modules_reference.xlsx file.
+	"""
+	country = country_language.split('_')[-1]
+	if name.find(country) != -1:
+		return 'Country-localized questions'
 
-	study = filename_split[0]+'_'+filename_split[1]+'_'+filename_split[2]
-	country_language = filename_split[3]+'_'+filename_split[4]
+	else:
+		"""
+		Instantiate either EVSModules2008 or EVSModules1999 class, depending on the study year.
+		The EVSModulesYYYY class holds information about EVS modules for the year YYYY. 
+		"""
 
-	return study, country_language
+		"""
+		The modules 'Life Experiences', "Respondent's parents" and "Respondent's partner" 
+		are not present in EVS 1999.
+		"""
+		if '2008' in study:
+			evsmodules = EVSModules2008()
+			if name.lower() in evsmodules.life_experiences:
+				return 'Life Experiences'
+			elif name.lower() in evsmodules.respondent_parents:
+				return "Respondent's parents"
+			elif name.lower() in evsmodules.respondent_partner:
+				return "Respondent's partner"
 
+		elif '1999' in study:
+			evsmodules = EVSModules1999()
+
+		if name.lower() in evsmodules.perceptions_of_life:
+				return 'Perceptions of Life'
+		elif name.lower() in evsmodules.politics_and_society:
+				return 'Politics and Society'
+		elif name.lower() in evsmodules.environment:
+				return 'Environment'
+		elif name.lower() in evsmodules.family:
+				return 'Family'
+		elif name.lower() in evsmodules.work:
+				return 'Work'
+		elif name.lower() in evsmodules.religion_and_morale:
+				return 'Religion and Morale'
+		elif name.lower() in evsmodules.national_identity:
+				return 'National Identity'
+		elif name.lower() in evsmodules.socio_demographics:
+				return 'Socio Demographics and Interview Characteristics'
+		elif name.lower() in evsmodules.administrative:
+				return 'Administrative/Protocol Variables'
+		else:
+			return None
+
+"""
+Extracts information from preQTxt node (requests and introductions). The text is split into 
+sentences and appropriate metadata is attributed to it. 
+
+:param filename: name of the input file. It will be used to instantiate the sentence splitter.
+:param preQTxt: valid node that is being analyzed.
+:param survey_item_prefix: prefix of the survey_item_ID metadata
+:param study: study metadata, retrieved from the filename.
+:param item_name: item_name metadata, retrieved from the process_valid_node() method.
+:param module: module of survey_item, extracted in previous steps of the loop.
+:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+
+:returns: df_questionnaire, with new information extracted from the preQTxt node.
+"""
+def process_preqtxt_node(filename, preQTxt, survey_item_prefix, study, item_name, module, df_questionnaire):
+	splitter = ut.get_sentence_splitter(filename)
+
+	if '?' not in preQTxt.text:
+		item_type = 'INTRODUCTION'
+		text = clean_text(preQTxt.text, filename)
+	else:
+		text = clean_text(preQTxt.text, filename)
+		item_type = 'REQUEST'
+
+	sentences = splitter.tokenize(text)
+
+	for sentence in sentences:
+		if df_questionnaire.empty:
+			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+		else:
+			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+		data = {"survey_item_ID": survey_item_id,'Study': study, 'module': module,'item_type': item_type, 
+		'item_name': item_name, 'item_value': None,  'text': sentence}
+		df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+	return df_questionnaire
+
+"""
+Extracts information from ivuInstr node (instructions). The text is split into sentences and appropriate 
+metadata is attributed to it. 
+
+:param filename: name of the input file. It will be used to instantiate the sentence splitter.
+:param ivuInstr: valid node that is being analyzed.
+:param survey_item_prefix: prefix of the survey_item_ID metadata
+:param study: study metadata, retrieved from the filename.
+:param item_name: item_name metadata, retrieved from the process_valid_node() method.
+:param module: module of survey_item, extracted in previous steps of the loop.
+:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+
+:returns: df_questionnaire, with new information extracted from the ivuInstr node.
+"""
+def process_ivuinstr_node(filename, ivuInstr, survey_item_prefix, study, item_name, module, df_questionnaire):
+	splitter = ut.get_sentence_splitter(filename)
+
+	item_type = 'INSTRUCTION'
+	text = clean_instruction(ivuInstr.text)
+	
+	sentences = splitter.tokenize(text)
+
+	for sentence in sentences:
+		if df_questionnaire.empty:
+			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+		else:
+			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+		data = {"survey_item_ID": survey_item_id,'Study': study, 'module': module,'item_type': item_type, 
+		'item_name': item_name, 'item_value': None,  'text': sentence}
+		df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+	return df_questionnaire
+
+"""
+Extracts information from qstnLit node (requests). The text is split into sentences and appropriate 
+metadata is attributed to it. 
+
+:param filename: name of the input file. It will be used to instantiate the sentence splitter.
+:param qstnLit: valid node that is being analyzed.
+:param survey_item_prefix: prefix of the survey_item_ID metadata
+:param study: study metadata, retrieved from the filename.
+:param item_name: item_name metadata, retrieved from the process_valid_node() method.
+:param module: module of survey_item, extracted in previous steps of the loop.
+:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+
+:returns: df_questionnaire, with new information extracted from the qstnLit node.
+"""
+def process_qstnLit_node(filename, qstnLit, survey_item_prefix, study, item_name, module, df_questionnaire):
+	splitter = ut.get_sentence_splitter(filename)
+
+	item_type = 'REQUEST'
+	text = clean_text(qstnLit.text, filename)
+	
+	sentences = splitter.tokenize(text)
+
+	for sentence in sentences:
+		if df_questionnaire.empty:
+			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+		else:
+			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+		data = {"survey_item_ID": survey_item_id,'Study': study, 'module': module,'item_type': item_type, 
+		'item_name': item_name, 'item_value': None,  'text': sentence}
+		df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+	return df_questionnaire
+
+"""
+Extracts information from txt node (requests). The text is split into sentences and appropriate 
+metadata is attributed to it. 
+
+:param filename: name of the input file. It will be used to instantiate the sentence splitter.
+:param txt: valid node that is being analyzed.
+:param survey_item_prefix: prefix of the survey_item_ID metadata
+:param study: study metadata, retrieved from the filename.
+:param item_name: item_name metadata, retrieved from the process_valid_node() method.
+:param module: module of survey_item, extracted in previous steps of the loop.
+:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+
+:returns: df_questionnaire, with new information extracted from the txt node.
+"""
+def process_txt_node(filename, txt, survey_item_prefix, study, item_name, module, df_questionnaire):
+	splitter = ut.get_sentence_splitter(filename)
+
+	item_type = 'REQUEST'
+	text = clean_text(txt.text, filename)
+	
+	sentences = splitter.tokenize(text)
+
+	for sentence in sentences:
+		if df_questionnaire.empty:
+			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+		else:
+			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+		data = {"survey_item_ID": survey_item_id,'Study': study, 'module': module,'item_type': item_type, 
+		'item_name': item_name, 'item_value': None,  'text': sentence}
+		df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+	return df_questionnaire
+
+"""
+Calls the appropriate method to extract information from node and its children, when the node is valid 
+(variable listed in EVSModulesYYYY classes), depending on node tag.
+
+:param filename: name of the input file. It will be used to instantiate the sentence splitter.
+:param node: valid node that is being analyzed.
+:param survey_item_prefix: prefix of the survey_item_ID metadata
+:param study: study metadata, retrieved from the filename.
+:param module: module of survey_item, extracted in previous steps of the loop.
+:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+
+:returns: df_questionnaire, with new information extracted from the valid node.
+"""
+def process_valid_node(filename, node, survey_item_prefix, study, module, df_questionnaire):
+	"""
+	A valid node can have qstn or txt (or both inside the same node) child nodes.
+	The attribute that stores the item_name depends on the type of the node (qstn or txt).
+	"""
+	for child in node.getiterator():
+		if child.tag == 'qstn' and 'seqNo' in child.attrib:
+			item_name = child.attrib['seqNo']
+			item_name = standartize_item_name(item_name)
+
+			"""
+			qstn nodes can have preQTxt (requests or introductions), ivuInstr (instructions) or
+			qstnLit (requests) child nodes.
+			"""
+			for grandchild in child.getiterator():
+				if grandchild.tag == 'preQTxt':
+					df_questionnaire= process_preqtxt_node(filename,grandchild, survey_item_prefix, study, item_name, module, df_questionnaire)
+				
+				if grandchild.tag == 'ivuInstr':
+					df_questionnaire = process_ivuinstr_node(filename,grandchild, survey_item_prefix, study, item_name, module, df_questionnaire)
+				
+				if grandchild.tag == 'qstnLit':
+					df_questionnaire = process_qstnLit_node(filename,grandchild, survey_item_prefix, study, item_name, module, df_questionnaire)
+
+		elif child.tag == 'txt' and 'level' in child.attrib:
+			item_name = child.attrib['level']
+			item_name = standartize_item_name(item_name)
+
+			"""
+			txt nodes do not have children.
+			"""
+			text = child.text
+			df_questionnaire = process_txt_node(filename,child, survey_item_prefix, study, item_name, module, df_questionnaire)
+
+
+	return df_questionnaire
+
+"""
+Extracts information of a response node that contains the attribute ID.
+If the node has the ID attribute, the translation text is in this node.
+The text and category value will be stored in the response_dict dictionary,
+to be used in response categories with references to the ID.
+
+:param filename: name of the input file.
+:param node: response category node that is being analyzed.
+:param survey_item_prefix: prefix of the survey_item_ID metadata
+:param study: study metadata, retrieved from the filename.
+:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+:param response_dict: dictionary that stores response category text and value.
+
+:returns: df_questionnaire, with new information extracted from the response node and 
+updated response_dict.
+"""
+def process_response_with_id_node(filename, node, survey_item_prefix, study, df_questionnaire, response_dict):
+	"""
+	Determine the country using the information contained in the filename.
+	Information needed to exclude some unecessary segments of the EVS XML file.
+	"""
+	country = ut.determine_country(filename)
+
+	txt = node.find('txt')
+	catValu = node.find('catValu')
+	if df_questionnaire.empty:
+		survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+	else:
+		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+	if txt is not None and txt.text != country and txt.text is not None:
+		last_row = df_questionnaire.tail(1)
+		module = last_row['module'].values
+		module = "".join(module)
+		item_name = last_row['item_name'].values
+		item_name = "".join(item_name)
+		text = clean_text(txt.text, filename)
+		category_value = int(standartize_special_response_category_value(filename, catValu.text, text))
+		response_dict[node.attrib['ID']] = text, category_value
+
+		data = {"survey_item_ID": survey_item_id,'Study': study, 'module':module,
+		'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': category_value,  
+		'text': text}
+		df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+	return df_questionnaire, response_dict
+
+"""
+Extracts information of a response node that contains a reference to an ID (attribute sdatrefs).
+The response text and category value are retrieved from the response_dict dictionary,
+updated in the process_response_with_id_node method.
+
+:param node: response category node that is being analyzed.
+:param survey_item_prefix: prefix of the survey_item_ID metadata
+:param study: study metadata, retrieved from the filename.
+:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+:param response_dict: dictionary that stores response category text and value.
+
+:returns: df_questionnaire, with new information extracted from the response node.
+"""
+def process_response_with_id_reference_node(node, survey_item_prefix, study, df_questionnaire, response_dict):
+	if df_questionnaire.empty:
+		survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+	else:
+		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+	last_row = df_questionnaire.tail(1)
+	module = last_row['module'].values
+	module = "".join(module)
+	item_name = last_row['item_name'].values
+	item_name = "".join(item_name)
+	text = response_dict[node.attrib['sdatrefs']][0]
+	category_value = response_dict[node.attrib['sdatrefs']][1]
+
+	data = {"survey_item_ID": survey_item_id,'Study': study, 'module':module,
+	'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': category_value,  
+	'text': text}
+	df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+	return df_questionnaire
 
 def main(filename):
-	dict_answers = dict()
-	dict_category_values = dict()
-	study, country_language = get_country_language_and_study_info(filename)
+	response_dict = dict()
+	"""
+	The prefix of a EVS survey item is study+'_'+language+'_'+country+'_'
+	"""
+	survey_item_prefix = re.sub('\.xml', '', filename)+'_'
 
-	df_survey_item = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module','item_type', 'item_name', 'item_value', country_language])
-
-	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
+	"""
+	Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder.
+	"""
 	ut.reset_initial_sufix()
+
+	"""
+	Retrieve study and country_language information from the name of the input file. 
+	"""
+	study, country_language = get_country_language_and_study_info(filename)
 	
-	#Decide on a (sentence) spliter based on the language.
-	#ICE, HUN, LAV, LIT and SLO languages are not present in the NLTK library, 
-	#so another splitter library is necessary 
-	splitter = None
-	if 'ICE_IS' in filename:
-		splitter = SentenceSplitter(language='is')
-	elif 'HUN_HU' in filename:
-		splitter = SentenceSplitter(language='hu')
-	elif 'LAV_LV' in filename:
-		splitter = SentenceSplitter(language='lv')
-	elif 'LIT_LT' in filename:
-		splitter = SentenceSplitter(language='lt')
-	elif 'SLO_SK' in filename:
-		splitter = SentenceSplitter(language='sk')
-	else:
-		#Punkt Sentence Tokenizer from NLTK	
-		sentence_splitter_prefix = 'tokenizers/punkt/'
-		sentence_splitter_suffix = ut.determine_sentence_tokenizer(filename)
-		sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
-		tokenizer = nltk.data.load(sentence_splitter)
+	"""
+	A pandas dataframe to store the questionnaire data being extracted. 
+	"""
+	df_questionnaire = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module','item_type', 'item_name', 'item_value', 'text'])
 
-	#Determine the country using the information contained in the filename.
-	#Information needed to exclude some unecessary segments of the EVS XML file.
-	country = ut.determine_country(filename)
-	#The prefix is study+'_'+language+'_'+country+'_'
-	prefix = re.sub('\.xml', '', filename)+'_'
-
-	#Parse the input XML file by filename
+	"""
+	Parse the input XML file by filename
+	"""
 	file = str(filename)
 	tree = ET.parse(file)
 	root = tree.getroot()
 
-	#Create a dictionary containing parent-child relations of the parsed tree
+	"""
+	Create a dictionary containing parent-child relations of the parsed tree
+	"""
 	parent_map = dict((c, p) for p in tree.getiterator() for c in p)
+
+	"""
+	Relevant information from the EVS input files can be found on var nodes.
+	"""
 	evs_vars = root.findall('.//dataDscr/var')
-	evs_var_grps = root.findall('.//dataDscr/varGrp')
 
-	survey_id = filename.replace('.xml', '')
-	
-	# list_module_names = []
-	# list_vars_in_module = []
-	# for var in evs_var_grps:
-	# 	for node in var.getiterator():
-	# 		if node.tag == 'labl' and 'VAR' not in node.text and 'Weight' not in node.text and 'Archive' not in node.text:
-	# 			list_module_names.append(node.text)
-				
-	# 		if 'var' in node.attrib:
-	# 			list_vars_in_module.append(node.attrib['var'])
-	
-	# dictionary_vars_in_module = dict(zip(list_module_names, list_vars_in_module))
-	# print(dictionary_vars_in_module)
-
-
-	last_tag = 'tag'
-	old_item_name = 'last'
-	item_name = ''
 	for var in evs_vars:
-
 		for node in var.getiterator():
-			text = ''
-			item_type = ''
-			item_value = ''
 
-			qstn = var.find('qstn')
-			if node.tag=='txt' and 'level' in node.attrib:
-				item_name = node.attrib['level']
+			if 'name' in node.attrib:
+				module = retrieve_item_module(study, country_language, node.attrib['name'])
+				if module != None:
+					df_questionnaire = process_valid_node(filename, node, survey_item_prefix, study, module, df_questionnaire)
 
-			elif qstn is not None and 'seqNo' in qstn.attrib and 'level' not in node.attrib:
-				item_name = qstn.attrib['seqNo'] 
-
-			if item_name:
-				item_name = standartize_item_name(item_name)
-				
-	
-			if node.tag=='preQTxt':
-				survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
-				old_item_name = item_name
-
-				if check_if_sentence_is_uppercase(node.text) == True and '?' not in node.text:
-					item_type = 'INSTRUCTION'
-					text = clean_instruction(node.text)
-				elif '?' in node.text:
-					text = clean_text(node.text, filename)
-					item_type = 'REQUEST'
-				else:
-					text = clean_text(node.text, filename)
-					item_type = 'INTRODUCTION'
-				
-				if item_name == 'Q1':
-					module = 'A - Perceptions of Life'
-				else:
-					parent_id = parent_map[node].attrib['ID']
-					module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
-
-
-				if splitter:
-					split_into_sentences = splitter.split(text=text)
-				else:
-					split_into_sentences = tokenizer.tokenize(text)
-
-				for item in split_into_sentences:
-					data = {"survey_item_ID": survey_item_id,'Study': study, 'module': module,'item_type': item_type, 
-					'item_name': item_name, 'item_value': item_value,  country_language: item}
-					df_survey_item = df_survey_item.append(data, ignore_index = True)
-				last_tag = node.tag
-
-			if node.tag=='ivuInstr':
+			if node.tag=='catgry' and 'ID' in node.attrib:
+				df_questionnaire, response_dict = process_response_with_id_node(filename, node, survey_item_prefix, study, df_questionnaire, response_dict)
 				
 
-				text = clean_instruction(node.text)
-				if 	'?' in text:
-					item_type = 'REQUEST'
-				else:
-					item_type = 'INSTRUCTION'
-
-				if item_name == 'Q1':
-					module = 'A - Perceptions of Life'
-				else:
-					parent_id = parent_map[node].attrib['ID']
-					module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
-
-				survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
-				old_item_name = item_name
-
-				if splitter:
-					split_into_sentences = splitter.split(text=text)
-				else:
-					split_into_sentences = tokenizer.tokenize(text)
-
-				for item in split_into_sentences:
-					data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module,'item_type': item_type, 
-					'item_name': item_name, 'item_value': item_value,  country_language: item}
-					df_survey_item = df_survey_item.append(data, ignore_index = True)
-				last_tag = node.tag
-
-			if node.tag=='qstnLit':
-				text = clean_text(node.text, filename)
-				
-				if len(text) != 1 and text.isnumeric() == False:
-					if item_name == 'Q1':
-						module = 'A - Perceptions of Life'
-					else:
-						parent_id = parent_map[node].attrib['ID']
-						module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
-						
-					survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
-					item_type = 'REQUEST'
-					old_item_name = item_name
-
-					if splitter:
-						split_into_sentences = splitter.split(text=text)
-					else:
-						split_into_sentences = tokenizer.tokenize(text)
-
-					for item in split_into_sentences:
-						data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module,'item_type': item_type, 
-						'item_name': item_name, 'item_value': item_value,  country_language: item}
-						df_survey_item = df_survey_item.append(data, ignore_index = True)
-					last_tag = node.tag
-
-			if node.tag=='txt' and 'split' not in item_name and 'name' in parent_map[node].attrib:
-				is_uppercase = check_if_sentence_is_uppercase(node.text)
-				text = clean_text(node.text, filename)
-				item_type = 'REQUEST'
-
-				parent_id = parent_map[node].attrib['ID']
-				module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
-
-				if 'sample' not in text and text != country: 
+			elif node.tag=='catgry' and 'sdatrefs' in node.attrib:
+				if node.attrib['sdatrefs'] in response_dict.keys():
+					df_questionnaire = process_response_with_id_reference_node(node, survey_item_prefix, study, df_questionnaire, response_dict)
 					
-					survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
-					old_item_name = item_name
 
-					if splitter:
-						split_into_sentences = splitter.split(text=text)
-					else:
-						split_into_sentences = tokenizer.tokenize(text)
 
-					for item in split_into_sentences:
-						data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module, 'item_type': item_type, 
-						'item_name': item_name, 'item_value': item_value,  country_language: item}
-						df_survey_item = df_survey_item.append(data, ignore_index = True)
-					last_tag = node.tag
-					last_text = node.text
-
-			if node.tag=='catgry' and 'country' not in item_name and 'split' not in item_name:
-				txt = node.find('txt')
-
-				if df_survey_item.empty==False:
-					item_name = df_survey_item['item_name'].iloc[-1]
-
-				if txt is not None:
-					text = clean_text(txt.text, filename)
-					catValu = node.find('catValu')
-
-					dict_answers[node.attrib['ID']] = text
-					dict_category_values[node.attrib['ID']] = catValu
 			
-				elif txt is None and 'sdatrefs' in node.attrib:
-					if node.attrib['sdatrefs'] in dict_answers:
-						text = dict_answers[node.attrib['sdatrefs']]
-						catValu = dict_category_values[node.attrib['sdatrefs']]
 
-				if text:
-					if 'sample' not in text and text != country and text != '':
-
-						if 'SOURCE' in filename and ("cntry" in parent_map[node].attrib['name'] or "country" in parent_map[node].attrib['name']):
-							pass
-						else:
-							survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, item_name)
-							old_item_name = item_name
-
-						
-							parent_id = parent_map[node].attrib['ID']
-							module = determine_survey_item_module(filename, parent_id, dictionary_vars_in_module, df_survey_item)
-							
-							item_type = 'RESPONSE'
-							item_value = dk_nr_standard(filename, catValu.text, text)
-
-							if splitter:
-								split_into_sentences = splitter.split(text=text)
-							else:
-								split_into_sentences = tokenizer.tokenize(text)
-							for item in split_into_sentences:
-								data = {"survey_item_ID": survey_item_id, 'Study': study,'module': module, 'item_type': item_type, 
-								'item_name': item_name, 'item_value': item_value,  country_language: item}
-								df_survey_item = df_survey_item.append(data, ignore_index = True)
-							last_tag = node.tag
-
-
-	file_to_csv_name = filename.replace('.xml', '')
-	df_survey_item.to_csv(str(file_to_csv_name)+'.csv', encoding='utf-8-sig', index=False)
-
-		
-
+	csv_name = filename.replace('.xml', '')
+	df_questionnaire.to_csv(str(csv_name)+'.csv', encoding='utf-8-sig', index=False)
 
 
 

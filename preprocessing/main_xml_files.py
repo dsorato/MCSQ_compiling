@@ -5,11 +5,9 @@ Author contact: danielly.sorato@gmail.com
 """ 
 import os
 import sys
-sys.path.insert(0, 'evs_xml_refactor')
 sys.path.insert(0, 'evs_xml_data_extraction')
 sys.path.insert(0, 'ess_xml_data_extraction')
 sys.path.insert(0, 'share_xml_data_extraction')
-import evs_xml_refactor
 import evs_xml_data_extraction 
 import ess_xml_data_extraction 
 import share_xml_data_extraction 
@@ -39,8 +37,7 @@ def main(folder_path):
 		if file.endswith(".xml"):
 			print('Transforming XML file:', file)
 			if 'EVS' in file:
-				evs_xml_refactor.main(file)
-				# evs_xml_data_extraction.main(file)
+				evs_xml_data_extraction.main(file)
 			elif 'ESS' in file:
 				ess_xml_data_extraction.main(file)
 			elif 'SHA' in file:
