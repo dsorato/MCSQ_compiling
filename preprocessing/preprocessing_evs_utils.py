@@ -20,13 +20,12 @@ Standartizes a given item_name, if it is not in the standard
 :returns: standartized item_name. 
 """
 def standartize_item_name(item_name):
-	item_name = re.sub("\.", "", item_name)
 	item_name = item_name.lower()
 	item_name = re.sub("^q", "Q", item_name)
 	item_name = re.sub("^f", "Q", item_name)
 
-	if '_'  in item_name:
-		item_name = item_name.split('_')
+	if '.'  in item_name:
+		item_name = item_name.split('.')
 		item_name = item_name[0]+item_name[1].lower()
 
 	if item_name[0].isdigit() or len(item_name)==1:

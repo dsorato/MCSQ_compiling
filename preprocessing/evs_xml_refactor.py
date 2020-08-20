@@ -4,19 +4,34 @@ import utils as ut
 from preprocessing_evs_utils import *
 from evsmodules import * 
 
+"""
+Retrieves the module of the survey_item, based on information from the EVSModulesYYYY objects.
+This information comes from the EVS_modules_reference.xlsx file, sent by Evelyn.
+:param study:
+:param country_language:
+:param name: attribute 'name' of the analyzed node, which is an EVS variable. 
+The interest variables are listed in the EVSModulesYYYY objects.
 
+:returns: module of survey_item in string format.
+"""
 def retrieve_item_module(study, country_language, name):
 	"""
-	Names such as PT26 will be attributed to a National Module.
+	Names such as PT26, PT11-PT12 will be attributed to a National Module.
+	Such variables are not referenced in the EVS_modules_reference.xlsx file.
 	"""
 	country = country_language.split('_')[-1]
 	if name.find(country) != -1:
-		return 'National Module'
+		return 'Country-localized questions'
 
 	else:
 		"""
 		Instantiate either EVSModules2008 or EVSModules1999 class, depending on the study year.
 		The EVSModulesYYYY class holds information about EVS modules for the year YYYY. 
+		"""
+
+		"""
+		The modules 'Life Experiences', "Respondent's parents" and "Respondent's partner" 
+		are not present in EVS 1999.
 		"""
 		if '2008' in study:
 			evsmodules = EVSModules2008()
@@ -51,7 +66,20 @@ def retrieve_item_module(study, country_language, name):
 		else:
 			return None
 
+"""
+Extracts information from preQTxt node (requests and introductions). The text is split into 
+sentences and appropriate metadata is attributed to it. 
 
+:param filename: name of the input file. It will be used to instantiate the sentence splitter.
+:param preQTxt: valid node that is being analyzed.
+:param survey_item_prefix: prefix of the survey_item_ID metadata
+:param study: study metadata, retrieved from the filename.
+:param item_name: item_name metadata, retrieved from the process_valid_node() method.
+:param module: module of survey_item, extracted in previous steps of the loop.
+:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+
+:returns: df_questionnaire, with new information extracted from the preQTxt node.
+"""
 def process_preqtxt_node(filename, preQTxt, survey_item_prefix, study, item_name, module, df_questionnaire):
 	splitter = ut.get_sentence_splitter(filename)
 
@@ -76,6 +104,20 @@ def process_preqtxt_node(filename, preQTxt, survey_item_prefix, study, item_name
 
 	return df_questionnaire
 
+"""
+Extracts information from ivuInstr node (instructions). The text is split into sentences and appropriate 
+metadata is attributed to it. 
+
+:param filename: name of the input file. It will be used to instantiate the sentence splitter.
+:param ivuInstr: valid node that is being analyzed.
+:param survey_item_prefix: prefix of the survey_item_ID metadata
+:param study: study metadata, retrieved from the filename.
+:param item_name: item_name metadata, retrieved from the process_valid_node() method.
+:param module: module of survey_item, extracted in previous steps of the loop.
+:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+
+:returns: df_questionnaire, with new information extracted from the ivuInstr node.
+"""
 def process_ivuinstr_node(filename, ivuInstr, survey_item_prefix, study, item_name, module, df_questionnaire):
 	splitter = ut.get_sentence_splitter(filename)
 
@@ -96,6 +138,20 @@ def process_ivuinstr_node(filename, ivuInstr, survey_item_prefix, study, item_na
 
 	return df_questionnaire
 
+"""
+Extracts information from qstnLit node (requests). The text is split into sentences and appropriate 
+metadata is attributed to it. 
+
+:param filename: name of the input file. It will be used to instantiate the sentence splitter.
+:param qstnLit: valid node that is being analyzed.
+:param survey_item_prefix: prefix of the survey_item_ID metadata
+:param study: study metadata, retrieved from the filename.
+:param item_name: item_name metadata, retrieved from the process_valid_node() method.
+:param module: module of survey_item, extracted in previous steps of the loop.
+:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+
+:returns: df_questionnaire, with new information extracted from the qstnLit node.
+"""
 def process_qstnLit_node(filename, qstnLit, survey_item_prefix, study, item_name, module, df_questionnaire):
 	splitter = ut.get_sentence_splitter(filename)
 
@@ -116,6 +172,20 @@ def process_qstnLit_node(filename, qstnLit, survey_item_prefix, study, item_name
 
 	return df_questionnaire
 
+"""
+Extracts information from txt node (requests). The text is split into sentences and appropriate 
+metadata is attributed to it. 
+
+:param filename: name of the input file. It will be used to instantiate the sentence splitter.
+:param txt: valid node that is being analyzed.
+:param survey_item_prefix: prefix of the survey_item_ID metadata
+:param study: study metadata, retrieved from the filename.
+:param item_name: item_name metadata, retrieved from the process_valid_node() method.
+:param module: module of survey_item, extracted in previous steps of the loop.
+:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+
+:returns: df_questionnaire, with new information extracted from the txt node.
+"""
 def process_txt_node(filename, txt, survey_item_prefix, study, item_name, module, df_questionnaire):
 	splitter = ut.get_sentence_splitter(filename)
 
@@ -136,12 +206,33 @@ def process_txt_node(filename, txt, survey_item_prefix, study, item_name, module
 
 	return df_questionnaire
 
+"""
+Calls the appropriate method to extract information from node and its children, when the node is valid 
+(variable listed in EVSModulesYYYY classes), depending on node tag.
 
+:param filename: name of the input file. It will be used to instantiate the sentence splitter.
+:param node: valid node that is being analyzed.
+:param survey_item_prefix: prefix of the survey_item_ID metadata
+:param study: study metadata, retrieved from the filename.
+:param module: module of survey_item, extracted in previous steps of the loop.
+:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+
+:returns: df_questionnaire, with new information extracted from the valid node.
+"""
 def process_valid_node(filename, node, survey_item_prefix, study, module, df_questionnaire):
+	"""
+	A valid node can have qstn or txt (or both inside the same node) child nodes.
+	The attribute that stores the item_name depends on the type of the node (qstn or txt).
+	"""
 	qstn = node.find('qstn')
 	if qstn is not None and 'seqNo' in qstn.attrib:
 		item_name = qstn.attrib['seqNo']
+		item_name = standartize_item_name(item_name)
 
+		"""
+		qstn nodes can have preQTxt (requests or introductions), ivuInstr (instructions) or
+		qstnLit (requests) child nodes.
+		"""
 		preQTxt = qstn.find('preQTxt')
 		if preQTxt is not None:
 			df_questionnaire= process_preqtxt_node(filename,preQTxt, survey_item_prefix, study, item_name, module, df_questionnaire)
@@ -155,6 +246,11 @@ def process_valid_node(filename, node, survey_item_prefix, study, module, df_que
 	txt = node.find('txt')
 	if txt is not None and 'level' in txt.attrib:
 		item_name = txt.attrib['level']
+		item_name = standartize_item_name(item_name)
+
+		"""
+		txt nodes do not have children.
+		"""
 		text = txt.text
 		df_questionnaire = process_txt_node(filename,txt, survey_item_prefix, study, item_name, module, df_questionnaire)
 
