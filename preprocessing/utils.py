@@ -277,10 +277,11 @@ def recognize_standard_response_scales(filename, text):
 		else:
 			return None
 
-	if 'MLT' in filename:
-		dk_pattern = re.compile("(Ma Nafx)", re.IGNORECASE)
-		refusal_pattern = re.compile("(no answer)", re.IGNORECASE)
-		dontapply_pattern = re.compile("(not applicable)", re.IGNORECASE)
+
+	if 'NOR' in filename:
+		dk_pattern = re.compile("(Vet ikke)", re.IGNORECASE)
+		refusal_pattern = re.compile("(Ikke svar)", re.IGNORECASE)
+		dontapply_pattern = re.compile("(NA)")
 
 		if dk_pattern.match(text):
 			return 'dk'

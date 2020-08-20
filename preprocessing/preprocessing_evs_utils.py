@@ -166,11 +166,14 @@ def standartize_special_response_category(filename, text):
 		text = re.sub('^s\.r\.', "Pas de réponse",text)
 		text = re.sub('^S\.r', "Pas de réponse",text)
 		text = re.sub('^SR', "Pas de réponse",text)
+		text = re.sub('^NAP', "Non applicable",text)
+		text = text.replace('77777 - Non applicable', 'Non applicable')
 	
 	if 'GER' in filename:
 		text = re.sub('^TNZ', "Trifft nicht zu",text)
 		text = re.sub('^WN', "weiß nicht",text)
 		text = re.sub('^KA', "keine antwort",text)
+		text = re.sub('^k\.\sA\.', "keine antwort",text)
 		text = re.sub('^NZT', "nicht zutreffend",text)
 
 	if 'ITA' in filename:

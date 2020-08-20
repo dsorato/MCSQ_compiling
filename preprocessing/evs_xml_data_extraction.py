@@ -7,7 +7,7 @@ from evsmodules import *
 """
 Workaround to exclude country-specific definitions from ENG_SOURCE file.
 """
-var_names_to_ignore = ['cntry_y', 'cntry1_y', 'country', 'country1']
+var_names_to_ignore = ['cntry_y', 'cntry1_y', 'country', 'country1', 'split_1', 'split_2']
 """
 Retrieves the module of the survey_item, based on information from the EVSModulesYYYY objects.
 This information comes from the EVS_modules_reference.xlsx file, sent by Evelyn.
