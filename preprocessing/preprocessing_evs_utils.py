@@ -87,95 +87,106 @@ def clean_text(text, filename):
 		text = re.sub('^[A-Z]\.\s', "",text)
 		text = re.sub('^[A-Z]\s', "",text)
 		text = re.sub('e\.g\.', "e.g.,",text)
-
-
-		if 'ITA' in filename:
-			text = re.sub('^NS', "Non so",text)
-			text = re.sub('^NR', "Non risponde",text)
-			text = re.sub('^NP', "Non pertinente",text)
-		if 'FRE' in filename:
-			text = re.sub('^NSP', "Ne sait pas",text, flags=re.IGNORECASE)
-			text = re.sub('^S\.R\.', "Pas de réponse",text)
-			text = re.sub('^S\.R', "Pas de réponse",text)
-			text = re.sub('^SR\.', "Pas de réponse",text)
-			text = re.sub('^s\.r', "Pas de réponse",text)
-			text = re.sub('^s\.r\.', "Pas de réponse",text)
-			text = re.sub('^S\.r', "Pas de réponse",text)
-			text = re.sub('^SR', "Pas de réponse",text)
-		if 'GER' in filename:
-			text = re.sub('^TNZ', "Trifft nicht zu",text)
-			text = re.sub('^WN', "weiß nicht",text)
-			text = re.sub('^KA', "keine antwort",text)
-			text = re.sub('^NZT', "nicht zutreffend",text)
-
-		if 'HRV' in filename:
-			text = re.sub('^n\.o\.', "nema odgovora",text)
-			text = re.sub('^n\.z\.', "ne znam",text)
-			
-
-		if 'ENG' in filename:
-			text = re.sub('^NAP', "Not applicable",text)
-			text = re.sub('^DK', "Don't know",text)
-			text = re.sub('^na', "No answer",text)
-			text = re.sub('^NA', "No answer",text)
-			text = re.sub('^nap', "Not applicable",text)
-			text = re.sub('^dk', "Don't know",text)
-			text = re.sub('^N/A', "Not applicable",text)
-			
-		if 'POR' in filename:
-			text = re.sub('^Na\b', "Não se aplica",text, flags=re.IGNORECASE)
-			text = re.sub('^NAP', "Não se aplica",text)
-			text = re.sub('^Ns', "Não sabe",text, flags=re.IGNORECASE)
-			text = re.sub('^NS', "Não sabe",text, flags=re.IGNORECASE)
-			text = re.sub('^Nr', "Não responde",text, flags=re.IGNORECASE)
-			text = re.sub('^NR', "Não responde",text, flags=re.IGNORECASE)
-			text = re.sub('Não se aplica (não se aplica)', "Não se aplica",text, flags=re.IGNORECASE)
-			text = re.sub('Não sabe (não sabe)', "Não sabe",text, flags=re.IGNORECASE)
-			text = re.sub('Não responde (não responde)', "Não responde",text, flags=re.IGNORECASE)
-
-		if 'SPA' in filename:
-			text = re.sub('^NS', "No sabe",text)
-			text = re.sub('^NC', "No contesta",text)
-		
-		if 'DUT' in filename:
-			text = re.sub('^nap', "niet van toepassing",text, flags=re.IGNORECASE)
-
-		if 'FIN' in filename:
-			text = re.sub('^EOS', "Ei osaa sanoa",text, flags=re.IGNORECASE)
-
-		if 'LTZ' in filename:
-			text = re.sub('^NSP', "Ne sait pas",text)
-			text = re.sub('^SR', "Pas de réponse",text)
-			text = re.sub('^S\.R\.', "Pas de réponse",text)
-		if 'TUR' in filename:
-			text = re.sub('^FY', "BİLMİYOR-FİKRİ YOK",text, flags=re.IGNORECASE)
-			text = re.sub('^CY', "CEVAP VERMİYOR",text, flags=re.IGNORECASE)
-			text = re.sub('^SS', "Soru Sorulmadı",text, flags=re.IGNORECASE)
-
-		if 'RUS_EE' in filename or 'RUS_AZ' in filename or 'RUS_GE' in filename or 'RUS_MD' in filename:
-			text = re.sub('^Н.О.', "Нет ответа",text)
-			text = re.sub('^З.О.', "Затрудняюсь ответить",text)
-			text = re.sub('^Н.П.', "Не подходит",text)
-			text = re.sub('^Н.О', "Нет ответа",text)
-			text = re.sub('^З.О', "Затрудняюсь ответить",text)
-			text = re.sub('^Н.П', "Не подходит",text)
-			text = re.sub('^ЗО', "Затрудняюсь ответить",text)
-
-		if 'RUS_BY' in filename:
-			text = re.sub('^НО', "Нет ответа",text)
-			text = re.sub('^НЗ', "НЕ ЗНАЮ",text)
-
-		if 'RUS_UA' in filename:
-			text = re.sub('^ЗО', "затрудняюсь ответить",text)
-			text = re.sub('^ООО', "отказ от ответа",text)
-
-
-
 		text = text.replace('\n',' ')
 		text = text.rstrip()
+		text = standartize_special_response_category(filename, text)
 	else:
 		text = ''
 
+
+
+	return text
+
+
+"""
+Standartizes text of special response categories (don't know, no answer, not applicable),
+according to the language (informed in the the filename).
+:param filename: name of the input file.
+:param text: response text.
+:returns: standartized response category text.
+"""
+def standartize_special_response_category(filename, text):
+	#Currently DUT files are not included in MCSQ
+	if 'DUT' in filename:
+		text = re.sub('^nap', "niet van toepassing",text, flags=re.IGNORECASE)
+
+	if 'ENG' in filename:
+		text = re.sub('^NAP', "Not applicable",text)
+		text = re.sub('^DK', "Don't know",text)
+		text = re.sub('^na', "No answer",text)
+		text = re.sub('^NA', "No answer",text)
+		text = re.sub('^nap', "Not applicable",text)
+		text = re.sub('^dk', "Don't know",text)
+		text = re.sub('^N/A', "Not applicable",text)
+
+	#Currently FIN files are not included in MCSQ
+	if 'FIN' in filename:
+		text = re.sub('^EOS', "Ei osaa sanoa",text, flags=re.IGNORECASE)
+	
+	if 'FRE' in filename:
+		text = re.sub('^NSP', "Ne sait pas",text, flags=re.IGNORECASE)
+		text = re.sub('^S\.R\.', "Pas de réponse",text)
+		text = re.sub('^S\.R', "Pas de réponse",text)
+		text = re.sub('^SR\.', "Pas de réponse",text)
+		text = re.sub('^s\.r', "Pas de réponse",text)
+		text = re.sub('^s\.r\.', "Pas de réponse",text)
+		text = re.sub('^S\.r', "Pas de réponse",text)
+		text = re.sub('^SR', "Pas de réponse",text)
+	
+	if 'GER' in filename:
+		text = re.sub('^TNZ', "Trifft nicht zu",text)
+		text = re.sub('^WN', "weiß nicht",text)
+		text = re.sub('^KA', "keine antwort",text)
+		text = re.sub('^NZT', "nicht zutreffend",text)
+
+	if 'ITA' in filename:
+		text = re.sub('^NS', "Non so",text)
+		text = re.sub('^NR', "Non risponde",text)
+		text = re.sub('^NP', "Non pertinente",text)
+
+	#Currently LTZ files are not included in MCSQ
+	if 'LTZ' in filename:
+		text = re.sub('^NSP', "Ne sait pas",text)
+		text = re.sub('^SR', "Pas de réponse",text)
+		text = re.sub('^S\.R\.', "Pas de réponse",text)
+
+	if 'POR' in filename:
+		text = re.sub('^Na\b', "Não se aplica",text, flags=re.IGNORECASE)
+		text = re.sub('^NAP', "Não se aplica",text)
+		text = re.sub('^Ns', "Não sabe",text, flags=re.IGNORECASE)
+		text = re.sub('^NS', "Não sabe",text, flags=re.IGNORECASE)
+		text = re.sub('^Nr', "Não responde",text, flags=re.IGNORECASE)
+		text = re.sub('^NR', "Não responde",text, flags=re.IGNORECASE)
+		text = text.replace('Não se aplica (não se aplica)', "Não se aplica")
+		text = text.replace('Não sabe (não sabe)', "Não sabe")
+		text = text.replace('Não responde (não responde)', "Não responde")
+
+	if 'RUS_EE' in filename or 'RUS_AZ' in filename or 'RUS_GE' in filename or 'RUS_MD' in filename:
+		text = re.sub('^Н.О.', "Нет ответа",text)
+		text = re.sub('^З.О.', "Затрудняюсь ответить",text)
+		text = re.sub('^Н.П.', "Не подходит",text)
+		text = re.sub('^Н.О', "Нет ответа",text)
+		text = re.sub('^З.О', "Затрудняюсь ответить",text)
+		text = re.sub('^Н.П', "Не подходит",text)
+		text = re.sub('^ЗО', "Затрудняюсь ответить",text)
+
+	if 'RUS_BY' in filename:
+		text = re.sub('^НО', "Нет ответа",text)
+		text = re.sub('^НЗ', "НЕ ЗНАЮ",text)
+
+	if 'RUS_UA' in filename:
+		text = re.sub('^ЗО', "затрудняюсь ответить",text)
+		text = re.sub('^ООО', "отказ от ответа",text)
+
+	if 'SPA' in filename:
+		text = re.sub('^NS', "No sabe",text)
+		text = re.sub('^NC', "No contesta",text)
+
+	#Currently TUR files are not included in MCSQ
+	if 'TUR' in filename:
+		text = re.sub('^FY', "BİLMİYOR-FİKRİ YOK",text, flags=re.IGNORECASE)
+		text = re.sub('^CY', "CEVAP VERMİYOR",text, flags=re.IGNORECASE)
+		text = re.sub('^SS', "Soru Sorulmadı",text, flags=re.IGNORECASE)
 
 
 	return text

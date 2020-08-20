@@ -257,6 +257,7 @@ def process_valid_node(filename, node, survey_item_prefix, study, module, df_que
 	return df_questionnaire
 
 def main(filename):
+	response_dict = dict()
 	"""
 	The prefix of a EVS survey item is study+'_'+language+'_'+country+'_'
 	"""
@@ -308,25 +309,44 @@ def main(filename):
 				if module != None:
 					df_questionnaire = process_valid_node(filename, node, survey_item_prefix, study, module, df_questionnaire)
 
-			# if node.tag=='catgry' and 'ID' in node.attrib:
-			# 	txt = node.find('txt')
-			# 	catValu = node.find('catValu')
-			# 	if df_questionnaire.empty:
-			# 		survey_item_id = ut.get_survey_item_id(survey_item_prefix)
-			# 	else:
-			# 		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+			if node.tag=='catgry' and 'ID' in node.attrib:
+				txt = node.find('txt')
+				catValu = node.find('catValu')
+				if df_questionnaire.empty:
+					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+				else:
+					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-			# 	if txt is not None and txt.text != country and txt.text is not None:
-			# 		last_row = df_questionnaire.tail(1)
-			# 		module = last_row['module'].values
-			# 		module = "".join(module)
-			# 		item_name = last_row['item_name'].values
-			# 		item_name = "".join(item_name)
+				if txt is not None and txt.text != country and txt.text is not None:
+					last_row = df_questionnaire.tail(1)
+					module = last_row['module'].values
+					module = "".join(module)
+					item_name = last_row['item_name'].values
+					item_name = "".join(item_name)
+					text = clean_text(txt.text, filename)
+					category_value = int(catValu.text)
+					response_dict[node.attrib['ID']] = text, category_value
 
-			# 		data = {"survey_item_ID": survey_item_id,'Study': study, 'module':module,
-			# 		'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': int(catValu.text),  
-			# 		'text': clean_text(txt.text, filename)}
-			# 		df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+					data = {"survey_item_ID": survey_item_id,'Study': study, 'module':module,
+					'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': category_value,  
+					'text': text}
+					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+			elif node.tag=='catgry' and 'sdatrefs' in node.attrib:
+				if node.attrib['sdatrefs'] in response_dict.keys():
+					last_row = df_questionnaire.tail(1)
+					module = last_row['module'].values
+					module = "".join(module)
+					item_name = last_row['item_name'].values
+					item_name = "".join(item_name)
+					text = response_dict[node.attrib['sdatrefs']][0]
+					category_value = response_dict[node.attrib['sdatrefs']][1]
+
+					data = {"survey_item_ID": survey_item_id,'Study': study, 'module':module,
+					'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': category_value,  
+					'text': text}
+					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
 
 			
 
