@@ -5,6 +5,10 @@ from preprocessing_evs_utils import *
 from evsmodules import * 
 
 """
+Workaround to exclude country-specific definitions from ENG_SOURCE file.
+"""
+var_names_to_ignore = ['cntry_y', 'cntry1_y', 'country', 'country1']
+"""
 Retrieves the module of the survey_item, based on information from the EVSModulesYYYY objects.
 This information comes from the EVS_modules_reference.xlsx file, sent by Evelyn.
 :param study:
@@ -232,7 +236,7 @@ def process_valid_node(filename, node, survey_item_prefix, study, module, df_que
 			"""
 			qstn nodes can have preQTxt (requests or introductions), ivuInstr (instructions) or
 			qstnLit (requests) child nodes.
-			"""
+			"""	
 			for grandchild in child.getiterator():
 				if grandchild.tag == 'preQTxt':
 					df_questionnaire= process_preqtxt_node(filename,grandchild, survey_item_prefix, study, item_name, module, df_questionnaire)
@@ -279,6 +283,13 @@ def process_response_with_id_node(filename, node, survey_item_prefix, study, df_
 	"""
 	country = ut.determine_country(filename)
 
+	"""
+	The pattern is a workaround to exclude country-specific category 
+	definitions from ENG_SOURCE file.
+	"""
+	category_value = ''
+	pattern = re.compile("([A-Z][A-Z][0-9]*)")
+
 	txt = node.find('txt')
 	catValu = node.find('catValu')
 	if df_questionnaire.empty:
@@ -293,13 +304,28 @@ def process_response_with_id_node(filename, node, survey_item_prefix, study, df_
 		item_name = last_row['item_name'].values
 		item_name = "".join(item_name)
 		text = clean_text(txt.text, filename)
-		category_value = int(standartize_special_response_category_value(filename, catValu.text, text))
-		response_dict[node.attrib['ID']] = text, category_value
 
-		data = {"survey_item_ID": survey_item_id,'Study': study, 'module':module,
-		'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': category_value,  
-		'text': text}
-		df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+		"""
+		Workround added to treat cases such as
+		<catgry ID="AV81549" missing="N">
+			<catValu>1,2</catValu>
+			<labl>Rural Economies</labl>
+			<txt ID="SA81551" sdatrefs="S1">Rural Economies</txt>
+		</catgry>
+		"""
+		if ',' in catValu.text:
+			category_value = standartize_special_response_category_value(filename, catValu.text, text)
+		else:
+			if pattern.match(catValu.text) is None:
+				category_value = int(standartize_special_response_category_value(filename, catValu.text, text))
+		
+		if category_value != '':
+			response_dict[node.attrib['ID']] = text, category_value
+
+			data = {"survey_item_ID": survey_item_id,'Study': study, 'module':module,
+			'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': category_value,  
+			'text': text}
+			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
 	return df_questionnaire, response_dict
 
@@ -384,11 +410,11 @@ def main(filename):
 				if module != None:
 					df_questionnaire = process_valid_node(filename, node, survey_item_prefix, study, module, df_questionnaire)
 
-			if node.tag=='catgry' and 'ID' in node.attrib:
+			if node.tag=='catgry' and 'ID' in node.attrib and parent_map[node].attrib['name'] not in var_names_to_ignore:
 				df_questionnaire, response_dict = process_response_with_id_node(filename, node, survey_item_prefix, study, df_questionnaire, response_dict)
 				
 
-			elif node.tag=='catgry' and 'sdatrefs' in node.attrib:
+			elif node.tag=='catgry' and 'sdatrefs' in node.attrib and parent_map[node].attrib['name'] not in var_names_to_ignore:
 				if node.attrib['sdatrefs'] in response_dict.keys():
 					df_questionnaire = process_response_with_id_reference_node(node, survey_item_prefix, study, df_questionnaire, response_dict)
 					

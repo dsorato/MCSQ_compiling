@@ -59,6 +59,8 @@ def standartize_item_name(item_name):
 	if item_name[0].isdigit() or len(item_name)==1:
 		item_name = 'Q'+item_name
 
+	print(item_name)
+
 	return item_name
 
 
@@ -130,18 +132,26 @@ according to the language (informed in the the filename).
 :returns: standartized response category text.
 """
 def standartize_special_response_category(filename, text):
+	if 'CZE' in filename:
+		text = text.replace(' Nehodí se', "NEHODÍ SE")
+		text = text.replace('Nehodí se', "NEHODÍ SE")
+		text = text.replace('nehodí se', "NEHODÍ SE")
+		text = text.replace(' Neví', "NEVÍ")
+		text = text.replace(' Bez odpovìdi', "BEZ ODPOVĚDI")
+		text = text.replace('Bez odpovìdi', "BEZ ODPOVĚDI")
+
 	#Currently DUT files are not included in MCSQ
 	if 'DUT' in filename:
 		text = re.sub('^nap', "niet van toepassing",text, flags=re.IGNORECASE)
 
 	if 'ENG' in filename:
-		text = re.sub('^NAP', "Not applicable",text)
-		text = re.sub('^DK', "Don't know",text)
-		text = re.sub('^na', "No answer",text)
-		text = re.sub('^NA', "No answer",text)
-		text = re.sub('^nap', "Not applicable",text)
-		text = re.sub('^dk', "Don't know",text)
-		text = re.sub('^N/A', "Not applicable",text)
+		text = re.sub('^NAP$', "Not applicable",text)
+		text = re.sub('^DK$', "Don't know",text)
+		text = re.sub('^dk$', "Don't know",text)
+		text = re.sub('^na$', "No answer",text)
+		text = re.sub('^NA$', "No answer",text)
+		text = re.sub('^nap$', "Not applicable",text)
+		text = re.sub('^N/A$', "Not applicable",text)
 
 	#Currently FIN files are not included in MCSQ
 	if 'FIN' in filename:
