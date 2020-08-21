@@ -110,8 +110,6 @@ def clean_text(text, filename):
 		text = re.sub('Q[0-9]*\.', "",text)
 		text = re.sub('\[', "",text)
 		text = re.sub('\]', "",text)
-		text = re.sub('^[A-Z]\.\s', "",text)
-		text = re.sub('^[A-Z]\s', "",text)
 		text = re.sub('e\.g\.', "e.g.,",text)
 		text = text.replace('\n',' ')
 		text = text.rstrip()
@@ -198,22 +196,25 @@ def standartize_special_response_category(filename, text):
 		text = text.replace('Não sabe (não sabe)', "Não sabe")
 		text = text.replace('Não responde (não responde)', "Não responde")
 
-	if 'RUS_EE' in filename or 'RUS_AZ' in filename or 'RUS_GE' in filename or 'RUS_MD' in filename:
+	if 'RUS_EE' in filename or 'RUS_AZ' in filename or 'RUS_GE' in filename or 'RUS_MD' in filename or 'RUS_LV' in filename:
 		text = re.sub('^Н.О.', "Нет ответа",text)
 		text = re.sub('^З.О.', "Затрудняюсь ответить",text)
+		text = re.sub('^ЗO', "Затрудняюсь ответить",text)
 		text = re.sub('^Н.П.', "Не подходит",text)
 		text = re.sub('^Н.О', "Нет ответа",text)
 		text = re.sub('^З.О', "Затрудняюсь ответить",text)
 		text = re.sub('^Н.П', "Не подходит",text)
 		text = re.sub('^ЗО', "Затрудняюсь ответить",text)
+		text = text.replace('Н о', "Нет ответа")
 
 	if 'RUS_BY' in filename:
 		text = re.sub('^НО', "Нет ответа",text)
 		text = re.sub('^НЗ', "НЕ ЗНАЮ",text)
 
-	if 'RUS_UA' in filename:
+	if 'RUS_UA' in filename or 'RUS_RU' in filename:
 		text = re.sub('^ЗО', "затрудняюсь ответить",text)
 		text = re.sub('^ООО', "отказ от ответа",text)
+		text = re.sub('^НП', "Не применимо",text)
 
 	if 'SPA' in filename:
 		text = re.sub('^NS', "No sabe",text)
