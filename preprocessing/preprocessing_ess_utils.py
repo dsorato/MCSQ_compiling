@@ -22,7 +22,13 @@ def get_country_language_and_study_info(filename):
 
 	return study, country_language
 
+"""
+Cleans Request, Introduction and Instruction text segments by removing
+undesired characters and standartizing some character representations.
 
+:param text: text to be cleaned.
+:returns: cleaned text.
+"""
 def clean_text(text):
 	if isinstance(text, str):
 		text = re.sub(r'\s([?.!"](?:\s|$))', r'\1', text)

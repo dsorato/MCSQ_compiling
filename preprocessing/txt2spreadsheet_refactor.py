@@ -61,7 +61,12 @@ Se sembla poc a mi
 No se sembla a mi
 No se sembla gens a mi
 
-:param raw_item: raw item, retrieved in previous steps.
+:param raw_item: raw survey item, retrieved in previous steps.
+:param survey_item_prefix: prefix of survey_item_ID.
+:param study: metadata parameter about study embedded in the file name.
+:param item_name: item_name metadata parameter, retrieved in previous steps.
+:param df_questionnaire: pandas dataframe to store questionnaire data.
+:param splitter: sentence segmentation from NLTK library.
 """
 def process_question_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter):
 	index_question_tag = raw_item.index('{QUESTION}')
@@ -86,7 +91,32 @@ def process_question_segment(raw_item, survey_item_prefix, study, item_name, df_
 	return df_questionnaire
 
 
+"""
+Extracts and processes the introduction segments from a raw item.
+The introduction segments are always between the item name and {QUESTION} tag, 
+for instance:
 
+{INTRO}
+Ara m'agradaria fer-li algunes preguntes sobre política i el govern.
+
+B1 
+{QUESTION}
+En quina mesura diria vostè que l'interessa la política? 
+Vostè diria que l'interessa...
+
+{ANSWERS}
+Molt
+Bastant 
+Poc 
+Gens 
+
+:param raw_item: raw survey item, retrieved in previous steps.
+:param survey_item_prefix: prefix of survey_item_ID.
+:param study: metadata parameter about study embedded in the file name.
+:param item_name: item_name metadata parameter, retrieved in previous steps.
+:param df_questionnaire: pandas dataframe to store questionnaire data.
+:param splitter: sentence segmentation from NLTK library.
+"""
 def process_intro_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter):
 	index_intro_tag = raw_item.index('{INTRO}')
 	index_question_tag = raw_item.index('{QUESTION}')
@@ -109,6 +139,19 @@ def process_intro_segment(raw_item, survey_item_prefix, study, item_name, df_que
 
 	return df_questionnaire
 
+
+"""
+Extracts and processes the answer segments from a raw item.
+The answer segments are always after the {ANSWERS} tag.
+
+
+:param raw_item: raw survey item, retrieved in previous steps.
+:param survey_item_prefix: prefix of survey_item_ID.
+:param study: metadata parameter about study embedded in the file name.
+:param item_name: item_name metadata parameter, retrieved in previous steps.
+:param df_questionnaire: pandas dataframe to store questionnaire data.
+:param splitter: sentence segmentation from NLTK library.
+"""
 def process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire):
 	index_answer_tag = raw_item.index('{ANSWERS}')
 	answer_segment = raw_item[index_answer_tag+1:]
@@ -129,7 +172,10 @@ def process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_qu
 """
 Set initial structures that are necessary for the extraction of each questionnaire.
 :param filename: name of the input file.
-:returns: df_questionnaire, response_dict, survey_item_prefix, study, country_language
+:returns: df_questionnaire (to store questionnaire data), response_dict (to store responses 
+and its category values for reuse),survey_item_prefix (prefix of survey_item_ID), 
+study/country_language (metadata parameters embedded in the file name) and 
+sentence splitter (to segment request/introduction/instruction segments when necessary).
 """
 def set_initial_structures(filename):
 	"""
@@ -156,8 +202,9 @@ def set_initial_structures(filename):
 	"""
 	study, country_language = get_country_language_and_study_info(filename)
 
-	print(filename)
-
+	"""
+	Instantiate a NLTK sentence splitter based on file input language. 
+	"""
 	splitter = ut.get_sentence_splitter(filename)
 
 
