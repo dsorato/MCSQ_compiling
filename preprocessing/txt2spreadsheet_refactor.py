@@ -109,12 +109,22 @@ def process_intro_segment(raw_item, survey_item_prefix, study, item_name, df_que
 
 	return df_questionnaire
 
-def process_answer_segment(raw_item):
+def process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire):
 	index_answer_tag = raw_item.index('{ANSWERS}')
+	answer_segment = raw_item[index_answer_tag+1:]
 
-	answer_segment = raw_item[index_question_tag+1:]
+	for i, item in enumerate(answer_segment):
+		if df_questionnaire.empty:
+			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+		else:
+			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-	return answer_segment
+		data = {"survey_item_ID": survey_item_id,'Study': study, 'module': None,'item_type': 'RESPONSE', 
+		'item_name': item_name, 'item_value': i,  'text': item}
+		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+
+	return df_questionnaire
+
 
 """
 Set initial structures that are necessary for the extraction of each questionnaire.
@@ -162,12 +172,12 @@ def main(folder_path, concatenate_supplementary_questionnaire):
 			with open(file, 'r') as f:
 				df_questionnaire, response_dict, survey_item_prefix, study, country_language, splitter = set_initial_structures(file)
 				raw_items = retrieve_raw_items_from_file(f)
-				for item in raw_items:
-					item_name = item[0]
-					if '{INTRO}' in item:
-						df_questionnaire = process_intro_segment(item, survey_item_prefix, study, item_name, df_questionnaire, splitter)
-					df_questionnaire = process_question_segment(item, survey_item_prefix, study, item_name, df_questionnaire, splitter)
-
+				for raw_item in raw_items:
+					item_name = raw_item[0]
+					if '{INTRO}' in raw_item:
+						df_questionnaire = process_intro_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter)
+					df_questionnaire = process_question_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter)
+					df_questionnaire = process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire)
 
 
 			f.close()
