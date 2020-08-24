@@ -537,7 +537,12 @@ def determine_country(filename):
 
 	return country
 
-
+"""
+Provide the sentence splitter suffix to instantiate it in accordance 
+to the target language (information emebedded on filename).
+:param filename: input file name.
+:returns: a sentence splitter suffix according to the target language.
+"""
 def determine_sentence_tokenizer(filename):
 	#there is no sentence segmentation for bulgarian in NLTK.. 
 	if 'BUL_' in filename:
@@ -573,7 +578,8 @@ def determine_sentence_tokenizer(filename):
 		sentence_splitter_suffix = 'portuguese.pickle'
 	if 'RUS_' in filename:
 		sentence_splitter_suffix = 'russian.pickle'
-	if 'SPA_' in filename:
+
+	if 'SPA_' in filename or 'CAT_' in filename:
 		sentence_splitter_suffix = 'spanish.pickle'
 	
 	if 'SLV_' in filename:
@@ -601,14 +607,13 @@ def determine_sentence_tokenizer(filename):
 	return sentence_splitter_suffix
 
 
-def get_code(a):
 
-	first = a.split('_')[0]
-	second = a.split('_')[1]
-
-	return first+'_'+second
-
-
+"""
+Decide what sentence splitter should be instantiated, according to 
+the information embedded in the filename.
+:param filename: input file name.
+:returns: a sentence splitter instantiated according to the target language.
+"""
 def get_sentence_splitter(filename):
 	"""
 	Instantiate Punkt Sentence Tokenizer from NLTK	
