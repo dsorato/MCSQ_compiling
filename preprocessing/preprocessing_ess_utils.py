@@ -1,4 +1,5 @@
 import re
+from ess_special_answer_categories import * 
 
 """
 Retrieves the country/language and study metadata based on the input filename.
@@ -63,93 +64,159 @@ def clean_text(text):
 
 	return text
 
+"""
+Switches abbreviations of the word interviewer for the full form.
 
-def extend_interviewer_abbreviations(text, country_language):
+:param text: sentence being analyzed.
+:param country_language: country_language metadata embedded in file name.
+:returns: text without abbreviations for the word interviewer, when applicable.
+"""
+def expand_interviewer_abbreviations(text, country_language):
 	if 'CZE' in country_language:
-		text = text.replace('Taz.', 'Tazatel',text)
+		text = text.replace('Taz.', 'Tazatel')
 	elif '_ES' in country_language or 'POR' in country_language:
-		text = text.replace('Ent.', "Entrevistador",text)
+		text = text.replace('Ent.', "Entrevistador")
 	elif 'ENG_' in country_language:
-		text = text.replace('Int.', "Interviewer",text)
+		text = text.replace('Int.', "Interviewer")
 	elif 'FRE_' in country_language:
-		text = text.replace('Enq.', "Enquêteur",text)
+		text = text.replace('Enq.', "Enquêteur")
 	elif 'GER_' in country_language:
-		text = text.replace('Befr.', "Befrager",text)
-	elif 'NOR':
-		text = text.replace('Int.', "Intervjuer",text)
+		text = text.replace('Befr.', "Befrager")
+	elif 'NOR' in country_language:
+		text = text.replace('Int.', "Intervjuer")
 
+	return text
 
+def instantiate_special_answer_category_object(country_language):
+	if 'CAT' in country_language:
+		ess_special_answer_categories = SpecialAnswerCategoriesCAT()
+	elif 'CZE' in country_language:
+		ess_special_answer_categories = SpecialAnswerCategoriesCZE()
+	elif 'ENG_' in country_language:
+		ess_special_answer_categories = SpecialAnswerCategoriesENG()
+	elif 'FRE_' in country_language:
+		ess_special_answer_categories = SpecialAnswerCategoriesFRE()
+	elif 'GER_' in country_language:
+		ess_special_answer_categories = SpecialAnswerCategoriesGER()
+	elif 'NOR' in country_language:
+		ess_special_answer_categories = SpecialAnswerCategoriesNOR()
+	elif 'POR' in country_language:
+		ess_special_answer_categories = SpecialAnswerCategoriesPOR()
+	elif 'SPA' in country_language:
+		ess_special_answer_categories = SpecialAnswerCategoriesSPA()
+	elif 'RUS' in country_language:
+		if '_EE' in country_language:
+			ess_special_answer_categories = SpecialAnswerCategoriesRUS_EE()
+		elif '_IL' in country_language:
+			ess_special_answer_categories = SpecialAnswerCategoriesRUS_IL()
+		elif '_LV' in country_language:
+			ess_special_answer_categories = SpecialAnswerCategoriesRUS_LV()
+		elif '_LT' in country_language:
+			ess_special_answer_categories = SpecialAnswerCategoriesRUS_LT()
+		else:
+			ess_special_answer_categories = SpecialAnswerCategoriesRUS_RU_UA()
 
-def clean_answer(text):
-	if re.compile(r'^00\s\w+'):
+	return ess_special_answer_categories
+
+def check_if_answer_is_special_category(text, ess_special_answer_categories):
+	answer_value = None
+
+	if text.lower() == ess_special_answer_categories.dont_know[0].lower():
+		return ess_special_answer_categories.dont_know[0], ess_special_answer_categories.dont_know[1]
+	elif text.lower() == ess_special_answer_categories.refuse[0].lower():
+		return ess_special_answer_categories.refuse[0], ess_special_answer_categories.refuse[1]
+	elif text.lower() == ess_special_answer_categories.dontapply[0].lower():
+		return ess_special_answer_categories.dontapply[0], ess_special_answer_categories.dontapply[1]
+	elif text.lower() == ess_special_answer_categories.write_down[0].lower():
+		return ess_special_answer_categories.write_down[0], ess_special_answer_categories.write_down[1]
+
+	return text, answer_value
+
+def clean_answer(text, ess_special_answer_categories):
+	if isinstance(text, str) == False:
+		return None, None
+
+	text = text.replace('(No ho sap)','No ho sap')
+	text = text.replace("(Don't know)","Don't know")
+
+	if re.compile(r'^00\s\w+').match(text):
 		text = text.split('00', 1)
 		answer_text = text[1].rstrip()
-		answer_value = 0
-	if re.compile(r'^10\s\w+'):
+		answer_value = '0'
+	elif re.compile(r'^10\s\w+').match(text):
 		text = text.split('10', 1)
 		answer_text = text[1].rstrip()
-		answer_value = 10
-	if re.compile(r'^0\s\w+'):
+		answer_value = '10'
+	elif re.compile(r'^0\s\w+').match(text):
 		text = text.split('0', 1)
 		answer_text = text[1].rstrip()
-		answer_value = 0
-	if re.compile(r'^88\s\w+'):
+		answer_value = '0'
+	elif re.compile(r'^88\s\w+').match(text):
 		text = text.split('88', 1)
 		answer_text = text[1].rstrip()
-		answer_value = 88
-	if re.compile(r'^J\s.+'):
+		answer_value = '88'
+	elif re.compile(r'^77\s\w+').match(text):
+		text = text.split('77', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '77'
+	elif re.compile(r'^99\s\w+').match(text):
+		text = text.split('99', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '99'
+	elif re.compile(r'^J\s.+').match(text):
 		text = text.split('J', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'J'
-	if re.compile(r'^R\s.+'):
+	elif re.compile(r'^R\s.+').match(text):
 		text = text.split('R', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'R'
-	if re.compile(r'^C\s.+'):
+	elif re.compile(r'^C\s.+').match(text):
 		text = text.split('C', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'C'
-	if re.compile(r'^M\s.+'):
+	elif re.compile(r'^M\s.+').match(text):
 		text = text.split('M', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'M'
-	if re.compile(r'^F\s.+'):
+	elif re.compile(r'^F\s.+').match(text):
 		text = text.split('F', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'F'
-	if re.compile(r'^S\s.+'):
+	elif re.compile(r'^S\s.+').match(text):
 		text = text.split('S', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'S'
-	if re.compile(r'^K\s.+'):
+	elif re.compile(r'^K\s.+').match(text):
 		text = text.split('K', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'K'
-	if re.compile(r'^P\s.+'):
+	elif re.compile(r'^P\s.+').match(text):
 		text = text.split('P', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'P'
-	if re.compile(r'^D\s.+'):
+	elif re.compile(r'^D\s.+').match(text):
 		text = text.split('D', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'D'
-	if re.compile(r'^H\s.+'):
+	elif re.compile(r'^H\s.+').match(text):
 		text = text.split('H', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'H'
-	if re.compile(r'^U\s.+'):
+	elif re.compile(r'^U\s.+').match(text):
 		text = text.split('U', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'U'
-	if re.compile(r'^N\s.+'):
+	elif re.compile(r'^N\s.+').match(text):
 		text = text.split('N', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'N'
 	else:
-		answer_text = text[1].rstrip()
+		answer_text = text.strip()
 		answer_value = None
 
-	answer_text = answer_text.replace('(No ho sap)','No ho sap')
+	answer_text = answer_text.strip()
+	answer_text, answer_value = check_if_answer_is_special_category(answer_text, ess_special_answer_categories)
 
 	return answer_text, answer_value
 

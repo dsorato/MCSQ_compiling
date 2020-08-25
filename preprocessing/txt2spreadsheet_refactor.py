@@ -6,6 +6,7 @@ from preprocessing_ess_utils import *
 import utils as ut
 from essmodules import * 
 
+
 scale_items_to_ignore = ['01', '02', '03', '04', '05', '06', '07', '08', '09',
 '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
@@ -104,10 +105,16 @@ def retrieve_raw_items_from_file(file):
 
 	return raw_items
 
-
+"""
+Calls the appropriate instruction recognition method, according to the language.
+:param sentence: sentence being analyzed in outer loop of data extraction.
+:param country_language: country_language metadata, embedded in file name.
+:returns: bypass the return of instruction_recognition methods (boolean).
+"""
 def check_if_segment_is_instruction(sentence, country_language):
 	if '_ES' in country_language:
 		return instruction_recognition_spanish(sentence,country_language) 
+
 """
 Extracts and processes the question segments from a raw item.
 The question segments are always between the {QUESTION} and {ANSWERS} tags, 
@@ -149,11 +156,13 @@ def process_question_segment(raw_item, survey_item_prefix, study, item_name, df_
 				else:
 					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
+				sentence = expand_interviewer_abbreviations(sentence, country_language)
+
 				if check_if_segment_is_instruction(sentence, country_language):
 					item_type = 'INSTRUCTION'
 				else:
 					item_type = 'REQUEST'
-					
+
 				data = {"survey_item_ID": survey_item_id,'Study': study, 'module': retrieve_item_module(item_name, study),
 				'item_type': item_type, 'item_name': item_name, 'item_value': None,  'text': sentence}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
@@ -222,18 +231,56 @@ The answer segments are always after the {ANSWERS} tag.
 :param df_questionnaire: pandas dataframe to store questionnaire data.
 :param splitter: sentence segmentation from NLTK library.
 """
-def process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire):
+def process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire,country_language):
 	index_answer_tag = raw_item.index('{ANSWERS}')
 	answer_segment = raw_item[index_answer_tag+1:]
 
-	for i, item in enumerate(answer_segment):
-		if df_questionnaire.empty:
-			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
-		else:
-			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+	ess_special_answer_categories = instantiate_special_answer_category_object(country_language)
+	responses = []
+
+	"""
+	If there are no answer segments, then the answer segment is the corresponding to 
+	'write down' for the target language.
+	"""
+	if not answer_segment:
+		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+		answer_text, item_value = ess_special_answer_categories.write_down[0], ess_special_answer_categories.write_down[1]
 
 		data = {"survey_item_ID": survey_item_id,'Study': study, 'module': retrieve_item_module(item_name, study),
-		'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': i,  'text': item}
+		'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': item_value,  'text': answer_text}
+		df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+	for i, item in enumerate(answer_segment):
+		survey_item_id = ut.update_survey_item_id(survey_item_prefix)1
+		answer_text, answer_value = clean_answer(item,ess_special_answer_categories)
+		
+		if answer_text:
+			if answer_value:
+				item_value = answer_value
+			else:
+				item_value = i
+
+			responses.append(answer_text)
+
+			data = {"survey_item_ID": survey_item_id,'Study': study, 'module': retrieve_item_module(item_name, study),
+			'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': item_value,  'text': answer_text}
+			df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+
+	if ess_special_answer_categories.dont_know[0] not in responses:
+		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+		data = {"survey_item_ID": survey_item_id,'Study': study, 'module': retrieve_item_module(item_name, study),
+		'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': ess_special_answer_categories.dont_know[1],  
+		'text': ess_special_answer_categories.dont_know[0]}
+		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+
+	if ess_special_answer_categories.refuse[0] not in responses:
+		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+		data = {"survey_item_ID": survey_item_id,'Study': study, 'module': retrieve_item_module(item_name, study),
+		'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': ess_special_answer_categories.refuse[1],  
+		'text': ess_special_answer_categories.refuse[0]}
 		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
@@ -294,7 +341,7 @@ def main(folder_path, concatenate_supplementary_questionnaire):
 					if '{INTRO}' in raw_item:
 						df_questionnaire = process_intro_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter)
 					df_questionnaire = process_question_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter,country_language)
-					df_questionnaire = process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire)
+					df_questionnaire = process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire,country_language)
 
 
 			f.close()
