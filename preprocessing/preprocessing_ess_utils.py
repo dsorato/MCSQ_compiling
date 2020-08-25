@@ -154,15 +154,15 @@ def clean_answer(text, ess_special_answer_categories):
 	elif re.compile(r'^88\s\w+').match(text):
 		text = text.split('88', 1)
 		answer_text = text[1].rstrip()
-		answer_value = '88'
+		answer_value = '888'
 	elif re.compile(r'^77\s\w+').match(text):
 		text = text.split('77', 1)
 		answer_text = text[1].rstrip()
-		answer_value = '77'
+		answer_value = '777'
 	elif re.compile(r'^99\s\w+').match(text):
 		text = text.split('99', 1)
 		answer_text = text[1].rstrip()
-		answer_value = '99'
+		answer_value = '999'
 	elif re.compile(r'^J\s.+').match(text):
 		text = text.split('J', 1)
 		answer_text = text[1].rstrip()
