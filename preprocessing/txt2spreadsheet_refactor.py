@@ -4,8 +4,25 @@ import re
 import pandas as pd
 from preprocessing_ess_utils import *
 import utils as ut
+from essmodules import * 
 
 scale_items_to_ignore = ['01', '02', '03', '04', '05', '06', '07', '08', '09']
+
+def retrieve_item_module(item_name, study):
+	if re.compile(r'A').match(item_name):
+		return 'A - Media; social trust'
+	elif re.compile(r'B').match(item_name):
+		return 'B - Politics, including: political interest, efficacy, trust, electoral and other forms of participation, party allegiance, socio-political evaluations/orientations, multi-level governance'
+	elif re.compile(r'C').match(item_name):
+		return 'C - Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity'
+	elif re.compile(r'F').match(item_name):
+		return 'F - Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status'
+	else:
+		if 'R01' in study:
+			essmodules = ESSSModulesR01()
+			for k,v in list(essmodules.modules.items()):
+				if re.compile(k).match(item_name):
+					return v
 
 """
 Extracts the raw items from ESS plain text file, based on an item name regex pattern.
@@ -84,8 +101,8 @@ def process_question_segment(raw_item, survey_item_prefix, study, item_name, df_
 				else:
 					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-				data = {"survey_item_ID": survey_item_id,'Study': study, 'module': None,'item_type': 'REQUEST', 
-				'item_name': item_name, 'item_value': None,  'text': sentence}
+				data = {"survey_item_ID": survey_item_id,'Study': study, 'module': retrieve_item_module(item_name, study),
+				'item_type': 'REQUEST', 'item_name': item_name, 'item_value': None,  'text': sentence}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
@@ -133,8 +150,8 @@ def process_intro_segment(raw_item, survey_item_prefix, study, item_name, df_que
 				else:
 					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-				data = {"survey_item_ID": survey_item_id,'Study': study, 'module': None,'item_type': 'INTRODUCTION', 
-				'item_name': item_name, 'item_value': None,  'text': sentence}
+				data = {"survey_item_ID": survey_item_id,'Study': study, 'module': retrieve_item_module(item_name, study),
+				'item_type': 'INTRODUCTION', 'item_name': item_name, 'item_value': None,  'text': sentence}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
@@ -162,8 +179,8 @@ def process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_qu
 		else:
 			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-		data = {"survey_item_ID": survey_item_id,'Study': study, 'module': None,'item_type': 'RESPONSE', 
-		'item_name': item_name, 'item_value': i,  'text': item}
+		data = {"survey_item_ID": survey_item_id,'Study': study, 'module': retrieve_item_module(item_name, study),
+		'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': i,  'text': item}
 		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
