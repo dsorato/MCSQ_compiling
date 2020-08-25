@@ -6,8 +6,29 @@ from preprocessing_ess_utils import *
 import utils as ut
 from essmodules import * 
 
-scale_items_to_ignore = ['01', '02', '03', '04', '05', '06', '07', '08', '09']
+scale_items_to_ignore = ['01', '02', '03', '04', '05', '06', '07', '08', '09',
+'1', '2', '3', '4', '5', '6', '7', '8', '9']
 
+"""
+Matches the item_name against the dictionary stored in the ESSModulesRRR objects.
+Rotating/supplementary modules are defined by round because they may change from
+round to round.
+:param essmodules: ESSModulesRRR object, instantiated according to the round.
+:param item_name: name of survey item, retrieved in previous steps.
+:returns: matching value for item name.
+"""
+def retrieve_supplementary_module(essmodules,item_name):
+	for k,v in list(essmodules.modules.items()):
+		if re.compile(k).match(item_name):
+			return v
+
+"""
+Retrieves the module of the survey_item, based on information from the ESSModulesRRR objects.
+This information comes from the source questionnaires.
+:param item_name: name of survey item, retrieved in previous steps.
+:param study: study metadata, embedded in the file name.
+:returns: module of survey_item in string format.
+"""
 def retrieve_item_module(item_name, study):
 	if re.compile(r'A').match(item_name):
 		return 'A - Media; social trust'
@@ -20,9 +41,33 @@ def retrieve_item_module(item_name, study):
 	else:
 		if 'R01' in study:
 			essmodules = ESSSModulesR01()
-			for k,v in list(essmodules.modules.items()):
-				if re.compile(k).match(item_name):
-					return v
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
+
+		elif 'R02' in study:
+			essmodules = ESSSModulesR02()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
+
+		elif 'R03' in study:
+			essmodules = ESSSModulesR03()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
+
+		elif 'R04' in study:
+			essmodules = ESSSModulesR04()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
+
+		elif 'R05' in study:
+			essmodules = ESSSModulesR05()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
+
+		elif 'R06' in study:
+			essmodules = ESSSModulesR06()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
 
 """
 Extracts the raw items from ESS plain text file, based on an item name regex pattern.
@@ -60,6 +105,9 @@ def retrieve_raw_items_from_file(file):
 	return raw_items
 
 
+def check_if_segment_is_instruction(sentence, country_language):
+	if '_ES' in country_language:
+		return instruction_recognition_spanish(sentence,country_language) 
 """
 Extracts and processes the question segments from a raw item.
 The question segments are always between the {QUESTION} and {ANSWERS} tags, 
@@ -85,7 +133,7 @@ No se sembla gens a mi
 :param df_questionnaire: pandas dataframe to store questionnaire data.
 :param splitter: sentence segmentation from NLTK library.
 """
-def process_question_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter):
+def process_question_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter,country_language):
 	index_question_tag = raw_item.index('{QUESTION}')
 	index_answer_tag = raw_item.index('{ANSWERS}')
 
@@ -101,8 +149,13 @@ def process_question_segment(raw_item, survey_item_prefix, study, item_name, df_
 				else:
 					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
+				if check_if_segment_is_instruction(sentence, country_language):
+					item_type = 'INSTRUCTION'
+				else:
+					item_type = 'REQUEST'
+					
 				data = {"survey_item_ID": survey_item_id,'Study': study, 'module': retrieve_item_module(item_name, study),
-				'item_type': 'REQUEST', 'item_name': item_name, 'item_value': None,  'text': sentence}
+				'item_type': item_type, 'item_name': item_name, 'item_value': None,  'text': sentence}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
@@ -240,7 +293,7 @@ def main(folder_path, concatenate_supplementary_questionnaire):
 					item_name = raw_item[0]
 					if '{INTRO}' in raw_item:
 						df_questionnaire = process_intro_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter)
-					df_questionnaire = process_question_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter)
+					df_questionnaire = process_question_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter,country_language)
 					df_questionnaire = process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire)
 
 

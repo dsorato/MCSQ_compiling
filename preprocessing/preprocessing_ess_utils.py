@@ -64,3 +64,76 @@ def clean_text(text):
 
 
 	return text
+
+
+def instruction_recognition_spanish(text,country_language):
+	regex= r"^(?P<programador>)programador"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<interviewer>)entrevistador"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	if 'CAT' in country_language:
+		regex= r"^(?P<continue>(continuï)?\s?(?P<show>)mostr(ar|eu|ant)\s(?P<card>)targeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<ask>)(preguntar)?\s?a\s(?P<all>)tothom"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<insist>)insistiu"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<use>)(utilitzi la|segueixi utilitzant|continuï utilitzant)\s(?P<this>)(aquesta)?\s?(?P<same>)(mateixa)?\s?(?P<card>)targeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<use>)utilitzi\s(?P<this>)aquesta\s(?P<card>)targeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+
+		regex= r"^(?P<read>)llegi(r|u)\s(?P<out>)(alta)?"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<suggest>)suggerir\s(?P<categories>)categories\s(?P<de>)de\s(?P<answer>)resposta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)encercli\s(?P<one>)una\s(?P<option>)opció"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<note>)nota\s(?P<for>)per\s(?P<interviewer>)entrevistador\s(?P<code>)codificar"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+
+	# choose_answer_in_card_pattern = re.compile("(Triï|resposta|d'aquesta|targeta)", re.IGNORECASE)
+	# note_for_interviewer_pattern = re.compile("(nota per entrevistador codificar)", re.IGNORECASE)
+	# tick_box_or_choose_one_pattern = re.compile("(Si|us|plau|encercli|una|opció)", re.IGNORECASE)
+	# choose_multiple_pattern = re.compile("(MARQUEU|TOTS|QUE|CORRESPONGUIN)", re.IGNORECASE)
+	# choose_closest_to_opinion_pattern = re.compile("(Si|us|plau|encercli|l'opció|més|propera|seva|opinió)", re.IGNORECASE)
+	# list_and_code_pattern = re.compile("(Codificar|totes|que|calgui)", re.IGNORECASE)
+	# list_and_code_organization_pattern =  re.compile("(LLEGIR|CADA|ORGANITZACIÓ|PER|TORNS)", re.IGNORECASE)
+	# note_with_details_pattern = re.compile("(ANOTEU|AMB|TOTS|DETALLS)", re.IGNORECASE)
+
+	return False
+
+		

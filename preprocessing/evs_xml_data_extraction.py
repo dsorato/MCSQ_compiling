@@ -11,8 +11,8 @@ var_names_to_ignore = ['cntry_y', 'cntry1_y', 'country', 'country1', 'split_1', 
 """
 Retrieves the module of the survey_item, based on information from the EVSModulesYYYY objects.
 This information comes from the EVS_modules_reference.xlsx file, sent by Evelyn.
-:param study:
-:param country_language:
+:param study: study metadata, embedded in the file name.
+:param country_language: country_language metadata, embedded in the file name.
 :param name: attribute 'name' of the analyzed node, which is an EVS variable. 
 The interest variables are listed in the EVSModulesYYYY objects.
 
