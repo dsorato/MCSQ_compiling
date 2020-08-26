@@ -269,8 +269,18 @@ def clean_answer(text, ess_special_answer_categories):
 
 	return answer_text, answer_value
 
+"""
+Recognizes an instruction segment for texts written either in Spanish or Catalan,
+based on regex named groups patterns.
 
-def instruction_recognition_spanish(text,country_language):
+Args:
+	param1 text (string): text (in Spanish or Catalan) currently being analyzed.
+	param2 country_language (string): country_language metadata embedded in file name.
+
+Returns: 
+	True if the segment is an instruction or False if it is not.
+"""
+def instruction_recognition_catalan_spanish(text,country_language):
 	regex= r"^(?P<programador>)programador"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:

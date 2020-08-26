@@ -14,9 +14,12 @@ scale_items_to_ignore = ['01', '02', '03', '04', '05', '06', '07', '08', '09',
 Matches the item_name against the dictionary stored in the ESSModulesRRR objects.
 Rotating/supplementary modules are defined by round because they may change from
 round to round.
-:param essmodules: ESSModulesRRR object, instantiated according to the round.
-:param item_name: name of survey item, retrieved in previous steps.
-:returns: matching value for item name.
+Args:
+	param1 essmodules (Python object): ESSModulesRRR object, instantiated according to the round.
+	param2 item_name (string): name of survey item, retrieved in previous steps.
+
+Returns: 
+	matching value for item name (string).
 """
 def retrieve_supplementary_module(essmodules,item_name):
 	for k,v in list(essmodules.modules.items()):
@@ -26,9 +29,13 @@ def retrieve_supplementary_module(essmodules,item_name):
 """
 Retrieves the module of the survey_item, based on information from the ESSModulesRRR objects.
 This information comes from the source questionnaires.
-:param item_name: name of survey item, retrieved in previous steps.
-:param study: study metadata, embedded in the file name.
-:returns: module of survey_item in string format.
+
+Args:
+	param1 item_name (string): name of survey item, retrieved in previous steps.
+	param2 study (string): study metadata, embedded in the file name.
+
+Returns: 
+	module of survey_item (string).
 """
 def retrieve_item_module(item_name, study):
 	if re.compile(r'A').match(item_name):
@@ -73,8 +80,11 @@ def retrieve_item_module(item_name, study):
 """
 Extracts the raw items from ESS plain text file, based on an item name regex pattern.
 Also excludes blank lines and non relevant scale items.
-:param file: input ESS plain text file.
-:returns: retrieved raw items, in a list. 
+Args:
+	param1 file (Python module): input ESS plain text file.
+
+Returns: 
+	retrieved raw items (list of strings). 
 """
 def retrieve_raw_items_from_file(file):
 	item_name_question_pattern = re.compile("(?:[A-K][A-Z]?\s?[1-9]{1,3}[a-z]?)+")
@@ -107,13 +117,16 @@ def retrieve_raw_items_from_file(file):
 
 """
 Calls the appropriate instruction recognition method, according to the language.
-:param sentence: sentence being analyzed in outer loop of data extraction.
-:param country_language: country_language metadata, embedded in file name.
-:returns: bypass the return of instruction_recognition methods (boolean).
+Args:
+	param1 sentence (string): sentence being analyzed in outer loop of data extraction.
+	param2 country_language (string): country_language metadata, embedded in file name.
+
+Returns: 
+	bypass the return of instruction_recognition methods (boolean).
 """
 def check_if_segment_is_instruction(sentence, country_language):
 	if '_ES' in country_language:
-		return instruction_recognition_spanish(sentence,country_language) 
+		return instruction_recognition_catalan_spanish(sentence,country_language) 
 
 """
 Extracts and processes the question segments from a raw item.
@@ -133,12 +146,18 @@ Se sembla poc a mi
 No se sembla a mi
 No se sembla gens a mi
 
-:param raw_item: raw survey item, retrieved in previous steps.
-:param survey_item_prefix: prefix of survey_item_ID.
-:param study: metadata parameter about study embedded in the file name.
-:param item_name: item_name metadata parameter, retrieved in previous steps.
-:param df_questionnaire: pandas dataframe to store questionnaire data.
-:param splitter: sentence segmentation from NLTK library.
+Args:
+	param1 raw_item (list): raw survey item, retrieved in previous steps.
+	param2 survey_item_prefix (string): prefix of survey_item_ID.
+	param3 study (string): metadata parameter about study embedded in the file name.
+	param4 item_name (string): item_name metadata parameter, retrieved in previous steps.
+	param5 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+	param6 splitter (NLTK object): sentence segmentation from NLTK library.
+	param7 country_language (string): country_language metadata, embedded in file name.
+
+Returns:
+	updated df_questionnaire when new valid question segments are included, or df_questionnaire in the same state it
+	was when no new valid question segments were included.
 """
 def process_question_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter,country_language):
 	index_question_tag = raw_item.index('{QUESTION}')
@@ -189,12 +208,17 @@ Bastant
 Poc 
 Gens 
 
-:param raw_item: raw survey item, retrieved in previous steps.
-:param survey_item_prefix: prefix of survey_item_ID.
-:param study: metadata parameter about study embedded in the file name.
-:param item_name: item_name metadata parameter, retrieved in previous steps.
-:param df_questionnaire: pandas dataframe to store questionnaire data.
-:param splitter: sentence segmentation from NLTK library.
+Args:
+	param1 raw_item (list): raw survey item, retrieved in previous steps.
+	param2 survey_item_prefix (string): prefix of survey_item_ID.
+	param3 study (string): metadata parameter about study embedded in the file name.
+	param4 item_name (string): item_name metadata parameter, retrieved in previous steps.
+	param5 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+	param6 splitter (NLTK object): sentence segmentation from NLTK library.
+
+Returns:
+	updated df_questionnaire when new valid introduction segments are included, or df_questionnaire in 
+	the same state it was when no new valid introduction segments were included.
 """
 def process_intro_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter):
 	index_intro_tag = raw_item.index('{INTRO}')
@@ -224,12 +248,17 @@ Extracts and processes the answer segments from a raw item.
 The answer segments are always after the {ANSWERS} tag.
 
 
-:param raw_item: raw survey item, retrieved in previous steps.
-:param survey_item_prefix: prefix of survey_item_ID.
-:param study: metadata parameter about study embedded in the file name.
-:param item_name: item_name metadata parameter, retrieved in previous steps.
-:param df_questionnaire: pandas dataframe to store questionnaire data.
-:param splitter: sentence segmentation from NLTK library.
+Args:
+	param1 raw_item (list): raw survey item, retrieved in previous steps.
+	param2 survey_item_prefix (string): prefix of survey_item_ID.
+	param3 study (string): metadata parameter about study embedded in the file name.
+	param4 item_name (string): item_name metadata parameter, retrieved in previous steps.
+	param5 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+	param6 country_language (string): country_language metadata, embedded in file name.
+
+Returns:
+	updated df_questionnaire when new valid answer segments are included, or df_questionnaire in 
+	the same state it was when no new valid answer segments were included.
 """
 def process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire,country_language):
 	index_answer_tag = raw_item.index('{ANSWERS}')
@@ -288,11 +317,15 @@ def process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_qu
 
 """
 Set initial structures that are necessary for the extraction of each questionnaire.
-:param filename: name of the input file.
-:returns: df_questionnaire (to store questionnaire data), response_dict (to store responses 
-and its category values for reuse),survey_item_prefix (prefix of survey_item_ID), 
-study/country_language (metadata parameters embedded in the file name) and 
-sentence splitter (to segment request/introduction/instruction segments when necessary).
+
+Args:
+	param1 filename (string): name of the input file.
+
+Returns: 
+	df_questionnaire to store questionnaire data (pandas dataframe),
+	survey_item_prefix, which is the prefix of survey_item_ID (string), 
+	study/country_language, which are metadata parameters embedded in the file name (string and string)
+	and sentence splitter to segment request/introduction/instruction segments when necessary (NLTK object). 
 """
 def set_initial_structures(filename):
 	"""
@@ -300,10 +333,6 @@ def set_initial_structures(filename):
 	"""
 	df_questionnaire = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 'text'])
 
-	"""
-	A dictionary to store responses and its category values.
-	"""
-	response_dict = dict()
 	"""
 	The prefix of a EVS survey item is study+'_'+language+'_'+country+'_'
 	"""
@@ -325,16 +354,27 @@ def set_initial_structures(filename):
 	splitter = ut.get_sentence_splitter(filename)
 
 
-	return df_questionnaire, response_dict, survey_item_prefix, study, country_language,splitter
+	return df_questionnaire, survey_item_prefix, study, country_language,splitter
 
-def main(folder_path, concatenate_supplementary_questionnaire):
+"""
+Main method of the ESS plain text to spreadsheet data transformation algorithm.
+The data is extracted from the plain text file (that obeys an internal specification
+for the MCSQ project), preprocessed and receives appropriate metadata attribution.  
+
+The algorithm outputs the csv representation of the df_questionnaire, used to store 
+questionnaire data (pandas dataframe)
+
+Args:
+	param1 folder_path: path to the folder where the plain text files are.
+"""
+def main(folder_path):
 	path = os.chdir(folder_path)
 	files = os.listdir(path)
 
 	for index, file in enumerate(files):
 		if file.endswith(".txt"):	
 			with open(file, 'r') as f:
-				df_questionnaire, response_dict, survey_item_prefix, study, country_language, splitter = set_initial_structures(file)
+				df_questionnaire, survey_item_prefix, study, country_language, splitter = set_initial_structures(file)
 				raw_items = retrieve_raw_items_from_file(f)
 				for raw_item in raw_items:
 					item_name = raw_item[0]
@@ -357,5 +397,4 @@ def main(folder_path, concatenate_supplementary_questionnaire):
 
 if __name__ == "__main__":
 	folder_path = str(sys.argv[1])
-	concatenate_supplementary_questionnaire = bool(sys.argv[2])
-	main(folder_path, concatenate_supplementary_questionnaire)
+	main(folder_path)
