@@ -127,6 +127,8 @@ Returns:
 def check_if_segment_is_instruction(sentence, country_language):
 	if '_ES' in country_language:
 		return instruction_recognition_catalan_spanish(sentence,country_language) 
+	if 'POR' in country_language:
+		return instruction_recognition_portuguese(sentence,country_language)
 
 """
 Extracts and processes the question segments from a raw item.
