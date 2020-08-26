@@ -11,8 +11,11 @@ Y = study year
 C = Country (ISO code with two digits, except for SOURCE)
 L = Language
 
-:param filename: name of the input file.
-:returns: country/language and study metadata.
+Args:
+	param1 filename (string): name of the input file.
+
+Returns: 
+	country/language (string) and study metadata (string).
 """
 def get_country_language_and_study_info(filename):
 	filename_without_extension = re.sub('\.txt', '', filename)
@@ -26,9 +29,14 @@ def get_country_language_and_study_info(filename):
 """
 Cleans Request, Introduction and Instruction text segments by removing
 undesired characters and standartizing some character representations.
+A string input is expected, if the input is not a string instance, 
+the method returns '', so the entry is ignored in the data extraction loop.
 
-:param text: text to be cleaned.
-:returns: cleaned text.
+Args:
+	param1 text (string expected): text to be cleaned.
+
+Returns: 
+	cleaned text (string).
 """
 def clean_text(text):
 	if isinstance(text, str):
@@ -67,9 +75,12 @@ def clean_text(text):
 """
 Switches abbreviations of the word interviewer for the full form.
 
-:param text: sentence being analyzed.
-:param country_language: country_language metadata embedded in file name.
-:returns: text without abbreviations for the word interviewer, when applicable.
+Args:
+	param1 text (string): sentence being analyzed.
+	param2 country_language (string): country_language metadata embedded in file name.
+
+Returns: 
+	text (string) without abbreviations for the word interviewer, when applicable.
 """
 def expand_interviewer_abbreviations(text, country_language):
 	if 'CZE' in country_language:
@@ -87,6 +98,17 @@ def expand_interviewer_abbreviations(text, country_language):
 
 	return text
 
+"""
+Instantiates the SpecialAnswerCategories object that stores both the text
+and category values of the special answers (don't know, refusal, not applicable 
+and write down) in accordance to the country_language metadata parameter.
+
+Args:
+	param1 country_language (string): country_language metadata parameter, embedded in file name.
+
+Returns: 
+	instance of SpecialAnswerCategories object (Python object), in accordance to the country_language.
+"""
 def instantiate_special_answer_category_object(country_language):
 	if 'CAT' in country_language:
 		ess_special_answer_categories = SpecialAnswerCategoriesCAT()
@@ -118,9 +140,22 @@ def instantiate_special_answer_category_object(country_language):
 
 	return ess_special_answer_categories
 
-def check_if_answer_is_special_category(text, ess_special_answer_categories):
-	answer_value = None
+"""
+Verifies if a given answer segment is one of the special answer categories,
+by testing the answer text against the attributes of SpecialAnswerCategories object.
+This method serves the purpose of standartizing the special answer category values.
 
+Args:
+	param1 text (string): answer segment currently being analyzed.
+	param2 answer_value (string): answer category value, defined in clean_answer() method.
+	param3 ess_special_answer_categories (Python object): instance of SpecialAnswerCategories object, 
+	in accordance to the country_language.
+
+Returns: 
+	answer text (string) and its category value (string). When the answer is a special answer category, 
+	the text and category values are the ones stored in the SpecialAnswerCategories object.
+"""
+def check_if_answer_is_special_category(text, answer_value, ess_special_answer_categories):
 	if text.lower() == ess_special_answer_categories.dont_know[0].lower():
 		return ess_special_answer_categories.dont_know[0], ess_special_answer_categories.dont_know[1]
 	elif text.lower() == ess_special_answer_categories.refuse[0].lower():
@@ -132,7 +167,21 @@ def check_if_answer_is_special_category(text, ess_special_answer_categories):
 
 	return text, answer_value
 
+"""
+Cleans the answer segment, by standartizing the text (when it is a special answer category),
+and attributing an category value to it. 
+
+Args:
+	param1 text (string): answer segment currently being analyzed.
+	param2 ess_special_answer_categories (Python object): instance of SpecialAnswerCategories object, 
+	in accordance to the country_language.
+
+Returns: 
+	answer text (string) and its category value (string). When the answer is a special answer category, 
+	the text and category values are the ones stored in the SpecialAnswerCategories object.
+"""
 def clean_answer(text, ess_special_answer_categories):
+	answer_value = None
 	if isinstance(text, str) == False:
 		return None, None
 
@@ -216,7 +265,7 @@ def clean_answer(text, ess_special_answer_categories):
 		answer_value = None
 
 	answer_text = answer_text.strip()
-	answer_text, answer_value = check_if_answer_is_special_category(answer_text, ess_special_answer_categories)
+	answer_text, answer_value = check_if_answer_is_special_category(answer_text, answer_value, ess_special_answer_categories)
 
 	return answer_text, answer_value
 

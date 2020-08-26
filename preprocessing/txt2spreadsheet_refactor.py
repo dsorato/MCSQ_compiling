@@ -252,7 +252,7 @@ def process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_qu
 		df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
 	for i, item in enumerate(answer_segment):
-		survey_item_id = ut.update_survey_item_id(survey_item_prefix)1
+		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 		answer_text, answer_value = clean_answer(item,ess_special_answer_categories)
 		
 		if answer_text:
