@@ -249,7 +249,7 @@ def process_valid_node(filename, node, survey_item_prefix, study, module, df_que
 	for child in node.getiterator():
 		if child.tag == 'qstn' and 'seqNo' in child.attrib:
 			item_name = child.attrib['seqNo']
-			item_name = standartize_item_name(item_name)
+			item_name = standardize_item_name(item_name)
 
 			"""
 			qstn nodes can have preQTxt (requests or introductions), ivuInstr (instructions) or
@@ -267,7 +267,7 @@ def process_valid_node(filename, node, survey_item_prefix, study, module, df_que
 
 		elif child.tag == 'txt' and 'level' in child.attrib:
 			item_name = child.attrib['level']
-			item_name = standartize_item_name(item_name)
+			item_name = standardize_item_name(item_name)
 
 			"""
 			txt nodes do not have children.
@@ -333,10 +333,10 @@ def process_response_with_id_node(filename, node, survey_item_prefix, study, df_
 		</catgry>
 		"""
 		if ',' in catValu.text:
-			category_value = standartize_special_response_category_value(filename, catValu.text, text)
+			category_value = standardize_special_response_category_value(filename, catValu.text, text)
 		else:
 			if pattern.match(catValu.text) is None:
-				category_value = int(standartize_special_response_category_value(filename, catValu.text, text))
+				category_value = int(standardize_special_response_category_value(filename, catValu.text, text))
 		
 		if category_value != '':
 			response_dict[node.attrib['ID']] = text, category_value

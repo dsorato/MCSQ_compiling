@@ -10,9 +10,9 @@ Args:
 	param3 text (string): text of response category, to test against special response category patterns.
 
 Returns: 
-	standartized response category value (string). 
+	standardized response category value (string). 
 """
-def standartize_special_response_category_value(filename, catValu, text):
+def standardize_special_response_category_value(filename, catValu, text):
 	"""
 	Standard:
 	Refusal=777
@@ -51,9 +51,9 @@ Args:
 	param1 item_name (string): item name extracted from the input file.
 
 Returns: 
-	standartized item_name (string). 
+	standardized item_name (string). 
 """
-def standartize_item_name(item_name):
+def standardize_item_name(item_name):
 	item_name = item_name.lower()
 	item_name = re.sub("^q", "Q", item_name)
 	item_name = re.sub("^f", "Q", item_name)
@@ -128,7 +128,7 @@ def clean_text(text, filename):
 		text = re.sub('e\.g\.', "e.g.,",text)
 		text = text.replace('\n',' ')
 		text = text.rstrip()
-		text = standartize_special_response_category(filename, text)
+		text = standardize_special_response_category(filename, text)
 	else:
 		text = ''
 
@@ -146,9 +146,9 @@ Args:
 	param2 text (string): response text.
 
 Returns: 
-	standartized response category text (string).
+	standardized response category text (string).
 """
-def standartize_special_response_category(filename, text):
+def standardize_special_response_category(filename, text):
 	if 'CZE' in filename:
 		text = text.replace(' Nehodí se', "NEHODÍ SE")
 		text = text.replace('Nehodí se', "NEHODÍ SE")

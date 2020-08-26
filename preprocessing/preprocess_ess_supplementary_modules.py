@@ -809,6 +809,41 @@ def split_dataframes(file, df_supp, sentence_splitter):
 		cleaned_df_round = clean_dataframe_by_round(df_round, sentence_splitter)
 		cleaned_df_round.to_csv('ESS_R0'+round_number+'_'+dict_year_round[round_number]+'_SUPP_'+filename_without_extension+'.csv', encoding='utf-8', index=False)
 
+
+"""
+Transforms study metadata present in the input file to the standard
+used in the MCSQ format.
+
+Args:
+	param1 study (string): study metadata extracted from input file (Study column).
+
+Returns:
+	Standardized study parameter (string).
+"""
+def standardize_study_metadata(study):
+	dict_year_round = {'ESS Round 1':'ESS_R01_2002', 'ESS Round 2':'ESS_R02_2004',
+	'ESS Round 3':'ESS_R03_2006', 'ESS Round 4':'ESS_R04_2008', 'ESS Round 5':'ESS_R05_2010', 
+	'ESS Round 6':'ESS_R06_2012', 'ESS Round 7':'ESS_R07_2014', 'ESS Round 8':'ESS_R08_2016',
+	'ESS Round 9':'ESS_R09_2018'}
+
+	for k,v in list(dict_year_round.items()):
+		if study == k:
+			return v
+
+def split_dataframe_by_study(df):
+	dataframes_by_study = dict()
+
+	unique_study = df['Study'].unique()
+	for s in unique_study:
+		a_round = df['Study'] == s
+		df_round = df[a_round]
+		study = standardize_study_metadata(s)
+		dataframes_by_study[study] = df_round
+
+
+	return dataframes_by_study
+
+
 """
 Deletes all questions that are not from supplementary modules in the input file.
 Such input files come from the SQP database, and there are some questions from the
@@ -840,7 +875,10 @@ def main(folder_path):
 			df_supplementary = pd.read_csv(file)
 
 			df_supplementary = drop_non_supplementary_modules(df_supplementary)
-			df_supplementary.to_csv('test.csv', encoding='utf-8-sig', index=False)
+			dataframes_by_study = split_dataframe_by_study(df_supplementary)
+
+			for k,v in list(dataframes_by_study.items()):
+				v.to_csv(k+'.csv', encoding='utf-8-sig', index=False)
 			# split_dataframes(file, df_supp, sentence_splitter)
 		
 
