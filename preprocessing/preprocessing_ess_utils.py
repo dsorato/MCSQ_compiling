@@ -283,76 +283,76 @@ Returns:
 	True if the segment is an instruction or False if it is not.
 """
 def instruction_recognition_portuguese(text,country_language):
-		regex= r"^(?P<continue>)seguir con la\s(?P<card>)tarjeta"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<continue>)seguir con la\s(?P<card>)tarjeta"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
-		regex= r"^(?P<show>)(mostrar|manter)\s(?P<gain>)(novamente)?\s?(?P<card>)cartão"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<show>)(mostrar|manter)\s(?P<gain>)(novamente)?\s?(?P<card>)cartão"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
-		regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<use>)(utilize|mostrar|use)\s(?P<this>)(este|este mesmo)?\s?(?P<card>)cartão\s(?P<again>)(novamente)?"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<use>)(utilize|mostrar|use)\s(?P<this>)(este|este mesmo)?\s?(?P<card>)cartão\s(?P<again>)(novamente)?"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
-		regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<continue>)continue\s(?P<show>)(mostrando|utilizando)\s(?P<this>)(este|este mesmo)?\s?(?P<card>)cartão"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<continue>)continue\s(?P<show>)(mostrando|utilizando)\s(?P<this>)(este|este mesmo)?\s?(?P<card>)cartão"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 		
-		regex= r"^(?P<suggest>)sugerir\s(?P<categories>)categorias\s(?P<de>)de\s(?P<answer>)resposta"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<suggest>)sugerir\s(?P<categories>)categorias\s(?P<de>)de\s(?P<answer>)resposta"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 		
-		regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<choose>)escolha\s(?P<youranswer>)respostas\s(?P<fromthis>)deste\s(?P<card>)cartão"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<choose>)escolha\s(?P<youranswer>)respostas\s(?P<fromthis>)deste\s(?P<card>)cartão"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
-		regex= r"^(?P<note>)(nota)?\s?(?P<for>)(para)?\s?(?P<interviewer>)entrevistador\s(?P<code>)codifica(r)?"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<note>)(nota)?\s?(?P<for>)(para)?\s?(?P<interviewer>)entrevistador\s(?P<code>)codifica(r)?"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
 
-		regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<choose>)escolha\s(?P<option>)a afirmação\s(?P<closer>)que mais se aproxima da\s(?P<youropinion>)sua opinião"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<choose>)escolha\s(?P<option>)a afirmação\s(?P<closer>)que mais se aproxima da\s(?P<youropinion>)sua opinião"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
-		regex= r"^(?P<read>)ler\s(?P<one>)uma\s(?P<organization>)organização\s(?P<ateachtime>)de cada vez"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<read>)ler\s(?P<one>)uma\s(?P<organization>)organização\s(?P<ateachtime>)de cada vez"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
-		regex= r"^(?P<read>)ler\s(?P<slowly>)(pausadamente)?\s(?P<outloud>)(em voz alta)?"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<read>)ler\s(?P<slowly>)(pausadamente)?\s(?P<outloud>)(em voz alta)?"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
-		regex= r"^(?P<code>)codificar\s(?P<only>)(só)?\s?(?P<one>)uma\s(?P<answer>)resposta"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<code>)codificar\s(?P<only>)(só)?\s?(?P<one>)uma\s(?P<answer>)resposta"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
-		regex= r"^(?P<describe>)descrever\s(?P<details>)detalhadamente"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<describe>)descrever\s(?P<details>)detalhadamente"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
-		regex= r"^(?P<ask>)perguntar a\s(?P<all>)todos"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<ask>)perguntar a\s(?P<all>)todos"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
-		regex= r"^(?P<insist>)insistir"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
+	regex= r"^(?P<insist>)insistir"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
 	return False
 

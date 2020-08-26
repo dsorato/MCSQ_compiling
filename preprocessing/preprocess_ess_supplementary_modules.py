@@ -7,56 +7,14 @@ Author: Danielly Sorato
 Author contact: danielly.sorato@gmail.com
 """ 
 
-
 import os
 import sys
 import pandas as pd
 import nltk.data
 import re
+import utils as ut
+from preprocessing_ess_utils import *
 
-
-#Determine which of the sentence segmentation modules will be loaded based on filename
-def determine_sentence_tokenizer(filename):
-	if 'ENG_' in filename:
-		sentence_splitter_suffix = 'english.pickle'
-	if 'FRE_' in filename:
-		sentence_splitter_suffix = 'french.pickle'
-	if 'GER_' in filename:
-		sentence_splitter_suffix = 'german.pickle'
-	if 'CZE_' in filename:
-		sentence_splitter_suffix = 'czech.pickle'
-	if 'POR_' in filename:
-		sentence_splitter_suffix = 'portuguese.pickle'
-	if 'ITA_' in filename:
-		sentence_splitter_suffix = 'italian.pickle'
-	if 'RUS_' in filename:
-		sentence_splitter_suffix = 'russian.pickle'
-	if 'SPA_' in filename or 'CAT_' in filename:
-		sentence_splitter_suffix = 'spanish.pickle'
-	if 'DAN_' in filename:
-		sentence_splitter_suffix = 'danish.pickle'
-	if 'DUT_' in filename:
-		sentence_splitter_suffix = 'dutch.pickle'
-	if 'SLO_' in filename:
-		sentence_splitter_suffix = 'slovene.pickle'
-	if 'EST_' in filename:
-		sentence_splitter_suffix = 'estonian.pickle'
-	if 'FIN_' in filename:
-		sentence_splitter_suffix = 'finnish.pickle'
-	if 'GRE_' in filename:
-		sentence_splitter_suffix = 'greek.pickle'
-	if 'POL_' in filename:
-		sentence_splitter_suffix = 'polish.pickle'
-	if 'NOR_' in filename:
-		sentence_splitter_suffix = 'norwegian.pickle'
-	if 'SWE_' in filename:
-		sentence_splitter_suffix = 'swedish.pickle'
-	if 'TUR_' in filename:
-		sentence_splitter_suffix = 'turkish.pickle'
-	if 'HUN_' in filename:
-		sentence_splitter_suffix = 'hungarian.pickle'
-
-	return sentence_splitter_suffix
 
 def eliminate_dots(sentence):
 	return "".join(filter(lambda char: char != ".", sentence))
@@ -851,23 +809,44 @@ def split_dataframes(file, df_supp, sentence_splitter):
 		cleaned_df_round = clean_dataframe_by_round(df_round, sentence_splitter)
 		cleaned_df_round.to_csv('ESS_R0'+round_number+'_'+dict_year_round[round_number]+'_SUPP_'+filename_without_extension+'.csv', encoding='utf-8', index=False)
 
-def main():
-	path = os.getcwd()
+"""
+Deletes all questions that are not from supplementary modules in the input file.
+Such input files come from the SQP database, and there are some questions from the
+modules A, B, C, D and E. These questions are already included in the database 
+trough the preprocessing of the plain text files. Therefore, it is necessary
+to exclude them to not generate duplicates in the database.
+
+Args:
+	param1 df (pandas dataframe): input file contents stored in a pandas dataframe object.
+Returns:
+	pandas dataframe, without non supplementary modules.
+"""
+def drop_non_supplementary_modules(df):
+	df = df.drop(df[(df['Question admin'].str.contains('^A')) | 
+		(df['Question admin'].str.contains('^B')) | 
+		(df['Question admin'].str.contains('^C')) | 
+		(df['Question admin'].str.contains('^D')) | 
+		(df['Question admin'].str.contains('^E'))].index)
+
+	return df
+
+
+def main(folder_path):
+	path = os.chdir(folder_path)
 	files = os.listdir(path)
 
 	for index, file in enumerate(files):
 		if file.endswith(".csv") and 'SUPP' not in file:
-			print(file)
-			#Punkt Sentence Tokenizer from NLTK	
-			sentence_splitter_prefix = 'tokenizers/punkt/'
-			sentence_splitter_suffix = determine_sentence_tokenizer(file)
-			sentence_splitter_name = sentence_splitter_prefix+sentence_splitter_suffix
-			sentence_splitter = nltk.data.load(sentence_splitter_name)
-			df_supp = pd.read_csv(file)
-			split_dataframes(file, df_supp, sentence_splitter)
+			df_supplementary = pd.read_csv(file)
+
+			df_supplementary = drop_non_supplementary_modules(df_supplementary)
+			df_supplementary.to_csv('test.csv', encoding='utf-8-sig', index=False)
+			# split_dataframes(file, df_supp, sentence_splitter)
 		
 
 
 
+
 if __name__ == "__main__":
-	main()
+	folder_path = str(sys.argv[1])
+	main(folder_path)

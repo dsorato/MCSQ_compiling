@@ -341,7 +341,7 @@ def set_initial_structures(filename):
 	survey_item_prefix = re.sub('\.txt', '', filename)+'_'
 
 	"""
-	Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder.
+	Reset the initial survey_id sufix, because main is called iterativelly for every file in folder.
 	"""
 	ut.reset_initial_sufix()
 
