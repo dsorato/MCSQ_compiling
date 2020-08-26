@@ -4,78 +4,11 @@ import re
 import pandas as pd
 from preprocessing_ess_utils import *
 import utils as ut
-from essmodules import * 
 
 
 scale_items_to_ignore = ['01', '02', '03', '04', '05', '06', '07', '08', '09',
 '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
-"""
-Matches the item_name against the dictionary stored in the ESSModulesRRR objects.
-Rotating/supplementary modules are defined by round because they may change from
-round to round.
-Args:
-	param1 essmodules (Python object): ESSModulesRRR object, instantiated according to the round.
-	param2 item_name (string): name of survey item, retrieved in previous steps.
-
-Returns: 
-	matching value for item name (string).
-"""
-def retrieve_supplementary_module(essmodules,item_name):
-	for k,v in list(essmodules.modules.items()):
-		if re.compile(k).match(item_name):
-			return v
-
-"""
-Retrieves the module of the survey_item, based on information from the ESSModulesRRR objects.
-This information comes from the source questionnaires.
-
-Args:
-	param1 item_name (string): name of survey item, retrieved in previous steps.
-	param2 study (string): study metadata, embedded in the file name.
-
-Returns: 
-	module of survey_item (string).
-"""
-def retrieve_item_module(item_name, study):
-	if re.compile(r'A').match(item_name):
-		return 'A - Media; social trust'
-	elif re.compile(r'B').match(item_name):
-		return 'B - Politics, including: political interest, efficacy, trust, electoral and other forms of participation, party allegiance, socio-political evaluations/orientations, multi-level governance'
-	elif re.compile(r'C').match(item_name):
-		return 'C - Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity'
-	elif re.compile(r'F').match(item_name):
-		return 'F - Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status'
-	else:
-		if 'R01' in study:
-			essmodules = ESSSModulesR01()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
-
-		elif 'R02' in study:
-			essmodules = ESSSModulesR02()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
-
-		elif 'R03' in study:
-			essmodules = ESSSModulesR03()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
-
-		elif 'R04' in study:
-			essmodules = ESSSModulesR04()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
-
-		elif 'R05' in study:
-			essmodules = ESSSModulesR05()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
-
-		elif 'R06' in study:
-			essmodules = ESSSModulesR06()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
 
 """
 Extracts the raw items from ESS plain text file, based on an item name regex pattern.
@@ -115,20 +48,6 @@ def retrieve_raw_items_from_file(file):
 
 	return raw_items
 
-"""
-Calls the appropriate instruction recognition method, according to the language.
-Args:
-	param1 sentence (string): sentence being analyzed in outer loop of data extraction.
-	param2 country_language (string): country_language metadata, embedded in file name.
-
-Returns: 
-	bypass the return of instruction_recognition methods (boolean).
-"""
-def check_if_segment_is_instruction(sentence, country_language):
-	if '_ES' in country_language:
-		return instruction_recognition_catalan_spanish(sentence,country_language) 
-	if 'POR' in country_language:
-		return instruction_recognition_portuguese(sentence,country_language)
 
 """
 Extracts and processes the question segments from a raw item.

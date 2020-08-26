@@ -1,8 +1,10 @@
 import re
 from ess_special_answer_categories import * 
+from essmodules import * 
 
 """
-Retrieves the country/language and study metadata based on the input filename.
+Retrieves the country/language and study metadata based on the input filename,
+or survey_item_ID prefix.
 The filenames respect a nomenclature rule, as follows:
 SSS_RRR_YYYY_CC_LLL
 S = study name 
@@ -18,13 +20,130 @@ Returns:
 	country/language (string) and study metadata (string).
 """
 def get_country_language_and_study_info(filename):
-	filename_without_extension = re.sub('\.txt', '', filename)
-	filename_split = filename_without_extension.split('_')
+	if 'txt' in filename:
+		filename_without_extension = re.sub('\.txt', '', filename)
+		filename_split = filename_without_extension.split('_')
+	else:
+		filename_split = filename.split('_')
 
 	study = filename_split[0]+'_'+filename_split[1]+'_'+filename_split[2]
 	country_language = filename_split[3]+'_'+filename_split[4]
 
 	return study, country_language
+
+"""
+Transforms study metadata present in the input file to the standard
+used in the MCSQ format.
+
+Args:
+	param1 study (string): study metadata extracted from input file (Study column).
+
+Returns:
+	Standardized study parameter (string).
+"""
+def standardize_study_metadata(study):
+	dict_year_round = {'ESS Round 1':'ESS_R01_2002', 'ESS Round 2':'ESS_R02_2004',
+	'ESS Round 3':'ESS_R03_2006', 'ESS Round 4':'ESS_R04_2008', 'ESS Round 5':'ESS_R05_2010', 
+	'ESS Round 6':'ESS_R06_2012', 'ESS Round 7':'ESS_R07_2014', 'ESS Round 8':'ESS_R08_2016',
+	'ESS Round 9':'ESS_R09_2018'}
+
+	for k,v in list(dict_year_round.items()):
+		if study == k:
+			return v
+
+
+"""
+Standardizes the item name metadata of supplementary modules G, H and I
+
+Args:
+	param1 item_name: item_name metadata, extracted from input file.
+
+Returns:
+	Standardized item_name, when applicable.
+"""
+def standardize_supplementary_item_name(item_name):
+	if 'GF' in item_name:
+		return item_name.replace('GF', 'G')
+	elif 'IF' in item_name:
+		return item_name.replace('IF', 'I')
+	elif 'HF' in item_name:
+		return item_name.replace('HF', 'H')
+	elif 'GS' in item_name:
+		return item_name.replace('GS', 'G')
+	elif 'IS' in item_name:
+		return item_name.replace('IS', 'I')
+	elif 'HS' in item_name:
+		return item_name.replace('HS', 'I')
+	else:
+		return item_name
+
+
+"""
+Matches the item_name against the dictionary stored in the ESSModulesRRR objects.
+Rotating/supplementary modules are defined by round because they may change from
+round to round.
+Args:
+	param1 essmodules (Python object): ESSModulesRRR object, instantiated according to the round.
+	param2 item_name (string): name of survey item, retrieved in previous steps.
+
+Returns: 
+	matching value for item name (string).
+"""
+def retrieve_supplementary_module(essmodules,item_name):
+	for k,v in list(essmodules.modules.items()):
+		if re.compile(k).match(item_name):
+			return v
+
+"""
+Retrieves the module of the survey_item, based on information from the ESSModulesRRR objects.
+This information comes from the source questionnaires.
+
+Args:
+	param1 item_name (string): name of survey item, retrieved in previous steps.
+	param2 study (string): study metadata, embedded in the file name.
+
+Returns: 
+	module of survey_item (string).
+"""
+def retrieve_item_module(item_name, study):
+	if re.compile(r'A').match(item_name):
+		return 'A - Media; social trust'
+	elif re.compile(r'B').match(item_name):
+		return 'B - Politics, including: political interest, efficacy, trust, electoral and other forms of participation, party allegiance, socio-political evaluations/orientations, multi-level governance'
+	elif re.compile(r'C').match(item_name):
+		return 'C - Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity'
+	elif re.compile(r'F').match(item_name):
+		return 'F - Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status'
+	else:
+		if 'R01' in study:
+			essmodules = ESSSModulesR01()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
+
+		elif 'R02' in study:
+			essmodules = ESSSModulesR02()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
+
+		elif 'R03' in study:
+			essmodules = ESSSModulesR03()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
+
+		elif 'R04' in study:
+			essmodules = ESSSModulesR04()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
+
+		elif 'R05' in study:
+			essmodules = ESSSModulesR05()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
+
+		elif 'R06' in study:
+			essmodules = ESSSModulesR06()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
 
 """
 Cleans Request, Introduction and Instruction text segments by removing
@@ -270,6 +389,21 @@ def clean_answer(text, ess_special_answer_categories):
 	return answer_text, answer_value
 
 
+"""
+Calls the appropriate instruction recognition method, according to the language.
+Args:
+	param1 sentence (string): sentence being analyzed in outer loop of data extraction.
+	param2 country_language (string): country_language metadata, embedded in file name.
+
+Returns: 
+	bypass the return of instruction_recognition methods (boolean).
+"""
+def check_if_segment_is_instruction(sentence, country_language):
+	if '_ES' in country_language:
+		return instruction_recognition_catalan_spanish(sentence,country_language) 
+	if 'POR' in country_language:
+		return instruction_recognition_portuguese(sentence,country_language)
+
 
 """
 Recognizes an instruction segment for texts written in Portuguese,
@@ -384,6 +518,11 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
+		regex= r"^(?P<use>)(Utilitzi)?\s?(?P<this>)aquesta\s(?P<card>)targeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
 		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<use>)(utilitzi la|segueixi utilitzant|continuï utilitzant)\s(?P<this>)(aquesta)?\s?(?P<same>)(mateixa)?\s?(?P<card>)targeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
@@ -399,7 +538,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)encercli\s(?P<one>)una\s(?P<option>)opció"
+		regex= r"^(?P<please>)(si us plau)?(\,)?\s?(?P<choose>)encercli\s(?P<one>)una\s(?P<option>)opció"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
@@ -454,7 +593,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-	if 'SPA' in country_language:
+	elif 'SPA' in country_language:
 		regex= r"^(?P<continue>)seguir con la\s(?P<card>)tarjeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:

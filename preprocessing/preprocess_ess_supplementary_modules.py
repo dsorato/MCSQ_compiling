@@ -606,25 +606,6 @@ def clean_dataframe_by_round(df_round, sentence_splitter):
 		module = re.match(r"([a-z]+)([0-9]+)", row['Question admin'], re.I)
 		module = module.groups()[0]
 
-		analysed_item = row['Introduction text']
-		if analysed_item != '.' and isinstance(analysed_item, str):
-			analysed_item = remove_undesired_symbols(analysed_item)
-			split_into_sentences = sentence_splitter.tokenize(analysed_item)
-			for sentence in split_into_sentences:
-				data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-				'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-				'item_type': 'INTRODUCTION', 'item_value': None, 'text': sentence}
-				cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-		analysed_item = row['Request for answer text']
-		if analysed_item != '.' and isinstance(analysed_item, str):
-			analysed_item = remove_undesired_symbols(analysed_item)
-			split_into_sentences = sentence_splitter.tokenize(analysed_item)
-			for sentence in split_into_sentences:
-				data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-				'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-				'item_type': 'REQUEST', 'item_value': None, 'text': sentence}
-				cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
 
 		
 		analysed_item = row['Answer options text']
@@ -777,68 +758,132 @@ def clean_dataframe_by_round(df_round, sentence_splitter):
 
 	return cleaned_df_round
 
-
-
-
-def split_dataframes(file, df_supp, sentence_splitter):
-	global currency
-	if 'CZE_CZ' in file:
-		currency = 'Kč'
-	elif 'NOR' in file:
-		currency = 'NOK'
-	elif 'GER_DE' in file or 'GER_AT' in file or 'FRE' in file or 'POR' in file or 'SPA' in file or 'CAT' in file or 'ENG_IE' in file or 'RUS' in file:
-		currency = '€'
-	elif 'GER_CH' in file:
-		currency = 'CHF'
-	elif 'ENG_GB' in file:
-		currency = '£'
-	elif 'ENG_SOURCE' in file:
-		currency = 'individual income'
-	dict_year_round = {'1':'2002', '2':'2004', '3':'2006', '4':'2008', '5':'2010', '6':'2012', '7':'2014', '8':'2016', '9':'2018'}
-
-	filename_without_extension = re.sub('.csv', '', file)
-
-	unique_values_study = df_supp['Study'].unique()
-	for value in unique_values_study:
-		a_round = df_supp['Study'] == value
-		df_round = df_supp[a_round]
-		df_round_unique = df_round['Study'].unique()
-		df_round_unique = ''.join(df_round_unique)
-		round_number =  [int(s) for s in df_round_unique.split() if s.isdigit()]
-		round_number = str(round_number[0])
-		cleaned_df_round = clean_dataframe_by_round(df_round, sentence_splitter)
-		cleaned_df_round.to_csv('ESS_R0'+round_number+'_'+dict_year_round[round_number]+'_SUPP_'+filename_without_extension+'.csv', encoding='utf-8', index=False)
-
-
 """
-Transforms study metadata present in the input file to the standard
-used in the MCSQ format.
+Processes introduction segments.
 
 Args:
-	param1 study (string): study metadata extracted from input file (Study column).
+	param1 df (pandas dataframe): dataframe to store processed questionnaire data.
+	param2 row (pandas dataframe row): row of dataframe with contents of the input 
+	file being analyzed in outer loop.
+	param3 survey_item_prefix (string): prefix of survey_item_ID.
+	param4 item_name (string): item_name metadata parameter, retrieved in previous steps.
+	param5 module (string): module metadata parameter, retrieved in previous steps.
+	param6 splitter (NLTK object): sentence segmentation from NLTK library.
 
 Returns:
-	Standardized study parameter (string).
+	a pandas dataframe with preprocessed introduction segments.
 """
-def standardize_study_metadata(study):
-	dict_year_round = {'ESS Round 1':'ESS_R01_2002', 'ESS Round 2':'ESS_R02_2004',
-	'ESS Round 3':'ESS_R03_2006', 'ESS Round 4':'ESS_R04_2008', 'ESS Round 5':'ESS_R05_2010', 
-	'ESS Round 6':'ESS_R06_2012', 'ESS Round 7':'ESS_R07_2014', 'ESS Round 8':'ESS_R08_2016',
-	'ESS Round 9':'ESS_R09_2018'}
+def process_introduction(df, row, survey_item_prefix, item_name,module, splitter):
+	introduction = row['Introduction text']
+	study, country_language = get_country_language_and_study_info(survey_item_prefix)
 
-	for k,v in list(dict_year_round.items()):
-		if study == k:
-			return v
+	if introduction != '.' and isinstance(introduction, str):
+		introduction = remove_undesired_symbols(introduction)
+		sentences = splitter.tokenize(introduction)
+		for sentence in sentences:
+			if df.empty:
+				survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+			else:
+				survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-def split_dataframe_by_study(df):
+			data = {'survey_item_ID':survey_item_id, 'Study':study,  'module': module, 
+			'item_type': 'INTRODUCTION','item_name':item_name, 'item_value': None, 'text': sentence}
+			df = df.append(data, ignore_index = True)
+
+	return df
+
+"""
+Processes request segments.
+
+Args:
+	param1 df (pandas dataframe): dataframe to store processed questionnaire data.
+	param2 row (pandas dataframe row): row of dataframe with contents of the input 
+	file being analyzed in outer loop.
+	param3 survey_item_prefix (string): prefix of survey_item_ID.
+	param4 item_name (string): item_name metadata parameter, retrieved in previous steps.
+	param5 module (string): module metadata parameter, retrieved in previous steps.
+	param6 splitter (NLTK object): sentence segmentation from NLTK library.
+
+Returns:
+	a pandas dataframe with preprocessed request segments.
+"""
+def process_request(df, row, survey_item_prefix, item_name,module, splitter):
+	request = row['Request for answer text']
+	study, country_language = get_country_language_and_study_info(survey_item_prefix)
+
+	if request != '.' and isinstance(request, str):
+		request = remove_undesired_symbols(request)
+		sentences = splitter.tokenize(request)
+		for sentence in sentences:
+			if df.empty:
+				survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+			else:
+				survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+			if check_if_segment_is_instruction(sentence, country_language):
+				item_type = 'INSTRUCTION'
+			else:
+				item_type = 'REQUEST'
+
+			data = {'survey_item_ID':survey_item_id, 'Study':study,  'module': module, 
+			'item_type': 'REQUEST','item_name':item_name, 'item_value': None, 'text': sentence}
+			df = df.append(data, ignore_index = True)
+
+	return df
+
+"""
+Calls the appropriate methods to preprocess introduction, request and response segments
+(there are no instruction segments in SQP by design).
+
+Args:
+	param1 df (pandas dataframe): dataframe with contents of the input file.
+Returns:
+	a pandas dataframe with preprocessed data.
+"""
+def preprocess_data_by_study(df, survey_item_prefix):
+	"""
+	A pandas dataframe to store questionnaire data.
+	"""
+	df_questionnaire = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 
+	'item_name', 'item_value', 'text'])
+
+	"""
+	Instantiate a NLTK sentence splitter based on language. 
+	"""
+	splitter = ut.get_sentence_splitter(survey_item_prefix)
+
+	for i, row in df.iterrows():
+		item_name = standardize_supplementary_item_name(row['Question admin'])
+		print(row['Question admin'], item_name)
+		module = retrieve_item_module(item_name, survey_item_prefix)
+		df_questionnaire = process_introduction(df_questionnaire, row, survey_item_prefix, item_name,module, splitter)
+		df_questionnaire = process_request(df_questionnaire, row, survey_item_prefix, item_name,module, splitter)
+
+	return df_questionnaire
+
+
+"""
+Splits the dataframe with contents of the input file, which has all rounds in it,
+in multiple dataframes divided by round (study). The splitted dataframes are stored
+in a dictionary for futher preprocessing steps.
+
+Args:
+	param1 df (pandas dataframe): dataframe with contents of the input file.
+
+Returns:
+	dictionary containing the dataframes per study.
+"""
+def split_dataframe_by_study(df, filename):
 	dataframes_by_study = dict()
+	filename_without_extension = re.sub('\.csv', '', filename)
 
 	unique_study = df['Study'].unique()
 	for s in unique_study:
 		a_round = df['Study'] == s
 		df_round = df[a_round]
 		study = standardize_study_metadata(s)
-		dataframes_by_study[study] = df_round
+		survey_item_prefix = study+'_'+filename_without_extension+'_'
+		dataframes_by_study[survey_item_prefix] = df_round
 
 
 	return dataframes_by_study
@@ -872,16 +917,22 @@ def main(folder_path):
 
 	for index, file in enumerate(files):
 		if file.endswith(".csv") and 'SUPP' not in file:
+			"""
+			Reset the initial survey_id sufix, because main is called iterativelly for every file in folder.
+			"""
+			ut.reset_initial_sufix()
 			df_supplementary = pd.read_csv(file)
 
 			df_supplementary = drop_non_supplementary_modules(df_supplementary)
-			dataframes_by_study = split_dataframe_by_study(df_supplementary)
+			dataframes_by_study = split_dataframe_by_study(df_supplementary, file)
 
 			for k,v in list(dataframes_by_study.items()):
-				v.to_csv(k+'.csv', encoding='utf-8-sig', index=False)
-			# split_dataframes(file, df_supp, sentence_splitter)
-		
+				if v.empty==False:
+					df_supplementary = preprocess_data_by_study(v, k)
 
+					df_supplementary.to_csv(k+'.csv', encoding='utf-8-sig', index=False)
+	
+	
 
 
 
