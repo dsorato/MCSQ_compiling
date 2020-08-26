@@ -297,16 +297,6 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<ask>)(preguntar)?\s?a\s(?P<all>)tothom"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
-
-		regex= r"^(?P<insist>)insistiu"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
-
 		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<use>)(utilitzi la|segueixi utilitzant|continuï utilitzant)\s(?P<this>)(aquesta)?\s?(?P<same>)(mateixa)?\s?(?P<card>)targeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
@@ -316,13 +306,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
-
-
-		regex= r"^(?P<read>)llegi(r|u)\s(?P<out>)(alta)?"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches:
-			return True
-
+		
 		regex= r"^(?P<suggest>)suggerir\s(?P<categories>)categories\s(?P<de>)de\s(?P<answer>)resposta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
@@ -333,12 +317,32 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<note>)nota\s(?P<for>)per\s(?P<interviewer>)entrevistador\s(?P<code>)codificar"
+		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)encercli\s(?P<option>)l'opció\s(?P<closer>)més propera"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)triï\s(?P<youranswer>)seva resposta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<read>)llegi(r|u)\s(?P<out>)(alta)?"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<read>)llegi(r|u)\s(?P<each>)cada\s(?P<utterance>)afirmació"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
 
 		regex= r"^(?P<readorcode>)(llegir|codificar)\s(?P<each>)cada\s(?P<organization>)organització"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<note>)nota\s(?P<for>)per\s(?P<interviewer>)entrevistador\s(?P<code>)codificar"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
@@ -353,11 +357,88 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)encercli\s(?P<option>)l'opció\s(?P<closer>)més propera"
+		regex= r"^(?P<ask>)(preguntar)?\s?a\s(?P<all>)tothom"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
 
+		regex= r"^(?P<insist>)insistiu"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+	if 'SPA' in country_language:
+		regex= r"^(?P<continue>)seguir con la\s(?P<card>)tarjeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<show>)mostrar\s(?P<card>)tarjeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<continueusing>)(siga utilizando|siga usando|use otra vez|use)\s(?P<same>)(la misma)?\s?\s(?P<this>)(esta)?\s?(?P<card>)tarjeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<use>)(utilice|use)\s(?P<this>)(esta)?\s?(?P<card>)tarjeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+
+		regex= r"^(?P<suggest>)sugerir\s(?P<categories>)categorías\s(?P<de>)de\s(?P<answer>)respuesta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+		
+		regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<choose>)(escoja|elija)\s(?P<youranswer>)su respuesta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<mark>)marque\s(?P<one>)una\s(?P<option>)casilla"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<note>)nota\s(?P<for>)per\s(?P<interviewer>)el entrevistador\s(?P<code>)codificar"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+
+		regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<mark>)marque\s(?P<option>)la casilla\s(?P<closer>)que mejor represente\s(?P<youropinion>)su opinión"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<readorcode>)(leer|codificar)\s(?P<each>)cada\s(?P<organization>)organización"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<read>)leer\s(?P<out>)(alto)?"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<read>)leer\s(?P<eachone>)una a una\s(?P<and>)(y)?\s?(?P<note>)anotar"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<ask>)(preguntar)?\s?a\s(?P<all>)todos"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<insist>)insistir"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
 
 	return False
 
