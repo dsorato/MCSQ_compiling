@@ -11,12 +11,15 @@ var_names_to_ignore = ['cntry_y', 'cntry1_y', 'country', 'country1', 'split_1', 
 """
 Retrieves the module of the survey_item, based on information from the EVSModulesYYYY objects.
 This information comes from the EVS_modules_reference.xlsx file, sent by Evelyn.
-:param study: study metadata, embedded in the file name.
-:param country_language: country_language metadata, embedded in the file name.
-:param name: attribute 'name' of the analyzed node, which is an EVS variable. 
-The interest variables are listed in the EVSModulesYYYY objects.
 
-:returns: module of survey_item in string format.
+Args:
+	param1 study (string): study metadata, embedded in the file name.
+	param2 country_language (string): country_language metadata, embedded in the file name.
+	param3 name (string): attribute 'name' of the analyzed node, which is an EVS variable. 
+	The interest variables are listed in the EVSModulesYYYY objects.
+
+Returns: 
+	appropriate module of survey_item (string).
 """
 def retrieve_item_module(study, country_language, name):
 	"""
@@ -74,15 +77,18 @@ def retrieve_item_module(study, country_language, name):
 Extracts information from preQTxt node (requests and introductions). The text is split into 
 sentences and appropriate metadata is attributed to it. 
 
-:param filename: name of the input file. It will be used to instantiate the sentence splitter.
-:param preQTxt: valid node that is being analyzed.
-:param survey_item_prefix: prefix of the survey_item_ID metadata
-:param study: study metadata, retrieved from the filename.
-:param item_name: item_name metadata, retrieved from the process_valid_node() method.
-:param module: module of survey_item, extracted in previous steps of the loop.
-:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+Args:
+	param1 filename (string): name of the input file. It will be used to instantiate the sentence splitter.
+	param2 preQTxt (ElementTree node object): valid node that is being analyzed.
+	param3 survey_item_prefix (string): prefix of the survey_item_ID metadata
+	param4 study (string): study metadata, retrieved from the filename.
+	param5 item_name (string): item_name metadata, retrieved from the process_valid_node() method.
+	param6 module (string): module of survey_item, extracted in previous steps of the loop.
+	param df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.
 
-:returns: df_questionnaire, with new information extracted from the preQTxt node.
+Returns:
+	updated df_questionnaire when new valid information extracted from the preQTxt node is included, 
+	or df_questionnaire in the same state it was when no new valid segments are included.
 """
 def process_preqtxt_node(filename, preQTxt, survey_item_prefix, study, item_name, module, df_questionnaire):
 	splitter = ut.get_sentence_splitter(filename)
@@ -112,15 +118,18 @@ def process_preqtxt_node(filename, preQTxt, survey_item_prefix, study, item_name
 Extracts information from ivuInstr node (instructions). The text is split into sentences and appropriate 
 metadata is attributed to it. 
 
-:param filename: name of the input file. It will be used to instantiate the sentence splitter.
-:param ivuInstr: valid node that is being analyzed.
-:param survey_item_prefix: prefix of the survey_item_ID metadata
-:param study: study metadata, retrieved from the filename.
-:param item_name: item_name metadata, retrieved from the process_valid_node() method.
-:param module: module of survey_item, extracted in previous steps of the loop.
-:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+Args:
+	param1 filename (string): name of the input file. It will be used to instantiate the sentence splitter.
+	param2 ivuInstr (ElementTree node object): valid node that is being analyzed.
+	param3 survey_item_prefix (string): prefix of the survey_item_ID metadata
+	param4 study (string): study metadata, retrieved from the filename.
+	param5 item_name (string): item_name metadata, retrieved from the process_valid_node() method.
+	param6 module (string): module of survey_item, extracted in previous steps of the loop.
+	param7 df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.
 
-:returns: df_questionnaire, with new information extracted from the ivuInstr node.
+Returns:
+	updated df_questionnaire when new valid information extracted from the ivuInstr node is included, 
+	or df_questionnaire in the same state it was when no new valid segments are included.
 """
 def process_ivuinstr_node(filename, ivuInstr, survey_item_prefix, study, item_name, module, df_questionnaire):
 	splitter = ut.get_sentence_splitter(filename)
@@ -146,15 +155,18 @@ def process_ivuinstr_node(filename, ivuInstr, survey_item_prefix, study, item_na
 Extracts information from qstnLit node (requests). The text is split into sentences and appropriate 
 metadata is attributed to it. 
 
-:param filename: name of the input file. It will be used to instantiate the sentence splitter.
-:param qstnLit: valid node that is being analyzed.
-:param survey_item_prefix: prefix of the survey_item_ID metadata
-:param study: study metadata, retrieved from the filename.
-:param item_name: item_name metadata, retrieved from the process_valid_node() method.
-:param module: module of survey_item, extracted in previous steps of the loop.
-:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+Args:
+	param1 filename (string): name of the input file. It will be used to instantiate the sentence splitter.
+	param2 qstnLit (ElementTree node object): valid node that is being analyzed.
+	param3 survey_item_prefix (string): prefix of the survey_item_ID metadata
+	param4 study (string): study metadata, retrieved from the filename.
+	param5 item_name (string): item_name metadata, retrieved from the process_valid_node() method.
+	param6 module (string): module of survey_item, extracted in previous steps of the loop.
+	param7 df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.
 
-:returns: df_questionnaire, with new information extracted from the qstnLit node.
+Returns:
+	updated df_questionnaire when new valid information extracted from the qstnLit node is included, 
+	or df_questionnaire in the same state it was when no new valid segments are included.
 """
 def process_qstnLit_node(filename, qstnLit, survey_item_prefix, study, item_name, module, df_questionnaire):
 	splitter = ut.get_sentence_splitter(filename)
@@ -180,15 +192,18 @@ def process_qstnLit_node(filename, qstnLit, survey_item_prefix, study, item_name
 Extracts information from txt node (requests). The text is split into sentences and appropriate 
 metadata is attributed to it. 
 
-:param filename: name of the input file. It will be used to instantiate the sentence splitter.
-:param txt: valid node that is being analyzed.
-:param survey_item_prefix: prefix of the survey_item_ID metadata
-:param study: study metadata, retrieved from the filename.
-:param item_name: item_name metadata, retrieved from the process_valid_node() method.
-:param module: module of survey_item, extracted in previous steps of the loop.
-:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+Args:
+	param1 filename (string): name of the input file. It will be used to instantiate the sentence splitter.
+	param2 txt (ElementTree node object): valid node that is being analyzed.
+	param3 survey_item_prefix (string): prefix of the survey_item_ID metadata
+	param4 study (string): study metadata, retrieved from the filename.
+	param5 item_name (string): item_name metadata, retrieved from the process_valid_node() method.
+	param6 module (string): module of survey_item, extracted in previous steps of the loop.
+	param7 df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.
 
-:returns: df_questionnaire, with new information extracted from the txt node.
+Returns:
+	updated df_questionnaire when new valid information extracted from the txt node is included, 
+	or df_questionnaire in the same state it was when no new valid segments are included.
 """
 def process_txt_node(filename, txt, survey_item_prefix, study, item_name, module, df_questionnaire):
 	splitter = ut.get_sentence_splitter(filename)
@@ -214,14 +229,17 @@ def process_txt_node(filename, txt, survey_item_prefix, study, item_name, module
 Calls the appropriate method to extract information from node and its children, when the node is valid 
 (variable listed in EVSModulesYYYY classes), depending on node tag.
 
-:param filename: name of the input file. It will be used to instantiate the sentence splitter.
-:param node: valid node that is being analyzed.
-:param survey_item_prefix: prefix of the survey_item_ID metadata
-:param study: study metadata, retrieved from the filename.
-:param module: module of survey_item, extracted in previous steps of the loop.
-:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
+Args:
+	param1 filename (string): name of the input file. It will be used to instantiate the sentence splitter.
+	param2 node (ElementTree node object): valid node that is being analyzed.
+	param3 survey_item_prefix (string): prefix of the survey_item_ID metadata
+	param4 study (string): study metadata, retrieved from the filename.
+	param5 module (string): module of survey_item, extracted in previous steps of the loop.
+	param6 df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.
 
-:returns: df_questionnaire, with new information extracted from the valid node.
+Returns:
+	updated df_questionnaire when new valid information extracted from node is included, 
+	or df_questionnaire in the same state it was when no new valid segments are included.
 """
 def process_valid_node(filename, node, survey_item_prefix, study, module, df_questionnaire):
 	"""
@@ -266,15 +284,16 @@ If the node has the ID attribute, the translation text is in this node.
 The text and category value will be stored in the response_dict dictionary,
 to be used in response categories with references to the ID.
 
-:param filename: name of the input file.
-:param node: response category node that is being analyzed.
-:param survey_item_prefix: prefix of the survey_item_ID metadata
-:param study: study metadata, retrieved from the filename.
-:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
-:param response_dict: dictionary that stores response category text and value.
+Args:
+	param1 filename (string): name of the input file.
+	param2 node (ElementTree node object): response category node that is being analyzed.
+	param3 survey_item_prefix (string): prefix of the survey_item_ID metadata
+	param4 study (string): study metadata, retrieved from the filename.
+	param5 df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.
+	param6 response_dict (dictionary): dictionary that stores response category text and value.
 
-:returns: df_questionnaire, with new information extracted from the response node and 
-updated response_dict.
+Returns:
+	df_questionnaire (pandas dataframe), with new information extracted from the response node and updated response_dict.
 """
 def process_response_with_id_node(filename, node, survey_item_prefix, study, df_questionnaire, response_dict):
 	"""
@@ -334,13 +353,15 @@ Extracts information of a response node that contains a reference to an ID (attr
 The response text and category value are retrieved from the response_dict dictionary,
 updated in the process_response_with_id_node method.
 
-:param node: response category node that is being analyzed.
-:param survey_item_prefix: prefix of the survey_item_ID metadata
-:param study: study metadata, retrieved from the filename.
-:param df_questionnaire: pandas dataframe where the questionnaire is being stored.
-:param response_dict: dictionary that stores response category text and value.
+Args:
+	param node (ElementTree node object): response category node that is being analyzed.
+	param survey_item_prefix (string): prefix of the survey_item_ID metadata
+	param study (string): study metadata, retrieved from the filename.
+	param df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.
+	param response_dict (dictionary) dictionary that stores response category text and value.
 
-:returns: df_questionnaire, with new information extracted from the response node.
+Returns: 
+	df_questionnaire (pandas dataframe), with new information extracted from the response node.
 """
 def process_response_with_id_reference_node(node, survey_item_prefix, study, df_questionnaire, response_dict):
 	if df_questionnaire.empty:
@@ -428,8 +449,6 @@ def main(filename):
 
 
 if __name__ == "__main__":
-	#Call script using filename. 
-	#For instance: reset && python3 evs_xml_data_extraction.py EVS_R03_1999_FRE_FR.xml
 	filename = str(sys.argv[1])
 	print("Executing data extraction script for EVS 1999/2008 (xml files)")
 	main(filename)

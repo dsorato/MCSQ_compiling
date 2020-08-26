@@ -26,7 +26,8 @@ with valuable metadata.
 Call main script using folder_path, for instance: 
 reset && python3 main.py /path/to/your/data
 
-:param folder_path: the path of the directory containing the files to tranform
+Args:
+	param1 folder_path: the path of the directory containing the files to tranform
 
 """
 def main(folder_path):
