@@ -3,10 +3,14 @@ import utils as ut
 
 """
 Standartizes a response category value, if it is a special response category.
-:param filename: name of the input file.
-:param catValu: response category value, extracted from input file.
-:param text: text of response category, to test against special response category patterns.
-:returns: standartized response category value. 
+
+Args:
+	param1 filename (string): name of the input file.
+	param2 catValu (string): response category value, extracted from input file.
+	param3 text (string): text of response category, to test against special response category patterns.
+
+Returns: 
+	standartized response category value (string). 
 """
 def standartize_special_response_category_value(filename, catValu, text):
 	"""
@@ -26,8 +30,11 @@ def standartize_special_response_category_value(filename, catValu, text):
 
 """
 Retrieves the country/language and study metadata based on the input filename.
-:param filename: name of the input file.
-:returns: country/language and study metadata.
+Args:
+	param filename (string): name of the input file.
+
+Returns: 
+	country/language (string) and study (string) metadata.
 """
 def get_country_language_and_study_info(filename):
 	filename_without_extension = re.sub('\.xml', '', filename)
@@ -40,8 +47,11 @@ def get_country_language_and_study_info(filename):
 
 """
 Standartizes a given item_name, if it is not in the standard
-:param item_name: item name extracted from the input file.
-:returns: standartized item_name. 
+Args:
+	param1 item_name (string): item name extracted from the input file.
+
+Returns: 
+	standartized item_name (string). 
 """
 def standartize_item_name(item_name):
 	item_name = item_name.lower()
@@ -66,8 +76,11 @@ def standartize_item_name(item_name):
 
 """
 Removes undesired characters from instruction text. 
-:param text: instruction text extracted from the input file.
-:returns: clean instruction text. 
+Args:
+	param1 text (string): instruction text extracted from the input file.
+
+Returns: 
+	clean instruction text (string) or '' when text is not an instance of a string. 
 """
 def clean_instruction(text):
 	if isinstance(text, str):
@@ -92,9 +105,11 @@ def clean_instruction(text):
 
 """
 Removes undesired characters from request/response text. 
-:param text: request/response text extracted from the input file.
-:param filename: name of the input file.
-:returns: clean request/response text. 
+Args:
+	param text (string): request/response text extracted from the input file.
+	param filename (string): name of the input file.
+Returns: 
+	clean request/response text (string). 
 """
 def clean_text(text, filename):
 	if isinstance(text, str):
@@ -125,9 +140,13 @@ def clean_text(text, filename):
 """
 Standartizes text of special response categories (don't know, no answer, not applicable),
 according to the language (informed in the the filename).
-:param filename: name of the input file.
-:param text: response text.
-:returns: standartized response category text.
+
+Args:
+	param1 filename (string): name of the input file.
+	param2 text (string): response text.
+
+Returns: 
+	standartized response category text (string).
 """
 def standartize_special_response_category(filename, text):
 	if 'CZE' in filename:

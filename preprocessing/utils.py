@@ -37,6 +37,18 @@ def decide_on_survey_item_id(prefix, old_item_name, new_item_name):
 
 	return survey_item_id
 
+"""
+Recognizes special answer categories from EVS by testing the answer segment against the
+language dependent pattern definitions for the special categories.
+
+Args:
+	param1 filename (string): input file name.
+	param2 text (string): answer text segment.
+
+Returns: 
+	If a pattern was found, returns a string informing the special category,
+	otherwise returns None.
+"""
 def recognize_standard_response_scales(filename, text):
 	if 'CZE' in filename:
 		dk_pattern = re.compile("(Neví)", re.IGNORECASE)
