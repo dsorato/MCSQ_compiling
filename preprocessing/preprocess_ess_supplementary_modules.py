@@ -124,12 +124,12 @@ def recursive_split(sentence, flag_zero, flag_begins_with_zero, flag_parentheses
 
 	return dict_answers
 
-def recursive_split_income_question(sentence, study, country):
+def recursive_split_income_question(sentence, study, country_language):
 	dict_answers = dict()
 	categories = ['K','S','D','N','G','T', 'L', 'Q', 'F', 'J']
 
 
-	if ('R04' in study and 'GER' in country) or ('R09' in study and 'CH' in country) or ('R06' in study and 'GB' in country):
+	if ('R04' in study and 'GER' in country_language) or ('R09' in study and 'CH' in country_language) or ('R06' in study and 'GB' in country_language):
 		categories = ['J','R','C','M','F','S', 'K', 'P', 'D', 'H']
 
 	splits = re.compile("\s+[A-Z]\s+").split(sentence)
@@ -425,7 +425,7 @@ def process_answer(df, row, survey_item_prefix, item_name,module):
 
 			elif currency in answer:
 				d = dict()
-				d = recursive_split_income_question(answer, study, country)
+				d = recursive_split_income_question(answer, study, country_language)
 
 				if d:
 					for k, v in list(d.items()):
@@ -555,19 +555,20 @@ def process_request(df, row, survey_item_prefix, item_name,module, splitter):
 		request = clean_text(request)
 		sentences = splitter.tokenize(request)
 		for sentence in sentences:
-			if df.empty:
-				survey_item_id = ut.get_survey_item_id(survey_item_prefix)
-			else:
-				survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+			if sentence != '...':
+				if df.empty:
+					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+				else:
+					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-			if check_if_segment_is_instruction(sentence, country_language):
-				item_type = 'INSTRUCTION'
-			else:
-				item_type = 'REQUEST'
+				if check_if_segment_is_instruction(sentence, country_language):
+					item_type = 'INSTRUCTION'
+				else:
+					item_type = 'REQUEST'
 
-			data = {'survey_item_ID':survey_item_id, 'Study':study,  'module': module, 
-			'item_type': item_type,'item_name':item_name, 'item_value': None, 'text': sentence}
-			df = df.append(data, ignore_index = True)
+				data = {'survey_item_ID':survey_item_id, 'Study':study,  'module': module, 
+				'item_type': item_type,'item_name':item_name, 'item_value': None, 'text': sentence}
+				df = df.append(data, ignore_index = True)
 
 	return df
 
@@ -645,7 +646,8 @@ def drop_non_supplementary_modules(df):
 	df = df.drop(df[(df['Question admin'].str.contains('^A')) | 
 		(df['Question admin'].str.contains('^B')) | 
 		(df['Question admin'].str.contains('^C')) | 
-		(df['Question admin'].str.contains('^D')) | 
+		(df['Question admin'].str.contains('^D')) |
+		(df['Question admin'].str.contains('^F')) | 
 		(df['Question admin'].str.contains('^E'))].index)
 
 	return df

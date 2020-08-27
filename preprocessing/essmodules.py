@@ -25,7 +25,18 @@ class ESSSModulesR05:
 	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions'}
 
 class ESSSModulesR06:
+	modules = {'D':'D - Immigration, including: attitudes, perceptions and policy preferences',
+	'E': 'E - Health,including health conditions, fruit, vegetable and alcohol consumption and smoking behaviour',
+	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions'}
+
+class ESSSModulesR07:
 	modules = {'D':'D - Personal and social wellbeing, helping others, feelings in the last week, life satisfaction, physical activity',
 	'E': 'E - Understandings and evaluation of different elements of democracy',
+	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions'}
+
+
+class ESSSModulesR09:
+	modules = {'D':'D - Timing  of  life;  the  life  course;  timing  of  key  life  events, attitudes  to  ideal  age,  youngest  age  and  oldest  age  of  life events, life planning',
+	'G': 'G - Political  procedural  justice,fairness  of  income,fairness  of educational  and  job  opportunities,fairness  of the  distribution of  resources,attitudes  toward  normative  principles,social closure,belief in a just world',
 	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions'}
 

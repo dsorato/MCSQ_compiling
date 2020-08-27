@@ -145,6 +145,16 @@ def retrieve_item_module(item_name, study):
 			v = retrieve_supplementary_module(essmodules,item_name) 
 			return v
 
+		elif 'R07' in study:
+			essmodules = ESSSModulesR07()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
+
+		elif 'R09' in study:
+			essmodules = ESSSModulesR09()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
+
 """
 Cleans Request, Introduction and Instruction text segments by removing
 undesired characters and standartizing some character representations.
@@ -613,11 +623,20 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<use>)(utilice|use)\s(?P<this>)(esta)?\s?(?P<card>)tarjeta"
+		regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<use>)(utilice|use)\s(?P<this>)(esta)?\s?(?P<thesame>)(la misma)?\s?(?P<card>)tarjeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
 
+		regex= r"^(?P<use>)(utilice|use)\s(?P<please>)(por favor)?(,)?\s?(?P<this>)(esta)?\s?(?P<thesame>)(la misma)?\s?(?P<card>)tarjeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<choose>)elija\s(?P<oneofthe>)una de las\s(?P<answers>)respuestas\s(?P<that>)que\s(?P<appearinthis>)aparecen en esta\s(?P<card>)tarjeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
 
 		regex= r"^(?P<suggest>)sugerir\s(?P<categories>)categorías\s(?P<de>)de\s(?P<answer>)respuesta"
 		matches = re.search(regex, text, re.IGNORECASE)
