@@ -168,6 +168,7 @@ def clean_text(text):
 		text = re.sub('–', '-', text)
 		text = re.sub('’',"'", text)
 		text = re.sub("…", "...", text)
+		text = text.replace("... ...", "...")
 		text = re.sub(" :", ":", text)
 		text = re.sub("’", "'", text)
 		text = re.sub("[.]{4,}", "", text)
@@ -184,6 +185,9 @@ def clean_text(text):
 		text = re.sub('s\.r', "SR",text)
 		text = re.sub('s\.r\.', "SR",text)
 		text = re.sub('S\.r', "SR",text)
+		text = "".join(filter(lambda char: char != "»", text))
+		text = "".join(filter(lambda char: char != "«", text))
+		text = text.replace(" ?", "?")
 		text = text.replace('\n',' ')
 		text = text.rstrip()
 	else:
@@ -548,7 +552,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)Triï\s(?P<youranswer>)la seva resposta\s(?P<fromthis>)d’aquesta\s(?P<card>)targeta"
+		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)Triï\s(?P<the>)(la)?\s?(?P<your>)(seva)?\s?(?P<answer>)resposta\s(?P<fromthis>)d'aquesta\s(?P<card>)targeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True

@@ -34,6 +34,13 @@ zero_to_six_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\
 def eliminate_dots(sentence):
 	return "".join(filter(lambda char: char != ".", sentence))
 
+"""
+Removes undesired symbols present in input file.
+Args:
+	param1 sentence (string): text segment extracted from input questionnaire.
+Returns:
+	cleaned sentence (string)
+"""
 def remove_undesired_symbols(sentence):
 	sentence = "".join(filter(lambda char: char != "»", sentence))
 	sentence = "".join(filter(lambda char: char != "«", sentence))
@@ -41,11 +48,14 @@ def remove_undesired_symbols(sentence):
 	sentence = sentence.replace(" :", ":")
 
 	return sentence
-	
 
-def string_is_uppercase(sentence):
-	return [word for word in sentence if word.isupper()]
-
+"""
+Checks if answer string has numbers, to properly process it.
+Args:
+	param1 sentence (string): answer extracted from input questionnaire.
+Returns:
+	Boolean. True, if there are numbers, False otherwise.
+"""
 def string_has_numbers(sentence):
 	return bool(re.search(r'\d', sentence))
 
@@ -155,7 +165,21 @@ def process_answer_without_numbers(answer):
 	return is_scale, scale_items
 
 
-def process_zero_to_ten_with_middle_text_scale(df, answer, survey_item_prefix,study,module,item_name):
+def include_special_answer_category(survey_item_prefix, study,item_name,module, country_language, df_questionnaire):
+	ess_special_answer_categories = instantiate_special_answer_category_object(country_language)
+	data = {"survey_item_ID": ut.update_survey_item_id(survey_item_prefix),'Study': study, 'module': module,
+	'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': ess_special_answer_categories.dont_know[1],  
+	'text': ess_special_answer_categories.dont_know[0]}
+	df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+
+	data = {"survey_item_ID": ut.update_survey_item_id(survey_item_prefix),'Study': study, 'module': module,
+	'item_type': 'RESPONSE', 'item_name': item_name, 'item_value': ess_special_answer_categories.refuse[1],  
+	'text': ess_special_answer_categories.refuse[0]}
+	df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+	
+	return df_questionnaire	
+
+def process_zero_to_ten_with_middle_text_scale(df, answer, survey_item_prefix,study,module,item_name,country_language):
 	answer = eliminate_dots(answer)
 	if re.compile('(00)', re.IGNORECASE).findall(answer):
 		first_part = answer.split('01')
@@ -192,9 +216,11 @@ def process_zero_to_ten_with_middle_text_scale(df, answer, survey_item_prefix,st
 		'item_value': '10', 'text': mid_part_clean}
 		df = df.append(data, ignore_index = True)
 
+		df = include_special_answer_category(survey_item_prefix, study, item_name,module, country_language, df)
+
 	return df
 
-def process_one_to_x_scale(df,higher_side, answer, survey_item_prefix,study,module,item_name):
+def process_one_to_x_scale(df,higher_side, answer, survey_item_prefix,study,module,item_name,country_language):
 	answer = eliminate_dots(answer)
 	if re.compile('(01)', re.IGNORECASE).findall(answer):
 		first_part = answer.split('02')
@@ -230,10 +256,13 @@ def process_one_to_x_scale(df,higher_side, answer, survey_item_prefix,study,modu
 	'item_value': higher_side, 'text': final_part_clean}
 	df = df.append(data, ignore_index = True)
 
+	df = include_special_answer_category(survey_item_prefix, study, item_name,module, country_language, df)
+
 	return df
 
-def process_zero_to_x_scale(df,higher_side, answer, survey_item_prefix,study,module,item_name):
+def process_zero_to_x_scale(df,higher_side, answer, survey_item_prefix,study,module,item_name,country_language):
 	answer = eliminate_dots(answer)
+	
 
 	if re.compile('(00)', re.IGNORECASE).findall(answer):
 		first_part = answer.split('01')
@@ -269,7 +298,10 @@ def process_zero_to_x_scale(df,higher_side, answer, survey_item_prefix,study,mod
 	'item_value': higher_side, 'text': final_part_clean}
 	df = df.append(data, ignore_index = True)
 
+	df = include_special_answer_category(survey_item_prefix, study, item_name,module, country_language, df)
+
 	return df
+
 """
 Processes answer segments.
 
@@ -289,85 +321,84 @@ def process_answer(df, row, survey_item_prefix, item_name,module):
 	answer = row['Answer options text']
 	
 	if answer != '.' and isinstance(answer, str):
-		answer = remove_undesired_symbols(answer)
-		if answer == '00 És dolent per a l’economia 01 02 03 04 05 06 És bo per a l’economia':
-			print(unidecode.unidecode(answer))
+		# answer = remove_undesired_symbols(answer)
+		answer = clean_text(answer)
 		"""
 		Regex matches 0-10 scales with words in item 5
 		"""
-		if zero_to_ten_with_value_in_five_pattern.match(answer):
-			return process_zero_to_ten_with_middle_text_scale(df, answer, survey_item_prefix,study,module,item_name)
+		if zero_to_ten_with_value_in_five_pattern.match(unidecode.unidecode(answer)):
+			return process_zero_to_ten_with_middle_text_scale(df, answer, survey_item_prefix,study,module,item_name,country_language)
 		
 		"""
 		Regex matches 0-10 scales
 		"""
-		if zero_to_ten_pattern.match(answer):
-			return process_zero_to_x_scale(df,'10', answer, survey_item_prefix,study,module,item_name) 
+		if zero_to_ten_pattern.match(unidecode.unidecode(answer)):
+			return process_zero_to_x_scale(df,'10', answer, survey_item_prefix,study,module,item_name,country_language) 
 			
 		"""
 		Regex matches 1-10 scales
 		"""
-		if one_to_ten_pattern.match(answer):
-			return process_one_to_x_scale(df,'10', answer, survey_item_prefix,study,module,item_name)		
+		if one_to_ten_pattern.match(unidecode.unidecode(answer)):
+			return process_one_to_x_scale(df,'10', answer, survey_item_prefix,study,module,item_name,country_language)		
 			
 		"""
 		Regex matches 0-9 scales
 		"""
-		if zero_to_nine_pattern.match(answer):
-			return process_zero_to_x_scale(df,'9', answer, survey_item_prefix,study,module,item_name)
+		if zero_to_nine_pattern.match(unidecode.unidecode(answer)):
+			return process_zero_to_x_scale(df,'9', answer, survey_item_prefix,study,module,item_name,country_language)
 		
 
 		"""
 		Regex matches 0-5 scales
 		"""
-		if zero_to_five_pattern.match(answer):
-			return process_zero_to_x_scale(df,'5', answer, survey_item_prefix,study,module,item_name) 
+		if zero_to_five_pattern.match(unidecode.unidecode(answer)):
+			return process_zero_to_x_scale(df,'5', answer, survey_item_prefix,study,module,item_name,country_language) 
 
 		"""
 		Regex matches 1-5 scales
 		"""
-		if one_to_five_pattern.match(answer):
-			return process_one_to_x_scale(df,'5', answer, survey_item_prefix,study,module,item_name)
+		if one_to_five_pattern.match(unidecode.unidecode(answer)):
+			return process_one_to_x_scale(df,'5', answer, survey_item_prefix,study,module,item_name,country_language)
 		
 		"""
 		Regex matches 0-6 scales
 		"""
-		if zero_to_six_pattern.match(answer):
-			return process_zero_to_x_scale(df,'6', unidecode.unidecode(answer), survey_item_prefix,study,module,item_name) 
+		if zero_to_six_pattern.match(unidecode.unidecode(answer)):
+			return process_zero_to_x_scale(df,'6', answer, survey_item_prefix,study,module,item_name,country_language) 
 
 
 		"""
 		Regex matches 1-7 scales
 		"""
-		if one_to_seven_pattern.match(answer):
-			return  process_one_to_x_scale(df,'7', answer, survey_item_prefix,study,module,item_name)
+		if one_to_seven_pattern.match(unidecode.unidecode(answer)):
+			return  process_one_to_x_scale(df,'7', answer, survey_item_prefix,study,module,item_name,country_language)
 		
 
 		"""
 		Regex matches 0-4 scales
 		"""
-		if zero_to_four_pattern.match(answer):
-			return process_zero_to_x_scale(df,'4', answer, survey_item_prefix,study,module,item_name) 
+		if zero_to_four_pattern.match(unidecode.unidecode(answer)):
+			return process_zero_to_x_scale(df,'4', answer, survey_item_prefix,study,module,item_name,country_language) 
 
 		"""
 		Regex matches 1-4 scales
 		"""
-		if one_to_four_pattern.match(answer):
-			return process_one_to_x_scale(df,'4', answer, survey_item_prefix,study,module,item_name)
+		if one_to_four_pattern.match(unidecode.unidecode(answer)):
+			return process_one_to_x_scale(df,'4', answer, survey_item_prefix,study,module,item_name,country_language)
 
 
 		"""
 		Regex matches 0-3 scales
 		"""
-		if zero_to_three_pattern.match(answer):
-			return  process_zero_to_x_scale(df,'3', answer, survey_item_prefix,study,module,item_name) 
+		if zero_to_three_pattern.match(unidecode.unidecode(answer)):
+			return  process_zero_to_x_scale(df,'3', answer, survey_item_prefix,study,module,item_name,country_language) 
 			
 		
 		"""
 		Regex matches 0-2 scales
 		"""
-		if zero_to_two_pattern.match(answer):
-			return process_zero_to_x_scale(df,'2', answer, survey_item_prefix,study,module,item_name)
+		if zero_to_two_pattern.match(unidecode.unidecode(answer)):
+			return process_zero_to_x_scale(df,'2', answer, survey_item_prefix,study,module,item_name,country_language)
 
 			
 		else:
@@ -380,6 +411,8 @@ def process_answer(df, row, survey_item_prefix, item_name,module):
 						'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
 						'item_value': None, 'text': answer}
 						df = df.append(data, ignore_index = True)
+						df = include_special_answer_category(survey_item_prefix, study, item_name,module, country_language, df)
+						return df
 
 					else:
 						for i, scale_item in enumerate(scale_items):
@@ -387,6 +420,8 @@ def process_answer(df, row, survey_item_prefix, item_name,module):
 							'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
 							'item_value': i, 'text': scale_item}
 							df = df.append(data, ignore_index = True)
+						df = include_special_answer_category(survey_item_prefix, study, item_name,module, country_language, df)
+						return df
 
 			elif currency in answer:
 				d = dict()
@@ -404,6 +439,8 @@ def process_answer(df, row, survey_item_prefix, item_name,module):
 							'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
 							'item_value': k, 'text': v}
 							df = df.append(data, ignore_index = True)
+					df = include_special_answer_category(survey_item_prefix, study, item_name,module, country_language, df)
+					return df
 
 	
 			else:
@@ -444,7 +481,8 @@ def process_answer(df, row, survey_item_prefix, item_name,module):
 						'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
 						'item_value': None, 'text': answer}
 						df = df.append(data, ignore_index = True)
-
+						df = include_special_answer_category(survey_item_prefix, study, item_name,module, country_language, df)
+						return df
 					else:
 						print('NO MATCHES', answer)
 
@@ -455,7 +493,7 @@ def process_answer(df, row, survey_item_prefix, item_name,module):
 						'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
 						'item_value': k, 'text': v}
 						df = df.append(data, ignore_index = True)
-
+					df = include_special_answer_category(survey_item_prefix, study, item_name,module, country_language, df)
 	return df
 
 """
@@ -478,7 +516,8 @@ def process_introduction(df, row, survey_item_prefix, item_name,module, splitter
 	study, country_language = get_country_language_and_study_info(survey_item_prefix)
 
 	if introduction != '.' and isinstance(introduction, str):
-		introduction = remove_undesired_symbols(introduction)
+		# introduction = remove_undesired_symbols(introduction)
+		introduction = clean_text(introduction)
 		sentences = splitter.tokenize(introduction)
 		for sentence in sentences:
 			if df.empty:
@@ -512,7 +551,8 @@ def process_request(df, row, survey_item_prefix, item_name,module, splitter):
 	study, country_language = get_country_language_and_study_info(survey_item_prefix)
 
 	if request != '.' and isinstance(request, str):
-		request = remove_undesired_symbols(request)
+		# request = remove_undesired_symbols(request)
+		request = clean_text(request)
 		sentences = splitter.tokenize(request)
 		for sentence in sentences:
 			if df.empty:
@@ -554,7 +594,6 @@ def preprocess_data_by_study(df, survey_item_prefix):
 
 	for i, row in df.iterrows():
 		item_name = standardize_supplementary_item_name(row['Question admin'])
-		print(row['Question admin'], item_name)
 		module = retrieve_item_module(item_name, survey_item_prefix)
 		df_questionnaire = process_introduction(df_questionnaire, row, survey_item_prefix, item_name,module, splitter)
 		df_questionnaire = process_request(df_questionnaire, row, survey_item_prefix, item_name,module, splitter)
