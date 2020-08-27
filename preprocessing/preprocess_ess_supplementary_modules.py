@@ -15,6 +15,19 @@ import re
 import utils as ut
 from preprocessing_ess_utils import *
 
+zero_to_ten_with_value_in_five_pattern = re.compile('(^00?\s+)(.)*(0?5\s[a-z]+)(.)*(10\s[a-z]+)', re.IGNORECASE)
+zero_to_ten_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?)\s+(0?8\.?)\s+(0?9\.?)\s+(10\.?\s+[a-z]+)', re.IGNORECASE)
+zero_to_nine_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?)\s+(0?8\.?)\s+(0?9\.?\s+[a-z]+)', re.IGNORECASE)
+one_to_ten_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?)\s+(0?8\.?)\s+(0?9\.?)\s+(10\.?\s+[a-z]+)', re.IGNORECASE)
+one_to_seven_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?\s+[a-z]+)', re.IGNORECASE)
+zero_to_five_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?\s+[a-z]+)', re.I)
+one_to_five_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?\s+[a-z]+)', re.IGNORECASE)
+zero_to_four_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?\s+[a-z]+)', re.I)
+one_to_four_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?\s+[a-z]+)', re.IGNORECASE)
+zero_to_three_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?\s+[a-z]+)', re.I)
+zero_to_two_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?\s+[a-z]+)', re.I)
+zero_to_six_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?\s+[a-z]+)', re.I)
+	
 
 def eliminate_dots(sentence):
 	return "".join(filter(lambda char: char != ".", sentence))
@@ -69,7 +82,6 @@ def recursive_split(sentence, flag_zero, flag_begins_with_zero, flag_parentheses
 
 	if flag_begins_with_number==True:
 		for i,n in enumerate(splits):
-			# print(sentence)
 			if splits[i+1] not in sentence:
 				dict_answers[n] = sentence
 				return dict_answers
@@ -105,7 +117,7 @@ def recursive_split_income_question(sentence, study, country):
 	categories = ['K','S','D','N','G','T', 'L', 'Q', 'F', 'J']
 
 
-	if ('ESS Round 4' in study and 'Germany' in country) or ('ESS Round 9' in study and 'Switzerland' in country) or ('ESS Round 6' in study and 'United Kingdom' in country):
+	if ('R04' in study and 'GER' in country) or ('R09' in study and 'CH' in country) or ('R06' in study and 'GB' in country):
 		categories = ['J','R','C','M','F','S', 'K', 'P', 'D', 'H']
 
 	splits = re.compile("\s+[A-Z]\s+").split(sentence)
@@ -119,404 +131,32 @@ def recursive_split_income_question(sentence, study, country):
 
 
 
-def preprocess_one_to_ten_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = eliminate_dots(analysed_item) 
-	if re.compile('(01)', re.IGNORECASE).findall(sentence):
-		first_part = sentence.split('02')
-		first_part_clean = re.sub("^01 ", "", first_part[0])
-		final_part = first_part[1].split('10')
-		final_part_clean = re.sub("^10", "", final_part[1]) 
-					
-	else:
-		final_part = sentence.split('10')
-		final_part_clean = re.sub("^\s", "", final_part[1])
-		first_part = final_part[0].split('2')
-		first_part_clean = re.sub("^1 ", "", first_part[0])
-		first_part_clean = re.sub("\s$", "", first_part_clean)
+def process_answer_without_numbers(answer):
+	is_scale = False
+	scale_items = []
+	index_uppercase = []
+
+	for i, s in enumerate(answer):
+		if s.isupper():
+			index_uppercase.append(i)
+
 	
-				
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-	'item_type': 'RESPONSE', 'item_value': 1, 'text': first_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	for n in range(2,10):
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': n, 'text': n}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-	'item_type': 'RESPONSE', 'item_value': 10, 'text': final_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	return cleaned_df_round
-
-def preprocess_zero_to_ten_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = sentence = eliminate_dots(analysed_item)
-	if re.compile('(01)', re.IGNORECASE).findall(sentence):
-		first_part = sentence.split('01')
-		first_part_clean = re.sub("(^\s?00?\s?)*", "", first_part[0])
-		final_part = first_part[1].split('10')
-		final_part_clean = re.sub("^\s?10?\s?", "", final_part[1])
-					
-	else:
-		final_part = sentence.split('10')
-		final_part_clean = re.sub("^\s", "", final_part[1])
-		first_part = final_part[0].split('1')
-		first_part_clean = re.sub("^0 ", "", first_part[0])
-		first_part_clean = re.sub("\s$", "", first_part_clean)
-					
-
-	#first part of the scale
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-	'item_type': 'RESPONSE', 'item_value': 0, 'text': first_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	#zero to ten values
-	for n in range(1,10):
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': n, 'text': n}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	#last part of the scale
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-	'item_type': 'RESPONSE', 'item_value': 10, 'text': final_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	return cleaned_df_round
+	if len(index_uppercase) > 1:
+		is_scale = True
+		for i, index in enumerate(index_uppercase):
+			if index == index_uppercase[-1]:
+				scale_items.append(answer[index:])
+			else:
+				scale_items.append(answer[index:(index_uppercase[i+1]-1)])
 
 
-def preprocess_zero_to_nine_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = eliminate_dots(analysed_item)
-	if re.compile('(01)', re.IGNORECASE).findall(sentence):
-		first_part = sentence.split('01')
-		first_part_clean = re.sub("(^\s?00?\s?)*", "", first_part[0])
-		final_part = first_part[1].split('09')
-		final_part_clean = re.sub("^\s?09?\s?", "", final_part[1])
-					
-	else:
-		final_part = sentence.split('9')
-		final_part_clean = re.sub("^\s", "", final_part[1])
-		first_part = final_part[0].split('1')
-		first_part_clean = re.sub("^0 ", "", first_part[0])
-		first_part_clean = re.sub("\s$", "", first_part_clean)
-					
-
-	#first part of the scale
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-	'item_type': 'RESPONSE', 'item_value': 0, 'text': first_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	#zero to ten values
-	for n in range(1,9):
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': n, 'text': n}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	#last part of the scale
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-	'item_type': 'RESPONSE', 'item_value': 9, 'text': final_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	return cleaned_df_round
+	return is_scale, scale_items
 
 
-def preprocess_zero_to_six_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = eliminate_dots(analysed_item)
-	if re.compile('(00)', re.IGNORECASE).findall(sentence):
-		first_part = sentence.split('01')
-		first_part_clean = re.sub("^00 ", "", first_part[0])
-		final_part = first_part[1].split('06')
-		final_part_clean = re.sub("^06", "", final_part[1])
-					
-	else:
-		final_part = sentence.split('6')
-		final_part_clean = re.sub("^\s", "", final_part[1])
-		first_part = final_part[0].split('1')
-		first_part_clean = re.sub("^0 ", "", first_part[0])
-		first_part_clean = re.sub("\s$", "", first_part_clean)
-					
-
-				
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-	'item_type': 'RESPONSE', 'item_value': 0, 'text': first_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	for n in range(1,6):
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': n, 'text': n}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-	'item_type': 'RESPONSE', 'item_value': 6, 'text': final_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-	
-	return cleaned_df_round
-		
-def preprocess_zero_to_five_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = eliminate_dots(analysed_item)
-	if re.compile('(00)', re.IGNORECASE).findall(sentence):
-		first_part = sentence.split('01')
-		first_part_clean = re.sub("^00 ", "", first_part[0])
-		final_part = first_part[1].split('05')
-		final_part_clean = re.sub("^05", "", final_part[1]) 
-					
-	else:
-		final_part = sentence.split('5')
-		final_part_clean = re.sub("^\s", "", final_part[1])
-		first_part = final_part[0].split('1')
-		first_part_clean = re.sub("^0 ", "", first_part[0])
-		first_part_clean = re.sub("\s$", "", first_part_clean)
-					
-	#first part of the scale
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-	'item_type': 'RESPONSE', 'item_value': 0, 'text': first_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	for n in range(1,5):
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': n, 'text': n}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	#final part of the scale
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-	'item_type': 'RESPONSE', 'item_value': 5, 'text': final_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	return cleaned_df_round
-
-def preprocess_one_to_seven_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = eliminate_dots(analysed_item)
-	if re.compile('(01)', re.IGNORECASE).findall(sentence):
-		first_part = sentence.split('02')
-		first_part_clean = re.sub("^01 ", "", first_part[0])
-		final_part = first_part[1].split('07')
-		final_part_clean = re.sub("^\s+", "", final_part[1]) 
-					
-	else:
-		final_part = sentence.split('7')
-		final_part_clean = re.sub("^\s", "", final_part[1])
-		first_part = final_part[0].split('2')
-		first_part_clean = re.sub("^1 ", "", first_part[0])
-		first_part_clean = re.sub("\s$", "", first_part_clean)
-	
-	#first part of the scale			
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-	'item_type': 'RESPONSE', 'item_value': 1, 'text': first_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	#final part of the scale
-	for n in range(2,7):
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': n, 'text': n}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-	'item_type': 'RESPONSE', 'item_value': 7, 'text': final_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	return cleaned_df_round
-
-def preprocess_one_to_five_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = eliminate_dots(analysed_item)
-	if re.compile('(01)', re.IGNORECASE).findall(sentence):
-		first_part = sentence.split('02')
-		first_part_clean = re.sub("^01 ", "", first_part[0])
-		final_part = first_part[1].split('05')
-		final_part_clean = re.sub("^\s+", "", final_part[1]) 
-					
-	else:
-		final_part = sentence.split('5')
-		final_part_clean = re.sub("^\s", "", final_part[1])
-		first_part = final_part[0].split('2')
-		first_part_clean = re.sub("^1 ", "", first_part[0])
-		first_part_clean = re.sub("\s$", "", first_part_clean)
-	
-	#first part of the scale			
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-	'item_type': 'RESPONSE', 'item_value': 1, 'text': first_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	#final part of the scale
-	for n in range(2,5):
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': n, 'text': n}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-	'item_type': 'RESPONSE', 'item_value': 5, 'text': final_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	return cleaned_df_round
-
-def preprocess_zero_to_four_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = eliminate_dots(analysed_item)
-	if re.compile('(00)', re.IGNORECASE).findall(sentence):
-		first_part = sentence.split('01')
-		first_part_clean = re.sub("^00 ", "", first_part[0])
-		final_part = first_part[1].split('04')
-		final_part_clean = re.sub("^04", "", final_part[1]) 
-					
-	else:
-		final_part = sentence.split('4')
-		final_part_clean = re.sub("^\s", "", final_part[1])
-		first_part = final_part[0].split('1')
-		first_part_clean = re.sub("^0 ", "", first_part[0])
-		first_part_clean = re.sub("\s$", "", first_part_clean)
-
-					
-	#first part of the scale
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-	'item_type': 'RESPONSE', 'item_value': 0, 'text': first_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	for n in range(1,4):
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': n, 'text': n}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	#final part of the scale
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-	'item_type': 'RESPONSE', 'item_value': 4, 'text': final_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	return cleaned_df_round
-
-def preprocess_one_to_four_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = eliminate_dots(analysed_item)
-	if re.compile('(01)', re.IGNORECASE).findall(sentence):
-		first_part = sentence.split('02')
-		first_part_clean = re.sub("^01 ", "", first_part[0])
-		final_part = first_part[1].split('04')
-		final_part_clean = re.sub("^4", "", final_part[1]) 
-					
-	else:
-		final_part = sentence.split('4')
-		final_part_clean = re.sub("^\s", "", final_part[1])
-		first_part = final_part[0].split('2')
-		first_part_clean = re.sub("^1 ", "", first_part[0])
-		first_part_clean = re.sub("\s$", "", first_part_clean)
-	
-	#first part of the scale			
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-	'item_type': 'RESPONSE', 'item_value': 1, 'text': first_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	#final part of the scale
-	for n in range(2,4):
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': n, 'text': n}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-	'item_type': 'RESPONSE', 'item_value': 4, 'text': final_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	return cleaned_df_round
-
-def preprocess_zero_to_three_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = eliminate_dots(analysed_item)
-	if re.compile('(00)', re.IGNORECASE).findall(sentence):
-		first_part = sentence.split('01')
-		first_part_clean = re.sub("^00 ", "", first_part[0])
-		final_part = first_part[1].split('03')
-		final_part_clean = re.sub("^03", "", final_part[1]) 
-					
-	else:
-		final_part = sentence.split('3')
-		final_part_clean = re.sub("^\s", "", final_part[1])
-		first_part = final_part[0].split('1')
-		first_part_clean = re.sub("^0 ", "", first_part[0])
-		first_part_clean = re.sub("\s$", "", first_part_clean)
-					
-	
-	#first part of the scale
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-	'item_type': 'RESPONSE', 'item_value': 0, 'text': first_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	for n in range(1,3):
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': n, 'text': n}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	#final part of the scale
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-	'item_type': 'RESPONSE', 'item_value': 3, 'text': final_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	return cleaned_df_round
-
-def preprocess_zero_to_two_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = eliminate_dots(analysed_item)
-	if re.compile('(00)', re.IGNORECASE).findall(sentence):
-		first_part = sentence.split('01')
-		first_part_clean = re.sub("^00 ", "", first_part[0])
-		final_part = first_part[1].split('02')
-		final_part_clean = re.sub("^\s+", "", final_part[1]) 
-					
-	else:
-		final_part = sentence.split('2')
-		final_part_clean = re.sub("^\s", "", final_part[1])
-		first_part = final_part[0].split('1')
-		first_part_clean = re.sub("^0 ", "", first_part[0])
-		first_part_clean = re.sub("\s$", "", first_part_clean)
-					
-	
-	#first part of the scale
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-	'item_type': 'RESPONSE', 'item_value': 0, 'text': first_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	for n in range(1,2):
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': n, 'text': n}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	#final part of the scale
-	data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-	'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-	'item_type': 'RESPONSE', 'item_value': 2, 'text': final_part_clean}
-	cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	return cleaned_df_round
-
-
-def preprocess_zero_to_ten_with_value_in_five_pattern(cleaned_df_round, analysed_item,row, module):
-	sentence = eliminate_dots(analysed_item)
-	if re.compile('(00)', re.IGNORECASE).findall(sentence):
-		first_part = sentence.split('01')
+def process_zero_to_ten_with_middle_text_scale(df, answer, survey_item_prefix,study,module,item_name):
+	answer = eliminate_dots(answer)
+	if re.compile('(00)', re.IGNORECASE).findall(answer):
+		first_part = answer.split('01')
 		first_part_clean = re.sub("^00 ", "", first_part[0])
 		mid_part = first_part[1].split('05')
 		mid_part_part = mid_part[1].split('06')
@@ -526,237 +166,275 @@ def preprocess_zero_to_ten_with_value_in_five_pattern(cleaned_df_round, analysed
 		final_part = final_part.split('10')
 		final_part_clean = re.sub("^\s+", "", final_part[1])
 					
-		#first part of the scale
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': 0, 'text': first_part_clean}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+		"""
+		first part of the scale
+		"""
+		data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 
+		'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
+		'item_value': '0', 'text': first_part_clean}
+		df = df.append(data, ignore_index = True)
 
-		#one to four values
-		for n in range(1,5):
-			data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
-			'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-			'item_type': 'RESPONSE', 'item_value': n, 'text': n}
-			cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+		"""
+		middle
+		"""
+		data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 
+		'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
+		'item_value': '5', 'text': mid_part_clean}
+		df = df.append(data, ignore_index = True)
 
-		#mid part of the scale
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': 5, 'text': mid_part_clean}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+		"""
+		final part of the scale
+		"""
+		data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 
+		'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
+		'item_value': '10', 'text': mid_part_clean}
+		df = df.append(data, ignore_index = True)
 
-		#six to 10 values
-		for n in range(6,10):
-			data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'],"q_name": row['Question name'], 
-			'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-			'item_type': 'RESPONSE', 'item_value': n, 'text': n}
-			cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+	return df
 
-		#final part of the scale
-		data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-		'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module,
-		'item_type': 'RESPONSE', 'item_value': 10, 'text': final_part_clean}
-		cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-	return cleaned_df_round
-
-def split_scale_without_numbers(sentence):
-	is_scale = False
-	scale_items = []
-	index_uppercase = []
-
-	for i, s in enumerate(sentence):
-		if s.isupper():
-			index_uppercase.append(i)
-
-	
-	if len(index_uppercase) > 1:
-		is_scale = True
-		for i, index in enumerate(index_uppercase):
-			if index == index_uppercase[-1]:
-				scale_items.append(sentence[index:])
-			else:
-				scale_items.append(sentence[index:(index_uppercase[i+1]-1)])
-
-
-	return is_scale, scale_items
-
-
-
-
-
-def clean_dataframe_by_round(df_round, sentence_splitter):
-	# zero_to_ten_pattern = re.compile('(00?\s\w+(.)*\s0?1\s0?2\s0?3\s0?4\s0?5\s0?6\s0?7\s0?8\s0?9\s10\s\w+(.)*)', re.I)
-	zero_to_ten_with_value_in_five_pattern = re.compile('(^00?\s+)(.)*(0?5\s[a-z]+)(.)*(10\s[a-z]+)', re.IGNORECASE)
-	zero_to_ten_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?)\s+(0?8\.?)\s+(0?9\.?)\s+(10\.?\s+[a-z]+)', re.IGNORECASE)
-	zero_to_nine_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?)\s+(0?8\.?)\s+(0?9\.?\s+[a-z]+)', re.IGNORECASE)
-	one_to_ten_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?)\s+(0?8\.?)\s+(0?9\.?)\s+(10\.?\s+[a-z]+)', re.IGNORECASE)
-	one_to_seven_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?\s+[a-z]+)', re.IGNORECASE)
-	zero_to_five_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?\s+[a-z]+)', re.I)
-	one_to_five_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?\s+[a-z]+)', re.IGNORECASE)
-	zero_to_four_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?\s+[a-z]+)', re.I)
-	one_to_four_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?\s+[a-z]+)', re.IGNORECASE)
-	zero_to_three_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?\s+[a-z]+)', re.I)
-	zero_to_two_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?\s+[a-z]+)', re.I)
-	zero_to_six_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?\s+[a-z]+)', re.I)
-	
-	cleaned_df_round = pd.DataFrame(columns=['Study', 'Language', 'Country', 'q_name', 'q_concept', 'item_name', 'module', 'item_type', 'item_value', 'text'])
-	
-	for i, row in df_round.iterrows():
-		module = re.match(r"([a-z]+)([0-9]+)", row['Question admin'], re.I)
-		module = module.groups()[0]
-
-
+def process_one_to_x_scale(df,higher_side, answer, survey_item_prefix,study,module,item_name):
+	answer = eliminate_dots(answer)
+	if re.compile('(00)', re.IGNORECASE).findall(answer):
+		first_part = answer.split('02')
+		first_part_clean = re.sub("^01 ", "", first_part[0])
+		final_part = first_part[1].split('0'+higher_side)
+		final_part_clean = re.sub("^0"+higher_side, "", final_part[1]) 
+					
+	else:
+		final_part = answer.split(higher_side)
+		final_part_clean = re.sub("^\s", "", final_part[1])
+		first_part = final_part[0].split('2')
+		first_part_clean = re.sub("^1 ", "", first_part[0])
+		first_part_clean = re.sub("\s$", "", first_part_clean)
 		
-		analysed_item = row['Answer options text']
-		
-		if analysed_item != '.' and isinstance(analysed_item, str):
-			analysed_item = remove_undesired_symbols(analysed_item)
-			######Regex matches 0-10 scales with words in item 5######
-			if zero_to_ten_with_value_in_five_pattern.match(analysed_item):
-				cleaned_df_round = preprocess_zero_to_ten_with_value_in_five_pattern(cleaned_df_round, analysed_item, row, module)
-			#####################################
-			######Regex matches 0-3 scales######
-			elif zero_to_three_pattern.match(analysed_item):
-				cleaned_df_round = preprocess_zero_to_three_pattern(cleaned_df_round, analysed_item,row, module)
-			#####################################
-			######Regex matches 0-2 scales######
-			elif zero_to_two_pattern.match(analysed_item):
-				cleaned_df_round = preprocess_zero_to_two_pattern(cleaned_df_round, analysed_item,row, module)
-			#####################################
-			######Regex matches 0-4 scales######
-			elif zero_to_four_pattern.match(analysed_item):
-				cleaned_df_round = preprocess_zero_to_four_pattern(cleaned_df_round, analysed_item,row, module)
-			#####################################
-			######Regex matches 1-4 scales######
-			elif one_to_four_pattern.match(analysed_item):
-				cleaned_df_round = preprocess_one_to_four_pattern(cleaned_df_round, analysed_item,row, module)
-			#####################################
-			######Regex matches 0-5 scales######
-			elif zero_to_five_pattern.match(analysed_item):
-				cleaned_df_round = preprocess_zero_to_five_pattern(cleaned_df_round, analysed_item,row, module)
-			#####################################
-			######Regex matches 0-5 scales######
-			elif one_to_five_pattern.match(analysed_item):
-				cleaned_df_round = preprocess_one_to_five_pattern(cleaned_df_round, analysed_item,row, module)
-			#####################################
-			######Regex matches 0-6 scales######
-			elif zero_to_six_pattern.match(analysed_item):
-				cleaned_df_round = preprocess_zero_to_six_pattern(cleaned_df_round, analysed_item,row, module)
-			####################################
-			######Regex matches 1-7 scales######
-			elif one_to_seven_pattern.match(analysed_item):
-				cleaned_df_round = preprocess_one_to_seven_pattern(cleaned_df_round, analysed_item,row, module)
-			#####################################
-			######Regex matches 0-10 scales######
-			elif zero_to_ten_pattern.match(analysed_item):
-				cleaned_df_round = preprocess_zero_to_ten_pattern(cleaned_df_round, analysed_item,row, module)
-			#####################################
-			######Regex matches 1-10 scales######
-			elif one_to_ten_pattern.match(analysed_item):
-				cleaned_df_round = preprocess_one_to_ten_pattern(cleaned_df_round, analysed_item,row, module)			
-			#####################################
-			######Regex matches 0-9 scales######
-			elif zero_to_nine_pattern.match(analysed_item):
-				cleaned_df_round = preprocess_zero_to_nine_pattern(cleaned_df_round, analysed_item,row, module)
-			#####################################
-			else:
-				sentence = analysed_item
-				if len(sentence.split(' ')) <= 3 or string_has_numbers(sentence)==False:
-					if string_has_numbers(sentence)==False and len(sentence.split(' ')) > 3:
-						is_scale, scale_items = split_scale_without_numbers(sentence)
+	"""
+	first part of the scale
+	"""
+	data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 
+	'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
+	'item_value': '0', 'text': first_part_clean}
+	df = df.append(data, ignore_index = True)
 
-						if is_scale ==  False:
-							data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-							'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-							'item_type': 'RESPONSE', 'item_value': None, 'text': sentence}
-							cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-						else:
-							for i, item in enumerate(scale_items):
-								data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-								'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-								'item_type': 'RESPONSE', 'item_value': i, 'text': item}
-								cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+	"""
+	final part of the scale
+	"""
+	data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 
+	'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
+	'item_value': higher_side, 'text': final_part_clean}
+	df = df.append(data, ignore_index = True)
 
+	return df
+
+def process_zero_to_x_scale(df,higher_side, answer, survey_item_prefix,study,module,item_name):
+	answer = eliminate_dots(answer)
+	if re.compile('(00)', re.IGNORECASE).findall(answer):
+		first_part = answer.split('01')
+		first_part_clean = re.sub("^00 ", "", first_part[0])
+		final_part = first_part[1].split('0'+higher_side)
+		final_part_clean = re.sub("^0"+higher_side, "", final_part[1]) 
+					
+	else:
+		final_part = answer.split(higher_side)
+		final_part_clean = re.sub("^\s", "", final_part[1])
+		first_part = final_part[0].split('1')
+		first_part_clean = re.sub("^0 ", "", first_part[0])
+		first_part_clean = re.sub("\s$", "", first_part_clean)
+					
+	"""
+	first part of the scale
+	"""
+	data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 
+	'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
+	'item_value': '0', 'text': first_part_clean}
+	df = df.append(data, ignore_index = True)
+
+	"""
+	final part of the scale
+	"""
+	data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 
+	'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
+	'item_value': higher_side, 'text': final_part_clean}
+	df = df.append(data, ignore_index = True)
+
+	return df
+"""
+Processes answer segments.
+
+Args:
+	param1 df (pandas dataframe): dataframe to store processed questionnaire data.
+	param2 row (pandas dataframe row): row of dataframe with contents of the input 
+	file being analyzed in outer loop.
+	param3 survey_item_prefix (string): prefix of survey_item_ID.
+	param4 item_name (string): item_name metadata parameter, retrieved in previous steps.
+	param5 module (string): module metadata parameter, retrieved in previous steps.
+
+Returns:
+	a pandas dataframe with preprocessed answer segments.
+"""
+def process_answer(df, row, survey_item_prefix, item_name,module):
+	study, country_language = get_country_language_and_study_info(survey_item_prefix)
+	answer = row['Answer options text']
+	
+	if answer != '.' and isinstance(answer, str):
+		answer = remove_undesired_symbols(answer)
+		"""
+		Regex matches 0-10 scales with words in item 5
+		"""
+		if zero_to_ten_with_value_in_five_pattern.match(answer):
+			return process_zero_to_ten_with_middle_text_scale(df, answer, survey_item_prefix,study,module,item_name)
+			
+		"""
+		Regex matches 0-3 scales
+		"""
+		if zero_to_three_pattern.match(answer):
+			return  process_zero_to_x_scale(df,'3', answer, survey_item_prefix,study,module,item_name) 
+			
+		"""
+		Regex matches 0-2 scales
+		"""
+		if zero_to_two_pattern.match(answer):
+			return process_zero_to_x_scale(df,'2', answer, survey_item_prefix,study,module,item_name)
+			
+		"""
+		Regex matches 0-4 scales
+		"""
+		if zero_to_four_pattern.match(answer):
+			return rocess_zero_to_x_scale(df,'4', answer, survey_item_prefix,study,module,item_name) 
+
+		"""
+		Regex matches 1-4 scales
+		"""
+		if one_to_four_pattern.match(answer):
+			return process_one_to_x_scale(df,'4', answer, survey_item_prefix,study,module,item_name)
+
+		"""
+		Regex matches 0-5 scales
+		"""
+		if zero_to_five_pattern.match(answer):
+			return process_zero_to_x_scale(df,'5', answer, survey_item_prefix,study,module,item_name) 
+
+		"""
+		Regex matches 0-5 scales
+		"""
+		if one_to_five_pattern.match(answer):
+			return process_one_to_x_scale(df,'5', answer, survey_item_prefix,study,module,item_name)
+
+		"""
+		Regex matches 0-6 scales
+		"""
+		if zero_to_six_pattern.match(answer):
+			return process_zero_to_x_scale(df,'6', answer, survey_item_prefix,study,module,item_name) 
+
+		"""
+		Regex matches 1-7 scales
+		"""
+		if one_to_seven_pattern.match(answer):
+			return  process_one_to_x_scale(df,'6', answer, survey_item_prefix,study,module,item_name)
+		"""
+		Regex matches 0-10 scales
+		"""
+		if zero_to_ten_pattern.match(answer):
+			return process_zero_to_x_scale(df,'10', answer, survey_item_prefix,study,module,item_name) 
+			
+		"""
+		Regex matches 1-10 scales
+		"""
+		if one_to_ten_pattern.match(answer):
+			return process_one_to_x_scale(df,'10', answer, survey_item_prefix,study,module,item_name)		
+			
+		"""
+		Regex matches 0-9 scales
+		"""
+		if zero_to_nine_pattern.match(answer):
+			return process_zero_to_x_scale(df,'9', answer, survey_item_prefix,study,module,item_name)
+			
+		else:
+			if len(answer.split(' ')) <= 3 or string_has_numbers(answer)==False:
+				if string_has_numbers(answer)==False and len(answer.split(' ')) > 3:
+					is_scale, scale_items = process_answer_without_numbers(answer)
+
+					if is_scale ==  False:
+						data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 
+						'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
+						'item_value': None, 'text': answer}
+						df = df.append(data, ignore_index = True)
 
 					else:
-						data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-						'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-						'item_type': 'RESPONSE', 'item_value': None, 'text': sentence}
-						cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+						for i, scale_item in enumerate(scale_items):
+							data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 
+							'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
+							'item_value': i, 'text': scale_item}
+							df = df.append(data, ignore_index = True)
 
-				elif currency in sentence:
-					d = dict()
-					d = recursive_split_income_question(sentence, row['Study'], row['Country'])
+			elif currency in answer:
+				d = dict()
+				d = recursive_split_income_question(answer, study, country)
 
-					if not d:
-						pass
+				if d:
+					for k, v in list(d.items()):
+						if k == 'pre':
+							data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 
+							'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
+							'item_value': None, 'text': v}
+							df = df.append(data, ignore_index = True)
+						else:
+							data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 
+							'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
+							'item_value': k, 'text': v}
+							df = df.append(data, ignore_index = True)
+
+	
+			else:
+				d = dict()
+				answer = eliminate_dots(analysed_item)
+				# flag_zero, flag_begins_with_zero, flag_parentheses, flag_begins_with_number
+				if re.compile('(\s+)?(00\s+)', re.IGNORECASE).findall(answer):
+					if re.compile('(^00\s+)', re.IGNORECASE).findall(answer):
+						d = recursive_split(answer, True, True, False, True)
 					else:
-						for k, v in list(d.items()):
-							if k == 'pre':
-								data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-								'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-								'item_type': 'RESPONSE', 'item_value': None, 'text': v}
-								cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-							else:
-								data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-								'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-								'item_type': 'RESPONSE', 'item_value': k, 'text': v}
-								cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-
-				else:
-					d = dict()
-					sentence = eliminate_dots(analysed_item)
-					# flag_zero, flag_begins_with_zero, flag_parentheses, flag_begins_with_number
-					if re.compile('(\s+)?(00\s+)', re.IGNORECASE).findall(sentence):
-						if re.compile('(^00\s+)', re.IGNORECASE).findall(sentence):
-							d = recursive_split(sentence, True, True, False, True)
-						else:
-							d = recursive_split(sentence, True, True, False, False)
-					elif re.compile('(\s+)?(-1\s+)', re.IGNORECASE).findall(sentence):
-							d = recursive_split_plus_minus_scale(sentence)
-					elif re.compile('(\s+)?(01\s+)', re.IGNORECASE).findall(sentence):
-						if re.compile('(^01\s+)', re.IGNORECASE).findall(sentence):
-							d = recursive_split(sentence, True, False, False, True)
-						else:
-							d = recursive_split(sentence, True, False, False, False)
-					elif re.compile('(\s+)?(0\s+)', re.IGNORECASE).findall(sentence):
-						if re.compile('(^0\s+)', re.IGNORECASE).findall(sentence):
-							d = recursive_split(sentence, False, True, False, True)
-						else:
-							d = recursive_split(sentence, False, True, False, False)
-					elif re.compile('(\s+)?(1\)\s+)', re.IGNORECASE).findall(sentence):
-						if re.compile('(^1\)\s+)', re.IGNORECASE).findall(sentence):
-							d = recursive_split(sentence, False, False, True, True)
-						else:
-							d = recursive_split(sentence, False, False, True, False)
-					elif re.compile('(\s+)?(1\s+)', re.IGNORECASE).findall(sentence):
-						if re.compile('(^1\s+)', re.IGNORECASE).findall(sentence):
-							d = recursive_split(sentence, False, False, False, True)
-						else:
-							d = recursive_split(sentence, False, False, False, False)
+						d = recursive_split(answer, True, True, False, False)
+				elif re.compile('(\s+)?(-1\s+)', re.IGNORECASE).findall(answer):
+						d = recursive_split_plus_minus_scale(answer)
+				elif re.compile('(\s+)?(01\s+)', re.IGNORECASE).findall(answer):
+					if re.compile('(^01\s+)', re.IGNORECASE).findall(answer):
+						d = recursive_split(answer, True, False, False, True)
+					else:
+						d = recursive_split(answer, True, False, False, False)
+				elif re.compile('(\s+)?(0\s+)', re.IGNORECASE).findall(answer):
+					if re.compile('(^0\s+)', re.IGNORECASE).findall(answer):
+						d = recursive_split(answer, False, True, False, True)
+					else:
+						d = recursive_split(answer, False, True, False, False)
+				elif re.compile('(\s+)?(1\)\s+)', re.IGNORECASE).findall(answer):
+					if re.compile('(^1\)\s+)', re.IGNORECASE).findall(answer):
+						d = recursive_split(answer, False, False, True, True)
+					else:
+						d = recursive_split(answer, False, False, True, False)
+				elif re.compile('(\s+)?(1\s+)', re.IGNORECASE).findall(answer):
+					if re.compile('(^1\s+)', re.IGNORECASE).findall(answer):
+						d = recursive_split(answer, False, False, False, True)
+					else:
+						d = recursive_split(answer, False, False, False, False)
 						
+				else:
+					if "(entre '0' et '10')" in answer:
+						data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 
+						'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
+						'item_value': None, 'text': answer}
+						df = df.append(data, ignore_index = True)
+
 					else:
-						if "(entre '0' et '10')" in sentence:
-							data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-							'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-							'item_type': 'RESPONSE', 'item_value': None, 'text': sentence}
-							cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
-						else:
-							print('NO MATCHES', sentence)
+						print('NO MATCHES', answer)
 
 
-					if not d:
-						pass
-					else:
-						for k, v in list(d.items()):
-							data = {'Study': row['Study'], 'Language': row['Language'], 'Country': row['Country'], "q_name": row['Question name'], 
-							'q_concept': row['Question concept'], 'item_name': row['Question admin'], 'module': module, 
-							'item_type': 'RESPONSE', 'item_value': k, 'text': v}
-							cleaned_df_round = cleaned_df_round.append(data, ignore_index = True)
+				if d:
+					for k, v in list(d.items()):
+						data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 
+						'Study':study,  'module': module, 'item_type': 'RESPONSE','item_name':item_name, 
+						'item_value': k, 'text': v}
+						df = df.append(data, ignore_index = True)
 
-
-	return cleaned_df_round
+	return df
 
 """
 Processes introduction segments.
@@ -858,6 +536,7 @@ def preprocess_data_by_study(df, survey_item_prefix):
 		module = retrieve_item_module(item_name, survey_item_prefix)
 		df_questionnaire = process_introduction(df_questionnaire, row, survey_item_prefix, item_name,module, splitter)
 		df_questionnaire = process_request(df_questionnaire, row, survey_item_prefix, item_name,module, splitter)
+		df_questionnaire = process_answer(df_questionnaire, row, survey_item_prefix, item_name,module)
 
 	return df_questionnaire
 
