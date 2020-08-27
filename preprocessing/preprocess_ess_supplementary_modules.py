@@ -12,21 +12,23 @@ import sys
 import pandas as pd
 import nltk.data
 import re
+import unidecode
 import utils as ut
 from preprocessing_ess_utils import *
+
 
 zero_to_ten_with_value_in_five_pattern = re.compile('(^00?\s+)(.)*(0?5\s[a-z]+)(.)*(10\s[a-z]+)', re.IGNORECASE)
 zero_to_ten_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?)\s+(0?8\.?)\s+(0?9\.?)\s+(10\.?\s+[a-z]+)', re.IGNORECASE)
 zero_to_nine_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?)\s+(0?8\.?)\s+(0?9\.?\s+[a-z]+)', re.IGNORECASE)
 one_to_ten_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?)\s+(0?8\.?)\s+(0?9\.?)\s+(10\.?\s+[a-z]+)', re.IGNORECASE)
 one_to_seven_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+(0?7\.?\s+[a-z]+)', re.IGNORECASE)
-zero_to_five_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?\s+[a-z]+)', re.I)
+zero_to_five_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?\s+[a-z]+)', re.IGNORECASE)
 one_to_five_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?\s+[a-z]+)', re.IGNORECASE)
-zero_to_four_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?\s+[a-z]+)', re.I)
+zero_to_four_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?\s+[a-z]+)', re.IGNORECASE)
 one_to_four_pattern = re.compile('(^0?1\.?\s+)(.)*\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?\s+[a-z]+)', re.IGNORECASE)
-zero_to_three_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?\s+[a-z]+)', re.I)
-zero_to_two_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?\s+[a-z]+)', re.I)
-zero_to_six_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?\s+[a-z]+)', re.I)
+zero_to_three_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?\s+[a-z]+)', re.IGNORECASE)
+zero_to_two_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?\s+[a-z]+)', re.IGNORECASE)
+zero_to_six_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+[a-z]+', re.IGNORECASE)
 	
 
 def eliminate_dots(sentence):
@@ -194,11 +196,16 @@ def process_zero_to_ten_with_middle_text_scale(df, answer, survey_item_prefix,st
 
 def process_one_to_x_scale(df,higher_side, answer, survey_item_prefix,study,module,item_name):
 	answer = eliminate_dots(answer)
-	if re.compile('(00)', re.IGNORECASE).findall(answer):
+	if re.compile('(01)', re.IGNORECASE).findall(answer):
 		first_part = answer.split('02')
 		first_part_clean = re.sub("^01 ", "", first_part[0])
-		final_part = first_part[1].split('0'+higher_side)
-		final_part_clean = re.sub("^0"+higher_side, "", final_part[1]) 
+		if higher_side == '10':
+			final_part = first_part[1].split('10')
+		else:
+			final_part = first_part[1].split('0'+higher_side)
+
+		final_part_clean = re.sub("^\s", "", final_part[1]) 
+
 					
 	else:
 		final_part = answer.split(higher_side)
@@ -227,11 +234,17 @@ def process_one_to_x_scale(df,higher_side, answer, survey_item_prefix,study,modu
 
 def process_zero_to_x_scale(df,higher_side, answer, survey_item_prefix,study,module,item_name):
 	answer = eliminate_dots(answer)
+
 	if re.compile('(00)', re.IGNORECASE).findall(answer):
 		first_part = answer.split('01')
 		first_part_clean = re.sub("^00 ", "", first_part[0])
-		final_part = first_part[1].split('0'+higher_side)
-		final_part_clean = re.sub("^0"+higher_side, "", final_part[1]) 
+		
+		if higher_side == '10':
+			final_part = first_part[1].split('10')
+		else:
+			final_part = first_part[1].split('0'+higher_side)
+
+		final_part_clean = re.sub("^\s", "", final_part[1])  
 					
 	else:
 		final_part = answer.split(higher_side)
@@ -277,59 +290,14 @@ def process_answer(df, row, survey_item_prefix, item_name,module):
 	
 	if answer != '.' and isinstance(answer, str):
 		answer = remove_undesired_symbols(answer)
+		if answer == '00 És dolent per a l’economia 01 02 03 04 05 06 És bo per a l’economia':
+			print(unidecode.unidecode(answer))
 		"""
 		Regex matches 0-10 scales with words in item 5
 		"""
 		if zero_to_ten_with_value_in_five_pattern.match(answer):
 			return process_zero_to_ten_with_middle_text_scale(df, answer, survey_item_prefix,study,module,item_name)
-			
-		"""
-		Regex matches 0-3 scales
-		"""
-		if zero_to_three_pattern.match(answer):
-			return  process_zero_to_x_scale(df,'3', answer, survey_item_prefix,study,module,item_name) 
-			
-		"""
-		Regex matches 0-2 scales
-		"""
-		if zero_to_two_pattern.match(answer):
-			return process_zero_to_x_scale(df,'2', answer, survey_item_prefix,study,module,item_name)
-			
-		"""
-		Regex matches 0-4 scales
-		"""
-		if zero_to_four_pattern.match(answer):
-			return rocess_zero_to_x_scale(df,'4', answer, survey_item_prefix,study,module,item_name) 
-
-		"""
-		Regex matches 1-4 scales
-		"""
-		if one_to_four_pattern.match(answer):
-			return process_one_to_x_scale(df,'4', answer, survey_item_prefix,study,module,item_name)
-
-		"""
-		Regex matches 0-5 scales
-		"""
-		if zero_to_five_pattern.match(answer):
-			return process_zero_to_x_scale(df,'5', answer, survey_item_prefix,study,module,item_name) 
-
-		"""
-		Regex matches 0-5 scales
-		"""
-		if one_to_five_pattern.match(answer):
-			return process_one_to_x_scale(df,'5', answer, survey_item_prefix,study,module,item_name)
-
-		"""
-		Regex matches 0-6 scales
-		"""
-		if zero_to_six_pattern.match(answer):
-			return process_zero_to_x_scale(df,'6', answer, survey_item_prefix,study,module,item_name) 
-
-		"""
-		Regex matches 1-7 scales
-		"""
-		if one_to_seven_pattern.match(answer):
-			return  process_one_to_x_scale(df,'6', answer, survey_item_prefix,study,module,item_name)
+		
 		"""
 		Regex matches 0-10 scales
 		"""
@@ -347,6 +315,60 @@ def process_answer(df, row, survey_item_prefix, item_name,module):
 		"""
 		if zero_to_nine_pattern.match(answer):
 			return process_zero_to_x_scale(df,'9', answer, survey_item_prefix,study,module,item_name)
+		
+
+		"""
+		Regex matches 0-5 scales
+		"""
+		if zero_to_five_pattern.match(answer):
+			return process_zero_to_x_scale(df,'5', answer, survey_item_prefix,study,module,item_name) 
+
+		"""
+		Regex matches 1-5 scales
+		"""
+		if one_to_five_pattern.match(answer):
+			return process_one_to_x_scale(df,'5', answer, survey_item_prefix,study,module,item_name)
+		
+		"""
+		Regex matches 0-6 scales
+		"""
+		if zero_to_six_pattern.match(answer):
+			return process_zero_to_x_scale(df,'6', unidecode.unidecode(answer), survey_item_prefix,study,module,item_name) 
+
+
+		"""
+		Regex matches 1-7 scales
+		"""
+		if one_to_seven_pattern.match(answer):
+			return  process_one_to_x_scale(df,'7', answer, survey_item_prefix,study,module,item_name)
+		
+
+		"""
+		Regex matches 0-4 scales
+		"""
+		if zero_to_four_pattern.match(answer):
+			return process_zero_to_x_scale(df,'4', answer, survey_item_prefix,study,module,item_name) 
+
+		"""
+		Regex matches 1-4 scales
+		"""
+		if one_to_four_pattern.match(answer):
+			return process_one_to_x_scale(df,'4', answer, survey_item_prefix,study,module,item_name)
+
+
+		"""
+		Regex matches 0-3 scales
+		"""
+		if zero_to_three_pattern.match(answer):
+			return  process_zero_to_x_scale(df,'3', answer, survey_item_prefix,study,module,item_name) 
+			
+		
+		"""
+		Regex matches 0-2 scales
+		"""
+		if zero_to_two_pattern.match(answer):
+			return process_zero_to_x_scale(df,'2', answer, survey_item_prefix,study,module,item_name)
+
 			
 		else:
 			if len(answer.split(' ')) <= 3 or string_has_numbers(answer)==False:
@@ -386,7 +408,7 @@ def process_answer(df, row, survey_item_prefix, item_name,module):
 	
 			else:
 				d = dict()
-				answer = eliminate_dots(analysed_item)
+				answer = eliminate_dots(answer)
 				# flag_zero, flag_begins_with_zero, flag_parentheses, flag_begins_with_number
 				if re.compile('(\s+)?(00\s+)', re.IGNORECASE).findall(answer):
 					if re.compile('(^00\s+)', re.IGNORECASE).findall(answer):
@@ -504,7 +526,7 @@ def process_request(df, row, survey_item_prefix, item_name,module, splitter):
 				item_type = 'REQUEST'
 
 			data = {'survey_item_ID':survey_item_id, 'Study':study,  'module': module, 
-			'item_type': 'REQUEST','item_name':item_name, 'item_value': None, 'text': sentence}
+			'item_type': item_type,'item_name':item_name, 'item_value': None, 'text': sentence}
 			df = df.append(data, ignore_index = True)
 
 	return df
@@ -589,6 +611,20 @@ def drop_non_supplementary_modules(df):
 
 	return df
 
+def define_currency(file):
+	
+	if 'CZE_CZ' in file:
+		return 'Kč'
+	elif 'NOR' in file:
+		return 'NOK'
+	elif 'GER_DE' in file or 'GER_AT' in file or 'FRE' in file or 'POR' in file or 'SPA' in file or 'CAT' in file or 'ENG_IE' in file or 'RUS' in file:
+		return '€'
+	elif 'GER_CH' in file:
+		return 'CHF'
+	elif 'ENG_GB' in file:
+		return '£'
+	elif 'ENG_SOURCE' in file:
+		return 'individual income'
 
 def main(folder_path):
 	path = os.chdir(folder_path)
@@ -596,10 +632,8 @@ def main(folder_path):
 
 	for index, file in enumerate(files):
 		if file.endswith(".csv") and 'SUPP' not in file:
-			"""
-			Reset the initial survey_id sufix, because main is called iterativelly for every file in folder.
-			"""
-			ut.reset_initial_sufix()
+			global currency
+			currency =  define_currency(file)
 			df_supplementary = pd.read_csv(file)
 
 			df_supplementary = drop_non_supplementary_modules(df_supplementary)
@@ -607,9 +641,14 @@ def main(folder_path):
 
 			for k,v in list(dataframes_by_study.items()):
 				if v.empty==False:
+					"""
+					Reset the initial survey_id sufix.
+					"""
+					ut.reset_initial_sufix()
+
 					df_supplementary = preprocess_data_by_study(v, k)
 
-					df_supplementary.to_csv(k+'.csv', encoding='utf-8-sig', index=False)
+					df_supplementary.to_csv('SUPP_'+k[:-1]+'.csv', encoding='utf-8-sig', index=False)
 	
 	
 

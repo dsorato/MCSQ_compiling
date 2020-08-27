@@ -12,12 +12,12 @@ class ESSSModulesR02:
 class ESSSModulesR03:
 	modules = {'D':'D - Timing of life; the life course; timing of key life events, attitudes to ideal age, youngest age and oldest age of life events, planning for retirement',
 	'E': 'E - Personal and social well-being, helping others, feelings in the last week, life satisfaction, satisfaction with work',
-	'I': 'SUPP_I - Interviewer self-completion questions'}
+	'G': 'SUPP_G - Human values scale','H': 'SUPP_H - Test questions', 'I': 'SUPP_I - Interviewer self-completion questions'}
 
 class ESSSModulesR04:
 	modules = {'D':'D - Welfare includes attitudes towards welfare provision, size of claimant groups, views on taxation, attitudes towards service delivery and likely future dependence on welfare',
 	'E': 'E - Ageism covers attitudes towards and experiences of ageism, age related status, stereotypes, experience of discrimination and contact with people in other age groups',
-	'I': 'SUPP_I - Interviewer self-completion questions'}
+	'G': 'SUPP_G - Human values scale','H': 'SUPP_H - Test questions','I': 'SUPP_I - Interviewer self-completion questions'}
 
 class ESSSModulesR05:
 	modules = {'D':'D - Trust in the Police and Courts, including: confidence in the police and courts, cooperation with the police and courts, contact with the police and attitudes towards punishment',

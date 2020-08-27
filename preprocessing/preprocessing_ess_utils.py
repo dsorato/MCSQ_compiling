@@ -523,7 +523,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<use>)(utilitzi la|segueixi utilitzant|continuï utilitzant)\s(?P<this>)(aquesta)?\s?(?P<same>)(mateixa)?\s?(?P<card>)targeta"
+		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<use>)(utilitzi la|segueixi utilitzant|continuï utilitzant)\s(?P<this>)(aquesta)?\s?(?P<the>)(la)?\s?(?P<same>)(mateixa)?\s?(?P<card>)targeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
@@ -548,7 +548,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)triï\s(?P<youranswer>)seva resposta"
+		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)Triï\s(?P<youranswer>)la seva resposta\s(?P<fromthis>)d’aquesta\s(?P<card>)targeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
