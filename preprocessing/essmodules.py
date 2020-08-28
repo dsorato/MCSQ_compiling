@@ -34,6 +34,11 @@ class ESSSModulesR07:
 	'E': 'E - Understandings and evaluation of different elements of democracy',
 	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions'}
 
+class ESSSModulesR08:
+	modules = {'D':'D - Climate change and energy, including: attitudes, perceptions and policy preferences.',
+	'E': 'E - Welfare, including attitudes towards welfare provision, size of claimant groups, attitudes towards service delivery and likely future dependence on welfare, vote intention in EU referendum.',
+	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions'}
+
 
 class ESSSModulesR09:
 	modules = {'D':'D - Timing  of  life;  the  life  course;  timing  of  key  life  events, attitudes  to  ideal  age,  youngest  age  and  oldest  age  of  life events, life planning',

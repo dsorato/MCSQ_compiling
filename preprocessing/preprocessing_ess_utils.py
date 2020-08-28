@@ -150,6 +150,11 @@ def retrieve_item_module(item_name, study):
 			v = retrieve_supplementary_module(essmodules,item_name) 
 			return v
 
+		elif 'R08' in study:
+			essmodules = ESSSModulesR08()
+			v = retrieve_supplementary_module(essmodules,item_name) 
+			return v
+
 		elif 'R09' in study:
 			essmodules = ESSSModulesR09()
 			v = retrieve_supplementary_module(essmodules,item_name) 
@@ -450,6 +455,11 @@ def instruction_recognition_english(text,country_language):
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
+	regex= r"^(?P<please>)(please)?(,)?\s?(?P<use>)use\s(?P<the>)the\s(?P<same>)same\s(?P<card>)card"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 	
 	regex= r"^(?P<card>)showcard"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -506,7 +516,7 @@ def instruction_recognition_english(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<please>)(please)?(,)?\s?(?P<tick>)tick\s(?P<one>)(one)?\s?(?P<box>)box"
+	regex= r"^(?P<please>)(please)?(,)?\s?(?P<tick>)tick\s(?P<oneorthe>)(one|the)?\s?(?P<box>)box"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
