@@ -31,23 +31,18 @@ zero_to_two_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?\s+[a-z]+
 zero_to_six_pattern = re.compile('(^00?\.?\s+)(.)*\s+(0?1\.?)\s+(0?2\.?)\s+(0?3\.?)\s+(0?4\.?)\s+(0?5\.?)\s+(0?6\.?)\s+[a-z]+', re.IGNORECASE)
 	
 
-def eliminate_dots(sentence):
-	return "".join(filter(lambda char: char != ".", sentence))
-
 """
-Removes undesired symbols present in input file.
+The files extracted from SQP have some sentences that are just '.'
+this method circunvents the problem.
 Args:
 	param1 sentence (string): text segment extracted from input questionnaire.
 Returns:
-	cleaned sentence (string)
+	sentence (string)
 """
-def remove_undesired_symbols(sentence):
-	sentence = "".join(filter(lambda char: char != "»", sentence))
-	sentence = "".join(filter(lambda char: char != "«", sentence))
-	sentence = sentence.replace(" ?", "?")
-	sentence = sentence.replace(" :", ":")
+def eliminate_dots(sentence):
+	return "".join(filter(lambda char: char != ".", sentence))
 
-	return sentence
+
 
 """
 Checks if answer string has numbers, to properly process it.
@@ -59,6 +54,14 @@ Returns:
 def string_has_numbers(sentence):
 	return bool(re.search(r'\d', sentence))
 
+"""
+Splits recursively the scale items for scales that range from
+negative to positive numbers.
+Args:
+	param1 sentence (string): answer extracted from input questionnaire.
+Returns:
+	a dictionary with the scale items and its category values.
+"""
 def recursive_split_plus_minus_scale(sentence):
 	dict_answers = dict()
 	
@@ -78,6 +81,13 @@ def recursive_split_plus_minus_scale(sentence):
 
 	return dict_answers
 
+"""
+Splits recursively the scale items taking into account the pattern of the category value.
+Args:
+	param1 sentence (string): answer extracted from input questionnaire.
+Returns:
+	a dictionary with the scale items and its category values.
+"""
 def recursive_split(sentence, flag_zero, flag_begins_with_zero, flag_parentheses, flag_begins_with_number):
 	dict_answers = dict()
 	
@@ -124,6 +134,13 @@ def recursive_split(sentence, flag_zero, flag_begins_with_zero, flag_parentheses
 
 	return dict_answers
 
+"""
+Splits recursively the scale items for scales of income questions.
+Args:
+	param1 sentence (string): answer extracted from input questionnaire.
+Returns:
+	a dictionary with the scale items and its category values.
+"""
 def recursive_split_income_question(sentence, study, country_language):
 	dict_answers = dict()
 	categories = ['K','S','D','N','G','T', 'L', 'Q', 'F', 'J']
@@ -142,7 +159,14 @@ def recursive_split_income_question(sentence, study, country_language):
 	return dict_answers
 
 
-
+"""
+Splits recursively the scale items without numbers (on uppercase character), if it is a scale.
+If it is a one-line answer, no split is necessary.
+Args:
+	param1 answer (string): answer extracted from input questionnaire.
+Returns:
+	is_scale (boolean) indicating if the answer was a scale and scale items (list of string).
+"""
 def process_answer_without_numbers(answer):
 	is_scale = False
 	scale_items = []
@@ -165,6 +189,19 @@ def process_answer_without_numbers(answer):
 	return is_scale, scale_items
 
 
+"""
+Include special answer categories in the questionnaire, that are not present in SQP file.
+Args:
+	param1 survey_item_prefix (string): prefix of survey_item_ID.
+	param2 study (string): study metadata parameter, retrieved in previous steps.
+	param3 item_name (string): item_name metadata parameter, retrieved in previous steps.
+	param4 module (string): module metadata parameter, retrieved in previous steps.
+	param5 country_language (string): module metadata parameter, embedded in input file name.
+	param6 df_questionnaire (pandas dataframe): dataframe to store processed questionnaire data.
+		
+Returns:
+	updated df_questionnaire (pandas dataframe), including special answer categories (defined according to the language)
+"""
 def include_special_answer_category(survey_item_prefix, study,item_name,module, country_language, df_questionnaire):
 	ess_special_answer_categories = instantiate_special_answer_category_object(country_language)
 	data = {"survey_item_ID": ut.update_survey_item_id(survey_item_prefix),'Study': study, 'module': module,
@@ -179,6 +216,21 @@ def include_special_answer_category(survey_item_prefix, study,item_name,module, 
 	
 	return df_questionnaire	
 
+
+"""
+Processes scales ranging from 0-10, with text in the middle value.
+Args:
+	param1 df (pandas dataframe): dataframe to store processed questionnaire data.
+	param2 survey_item_prefix (string): prefix of survey_item_ID.
+	param3 study (string): study metadata parameter, retrieved in previous steps.
+	param4 module (string): module metadata parameter, retrieved in previous steps.
+	param5 item_name (string): item_name metadata parameter, retrieved in previous steps.
+	param6 country_language (string): module metadata parameter, embedded in input file name.
+	
+		
+Returns:
+	updated df_questionnaire (pandas dataframe), including new answer segments.
+"""
 def process_zero_to_ten_with_middle_text_scale(df, answer, survey_item_prefix,study,module,item_name,country_language):
 	answer = eliminate_dots(answer)
 	if re.compile('(00)', re.IGNORECASE).findall(answer):
@@ -220,6 +272,21 @@ def process_zero_to_ten_with_middle_text_scale(df, answer, survey_item_prefix,st
 
 	return df
 
+"""
+Processes scales ranging from 1-x.
+Args:
+	param1 df (pandas dataframe): dataframe to store processed questionnaire data.
+	param2 higher_side (string): higher value of the scale.
+	param3 survey_item_prefix (string): prefix of survey_item_ID.
+	param4 study (string): study metadata parameter, retrieved in previous steps.
+	param5 module (string): module metadata parameter, retrieved in previous steps.
+	param6 item_name (string): item_name metadata parameter, retrieved in previous steps.
+	param7 country_language (string): module metadata parameter, embedded in input file name.
+	
+		
+Returns:
+	updated df_questionnaire (pandas dataframe), including new answer segments.
+"""
 def process_one_to_x_scale(df,higher_side, answer, survey_item_prefix,study,module,item_name,country_language):
 	answer = eliminate_dots(answer)
 	if re.compile('(01)', re.IGNORECASE).findall(answer):
@@ -260,6 +327,21 @@ def process_one_to_x_scale(df,higher_side, answer, survey_item_prefix,study,modu
 
 	return df
 
+"""
+Processes scales ranging from 0-x.
+Args:
+	param1 df (pandas dataframe): dataframe to store processed questionnaire data.
+	param2 higher_side (string): higher value of the scale.
+	param3 survey_item_prefix (string): prefix of survey_item_ID.
+	param4 study (string): study metadata parameter, retrieved in previous steps.
+	param5 module (string): module metadata parameter, retrieved in previous steps.
+	param6 item_name (string): item_name metadata parameter, retrieved in previous steps.
+	param7 country_language (string): module metadata parameter, embedded in input file name.
+	
+		
+Returns:
+	updated df_questionnaire (pandas dataframe), including new answer segments.
+"""
 def process_zero_to_x_scale(df,higher_side, answer, survey_item_prefix,study,module,item_name,country_language):
 	answer = eliminate_dots(answer)
 	
@@ -516,7 +598,6 @@ def process_introduction(df, row, survey_item_prefix, item_name,module, splitter
 	study, country_language = get_country_language_and_study_info(survey_item_prefix)
 
 	if introduction != '.' and isinstance(introduction, str):
-		# introduction = remove_undesired_symbols(introduction)
 		introduction = clean_text(introduction)
 		sentences = splitter.tokenize(introduction)
 		for sentence in sentences:
@@ -551,7 +632,6 @@ def process_request(df, row, survey_item_prefix, item_name,module, splitter):
 	study, country_language = get_country_language_and_study_info(survey_item_prefix)
 
 	if request != '.' and isinstance(request, str):
-		# request = remove_undesired_symbols(request)
 		request = clean_text(request)
 		sentences = splitter.tokenize(request)
 		for sentence in sentences:
