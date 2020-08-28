@@ -413,13 +413,110 @@ Returns:
 	bypass the return of instruction_recognition methods (boolean).
 """
 def check_if_segment_is_instruction(sentence, country_language):
+	if 'CZE' in country_language:
+		return instruction_recognition_czech(sentence,country_language)
+	if 'ENG' in country_language:
+		return instruction_recognition_english(sentence,country_language)
 	if '_ES' in country_language:
 		return instruction_recognition_catalan_spanish(sentence,country_language) 
 	if 'POR' in country_language:
 		return instruction_recognition_portuguese(sentence,country_language)
-	if 'CZE' in country_language:
-		return instruction_recognition_czech(sentence,country_language)
+	
 
+
+"""
+Recognizes an instruction segment for texts written in English,
+based on regex named groups patterns.
+
+Args:
+	param1 text (string): text (in Portuguese) currently being analyzed.
+	param2 country_language (string): country_language metadata embedded in file name.
+
+Returns: 
+	True if the segment is an instruction or False if it is not.
+"""
+def instruction_recognition_english(text,country_language):
+	regex= r"^(?P<programmer>)Programmer:"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<interviewer>)Interviewer"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(please)?(,)?\s?(?P<use>)use\s(?P<this>)this\s(?P<card>)card\s?(?P<again>)(again)?"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+	
+	regex= r"^(?P<card>)showcard"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<show>)(show|still)\s(?P<card>)card\s?(?P<again>)(again)?"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<ask>)ask\s(?P<all>)all\s(?P<interviewer>)tazatele"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<probe>)probe"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<insist>)insist"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<codeorselect>)(code|select)\s(?P<all>)all\s(?P<that>)that\s(?P<apply>)(apply|applies)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<read>)read\s(?P<out>)out\s?(?P<each>)(each)?\s?(?P<statement>)(statement)?\s?"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(please)?(,)?\s?(?P<still>)(still)?\s?(?P<use>)use\s(?P<this>)(this)?\s?(?P<same>)(same)?\s?(?P<card>)card"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(please)?(,)?\s?(?P<choose>)choose\s(?P<oneor>)(one|your)\s(?P<answer>)answer\s(?P<infrom>)(in|from)\s(?P<this>)this\s(?P<same>)(same)?\s?(?P<card>)card"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<prompt>)prompt\s(?P<inrelation>)in relation\s(?P<to>)to\s(?P<precodes>)precodes"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(please)?(,)?\s?(?P<select>)select\s(?P<only>)only\s(?P<one>)one"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(please)?(,)?\s?(?P<tick>)tick\s(?P<one>)(one)?\s?(?P<box>)box"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<note>)note\s(?P<forthe>)for the\s(?P<interviewer>)interviewer"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	return False
 
 """
 Recognizes an instruction segment for texts written in Czech,
@@ -448,7 +545,7 @@ def instruction_recognition_czech(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<note>)poznámka(?P<for>)pro\s(?P<interviewer>)tazatele"
+	regex= r"^(?P<note>)poznámka\s(?P<for>)pro\s(?P<interviewer>)tazatele"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
