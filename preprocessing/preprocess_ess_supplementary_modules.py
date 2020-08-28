@@ -147,6 +147,7 @@ def recursive_split_income_question(sentence, study, country_language):
 	categories = ['K','S','D','N','G','T', 'L', 'Q', 'F', 'J']
 
 
+
 	if ('R04' in study and 'GER' in country_language) or ('R09' in study and 'CH' in country_language) or ('R06' in study and 'GB' in country_language):
 		categories = ['J','R','C','M','F','S', 'K', 'P', 'D', 'H']
 
