@@ -424,17 +424,71 @@ def check_if_segment_is_instruction(sentence, country_language):
 		return instruction_recognition_english(sentence,country_language)
 	if '_ES' in country_language:
 		return instruction_recognition_catalan_spanish(sentence,country_language) 
+	if 'FRE' in country_language:
+		return instruction_recognition_french(sentence,country_language) 
 	if 'POR' in country_language:
 		return instruction_recognition_portuguese(sentence,country_language)
 	
 
 
 """
+Recognizes an instruction segment for texts written in French,
+based on regex named groups patterns.
+
+Args:
+	param1 text (string): text (in French) currently being analyzed.
+	param2 country_language (string): country_language metadata embedded in file name.
+
+Returns: 
+	True if the segment is an instruction or False if it is not.
+"""
+def instruction_recognition_french(text,country_language):
+	regex= r"^(?P<programmer>)Programmeur:"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<interviewer>)Enquêteur"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<read>)(lisez|lire)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<code>)codez\s(?P<all>)tout"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<ask>)demandez a\s(?P<all>)tous"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<show>)(montrer|montrez)?\s?(?P<again>)(encore|toujours)?\s?(?P<card>)carte"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(S'il vous plaît)?(,)?\s?(?P<use>)utilisez\s(?P<this>)this\s(?P<card>)card\s?(?P<again>)(again)?"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<insist>)relancer"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
+"""
 Recognizes an instruction segment for texts written in English,
 based on regex named groups patterns.
 
 Args:
-	param1 text (string): text (in Portuguese) currently being analyzed.
+	param1 text (string): text (in English) currently being analyzed.
 	param2 country_language (string): country_language metadata embedded in file name.
 
 Returns: 
@@ -533,7 +587,7 @@ Recognizes an instruction segment for texts written in Czech,
 based on regex named groups patterns.
 
 Args:
-	param1 text (string): text (in Portuguese) currently being analyzed.
+	param1 text (string): text (in Czech) currently being analyzed.
 	param2 country_language (string): country_language metadata embedded in file name.
 
 Returns: 
