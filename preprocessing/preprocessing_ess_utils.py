@@ -417,7 +417,96 @@ def check_if_segment_is_instruction(sentence, country_language):
 		return instruction_recognition_catalan_spanish(sentence,country_language) 
 	if 'POR' in country_language:
 		return instruction_recognition_portuguese(sentence,country_language)
+	if 'CZE' in country_language:
+		return instruction_recognition_czech(sentence,country_language)
 
+
+"""
+Recognizes an instruction segment for texts written in Czech,
+based on regex named groups patterns.
+
+Args:
+	param1 text (string): text (in Portuguese) currently being analyzed.
+	param2 country_language (string): country_language metadata embedded in file name.
+
+Returns: 
+	True if the segment is an instruction or False if it is not.
+"""
+def instruction_recognition_czech(text,country_language):
+	regex= r"^(?P<interviewer>)tazatele"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<instruction>)Pokyn:"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<card>)kart(u|a)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<note>)poznámka(?P<for>)pro\s(?P<interviewer>)tazatele"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<probe>)SONDUJTE"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<ask>)(ptejte|Přejte)\s(?P<all>)se všech"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<look>)Prohlédněte\s(?P<at>)si\s(?P<card>)kart(u|a)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<read>)přečtěte\s(?P<category>)varianty\s(?P<answers>)odpovědí"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<read>)ČTĚTE\s(?P<out>)NAHLAS"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<again>)opět\s(?P<card>)kart(u|a)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<again>)opět\s(?P<use>)použijte tuto\s(?P<card>)kart(u|a)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<use>)(Použijete|Použijte)\s(?P<please>)(prosím)?\s?(?P<same>)(stejnou)?\s?(?P<this>)(tuto)?\s?\s(?P<card>)kart(u|a)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+	regex= r"^(?P<chooseyour>)Vyberte svou\s(?P<answer>)odpověď\s(?P<accordingto>)podle této\s(?P<card>)karty"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<choose>)Vyberte\s(?P<please>)(prosím)?\s?(?P<answer>)odpověď\s(?P<fromthis>)z této\s(?P<card>)karty"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+
+	return False
 
 """
 Recognizes an instruction segment for texts written in Portuguese,
@@ -431,6 +520,16 @@ Returns:
 	True if the segment is an instruction or False if it is not.
 """
 def instruction_recognition_portuguese(text,country_language):
+	regex= r"^(?P<programador>)programador"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<interviewer>)entrevistador"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 	regex= r"^(?P<continue>)seguir con la\s(?P<card>)tarjeta"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -442,6 +541,21 @@ def instruction_recognition_portuguese(text,country_language):
 		return True
 
 	regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<use>)(utilize|mostrar|use)\s(?P<this>)(este|este mesmo)?\s?(?P<card>)cartão\s(?P<again>)(novamente)?"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<use>)utilize\s(?P<this>)este\s(?P<card>)cartão\s"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<use>)(utilize,|use,)\s(?P<please>)(por favor)?(,)?\s?(?P<this>)este\s(?P<card>)cartão\s"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<use>)utilize\s(?P<thesame>)o mesmo\s(?P<card>)cartão"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True

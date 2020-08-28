@@ -482,7 +482,7 @@ def process_answer(df, row, survey_item_prefix, item_name,module):
 						'item_value': None, 'text': answer}
 						df = df.append(data, ignore_index = True)
 						df = include_special_answer_category(survey_item_prefix, study, item_name,module, country_language, df)
-						return df
+
 					else:
 						print('NO MATCHES', answer)
 
