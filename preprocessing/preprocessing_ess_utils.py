@@ -73,7 +73,7 @@ def standardize_supplementary_item_name(item_name):
 	elif 'IS' in item_name:
 		return item_name.replace('IS', 'I')
 	elif 'HS' in item_name:
-		return item_name.replace('HS', 'I')
+		return item_name.replace('HS', 'H')
 	else:
 		return item_name
 
@@ -428,9 +428,175 @@ def check_if_segment_is_instruction(sentence, country_language):
 		return instruction_recognition_catalan_spanish(sentence,country_language) 
 	if 'FRE' in country_language:
 		return instruction_recognition_french(sentence,country_language) 
+	if 'GER' in country_language:
+		return instruction_recognition_german(sentence,country_language) 
+	if 'NOR' in country_language:
+		return instruction_recognition_norwegian(sentence,country_language)
 	if 'POR' in country_language:
 		return instruction_recognition_portuguese(sentence,country_language)
-	
+
+"""
+Recognizes an instruction segment for texts written in French,
+based on regex named groups patterns.
+
+Args:
+	param1 text (string): text (in French) currently being analyzed.
+	param2 country_language (string): country_language metadata embedded in file name.
+
+Returns: 
+	True if the segment is an instruction or False if it is not.
+"""
+def instruction_recognition_german(text,country_language):
+	regex= r"^(?P<interviewer>)(Befrager|Interviewer)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<interviewer>)(karte\s(\d+|[a-z]+)|liste\s(\d+|[a-z]+)|Weiter karte\s(\d+|[a-z]+))"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<insist>)NACHFRAGEN"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(bitte)?\s(?P<readout>)vorlesen"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<to>)an\s(?P<all>)alle"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<use>)Verwenden Sie\s(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<note>)Hinweis\s(?P<for>)für\s(?P<the>)den\s(?P<interviewer>)(Interviewer|Befrager)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)Bitte\s(?P<tick>)kreuzen\s(?P<a>)Sie ein\s(?P<box>)Kästchen an"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)Bitte\s(?P<use>)benutzen\s(?P<this>)Sie\s(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)Bitte\s(?P<use>)verwenden\s(?P<this>)Sie diese\s(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<only>)NUR\s(?P<one>)EINE\s(?P<answer>)ANTWORT\s(?P<possible>)MÖGLICH"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+		
+
+
+"""
+Recognizes an instruction segment for texts written in French,
+based on regex named groups patterns.
+
+Args:
+	param1 text (string): text (in French) currently being analyzed.
+	param2 country_language (string): country_language metadata embedded in file name.
+
+Returns: 
+	True if the segment is an instruction or False if it is not.
+"""
+def instruction_recognition_norwegian(text,country_language):
+	regex= r"^(?P<programmer>)programmerer:"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<interviewer>)Intervjuer"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<interviewer>)insistere"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<again>)(FORTSATT)?\s?(?P<card>)kort\s(?P<number>)\d+([a-z])*"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<note>)notat\s(?P<for>)til\s(?P<interviewer>)intervjueren"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<read>)les\s(?P<out>)høyt\s(?P<the>)(opp)?\s?(?P<options>)(alternativene)?\s?"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<code>)kod\s(?P<all>)alt\s(?P<that>)(som)?\s?(?P<apply>)(passer)?\s?"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<ask>)stilles\s(?P<to>)til\s(?P<all>)alle"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<lookat>)(Se på)?\s?(?P<use>)Bruk\s(?P<this>)(det|dette)?\s?(?P<again>)(fortsatt)?\s?(?P<card>)kortet"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<use>)Bruk\s(?P<answer>)kategoriene\s(?P<this>)(på)?\s?(?P<card>)kortet"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)Vennligst\s(?P<mark>)sett\s(?P<one>)ett\s(?P<case>)kryss"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)Vennligst\s(?P<mark>)sett\s(?P<case>)kryss\s(?P<closest>)i ruten nærmest\s(?P<youropinion>)din mening"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<answerby>)Svar ved å\s(?P<using>)bruke\s(?P<this>)dette\s(?P<card>)kortet"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<use>)Bruk\s(?P<this>)det\s(?P<same>)samme\s(?P<card>)kortet\s(?P<to>)til\s(?P<answer>)å svare"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<select>)Velg\s(?P<one>)(et|ett)\s(?P<option>)(svaralternativ|svaralternativene|alternativene|)\s(?P<from>)fra\s(?P<this>)(det|dette)\s(?P<card>)kortet"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+	regex= r"^(?P<newcard>)Her et nytt kort"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
 
 """
