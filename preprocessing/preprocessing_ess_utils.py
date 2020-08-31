@@ -462,7 +462,7 @@ def instruction_recognition_german(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<please>)(bitte)?\s(?P<readout>)vorlesen"
+	regex= r"^(?P<please>)(bitte)?\s?(?P<readout>)vorlesen"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -472,37 +472,123 @@ def instruction_recognition_german(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<use>)Verwenden Sie\s(?P<card>)(Karte|liste)"
+	regex= r"^(?P<please>)(bitte)?\s?(?P<use>)Verwenden Sie\s(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
+	regex= r"^(?P<use>)Benutzen\s(?P<please>)Sie bitte\s(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(bitte)?\s?(?P<use>)(Verwenden|benutzen)\s(Sie|Die)\s(?P<onceagain>)noch einmal\s(?P<this>)(diese)?\s?(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 
 	regex= r"^(?P<note>)Hinweis\s(?P<for>)für\s(?P<the>)den\s(?P<interviewer>)(Interviewer|Befrager)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<please>)Bitte\s(?P<tick>)kreuzen\s(?P<a>)Sie ein\s(?P<box>)Kästchen an"
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<tick>)kreuzen\s(?P<a>)Sie ein\s(?P<box>)Kästchen an"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<please>)Bitte\s(?P<use>)benutzen\s(?P<this>)Sie\s(?P<card>)(Karte|liste)"
+	regex= r"^(?P<tick>)kreuzen\s(?P<a>)Sie bitte ein\s(?P<box>)Kästchen an"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<please>)Bitte\s(?P<use>)verwenden\s(?P<this>)Sie diese\s(?P<card>)(Karte|liste)"
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen)\s(?P<this>)Sie\s(diese|die)?\s?(?P<same>)(selbe)?\s?(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<only>)NUR\s(?P<one>)EINE\s(?P<answer>)ANTWORT\s(?P<possible>)MÖGLICH"
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen)\s(?P<this>)Sie dafür diese\s(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen)\s(?P<again>)Sie nochmals\s(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<answer>)sagen Sie\s(?P<forme>)(es mir|es bitte)\s(?P<again>)(noch einmal)?\s?(?P<withthis>)(anhand von dieser|anhand dieser|anhand von)\s(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)benutzen\s(?P<this>)Sie\s(?P<again>)(wieder|wieder diese)\s(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<use>)(Verwenden|benutzen)\s(?P<please>)Sie bitte\s(?P<again>)wieder diese\s(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen)\s(?P<toanswer>)Sie für Ihre Antwort\s(?P<this>)(diese|die gleiche)?\s?(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<this>)diese\s(?P<card>)(Karte|liste)\s(?P<use>)verwenden"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<use>)verwenden\s(?P<please>)Sie bitte\s(?P<this>)(diese)?\s?(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)verwenden\s(?P<this>)Sie diese\s(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<mark>)ringeln\s(?P<a>)Sie eine\s(?P<answer>)Antwortzahl"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<only>)NUR\s(?P<one>)EINE\s(?P<answer>)ANTWORT\s(?P<possible>)(MÖGLICH)?"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(benutzen|verwenden)\s(?P<this>)Sie\s(diese|die)\s(?P<same>)(gleiche)?\s?(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<choose>)wählen\s(?P<sie>)Sie\s(?P<one>)(eine|Ihre)?\s?(?P<answer>)Antwort\s(?P<fromthis>)(von|von dieser)\s(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 		
+
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(benutzen|verwenden)\s(?P<continue>)Sie\s(weiterhin|wieder|wiederum)?\s?(?P<now>)(jetzt)?\s?(?P<this>)(diese|dieselbe)?\s?(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<lookat>)betrachten Sie\s(?P<nowthis>)nun (diese|dieselbe)\s(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+	
+
+	
 
 
 """
