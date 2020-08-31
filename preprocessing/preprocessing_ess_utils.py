@@ -434,13 +434,63 @@ def check_if_segment_is_instruction(sentence, country_language):
 		return instruction_recognition_norwegian(sentence,country_language)
 	if 'POR' in country_language:
 		return instruction_recognition_portuguese(sentence,country_language)
+	if 'RUS' in country_language:
+		return instruction_recognition_russian(sentence,country_language)
 
 """
-Recognizes an instruction segment for texts written in French,
+Recognizes an instruction segment for texts written in German,
 based on regex named groups patterns.
 
 Args:
-	param1 text (string): text (in French) currently being analyzed.
+	param1 text (string): text (in German) currently being analyzed.
+	param2 country_language (string): country_language metadata embedded in file name.
+
+Returns: 
+	True if the segment is an instruction or False if it is not.
+"""
+def instruction_recognition_russian(text,country_language):
+	regex= r"^(?P<interviewer>)ИНТЕРВЬЮЕР"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<readout>)ЗАЧИТАТЬ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<read>)ПРОЧИТАТЬ\s(?P<out>)ВСЛУХ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+ 
+	regex= r"^(?P<card>)КАРТОЧКА"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<ask>)СПРАШИВАТЬ\s(?P<all>)ВСЕХ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<ask>)СПРОСИТЕ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<ask>)ОТМЕТЬТЕ\s(?P<all>)ВСЕХ\s(?P<applicable>)ПОДХОДЯЩИЕ\s(?P<answers>)ОТВЕТЫ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+"""
+Recognizes an instruction segment for texts written in German,
+based on regex named groups patterns.
+
+Args:
+	param1 text (string): text (in German) currently being analyzed.
 	param2 country_language (string): country_language metadata embedded in file name.
 
 Returns: 
@@ -592,11 +642,11 @@ def instruction_recognition_german(text,country_language):
 
 
 """
-Recognizes an instruction segment for texts written in French,
+Recognizes an instruction segment for texts written in Norwegian,
 based on regex named groups patterns.
 
 Args:
-	param1 text (string): text (in French) currently being analyzed.
+	param1 text (string): text (in Norwegian) currently being analyzed.
 	param2 country_language (string): country_language metadata embedded in file name.
 
 Returns: 
