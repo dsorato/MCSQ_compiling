@@ -374,5 +374,5 @@ def get_sentence_splitter(filename):
 	sentence_splitter_suffix = determine_sentence_tokenizer(filename)
 	sentence_splitter_path = sentence_splitter_prefix+sentence_splitter_suffix
 	sentence_splitter = nltk.data.load(sentence_splitter_path)
-
+	
 	return sentence_splitter
