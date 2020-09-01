@@ -454,7 +454,7 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<readout>)ЗАЧИТАТЬ"
+	regex= r"^(?P<readout>)(ЗАЧИТАТЬ|ЗАЧИТАЙТЕ|ЗАЧИТАЙТЕ)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -465,22 +465,151 @@ def instruction_recognition_russian(text,country_language):
 		return True
 
  
-	regex= r"^(?P<card>)КАРТОЧКА"
+	regex= r"^(?P<use>)(ИСПОЛЬЗУЙТЕ)?\s?(?P<card>)(КАРТОЧКА|КАРТОЧКУ)\s?(?P<number>)Nr"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<ask>)СПРАШИВАТЬ\s(?P<all>)ВСЕХ"
+	regex= r"^(?P<respondent>)РЕСПОНДЕНТ:"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<ask>)СПРОСИТЕ"
+
+	regex= r"^(?P<ask>)(СПРАШИВАТЬ|СПРОСИТЬ|СПРАШИВАЙТЕ|СПРОСИТЕ)\s(?P<to>)(У)?\s?(?P<all>)(ВСЕХ)?"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<ask>)ОТМЕТЬТЕ\s(?P<all>)ВСЕХ\s(?P<applicable>)ПОДХОДЯЩИЕ\s(?P<answers>)ОТВЕТЫ"
+
+	regex= r"^(?P<ask>)ОТМЕТЬТЕ\s(?P<all>)ВСЕ\s(?P<applicable>)ПОДХОДЯЩИЕ\s(?P<answers>)ОТВЕТЫ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<for>)ДЛЯ\s(?P<interviewer>)ИНТЕРВЬЮЕРА"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<interviewer>)ИНТЕРВЬЮЕРА\s(?P<note>)ОТМЕЧАЕТ\s(?P<code>)КОД"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<toanswer>)Для ответа\s(?P<again>)снова\s(?P<use>)воспользуйтесь\s(?P<this>)этой\s(?P<card>)карточкой"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<select>)Выберите\s(?P<your>)(свой)?\s?(?P<answer>)ответ\s(?P<this>)(этой)?\s?(?P<of>)(из)?\s?(?P<proposed>)(предложенных)?\s?(?P<on>)(на)?\s?(?P<card>)(карточки|карточкой|карты|карточке)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<answer>)ОТВЕЧАЮТ\s(?P<all>)ВСЕ\s(?P<respondents>)РЕСПОНДЕНТЫ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<again>)(СНОВА)?\s?(?P<card>)КАРТА\s(?P<continue>)(ПРОДОЛЖАЕТСЯ)?\s?"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+	regex= r"^(?P<now>)Теперь\s(?P<use>)используйте\s(?P<this>)эту\s(?P<card>)карточку"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<check>)(Заполните|Отметьте)\s(?P<please>)(пожалуйста)?\s?(?P<only>)(только)?\s?(?P<one>)одну\s(?P<box>)(ячейку|клетку)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(пожалуйста)?(,)?\s?(?P<check>)отметьте\s(?P<one>)один\s(?P<box>)квадрат"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<use>)Используйте\s(?P<please>)(,)?(пожалуйста)?(,)?\s?(?P<this>)эту\s(?P<card>)карточку"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<toanswer>)Для ответа\s(?P<please>)(,)?(пожалуйста)?(,)?\s?(?P<use>)используйте\s(?P<this>)эту\s(?P<card>)карточку"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<ask>)ПОПРОСИТЕ\s(?P<respondent>)РЕСПОНДЕНТА\s(?P<open>)ОТКРЫТЬ\s(?P<again>)СНОВА\s(?P<use>)ВОСПОЛЬЗОВАТЬСЯ\s(?P<card>)(КАРТОЧКОЙ|КАРТОЧКУ)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<possible>)МОЖНО\s(?P<check>)ОТМЕТИТЬ\s(?P<more>)БОЛЬШЕ\s(?P<than>)ЧЕМ\s(?P<one>)ОДИН\s(?P<answer>)ОТВЕТ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<mark>)Заполните\s(?P<please>)(,)?(пожалуйста)?(,)?\s?(?P<one>)одну\s(?P<box>)клетку"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<read>)(ПРОЧИТАЙТЕ|ЗАЧИТАТЬ)\s(?P<each>)КАЖДОЕ\s(?P<utterance>)УТВЕРЖДЕНИЕ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<note>)ОТМЕТЬТЕ\s(?P<only>)(ТОЛЬКО)?\s?(?P<one>)ОДИН\s(?P<option>)(ВАРИАНТ|КОД|ЧИСЛО)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<readout>)ЗАЧИТЫВАЙТЕ\s(?P<by>)ПО\s(?P<each>)КАЖДОЙ\s(?P<line>)СТРОКЕ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<use>)Используйте\s(?P<the>)ту\s(?P<same>)(же|самую)\s(?P<card>)карту"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<check>)ОТМЕЧАТЬ\s(?P<all>)ВСЕ\s(?P<that>)КОТОРЫЕ\s(?P<apply>)ПОДХОДЯТ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<show>)ПОДАЙТЕ\s(?P<respondent>)РЕСПОНДЕНТУ\s(?P<card>)(КАРТОЧКУ|карточка)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<the>)ТА\s(?P<same>)ЖЕ\s(?P<card>)(КАРТОЧКУ|карточка)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+	regex= r"^(?P<readout>)ЗАЧИТЫВАЙТЕ\s(?P<questions>)ВОПРОСЫ\s(?P<mark>)ОТМЕЧАЙТЕ\s(?P<answer>)ОТВЕТ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<this>)ЭТОТ\s(?P<question>)ВОПРОС\s(?P<show>)ЗАДАЙТЕ\s(?P<all>)(ВСЕМ|ВСЕ|ВСЕX)\s(?P<show>)(РЕСПОНДЕНТА|РЕСПОНДЕНТУ|РЕСПОНДЕНТЫ)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(Пожалуйста)?(,)?\s?(?P<select>)выберите\s(?P<one>)один\s(?P<answer>)ответ\s(?P<on>)на\s(?P<this>)этой\s(?P<card>)карточке"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<your>)Ваш\s(?P<answer>)ответ\s(?P<from>)из\s(?P<this>)этой\s(?P<card>)(карточке|карточки)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
