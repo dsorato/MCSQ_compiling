@@ -1066,17 +1066,22 @@ def instruction_recognition_english(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<card>)card\s(?P<numberorletter>)(\d+|[a-z])"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 	regex= r"^(?P<show>)(show|still)\s(?P<card>)card\s?(?P<again>)(again)?"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<ask>)ask\s(?P<all>)all\s(?P<interviewer>)tazatele"
+	regex= r"^(?P<ask>)ask\s(?P<all>)all"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<probe>)probe"
+	regex= r"^(?P<probe>)probe:"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -1144,6 +1149,12 @@ def instruction_recognition_czech(text,country_language):
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
+	regex= r"^(?P<now>)Nyní\s(?P<use>)použijte\s(?P<card>)kart(u|a)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 
 	regex= r"^(?P<instruction>)Pokyn:"
 	matches = re.search(regex, text, re.IGNORECASE)

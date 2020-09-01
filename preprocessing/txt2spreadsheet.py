@@ -20,7 +20,8 @@ Returns:
 	retrieved raw items (list of strings). 
 """
 def retrieve_raw_items_from_file(file):
-	item_name_question_pattern = re.compile("(?:[A-K][A-Z]?\s?[1-9]{1,3}[a-z]?)+")
+	item_name_question_pattern = re.compile("(?:[A-K][A-Z]?[1-9]{1,3}[a-z]?)+")
+	# item_name_question_pattern = re.compile("(?:[A-K][A-Z]?\s?[1-9]{1,3}[a-z]?)+")
 	
 	lines = file.readlines()
 	last_line = len(lines) - 1
@@ -81,6 +82,7 @@ Returns:
 	was when no new valid question segments were included.
 """
 def process_question_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter,country_language):
+	print(raw_item)
 	index_question_tag = raw_item.index('{QUESTION}')
 	index_answer_tag = raw_item.index('{ANSWERS}')
 
@@ -287,8 +289,9 @@ questionnaire data (pandas dataframe)
 
 Args:
 	param1 folder_path: path to the folder where the plain text files are.
+	param2 has_supplementary: boolean variable that indicates if there is a supplementary spreadsheet to be appended.
 """
-def main(folder_path):
+def main(folder_path, has_supplementary):
 	path = os.chdir(folder_path)
 	files = os.listdir(path)
 
@@ -307,7 +310,16 @@ def main(folder_path):
 
 			f.close()
 			csv_name = file.replace('.txt', '')
-			df_questionnaire.to_csv(str(csv_name)+'.csv', encoding='utf-8-sig', index=False)
+			if has_supplementary:
+				supplementary = pd.read_csv('SUPP_'+csv_name+'.csv')
+				for i, row in supplementary.iterrows():
+					supplementary.at[i,'survey_item_ID'] = ut.update_survey_item_id(survey_item_prefix)
+
+				df_all = df_questionnaire.append(supplementary, ignore_index=True)
+				df_all.to_csv(str(csv_name)+'.csv', encoding='utf-8-sig', index=False)
+
+			else:	
+				df_questionnaire.to_csv(str(csv_name)+'.csv', encoding='utf-8-sig', index=False)
 
 	
 
@@ -316,6 +328,8 @@ def main(folder_path):
 
 
 
+
 if __name__ == "__main__":
 	folder_path = str(sys.argv[1])
-	main(folder_path)
+	has_supplementary = bool(sys.argv[1])
+	main(folder_path, has_supplementary)
