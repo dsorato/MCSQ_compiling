@@ -20,8 +20,8 @@ Returns:
 	retrieved raw items (list of strings). 
 """
 def retrieve_raw_items_from_file(file):
-	item_name_question_pattern = re.compile("(?:[A-K][A-Z]?[1-9]{1,3}[a-z]?)+")
-	# item_name_question_pattern = re.compile("(?:[A-K][A-Z]?\s?[1-9]{1,3}[a-z]?)+")
+	item_name_question_pattern = re.compile("(?:[A-N][A-Z]?[1-9]{1,3}[a-z]?)+")
+	# item_name_question_pattern = re.compile("(?:[A-N][A-Z]?\s?[1-9]{1,3}[a-z]?)+")
 	
 	lines = file.readlines()
 	last_line = len(lines) - 1
@@ -90,6 +90,7 @@ def process_question_segment(raw_item, survey_item_prefix, study, item_name, df_
 
 	for item in question_segment:
 		item = clean_text(item)
+		item = expand_interviewer_abbreviations(item, country_language)
 		if item != '':
 			sentences = splitter.tokenize(item)
 			for sentence in sentences:
@@ -97,8 +98,6 @@ def process_question_segment(raw_item, survey_item_prefix, study, item_name, df_
 					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
 				else:
 					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
-
-				sentence = expand_interviewer_abbreviations(sentence, country_language)
 
 				if check_if_segment_is_instruction(sentence, country_language):
 					item_type = 'INSTRUCTION'
