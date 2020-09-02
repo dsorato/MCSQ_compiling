@@ -310,7 +310,8 @@ def main(folder_path, has_supplementary):
 
 			f.close()
 			csv_name = file.replace('.txt', '')
-			if has_supplementary:
+			
+			if has_supplementary == 1:
 				supplementary = pd.read_csv('SUPP_'+csv_name+'.csv')
 				for i, row in supplementary.iterrows():
 					supplementary.at[i,'survey_item_ID'] = ut.update_survey_item_id(survey_item_prefix)
@@ -331,5 +332,5 @@ def main(folder_path, has_supplementary):
 
 if __name__ == "__main__":
 	folder_path = str(sys.argv[1])
-	has_supplementary = bool(sys.argv[1])
+	has_supplementary = int(sys.argv[2])
 	main(folder_path, has_supplementary)
