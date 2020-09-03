@@ -21,7 +21,7 @@ Returns:
 """
 def retrieve_raw_items_from_file(file):
 	item_name_question_pattern = re.compile("(?:[A-N][A-Z]?[1-9]{1,3}[a-z]?)+")
-	# item_name_question_pattern = re.compile("(?:[A-N][A-Z]?\s?[1-9]{1,3}[a-z]?)+")
+	# item_name_question_pattern = re.compile("(?:[A-K][A-Z]?\s?[1-9]{1,3}[a-z]?)+")
 	
 	lines = file.readlines()
 	last_line = len(lines) - 1
@@ -300,7 +300,7 @@ def main(folder_path, has_supplementary):
 				df_questionnaire, survey_item_prefix, study, country_language, splitter = set_initial_structures(file)
 				raw_items = retrieve_raw_items_from_file(f)
 				for raw_item in raw_items:
-					item_name = raw_item[0]
+					item_name = remove_spaces_from_item_name(raw_item[0])
 					if '{INTRO}' in raw_item:
 						df_questionnaire = process_intro_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter)
 					df_questionnaire = process_question_segment(raw_item, survey_item_prefix, study, item_name, df_questionnaire, splitter,country_language)
