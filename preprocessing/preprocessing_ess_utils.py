@@ -348,6 +348,10 @@ def clean_answer(text, ess_special_answer_categories):
 		text = text.split('01', 1)
 		answer_text = text[1].rstrip()
 		answer_value = '1'
+	elif re.compile(r'^04\s\w+').match(text):
+		text = text.split('04', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '4'
 	elif re.compile(r'^05\s\w+').match(text):
 		text = text.split('05', 1)
 		answer_text = text[1].rstrip()
@@ -477,7 +481,12 @@ Returns:
 	True if the segment is an instruction or False if it is not.
 """
 def instruction_recognition_russian(text,country_language):
-	regex= r"^(?P<interviewer>)ИНТЕРВЬЮЕР"
+	regex= r"^(?P<interviewer>)(ИНТЕРВЬЮЕР|ИНТЕРВЬЮЕРА)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<note>)ЗАМЕЧАНИЕ\s(?P<to>)ДЛЯ\s(?P<interviewer>)(ИНТЕРВЬЮЕР|ИНТЕРВЬЮЕРА)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -491,6 +500,13 @@ def instruction_recognition_russian(text,country_language):
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
+	regex= r"^(?P<read>)ПРОЧИТАЙТЕ\s(?P<each>)КАЖДОЕ\s(?P<utterance>)УТВЕРЖДЕНИЕ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+   
 
 	regex= r"^(?P<canmark>)МОЖНО ОТМЕТИТЬ\s(?P<more>)БОЛЬШЕ\s(?P<than>)ЧЕМ\s(?P<one>)ОДИН\s(?P<answer>)ОТВЕТ"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -530,13 +546,35 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<toanswer>)Для ответа\s(?P<again>)(снова)?\s?(?P<use>)(воспользуйтесь|пользуйтесь)(,)?\s(?P<please>)(пожалуйста)?(,)?\s?(?P<this>)(этой)?\s?(?P<thesame>)(той же)?\s?(?P<card>)карточкой"
+	regex= r"^(?P<toanswer>)Для ответа(,)?\s(?P<again>)(снова)?\s?(?P<use>)(воспользуйтесь|пользуйтесь)(,)?\s(?P<please>)(пожалуйста)?(,)?\s?(?P<this>)(этой)?\s?(?P<thesame>)(той же)?\s?(?P<card>)(карточкой|карточку)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
 
 	regex= r"^(?P<please>)(Пожалуйста)?(,)?\s?(?P<select>)Выберите\s(?P<your>)(свой)?\s?(?P<one>)(один)?\s?(?P<answer>)ответ\s(?P<this>)(этой)?\s?(?P<of>)(из)?\s?(?P<proposed>)(предложенных)?\s?(?P<on>)(на)?\s?(?P<card>)(карточки|карточкой|карты|карточке)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<please>)(Пожалуйста)?(,)?\s?(?P<select>)Выберите\s(?P<answer>)ответ\s(?P<of>)из\s(?P<this>)этой\s(?P<card>)карточки"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<select>)(ОТМЕТЬТЕ|Выберите)(,)?\s(?P<all>)(ВСЕ|все)(,)?\s(?P<that>)(ПОХОДЯЩИЕ|которые)\s(?P<applies>)(ВАРИАНТЫ|подходят)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+   
+
+	regex= r"^(?P<select>)Выберите(,)?\s(?P<please>)(Пожалуйста)?(,)?\s?(?P<answer>)ответ\s(?P<of>)из\s(?P<this>)этой\s(?P<card>)карточки"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<select>)Выберите(,)?\s(?P<please>)(Пожалуйста)?(,)?\s?(?P<only>)(только)?\s?(?P<one>)один\s(?P<option>)(вариант)?"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -563,18 +601,22 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<again>)(СНОВА)?\s?(?P<card>)КАРТА\s(?P<continue>)(ПРОДОЛЖАЕТСЯ)?\s?"
+	regex= r"^(?P<again>)(СНОВА)?\s?(?P<card>)(КАРТА|КАРТОЧКА)\s(?P<continue>)(ПРОДОЛЖАЕТСЯ)?"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
 
-	regex= r"^(?P<toanswer>)(Для ответа)?(,)?\s?(?P<please>)(пожалуйста)?(,)?\s?(?P<now>)(Теперь)?\s?(?P<use>)(Используйте|используйте|используйте)\s(?P<this>)эту\s(?P<same>)(же)\s?(?P<card>)карточку"
+	regex= r"^(?P<now>)Теперь\s(?P<use>)используйте\s(?P<this>)эту\s(?P<card>)карточку"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	
+	regex= r"^(?P<toanswer>)(Для ответа)?(,)?\s?(?P<please>)(пожалуйста)?(,)?\s?(?P<now>)(Теперь)?\s?(?P<use>)(Используйте|используйте|используйте)\s(?P<this>)(эту|ту)\s(?P<same>)(же)\s?(?P<card>)карточку"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 	regex= r"^(?P<check>)(Заполните|Отметьте)(,)?\s(?P<please>)(пожауйста|пожалуйста|пожалуйста)?(,)?\s?(?P<only>)(только)?\s?(?P<one>)(один|одну)\s(?P<box>)(ячейку|клетку|ответ)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -586,7 +628,13 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<use>)Используйте(,)?\s(?P<please>)(пожалуйста)?(,)?\s?(?P<this>)эту\s(?P<card>)карточку"
+	regex= r"^(?P<use>)Используйте(,)?\s(?P<please>)(пожалуйста|пожалуйста)?(,)?\s?(?P<this>)(эту)?\s?(?P<card>)карточку"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+  
+	regex= r"^(?P<check>)ОТМЕТЬТЕ\s(?P<all>)ВСЕ\s(?P<answers>)НАЗВАННЫЕ ОТВЕТЫ"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -693,6 +741,11 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<toanswer>)Для ответа(,)?\s(?P<use>)используйте\s(?P<please>)(Пожалуйста)?(,)?\s?(?P<card>)(карточке|карточки|карточку)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 	regex= r"^(?P<please>)Пожалуйста(,)?\s(?P<use>)используйте\s(?P<this>)(эту)?\s?(?P<card>)карточку"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -703,8 +756,12 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<ask>)ПОПРОСИТЕ\s(?P<respondent>)РЕСПОНДЕНТА"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
-
+ 
 
 
 """
@@ -724,7 +781,7 @@ def instruction_recognition_german(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<again>)(Weiterhin|Weiter|Und noch die)?\s?(?P<card>)(karte\s(\d+|[a-z]+)|liste\s(\d+|[a-z]+))"
+	regex= r"^(?P<again>)(Immer noch|Weiterhin|Weiter|Und noch die|Noch einmal)?\s?(?P<card>)(karte\s(\d+|[a-z]+)|liste\s(\d+|[a-z]+))"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -802,6 +859,10 @@ def instruction_recognition_german(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<please>)(Bitte)?(,)?\s?(?P<again>)nochmals\s(?P<card>)(Karte|liste)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
 	regex= r"^(?P<please>)(Bitte)?(,)?\s?(?P<answer>)sagen Sie\s(?P<forme>)(es mir|es bitte)\s(?P<again>)(noch einmal|nochmals)?\s?(?P<withthis>)(anhand von dieser|anhand dieser|anhand von)\s(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -819,7 +880,7 @@ def instruction_recognition_german(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<please>)(Bitte)?(,)?\s?(?P<use>)(Verwenden|benutzen)\s(?P<toanswer>)Sie für Ihre Antwort\s(?P<this>)(diese|die gleiche)?\s?(?P<card>)(Karte|liste)"
+	regex= r"^(?P<please>)(Bitte)?(,)?\s?(?P<use>)(Verwenden|benutzen)\s(?P<toanswer>)Sie für Ihre Antwort\s(?P<again>)(wieder|die gleiche)?\s?(?P<the>)(die|diese|der|von)?\s?(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -860,11 +921,10 @@ def instruction_recognition_german(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<please>)(Bitte)?(,)?\s?(?P<choose>)wählen\s(?P<sie>)Sie\s(?P<one>)(eine|Ihre)?\s?(?P<answer>)Antwort\s(?P<fromthis>)(von|von dieser|von der|auf der)\s(?P<card>)(Karte|liste)"
+	regex= r"^(?P<please>)(Bitte)?(,)?\s?(?P<choose>)wählen\s(?P<sie>)Sie\s(?P<one>)(eine|Ihre)?\s?(?P<answer>)Antwort\s(?P<fromthis>)(von|von dieser|von der|auf der|auf dieser)\s(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
-
 
 	regex= r"^(?P<please>)(Bitte)?(,)?\s?(?P<just>)nur\s(?P<one>)eine\s(?P<answer>)Antwort\s(?P<select>)auswählen"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -1461,7 +1521,18 @@ def instruction_recognition_portuguese(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<continue>)seguir con la\s(?P<card>)tarjeta"
+	regex= r"^(?P<card>)cartão\s(?P<numberorletter>)(\d+|\w+)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<read>)ler\b"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+  
+	regex= r"^(?P<mark>)ASSINALAR\s(?P<only>)APENAS\s(?P<one>)UM(A)?"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -1481,10 +1552,11 @@ def instruction_recognition_portuguese(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<use>)(utilize,|use,)\s(?P<please>)(por favor)?(,)?\s?(?P<this>)este\s(?P<card>)cartão\s"
+	regex= r"^(?P<use>)(utilize|use)(,)?\s(?P<please>)(por favor)?(,)?\s?(?P<this>)este\s(?P<card>)cartão\s"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
 
 	regex= r"^(?P<use>)utilize\s(?P<thesame>)o mesmo\s(?P<card>)cartão"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -1615,6 +1687,11 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
+		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<answer>)respongui\s(?P<using>)utilitzant\s(?P<this>)aquesta\s(?P<same>)(mateixa)?\s?(?P<card>)targeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
 		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<use>)utilitzi\s(?P<this>)aquesta\s(?P<card>)targeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
@@ -1640,10 +1717,11 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)esculli\s(?P<one>)una\s(?P<ofthe>)(de les)?\s?(?P<answer>)(resposta|respostes)\s(?P<thatappearin>)(que apareixen en)?\s?(?P<fromthis>)(aquesta|d'aquesta)\s(?P<card>)targeta"
+		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)esculli\s(?P<your>)(la seva)?\s?(?P<one>)(una)?\s?(?P<ofthe>)(de les)?\s?(?P<answer>)(resposta|respostes)\s(?P<thatappearin>)(que apareixen en)?\s?(?P<fromthis>)(aquesta|d'aquesta)\s(?P<card>)targeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
+
 
 		regex= r"^(?P<read>)llegi(r|u)\s?(?P<out>)(alta)?"
 		matches = re.search(regex, text, re.IGNORECASE)
@@ -1691,12 +1769,33 @@ def instruction_recognition_catalan_spanish(text,country_language):
 			return True
 
 	elif 'SPA' in country_language:
+		regex= r"^(?P<card>)tarjeta\s(?P<numberorletter>)(\d+|\w+)"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+
 		regex= r"^(?P<continue>)seguir con la\s(?P<card>)tarjeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
 
 		regex= r"^(?P<show>)mostrar\s(?P<card>)tarjeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<if>)si\s(?P<the>)el\s(?P<respondent>)(encuestado|entrevistado)"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+     
+		regex= r"^(?P<choose>)Elija\s(?P<an>)una\s(?P<answer>)respuesta\s(?P<fromthe>)de las que aparecen en esta\s(?P<card>)tarjeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<please>)(por favor)?(,)?\s?(?P<answer>)responda\s(?P<using>)utilizando\s(?P<this>)esta\s(?P<card>)tarjeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
@@ -1737,7 +1836,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<note>)nota\s(?P<for>)per\s(?P<interviewer>)el entrevistador\s(?P<code>)codificar"
+		regex= r"^(?P<note>)nota\s(?P<for>)(per|para)\s(?P<interviewer>)el entrevistador\s?(?P<code>)(codificar)?"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
