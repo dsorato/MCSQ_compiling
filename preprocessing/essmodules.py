@@ -23,7 +23,8 @@ class ESSSModulesR04:
 class ESSSModulesR05:
 	modules = {'D':'D - Trust in the Police and Courts, including: confidence in the police and courts, cooperation with the police and courts, contact with the police and attitudes towards punishment',
 	'G': 'SUPP_G - Work, Family and Wellbeing, including: impact of the recession on households and work, job security, housework, wellbeing, experiences of unemployment and work-life balance',
-	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions'}
+	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions',
+	'N': 'SUPP_N - National Module'}
 
 class ESSSModulesR06:
 	modules = {'D':'D - Immigration, including: attitudes, perceptions and policy preferences',
