@@ -379,6 +379,14 @@ def clean_answer(text, ess_special_answer_categories):
 		text = text.split('01', 1)
 		answer_text = text[1].rstrip()
 		answer_value = '1'
+	elif re.compile(r'^02\s\w+').match(text):
+		text = text.split('02', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '2'
+	elif re.compile(r'^03\s\w+').match(text):
+		text = text.split('03', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '3'
 	elif re.compile(r'^04\s\w+').match(text):
 		text = text.split('04', 1)
 		answer_text = text[1].rstrip()
@@ -395,6 +403,10 @@ def clean_answer(text, ess_special_answer_categories):
 		text = text.split('07', 1)
 		answer_text = text[1].rstrip()
 		answer_value = '7'
+	elif re.compile(r'^09\s\w+').match(text):
+		text = text.split('09', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '9'
 	elif re.compile(r'^10\s\w+').match(text):
 		text = text.split('10', 1)
 		answer_text = text[1].rstrip()
