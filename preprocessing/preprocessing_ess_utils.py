@@ -539,7 +539,19 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<readout>)(ЗАЧИТАТЬ|ЗАЧИТАЙТЕ|ЗАЧИТАЙТЕ)"
+	regex= r"^(?P<readout>)(ЗАЧИТАТЬ|ЗАЧИТАЙТЕ|ЗАЧИТАЙТЕ|ЗАЧИТАЙТ)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<alternatives>)(АЛЬТЕРНАТИВЫ)?\s?(?P<dont>)НЕ\s(?P<read>)(ЗАЧИТЫВАТЬ|ЧИТАТЬ)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+ 
+	regex= r"^(?P<name>)НАЗЫВАЙТЕ\s(?P<groups>)ГРУППЫ\s(?P<peopleororganization>)ЛЮДЕЙ ИЛИ ОРГАНИЗАЦИИ "
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -558,6 +570,13 @@ def instruction_recognition_russian(text,country_language):
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
+	
+	regex= r"^(?P<read>)ЗАЧИТЫВАЙТЕ\s(?P<by>)ПО\s(?P<each>)КАЖДОЙ\s(?P<line>)СТРОКЕ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 
 	regex= r"^(?P<one>)ОДИН\s(?P<answer>)ОТВЕТ\s?(?P<in>)(В)?\s?(?P<each>)(КАЖДОЙ)?\s?(?P<line>)(СТРОКЕ)?"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -612,7 +631,12 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<possible>)ВОЗМОЖЕН\s(?P<one>)ОДИН\s(?P<answer>)ОТВЕТ"
+	regex= r"^(?P<possible>)ВОЗМОЖЕ(Н|Т)\s(?P<one>)ОДИН\s(?P<answer>)(ОТВЕТ|ВЫБОР)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<insist>)УТОЧНИТЕ"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -705,16 +729,26 @@ def instruction_recognition_russian(text,country_language):
 
    
 
-	regex= r"^(?P<select>)Выберите(,)?\s(?P<please>)(Пожалуйста)?(,)?\s?(?P<answer>)ответ\s(?P<of>)из\s(?P<this>)этой\s(?P<card>)карточки"
+	regex= r"^(?P<select>)Выберите\s(?P<please>)(Пожалуйста)?(,)?\s?(?P<answer>)ответ\s(?P<of>)из\s(?P<this>)этой\s(?P<card>)карточки"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<select>)Выберите(,)?\s(?P<please>)(Пожалуйста)?(,)?\s?(?P<only>)(только)?\s?(?P<one>)один\s(?P<option>)(вариант)?"
+	regex= r"^(?P<select>)Выберите\s(?P<please>)(Пожалуйста)?(,)?\s?(?P<only>)(только)?\s?(?P<one>)один\s(?P<option>)(вариант)?"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
+	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<select>)отметьте\s(?P<only>)только\s(?P<one>)один\s(?P<option>)(вариант)?"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+	regex= r"^(?P<select>)Отметить\s(?P<please>)(Пожалуйста)?(,)?\s?(?P<only>)(только)?\s?(?P<one>)один\s(?P<option>)вариант"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
 	regex= r"^(?P<please>)(Пожалуйста)?(,)?\s?(?P<select>)выберите\s(?P<all>)все\s(?P<options>)варианты\s(?P<answer>)ответа\s(?P<on>)на\s(?P<card>)(карточки|карточкой|карты|карточке)"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -749,10 +783,11 @@ def instruction_recognition_russian(text,country_language):
 		return True
 
 
-	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<now>)(Теперь)?\s?(?P<use>)используйте\s(?P<this>)эту\s(?P<card>)карточку"
+	regex= r"^(?P<toanswer>)(Для ответа)?\s?(?P<please>)(Пожалуйста)?\s?(?P<now>)(Теперь)?\s?(?P<use>)используйте\s(?P<this>)эту\s(?P<card>)карточку"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
 
 
 	regex= r"^(?P<toanswer>)(Для ответа)?(,)?\s?(?P<please>)(пожалуйста)?\s?(?P<now>)(Теперь)?\s?(?P<use>)(Используйте|используйте|используйте)\s(?P<this>)(эту|ту)\s(?P<same>)(же)\s?(?P<card>)карточку"
@@ -760,7 +795,7 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<toanswer>)Для ответа\s(?P<use>)используйте\s(?P<please>)(пожалуйста)?\s?(?P<card>)карточку"
+	regex= r"^(?P<toanswer>)Для ответа\s(?P<use>)(используйте|пользуйтесь)\s(?P<please>)(пожалуйста)?\s?(?P<card>)(карточку|карточкой)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -910,6 +945,19 @@ def instruction_recognition_russian(text,country_language):
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
+ 
+	regex= r"^(?P<to>)ДЛЯ\s(?P<interviewer>)ИНТЕРВЬЮЕРА"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<if>)ЕСЛИ\s(?P<not>)НЕ\s(?P<born>)РОДИЛСЯ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+   
 
 	regex= r"^(?P<ask>)ПОПРОСИТЕ\s(?P<respondent>)РЕСПОНДЕНТА"
 	matches = re.search(regex, text, re.IGNORECASE)
