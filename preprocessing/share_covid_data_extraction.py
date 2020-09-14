@@ -120,7 +120,13 @@ def set_initial_structures(language_country):
 
 
   
-
+"""
+Replaces abbreviations and fills text from the text of input file.
+Args:
+	param1 sentence (string): text segment from input file.
+Returns:
+	sentence (string). Text segment without abbreviations and fills text.
+"""
 def replace_abbreviations_and_fills(sentence):
 	if ' Ud.' in sentence:
 		sentence = sentence.replace(' Ud.', ' usted')
