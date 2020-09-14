@@ -3,6 +3,7 @@ import utils as ut
 import nltk
 import pandas as pd
 import os
+import re
 
 """
 Returns the ISO codes for language and country based on the values retrieved from input file.
@@ -11,7 +12,6 @@ Args:
 	param1 language_country (string): language and country information retrieved from input file.
 Returns:
 	language_country (string). Variable representing the language and country metadata in ISO codes.
-
 """
 def get_language_country_iso_codes(language_country):
 	if language_country in ['seSE', 'nlNL', 'dkDK', 'grGR', 'nlBE', 'heIL', 'arIL', 
@@ -56,6 +56,32 @@ def get_language_country_iso_codes(language_country):
 		return 'RUS_IL'
 
 
+"""
+Returns the module of the question based on the item_name variable.
+This information comes from http://www.share-project.org/special-data-sets/share-covid-19-questionnaire.html
+
+Args:
+	param1 item_name (string): item_name information retrieved from input file.
+Returns:
+	module (string). Module of the question.
+"""
+def retrieve_module_from_item_name(item_name):
+	if 'CAA' in item_name or 'CADN' in item_name:
+		return 'A - Intro and basic demographics'
+	elif 'CAPH' in item_name or 'CAH' in item_name or 'CAMH' in item_name  and item_name != 'CAHH017_':
+		return 'H - Health (physical and mental) and health behavior'
+	elif 'CAC' in item_name and item_name != 'CACO007_':
+		return 'C - Corona-related infection'
+	elif 'CAQ' in item_name:
+		return 'Q - Quality of healthcare'
+	elif 'CAW' in item_name or 'CAEP' in item_name:
+		return 'W - Work'
+	elif 'CAE' in item_name or item_name == 'CACO007_' or item_name == 'CAHH017_':
+		return 'E - Economic situation'
+	elif 'CAS' in item_name:
+		return 'S - Social Networks'
+	elif 'CAF' in item_name:
+		return 'F - Finale'
 
 """
 Set initial structures that are necessary for the extraction of each questionnaire.
@@ -96,6 +122,8 @@ def set_initial_structures(language_country):
   
 
 def replace_abbreviations_and_fills(sentence):
+	if ' Ud.' in sentence:
+		sentence = sentence.replace(' Ud.', ' usted')
 	if ' R ' in sentence:
 		sentence = sentence.replace(' R ', ' respondent ')
 	if ' R.' in sentence:
@@ -103,11 +131,18 @@ def replace_abbreviations_and_fills(sentence):
 	if " R's" in sentence:
 		sentence = sentence.replace(" R's", " respondent's")
 	if 'IWER' in sentence:
-		sentence = sentence.replace('IWER', 'Interviewer instruction')
+		sentence = sentence.replace('IWER', 'Interviewer')
 	if '[FILL in name of CTL institution]' in sentence:
 		sentence = sentence.replace('[FILL in name of CTL institution]', '[Institution]')
-	if '[FILL in name of CTL institution]' in sentence:
+	if '[FILL in name of Survey Agency]' in sentence:
 		sentence = sentence.replace('[FILL in name of Survey Agency]', '[Survey Agency]')
+
+	sentence = re.sub(" :", ":", sentence)
+	sentence = re.sub("’", "'", sentence)
+	sentence = re.sub("…", "...", sentence)
+	sentence = re.sub(" :", ":", sentence)
+	sentence = re.sub("’", "'", sentence)
+	sentence = sentence.replace(" ?", "?")
 
 	return sentence
 
@@ -125,16 +160,15 @@ Returns:
 	updated df_questionnaire with new valid answer segments.
 """
 def preprocess_answer_segment(row, df_questionnaire, survey_item_prefix, splitter):
-	sentences = splitter.tokenize(row['text'])
+	raw_item = replace_abbreviations_and_fills(row['text'])
+	sentences = splitter.tokenize(raw_item)
 	for sentence in sentences:
 		if df_questionnaire.empty:
 			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
 		else:
 			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-		sentence = replace_abbreviations_and_fills(sentence)
-
-		data = {"survey_item_ID": survey_item_id,'Study': survey_item_prefix[:-1], 'module': None,
+		data = {"survey_item_ID": survey_item_id,'Study': survey_item_prefix[:-1], 'module': retrieve_module_from_item_name(row['name']),
 		'item_type': 'RESPONSE', 'item_name': row['name'], 'item_value': row['item_order'],  'text': sentence}
 		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
@@ -153,16 +187,15 @@ Returns:
 	updated df_questionnaire with new valid question segments.
 """
 def preprocess_question_segment(row, df_questionnaire, survey_item_prefix, splitter):
-	sentences = splitter.tokenize(row['text'])
+	raw_item = replace_abbreviations_and_fills(row['text'])
+	sentences = splitter.tokenize(raw_item)
 	for sentence in sentences:
 		if df_questionnaire.empty:
 			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
 		else:
 			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-		sentence = replace_abbreviations_and_fills(sentence)
-
-		data = {"survey_item_ID": survey_item_id,'Study': survey_item_prefix[:-1], 'module': None,
+		data = {"survey_item_ID": survey_item_id,'Study': survey_item_prefix[:-1], 'module': retrieve_module_from_item_name(row['name']),
 		'item_type': 'REQUEST', 'item_name': row['name'], 'item_value': None,  'text': sentence}
 		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
@@ -181,16 +214,15 @@ Returns:
 	updated df_questionnaire with new valid instruction segments.
 """
 def preprocess_instruction_segment(row, df_questionnaire, survey_item_prefix, splitter):
-	sentences = splitter.tokenize(row['text'])
+	raw_item = replace_abbreviations_and_fills(row['text'])
+	sentences = splitter.tokenize(raw_item)
 	for sentence in sentences:
 		if df_questionnaire.empty:
 			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
 		else:
 			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-		sentence = replace_abbreviations_and_fills(sentence)
-
-		data = {"survey_item_ID": survey_item_id,'Study': survey_item_prefix[:-1], 'module': None,
+		data = {"survey_item_ID": survey_item_id,'Study': survey_item_prefix[:-1], 'module': retrieve_module_from_item_name(row['name']),
 		'item_type': 'INSTRUCTION', 'item_name': row['name'], 'item_value': None,  'text': sentence}
 		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
