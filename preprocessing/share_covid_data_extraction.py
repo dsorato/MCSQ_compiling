@@ -142,12 +142,17 @@ def replace_abbreviations_and_fills(sentence):
 		sentence = sentence.replace('[FILL in name of CTL institution]', '[Institution]')
 	if '[FILL in name of Survey Agency]' in sentence:
 		sentence = sentence.replace('[FILL in name of Survey Agency]', '[Survey Agency]')
+	if '[FILL in telephone number of survey agency]' in sentence:
+		sentence = sentence.replace('[FILL in telephone number of survey agency]', '[Telephone of Survey Agency]')
+
+		 
 
 	sentence = re.sub(" :", ":", sentence)
 	sentence = re.sub("’", "'", sentence)
 	sentence = re.sub("…", "...", sentence)
 	sentence = re.sub(" :", ":", sentence)
 	sentence = re.sub("’", "'", sentence)
+	sentence = sentence.replace("&nbsp;", " ")
 	sentence = sentence.replace(" ?", "?")
 
 	return sentence
@@ -166,17 +171,16 @@ Returns:
 	updated df_questionnaire with new valid answer segments.
 """
 def preprocess_answer_segment(row, df_questionnaire, survey_item_prefix, splitter):
-	raw_item = replace_abbreviations_and_fills(row['text'])
-	sentences = splitter.tokenize(raw_item)
-	for sentence in sentences:
-		if df_questionnaire.empty:
-			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
-		else:
-			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+	sentence = replace_abbreviations_and_fills(row['text'])
 
-		data = {"survey_item_ID": survey_item_id,'Study': survey_item_prefix[:-1], 'module': retrieve_module_from_item_name(row['name']),
-		'item_type': 'RESPONSE', 'item_name': row['name'], 'item_value': row['item_order'],  'text': sentence}
-		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+	if df_questionnaire.empty:
+		survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+	else:
+		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+	data = {"survey_item_ID": survey_item_id,'Study': survey_item_prefix[:-1], 'module': retrieve_module_from_item_name(row['name']),
+	'item_type': 'RESPONSE', 'item_name': row['name'], 'item_value': row['item_order'],  'text': sentence}
+	df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
 
