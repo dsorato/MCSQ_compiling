@@ -164,20 +164,20 @@ from difflib import SequenceMatcher
 # 	return value_i, value_j
 
 
-# def align_on_meta(df1, df2, target_language):
-# 	df = pd.DataFrame(columns=['item_name', 'item_type', 'source', 'target', 'item_value', 
-# 		'source_survey_itemID', 'target_survey_itemID'])
 
-# 	df_introduction = align_remaining(df1, df2, target_language, 'INTRODUCTION')
-# 	df = df.append(df_introduction, ignore_index=True)
-# 	df_instruction = align_remaining(df1, df2, target_language, 'INSTRUCTION')
-# 	df = df.append(df_instruction, ignore_index=True)
-# 	df_request = align_remaining(df1, df2, target_language, 'REQUEST')
-# 	df = df.append(df_request, ignore_index=True)
-# 	df_response = align_responses(df1, df2, target_language, 'RESPONSE')
-# 	df = df.append(df_response, ignore_index=True)
 
-# 	return df
+def align_on_metadata(df, df_source, df_target):
+
+	df_introduction = align_remaining(df1, df2, target_language, 'INTRODUCTION')
+	df = df.append(df_introduction, ignore_index=True)
+	df_instruction = align_remaining(df1, df2, target_language, 'INSTRUCTION')
+	df = df.append(df_instruction, ignore_index=True)
+	df_request = align_remaining(df1, df2, target_language, 'REQUEST')
+	df = df.append(df_request, ignore_index=True)
+	df_response = align_responses(df1, df2, target_language, 'RESPONSE')
+	df = df.append(df_response, ignore_index=True)
+
+	return df
 
 
 """
@@ -214,6 +214,22 @@ def get_study_metadata(filename):
 	
 	return study
 
+"""
+Get target language/country metadata embedded in filename, to name the output aligned file.
+
+Args:
+	param1 filename (string): name of target file.
+
+Returns:
+	target_language_country (string). Metadata that identifies the language/country of the target questionnaire being aligned.
+"""
+def get_target_language_country_metadata(filename):
+	filename_without_extension = filename.replace('.csv', '')
+	filename_without_extension = filename_without_extension.split('_')
+	target_language_country = filename[3]+'_'+filename[4]
+	
+	return target_language_country
+
 def main(folder_path, filename_source, filename_target):
 	path = os.chdir(folder_path)
 	df_source = pd.read_csv(filename_source)
@@ -223,28 +239,37 @@ def main(folder_path, filename_source, filename_target):
 		'source_text', 'target_text'])
 
 	study = get_study_metadata(filename_source)
+	target_language_country = get_target_language_country_metadata(filename_target)
+
+	if 'EVS' in study:
+		source_language_country = 'ENG_GB'
+	else:
+		source_language_country = 'ENG_SOURCE'
 
 	"""
 	Computes the intersection between the modules of source and target questionnaires.
-	We are only interested in aligning questions that are present in both files.
+	We are only interested in aligning modules that are present in both files.
 	"""
 	intersection_modules = set(df_source.module.unique()).intersection(set(df_target.module.unique()))
 	for module in sorted(intersection_modules):
-		print(module)
 		df_source_filtered, df_target_filtered = filter_by_module(df_source, df_target, module)
-			unique_item_name_source = df_source_filtered.item_name.unique()
-			unique_item_name_target = df_target_filtered.item_name.unique()
-			for unique in unique_item_name_source:
-				print(unique)
-				df_source_by_item_name = df_source_filtered[df_source_filtered['item_name']==unique]
-				df_target_by_item_name = df_target_filtered[df_target_filtered['item_name']==unique]
-				if df_target_by_item_name.empty == False and df_source_by_item_name.empty == False:
-					alignment = align_on_meta(df_source_by_item_name, df_target_by_item_name, target_language)
-					print(alignment)
-					df = df.append(alignment, ignore_index=True)
-
+		
+		unique_item_names_source = df_source_filtered.item_name.unique()
+		unique_item_names_target = df_target_filtered.item_name.unique()
+		for unique in unique_item_name_source:
+			print(unique)
+			"""
+			Computes the intersection between the item names of source and target questionnaires.
+			We are only interested in aligning questions that are present in both files.
+			"""
+			df_source_by_item_name = df_source_filtered[df_source_filtered['item_name'].lower()==unique.lower()]
+			df_target_by_item_name = df_target_filtered[df_target_filtered['item_name'].lower()==unique.lower()]
+			
+			if df_target_by_item_name.empty == False and df_source_by_item_name.empty == False:
+				df = align_on_metadata(df, df_source_by_item_name, df_target_by_item_name)
+				
 	
-	df.to_csv('ENG-'+target_language+'_'+study_round+'.csv', encoding='utf-8', index=False)
+	df.to_csv(source_language_country+'_'+target_language_country+'_'+study+'.csv', encoding='utf-8', index=False)
 	
 
 
