@@ -49,18 +49,20 @@ def align_more_segments_in_target(df, list_source, list_target, item_type):
 
 	if item_type == 'INSTRUCTION' or item_type == 'REQUEST':
 		for i, item in enumerate(list_source):
-			dict_source[i] = [len(item[-1])]
+			dict_source[i] = len(item[-1])
 
 		for i, item in enumerate(list_target):
-			dict_target[i] = [len(item[-1])]
+			dict_target[i] = len(item[-1])
+
+		
 
 		for target_k, target_v in list(dict_target.items()):
-			dict_closest[target_k] = 0
 			for source_k, source_v in list(dict_source.items()):
-				division = target_v/source_v
-				# TODO FIND THE DIVISION CLOSEST TO 1
-				if division > dict_closest[target_k] and division < 2:
+				dict_closest[target_k, source_k] = target_v/source_v
 
+
+		print(min(dict_closest.values(), key=lambda x:abs(x-1)))
+				
 				 
 
 
