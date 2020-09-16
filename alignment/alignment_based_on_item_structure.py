@@ -69,7 +69,21 @@ from difflib import SequenceMatcher
 
 
 
+"""
+Aligns introduction, instruction and requests segments. Differently from response segments, these other item types can't be
+merged. There are five distinct cases to consider: 1) only source segments (df_target is empty), 2) only target segments (df_source is empty),
+3) df_source has more segments than df_target 4) df_target has more segments than df_source and, 5) df_source and df_target have the 
+same number of segments.
 
+Args:
+	param1 df (pandas dataframe): dataframe to store the questionnaire alignment
+	param2 df_source (pandas dataframe): dataframe containing the data of the source questionnaire (always English).
+	param3 df_target (pandas dataframe): dataframe containing the data of the target questionnaire
+	param4 item_type (string): metadata that indicates if the dataframes contain introductions, instructions or requests.
+
+Returns:
+	df (pandas dataframe) with newly aligned survey item segments.
+"""
 def align_introduction_instruction_request(df, df_source, df_target, item_type):
 	df_source = df_source[df_source['item_type']==item_type]
 	df_target = df_target[df_target['item_type']==item_type]
@@ -114,7 +128,16 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 
 	return df
 
+"""
+Aligns response segments by merging them on item_value metadata.
+Args:
+	param1 df (pandas dataframe): dataframe to store the questionnaire alignment
+	param2 df_source (pandas dataframe): dataframe containing the data of the source questionnaire (always English).
+	param3 df_target (pandas dataframe): dataframe containing the data of the target questionnaire
 
+Returns:
+	df (pandas dataframe) with newly aligned response segments.
+"""
 def align_responses(df, df_source, df_target):
 	df_source = df_source[df_source['item_type']=='RESPONSE']
 	df_target = df_target[df_target['item_type']=='RESPONSE']
@@ -132,6 +155,14 @@ def align_responses(df, df_source, df_target):
 """
 Calls the appropriate method for alignment based on metadata.
 Responses are aligned separately of other item types because answers are merged using the item value.
+Args:
+	param1 df (pandas dataframe): dataframe to store the questionnaire alignment
+	param2 df_source (pandas dataframe): dataframe containing the data of the source questionnaire (always English).
+	param3 df_target (pandas dataframe): dataframe containing the data of the target questionnaire
+	param4 process_responses (boolean): indicates if the response segments should be processed, country-specific answers are excluded by design. 
+
+Returns:
+	df (pandas dataframe) with newly aligned survey items.
 """
 def align_on_metadata(df, df_source, df_target, process_responses):
 
@@ -212,6 +243,8 @@ def instantiate_country_specific_request_object(study):
 		country_specific_requests = ESSCountrySpecificR01()
 
 	return country_specific_requests
+
+
 
 def main(folder_path, filename_source, filename_target):
 	path = os.chdir(folder_path)
