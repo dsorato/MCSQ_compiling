@@ -4,95 +4,121 @@ import sys
 import os
 import re
 from countryspecificrequest import *
-import math
-from difflib import SequenceMatcher
 
 
-
-def similar(a, b):
-    return SequenceMatcher(None, a, b).ratio()
-
-
-# def align_more_segments_in_source(df, df_source, df_target, target_language):
-# 	for i, irow in df_source.iterrows():
-# 		for j, jrow in df_target.iterrows():
-# 			if jrow[target_language] not in df['target'].unique() and irow['ENG_SOURCE'] not in df['source'].unique():
-# 				div = len(irow['ENG_SOURCE'].split(' '))/len(jrow[target_language].split(' '))
-# 				if div >= 0.5 and 1.2 > div:
-# 					data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-# 						'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': None,
-# 						'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
-# 					df = df.append(data, ignore_index=True)
-
-# 	for i, irow in df_source.iterrows():
-# 		for j, jrow in df_target.iterrows():
-# 			if jrow[target_language] not in df['target'].unique() and irow['ENG_SOURCE'] not in df['source'].unique():
-# 				data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-# 					'source':irow['ENG_SOURCE'], 'target':jrow[target_language], 'item_value': None,
-# 					'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': jrow['survey_item_ID']}
-# 				df = df.append(data, ignore_index=True)
-	
-# 	for i, irow in df_source.iterrows():
-# 		if irow['ENG_SOURCE'] not in df['source'].unique():
-# 			data = {'item_name': irow['item_name'], 'item_type':irow['item_type'], 
-# 			'source':irow['ENG_SOURCE'], 'target':None, 'item_value': None,
-# 			'source_survey_itemID': irow['survey_item_ID'], 'target_survey_itemID': None}
-# 			df = df.append(data, ignore_index=True)
-
-# 	return df
-
-def align_more_segments_in_target(df, list_source, list_target, item_type):
+def find_best_match(list_source, list_target):
 	dict_source = dict()
 	dict_target = dict()
+	alignment_candidates = dict()
 
-	dict_closest = dict()
+	for i, item in enumerate(list_source):
+		dict_source[i] = len(item[-1])
 
-	if item_type == 'INSTRUCTION' or item_type == 'REQUEST':
-		for i, item in enumerate(list_source):
-			dict_source[i] = len(item[-1])
+	for i, item in enumerate(list_target):
+		dict_target[i] = len(item[-1])
 
+	for target_k, target_v in list(dict_target.items()):
+		for source_k, source_v in list(dict_source.items()):
+			alignment_candidates[target_k, source_k] = target_v/source_v
+
+	best_candidate = min(alignment_candidates.values(), key=lambda x:abs(x-1))
+	print(best_candidate)
+	for k, v in list(alignment_candidates.items()):
+		print(k,v)
+		if v == best_candidate:
+			alignment = k
+			return alignment
+
+def last_alignment(alignment, source_segment_index, target_segment_index, list_target, df):
+	"""
+	If the index of the target list that was first aligned is 0 (the first one),
+	then other elements in the list go after this
+	"""
+	if alignment[0] == 0:
+		data = {'source_survey_itemID': source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
+		'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
+		'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
+		'target_text': target_segment_index[-1]}
+		df = df.append(data, ignore_index=True)
+
+	"""
+	If the index of the target list that was first aligned is the last segment on the list
+	then it goes after all other segments.
+	"""
+	elif alignment[0] == len(list_target)-1:
 		for i, item in enumerate(list_target):
-			dict_target[i] = len(item[-1])
+			data = {'source_survey_itemID': None, 'target_survey_itemID': item[0] , 'Study': item[1], 
+			'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
+			'source_text': None, 'target_text':  item[6]}
+			df = df.append(data, ignore_index=True)
+		data = {'source_survey_itemID': source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
+		'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
+		'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
+		'target_text': target_segment_index[-1]}
+		df = df.append(data, ignore_index=True)
 
+	"""
+	If the index of the target list that was first aligned is neither the first nor the last segment,
+	we have to find its place using the index.
+	"""
+	else:
+		for i, item in enumerate(list_target):
+			if i != alignment[0]:
+				data = {'source_survey_itemID': None, 'target_survey_itemID': item[0] , 'Study': item[1], 
+				'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
+				'source_text': None, 'target_text':  item[6]}
+				df = df.append(data, ignore_index=True)
+			elif i == alignment[0]:
+				data = {'source_survey_itemID': source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
+				'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
+				'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
+				'target_text': target_segment_index[-1]}
+				df = df.append(data, ignore_index=True)
+
+	return df
+
+def align_more_segments_in_target(df, list_source, list_target):
+	"""
+	index 0 = target
+	index 1 = source
+	"""
+	first_alignment = find_best_match(list_source, list_target)
+	target_segment_index = first_alignment[0]
+	source_segment_index = first_alignment[1]
+
+	aux_source = list_source
+	del aux_source[source_segment_index]
+
+	aux_target = list_target
+	del aux_target[target_segment_index]
+
+	"""
+	This is the case where there is only one source segment for two or more target segments
+	"""
+	if not aux_source:
+		df = last_alignment(first_alignment, source_segment_index, target_segment_index, list_target, df)
+		
+	
+	"""
+	If there are still other source segments, call best match method again
+	"""
+	else:
+		alignments = []
+		target_segments_paired = []
+		while not aux_source:
+			alignment = recursive_best_match(aux_source, aux_target)
+			target_segment_index = first_alignment[0]
+			source_segment_index = first_alignment[1]
+			del aux_source[source_segment_index]
+			del aux_target[target_segment_index]
+			alignments.append([target_segment_index, source_segment_index])
+			target_segments_paired.append(target_segment_index)
+
+		sorted_aligments = sorted(alignments)
+		indexes_of_target_segment_index = [index for index, value in enumerate(list_target)]
+		target_segments_without_pair = list(set(indexes_of_target_segment_index) - set(target_segments_paired))
 		
 
-		for target_k, target_v in list(dict_target.items()):
-			for source_k, source_v in list(dict_source.items()):
-				dict_closest[target_k, source_k] = target_v/source_v
-
-
-		print(min(dict_closest.values(), key=lambda x:abs(x-1)))
-				
-				 
-
-
-
-	# source_segment = []
-	# target_segment = []
-	# source_card_segment = []
-	# target_card_segment = []
-
-	# print(list_source, list_target)
-
-	# if item_type == 'INSTRUCTION':
-	# 	for i, item in enumerate(list_source):
-	# 		print(item[-1])
-	# 		if re.compile(r'0.*10').match(item[-1]):
-	# 			source_segment = [item, '0 to 10']
-	# 		elif re.compile(r'\d+').match(item[-1]):
-	# 			source_card_segment = [item[-1], 'card']
-
-	# 	for i, item in enumerate(list_target):
-	# 		if re.compile(r'0.*10').match(item[-1]):
-	# 			target_segment = [item, '0 to 10']
-	# 		elif re.compile(r'\d+').match(item[-1]):
-	# 			target_card_segment = [item[-1], 'card']
-
-	# 	print(source_segment, target_segment)
-	# 	print(source_card_segment, target_card_segment)
-
-
-	
 
 
 
@@ -139,7 +165,7 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 			# df = align_more_segments_in_source(df, df_source, df_target)
 
 		elif len(list_target) > len(list_source):
-			align_more_segments_in_target(df, list_source, list_target, item_type)
+			align_more_segments_in_target(df, list_source, list_target)
 
 		elif len(list_target) == len(list_source):
 			for i, item in enumerate(list_source):
