@@ -1,15 +1,16 @@
 import pandas as pd
-import numpy as np
+import nltk
 import sys
 import os
+import re
 from countryspecificrequest import *
 import math
 from difflib import SequenceMatcher
 
 
 
-# def similar(a, b):
-#     return SequenceMatcher(None, a, b).ratio()
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
 
 
 # def align_more_segments_in_source(df, df_source, df_target, target_language):
@@ -40,32 +41,56 @@ from difflib import SequenceMatcher
 
 # 	return df
 
-# def align_more_segments_in_target(df, df_source, df_target, target_language):
-# 	for i, irow in df_target.iterrows():
-# 		for j, jrow in df_source.iterrows():
-# 			if irow[target_language] not in df['target'].unique() and jrow['ENG_SOURCE'] not in df['source'].unique():
-# 				div = len(jrow['ENG_SOURCE'].split(' '))/len(irow[target_language].split(' '))
-# 				if div >= 0.5 and 1.2 > div:
-# 					data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-# 					'source': jrow['ENG_SOURCE'], 'target':irow[target_language], 'item_value': None,
-# 					'source_survey_itemID': jrow['survey_item_ID'], 'target_survey_itemID': irow['survey_item_ID']}
-# 					df = df.append(data, ignore_index=True)
+def align_more_segments_in_target(df, list_source, list_target, item_type):
+	dict_source = dict()
+	dict_target = dict()
 
-# 	for i, irow in df_target.iterrows():
-# 		for j, jrow in df_source.iterrows():
-# 			if irow[target_language] not in df['target'].unique() and jrow['ENG_SOURCE'] not in df['source'].unique():
-# 				data = {'item_name':jrow['item_name'], 'item_type':jrow['item_type'], 
-# 				'source': jrow['ENG_SOURCE'], 'target':irow[target_language], 'item_value': None,
-# 				'source_survey_itemID': jrow['survey_item_ID'], 'target_survey_itemID': irow['survey_item_ID']}
-# 				df = df.append(data, ignore_index=True)
+	dict_closest = dict()
+
+	if item_type == 'INSTRUCTION' or item_type == 'REQUEST':
+		for i, item in enumerate(list_source):
+			dict_source[i] = [len(item[-1])]
+
+		for i, item in enumerate(list_target):
+			dict_target[i] = [len(item[-1])]
+
+		for target_k, target_v in list(dict_target.items()):
+			dict_closest[target_k] = 0
+			for source_k, source_v in list(dict_source.items()):
+				division = target_v/source_v
+				# TODO FIND THE DIVISION CLOSEST TO 1
+				if division > dict_closest[target_k] and division < 2:
+
+				 
+
+
+
+	# source_segment = []
+	# target_segment = []
+	# source_card_segment = []
+	# target_card_segment = []
+
+	# print(list_source, list_target)
+
+	# if item_type == 'INSTRUCTION':
+	# 	for i, item in enumerate(list_source):
+	# 		print(item[-1])
+	# 		if re.compile(r'0.*10').match(item[-1]):
+	# 			source_segment = [item, '0 to 10']
+	# 		elif re.compile(r'\d+').match(item[-1]):
+	# 			source_card_segment = [item[-1], 'card']
+
+	# 	for i, item in enumerate(list_target):
+	# 		if re.compile(r'0.*10').match(item[-1]):
+	# 			target_segment = [item, '0 to 10']
+	# 		elif re.compile(r'\d+').match(item[-1]):
+	# 			target_card_segment = [item[-1], 'card']
+
+	# 	print(source_segment, target_segment)
+	# 	print(source_card_segment, target_card_segment)
+
+
 	
-# 	for i, irow in df_target.iterrows():
-# 		if irow[target_language] not in df['target'].unique():
-# 			data = {'item_name': irow['item_name'], 'item_type':irow['item_type'], 
-# 			'source':None, 'target':irow[target_language], 'item_value': None,
-# 			'source_survey_itemID': None, 'target_survey_itemID': irow['survey_item_ID']}
-# 			df = df.append(data, ignore_index=True)
-#  	return df
 
 
 
@@ -109,15 +134,13 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 
 		if len(list_source) > len(df_target):
 			pass
-			# df = align_more_segments_in_source(df, df_source, df_target, target_language)
+			# df = align_more_segments_in_source(df, df_source, df_target)
 
 		elif len(list_target) > len(list_source):
-			pass
-			# df = align_more_segments_in_target(df, df_source, df_target, target_language)
+			align_more_segments_in_target(df, list_source, list_target, item_type)
+
 		elif len(list_target) == len(list_source):
-			
 			for i, item in enumerate(list_source):
-				print(item, item[0],  list_target[i][0])
 				data = {'source_survey_itemID': item[0], 'target_survey_itemID': list_target[i][0] , 'Study': item[1], 
 				'module': item[2], 'item_type': item_type, 'item_name':item[4], 'item_value': None, 
 				'source_text': item[6], 'target_text':  list_target[i][6]}
