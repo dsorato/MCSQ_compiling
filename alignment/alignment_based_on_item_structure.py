@@ -5,6 +5,49 @@ import os
 import re
 from countryspecificrequest import *
 
+
+"""
+Finds the best match for source and target segments (same item_type) based on the lenght of the segments.
+Args:
+	param1 list_source (list): list of source segments (contains segments of same item_name and item_type)
+	param2 list_target (list): list of target segments (contains segments of same item_name and item_type)
+
+Returns:
+	alignment (list). Alignment pair represented by the index of target and source segments being aligned 
+	(index 0 = target,index 1 = source), selected with lenght of the segments strategy.
+"""
+def find_best_match(list_source, list_target):
+	dict_source = dict()
+	dict_target = dict()
+	alignment_candidates = dict()
+
+	for i, item in enumerate(list_source):
+		dict_source[i] = len(item[-1])
+
+	for i, item in enumerate(list_target):
+		dict_target[i] = len(item[-1])
+
+	for target_k, target_v in list(dict_target.items()):
+		for source_k, source_v in list(dict_source.items()):
+			alignment_candidates[target_k, source_k] = target_v/source_v
+
+	best_candidate = min(alignment_candidates.values(), key=lambda x:abs(x-1))
+	for k, v in list(alignment_candidates.items()):
+		# print(k,v)
+		if v == best_candidate:
+			alignment = k
+			return alignment
+
+def get_original_index(list_source, list_target, source_segment_index, target_segment_index, aux_source, aux_target):
+	target_segment_text = aux_target[target_segment_index]
+	original_index_target = list_target.index(target_segment_text)
+
+	source_segment_text = aux_source[source_segment_index]
+	original_index_source = list_source.index(source_segment_text)
+
+	return original_index_target, original_index_source
+
+
 """
 Fills the dataframe with remaining target segments that do not have source correspondencies.
 This method is called when the dataframe contains one source segment to two or more target segments.
@@ -121,41 +164,145 @@ def only_one_segment_in_target_align(alignment, source_segment, target_segment, 
 
 	return df
 
-"""
-Finds the best match for source and target segments (same item_type) based on the lenght of the segments.
-Args:
-	param1 list_source (list): list of source segments (contains segments of same item_name and item_type)
-	param2 list_target (list): list of target segments (contains segments of same item_name and item_type)
 
-Returns:
-	alignment (list). Alignment pair represented by the index of target and source segments being aligned 
-	(index 0 = target,index 1 = source), selected with lenght of the segments strategy.
-"""
-def find_best_match(list_source, list_target):
-	dict_source = dict()
-	dict_target = dict()
-	alignment_candidates = dict()
+def treat_a_single_pairless_target(list_source, list_target, sorted_aligments, target_segments_without_pair, df):
+	if target_segments_without_pair == 0:
+		data = {'source_survey_itemID': None, 'target_survey_itemID': list_target[target_segments_without_pair][0], 
+		'Study': list_target[target_segments_without_pair][1], 'module': list_target[target_segments_without_pair][2], 
+		'item_type': list_target[target_segments_without_pair][3], 'item_name':list_target[target_segments_without_pair][4], 
+		'item_value': None, 'source_text': None, 
+		'target_text': list_target[target_segments_without_pair][-1]}
+		df = df.append(data, ignore_index=True)
 
-	for i, item in enumerate(list_source):
-		dict_source[i] = len(item[-1])
+		for alignment in sorted_aligments:
+			source_index = alignment[1]
+			target_index = alignment[0]
+			data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
+			'Study': list_target[target_index][1], 'module': list_target[target_index][2], 
+			'item_type': list_target[target_index][3], 'item_name':list_target[target_index][4], 
+			'item_value': None, 'source_text': list_source[source_index][-1], 
+			'target_text': list_target[target_index][-1]}
+			df = df.append(data, ignore_index=True)
 
-	for i, item in enumerate(list_target):
-		dict_target[i] = len(item[-1])
+	elif target_segments_without_pair == len(list_target)-1:
+		for alignment in sorted_aligments:
+			source_index = alignment[1]
+			target_index = alignment[0]
+			data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
+			'Study': list_target[target_index][1], 'module': list_target[target_index][2], 
+			'item_type': list_target[target_index][3], 'item_name':list_target[target_index][4], 
+			'item_value': None, 'source_text': list_source[source_index][-1], 
+			'target_text': list_target[target_index][-1]}
+			df = df.append(data, ignore_index=True)
+		data = {'source_survey_itemID': None, 'target_survey_itemID': list_target[target_segments_without_pair][0], 
+		'Study': list_target[target_segments_without_pair][1], 'module': list_target[target_segments_without_pair][2], 
+		'item_type': list_target[target_segments_without_pair][3], 'item_name':list_target[target_segments_without_pair][4], 
+		'item_value': None, 'source_text': None, 
+		'target_text': list_target[target_segments_without_pair][-1]}
+		df = df.append(data, ignore_index=True)
 
-	for target_k, target_v in list(dict_target.items()):
-		for source_k, source_v in list(dict_source.items()):
-			alignment_candidates[target_k, source_k] = target_v/source_v
 
-	best_candidate = min(alignment_candidates.values(), key=lambda x:abs(x-1))
-	for k, v in list(alignment_candidates.items()):
-		# print(k,v)
-		if v == best_candidate:
-			alignment = k
-			return alignment
+	else:
+		for alignment in sorted_aligments:
+			source_index = alignment[1]
+			target_index = alignment[0]
+
+			if target_index != target_segments_without_pair:
+				data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
+				'Study': list_target[target_index][1], 'module': list_target[target_index][2], 
+				'item_type': list_target[target_index][3], 'item_name':list_target[target_index][4], 
+				'item_value': None, 'source_text': list_source[source_index][-1], 
+				'target_text': list_target[target_index][-1]}
+				df = df.append(data, ignore_index=True)
+			elif target_index == target_segments_without_pair:
+				data = {'source_survey_itemID': None, 'target_survey_itemID': list_target[target_segments_without_pair][0], 
+				'Study': list_target[target_segments_without_pair][1], 'module': list_target[target_segments_without_pair][2], 
+				'item_type': list_target[target_segments_without_pair][3], 'item_name':list_target[target_segments_without_pair][4], 
+				'item_value': None, 'source_text': None, 
+				'target_text': list_target[target_segments_without_pair][-1]}
+				df = df.append(data, ignore_index=True)
+
+	return df
 
 
+def treat_a_single_pairless_source(list_source, list_target, sorted_aligments, source_segments_without_pair, df):
+	if source_segments_without_pair == 0:
+		data = {'source_survey_itemID': list_source[source_segments_without_pair][0], 'target_survey_itemID': None, 
+		'Study': list_source[source_segments_without_pair][1], 'module': list_source[source_segments_without_pair][2], 
+		'item_type': list_source[source_segments_without_pair][3], 'item_name':list_source[source_segments_without_pair][4], 
+		'item_value': None, 'source_text': list_source[source_segments_without_pair][-1], 
+		'target_text': None}
+		df = df.append(data, ignore_index=True)
 
-def align_more_segments_in_source(df, list_source, list_target):
+		for alignment in sorted_aligments:
+			source_index = alignment[0]
+			target_index = alignment[1]
+			data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
+			'Study': list_source[source_index][1], 'module': list_source[source_index][2], 
+			'item_type': list_source[source_index][3], 'item_name':list_source[source_index][4], 
+			'item_value': None, 'source_text': list_source[source_index][-1], 
+			'target_text': list_target[target_index][-1]}
+			df = df.append(data, ignore_index=True)
+
+	elif source_segments_without_pair == len(list_source)-1:
+		for alignment in sorted_aligments:
+			source_index = alignment[0]
+			target_index = alignment[1]
+			data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
+			'Study': list_source[source_index][1], 'module': list_source[source_index][2], 
+			'item_type': list_source[source_index][3], 'item_name':list_source[source_index][4], 
+			'item_value': None, 'source_text': list_source[source_index][-1], 
+			'target_text': list_target[target_index][-1]}
+			df = df.append(data, ignore_index=True)
+		data = {'source_survey_itemID': list_source[source_segments_without_pair][0], 'target_survey_itemID': None, 
+		'Study': list_source[source_segments_without_pair][1], 'module': list_source[source_segments_without_pair][2], 
+		'item_type': list_source[source_segments_without_pair][3], 'item_name':list_source[source_segments_without_pair][4], 
+		'item_value': None, 'source_text': list_source[source_segments_without_pair][-1], 
+		'target_text': None}
+		df = df.append(data, ignore_index=True)
+
+
+	else:
+		for alignment in sorted_aligments:
+			source_index = alignment[0]
+			target_index = alignment[1]
+
+			if target_index != source_segments_without_pair:
+				data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
+				'Study': list_source[source_index][1], 'module': list_source[source_index][2], 
+				'item_type': list_source[source_index][3], 'item_name':list_source[source_index][4], 
+				'item_value': None, 'source_text': list_source[source_index][-1], 
+				'target_text': list_target[target_index][-1]}
+				df = df.append(data, ignore_index=True)
+			elif target_index == source_segments_without_pair:
+				data = {'source_survey_itemID': list_source[source_segments_without_pair][0], 'target_survey_itemID': None, 
+				'Study': list_source[source_segments_without_pair][1], 'module': list_source[source_segments_without_pair][2], 
+				'item_type': list_source[source_segments_without_pair][3], 'item_name':list_source[source_segments_without_pair][4], 
+				'item_value': None, 'source_text': list_source[source_segments_without_pair][-1], 
+				'target_text': None}
+				df = df.append(data, ignore_index=True)
+
+	return df
+
+def align_more_segments_in_target(list_source, list_target, sorted_aligments, target_segments_without_pair, df):
+	if len(target_segments_without_pair) == 1:
+		df = treat_a_single_pairless_target(list_source, list_target, sorted_aligments, target_segments_without_pair, df)
+	else:
+		for pairless in target_segments_without_pair:
+			df = treat_a_single_pairless_target(list_source, list_target, sorted_aligments, pairless, df)
+
+	return df
+
+def align_more_segments_in_source(list_source, list_target, sorted_aligments, source_segments_without_pair, df):
+	if len(source_segments_without_pair) == 1:
+		df = treat_a_single_pairless_source(list_source, list_target, sorted_aligments, source_segments_without_pair, df)
+	else:
+		for pairless in source_segments_without_pair:
+			df = treat_a_single_pairless_source(list_source, list_target, sorted_aligments, pairless, df)
+			
+	return df
+	
+def prepare_alignment_with_more_segments_in_source(df, list_source, list_target):
 	"""
 	index 0 = target
 	index 1 = source
@@ -174,22 +321,39 @@ def align_more_segments_in_source(df, list_source, list_target):
 	This is the case where there is only one target segment for two or more source segments
 	"""
 	if not aux_target:
-		df = only_one_segment_in_target_align(first_alignment, list_source[source_segment_index], list_target[target_segment_index], list_source, aux_source, df)
+		df = only_one_segment_in_target_align(first_alignment, list_source[source_segment_index], 
+			list_target[target_segment_index], list_source, aux_source, df)
+	#If there are still other source segments, call best match method again
+	else:
+		alignments = [[target_segment_index, source_segment_index]]
+		source_segments_paired = [source_segment_index]
+		while aux_target:
+			alignment = find_best_match(aux_source, aux_target)
+			target_segment_index = alignment[0]
+			source_segment_index = alignment[1]
+
+			original_index_target, original_index_source = get_original_index(list_source, list_target, 
+				source_segment_index, target_segment_index, aux_source, aux_target)
+
+			alignments.append([original_index_source,original_index_target])
+
+			source_segments_paired.append(original_index_target)
+
+			del aux_source[source_segment_index]
+			del aux_target[target_segment_index]
+
+			
+		sorted_aligments = sorted(alignments)
+		indexes_of_source_segment_index = [index for index, value in enumerate(list_source)]
+		source_segments_without_pair = list(set(indexes_of_source_segment_index) - set(source_segments_paired))
+		df = align_more_segments_in_source(list_source, list_target, sorted_aligments, source_segments_without_pair, df)
 
 	return df
 
 
-def get_original_index(list_source, list_target, source_segment_index, target_segment_index, aux_source, aux_target):
-	target_segment_text = aux_target[target_segment_index]
-	original_index_target = list_target.index(target_segment_text)
-
-	source_segment_text = aux_source[source_segment_index]
-	original_index_source = list_source.index(source_segment_text)
-
-	return original_index_target, original_index_source
 
 
-def align_more_segments_in_target(df, list_source, list_target):
+def prepare_alignment_with_more_segments_in_target(df, list_source, list_target):
 	"""
 	index 0 = target
 	index 1 = source
@@ -213,7 +377,6 @@ def align_more_segments_in_target(df, list_source, list_target):
 	
 	#If there are still other source segments, call best match method again
 	else:
-		print('**********')
 		alignments = [[target_segment_index, source_segment_index]]
 		target_segments_paired = [target_segment_index]
 		while aux_source:
@@ -232,17 +395,12 @@ def align_more_segments_in_target(df, list_source, list_target):
 			del aux_target[target_segment_index]
 
 			
-			
-		print(alignments)
 		sorted_aligments = sorted(alignments)
-		print(sorted_aligments)
 		indexes_of_target_segment_index = [index for index, value in enumerate(list_target)]
-		print(indexes_of_target_segment_index)
 		target_segments_without_pair = list(set(indexes_of_target_segment_index) - set(target_segments_paired))
-		
-		print(target_segments_without_pair)
+		df = align_more_segments_in_target(list_source, list_target, sorted_aligments, target_segments_without_pair, df)
 
-	return df
+	return df 
 
 
 
@@ -286,11 +444,11 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 		list_source = df_source.values.tolist()
 
 		if len(list_source) > len(df_target):
-			df = align_more_segments_in_source(df, list_source, list_target)
+			df = prepare_alignment_with_more_segments_in_source(df, list_source, list_target)
 			return df
 
 		elif len(list_target) > len(list_source):
-			df = align_more_segments_in_target(df, list_source, list_target)
+			df = prepare_alignment_with_more_segments_in_target(df, list_source, list_target)
 			return df
 
 		elif len(list_target) == len(list_source):
