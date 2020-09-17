@@ -147,9 +147,8 @@ def find_best_match(list_source, list_target):
 			alignment_candidates[target_k, source_k] = target_v/source_v
 
 	best_candidate = min(alignment_candidates.values(), key=lambda x:abs(x-1))
-	print(best_candidate)
 	for k, v in list(alignment_candidates.items()):
-		print(k,v)
+		# print(k,v)
 		if v == best_candidate:
 			alignment = k
 			return alignment
@@ -179,6 +178,17 @@ def align_more_segments_in_source(df, list_source, list_target):
 
 	return df
 
+
+def get_original_index(list_source, list_target, source_segment_index, target_segment_index, aux_source, aux_target):
+	target_segment_text = aux_target[target_segment_index]
+	original_index_target = list_target.index(target_segment_text)
+
+	source_segment_text = aux_source[source_segment_index]
+	original_index_source = list_source.index(source_segment_text)
+
+	return original_index_target, original_index_source
+
+
 def align_more_segments_in_target(df, list_source, list_target):
 	"""
 	index 0 = target
@@ -187,7 +197,6 @@ def align_more_segments_in_target(df, list_source, list_target):
 	first_alignment = find_best_match(list_source, list_target)
 	target_segment_index = first_alignment[0]
 	source_segment_index = first_alignment[1]
-	print(list_source)
 
 	aux_source = list_source.copy()
 	del aux_source[source_segment_index]
@@ -199,36 +208,39 @@ def align_more_segments_in_target(df, list_source, list_target):
 	This is the case where there is only one source segment for two or more target segments
 	"""
 	if not aux_source:
-		print(list_source)
-		print(source_segment_index)
-		print(list_source[source_segment_index])
-		df = only_one_segment_in_source_align(first_alignment, list_source[source_segment_index], list_target[target_segment_index], list_target, aux_target, df)
-		
+		df = only_one_segment_in_source_align(first_alignment, list_source[source_segment_index], 
+			list_target[target_segment_index], list_target, aux_target, df)
 	
-	# """
-	# If there are still other source segments, call best match method again
-	# """
-	# else:
-	# 	alignments = []
-	# 	target_segments_paired = []
-	# 	while not aux_source:
-	# 		alignment = recursive_best_match(aux_source, aux_target)
+	#If there are still other source segments, call best match method again
+	else:
+		print('**********')
+		alignments = [[target_segment_index, source_segment_index]]
+		target_segments_paired = [target_segment_index]
+		while aux_source:
+			alignment = find_best_match(aux_source, aux_target)
+			target_segment_index = alignment[0]
+			source_segment_index = alignment[1]
+
+			original_index_target, original_index_source = get_original_index(list_source, list_target, 
+				source_segment_index, target_segment_index, aux_source, aux_target)
+
+			alignments.append([original_index_target, original_index_source])
+
+			target_segments_paired.append(original_index_target)
+
+			del aux_source[source_segment_index]
+			del aux_target[target_segment_index]
+
 			
-	# 		target_segment_index = first_alignment[0]
-	# 		source_segment_index = first_alignment[1]
-
-	# 		del aux_source[source_segment_index]
-	# 		del aux_target[target_segment_index]
-
-	# 		alignments.append([target_segment_index, source_segment_index])
-	# 		target_segments_paired.append(target_segment_index)
-
-	# 	sorted_aligments = sorted(alignments)
-	# 	indexes_of_target_segment_index = [index for index, value in enumerate(list_target)]
-	# 	target_segments_without_pair = list(set(indexes_of_target_segment_index) - set(target_segments_paired))
-	# 	print('**********')
-	# 	print(alignments)
-	# 	print(target_segments_without_pair)
+			
+		print(alignments)
+		sorted_aligments = sorted(alignments)
+		print(sorted_aligments)
+		indexes_of_target_segment_index = [index for index, value in enumerate(list_target)]
+		print(indexes_of_target_segment_index)
+		target_segments_without_pair = list(set(indexes_of_target_segment_index) - set(target_segments_paired))
+		
+		print(target_segments_without_pair)
 
 	return df
 
@@ -282,7 +294,6 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 			return df
 
 		elif len(list_target) == len(list_source):
-			print(df)
 			for i, item in enumerate(list_source):
 				data = {'source_survey_itemID': item[0], 'target_survey_itemID': list_target[i][0] , 'Study': item[1], 
 				'module': item[2], 'item_type': item_type, 'item_name':item[4], 'item_value': None, 
