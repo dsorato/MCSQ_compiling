@@ -5,16 +5,32 @@ import os
 import re
 from countryspecificrequest import *
 
+"""
+Fills the dataframe with remaining target segments that do not have source correspondencies.
+This method is called when the dataframe contains one source segment to two or more target segments.
+The alignment pair is defined in the find_best_match() method and the remaining target segments
+are included in this method, respecting the structure order.
+Args:
+	param1 alignment (list): Alignment pair represented by the index of target and source segments being aligned 
+	(index 0 = target,index 1 = source), selected with lenght of the segments strategy.
+	param2 source_segment (list): source segment that has a match according to find_best_match().
+	param3 target_segment (list): target segment that has a match according to find_best_match().
+	param4 list_target (list): list of target segments (contains segments of same item_name and item_type)
+	param5 aux_target (list): list of source segments, excluding the target_segment (contains segments of same item_name and item_type)
+	param6 df (pandas dataframe): dataframe to store the questionnaire alignment
 
-def only_one_segment_in_source_align(alignment, source_segment_index, target_segment_index, list_target, aux_target, df):
+Returns:
+	df (pandas dataframe) with newly aligned survey item segments.
+"""
+def only_one_segment_in_source_align(alignment, source_segment, target_segment, list_target, aux_target, df):
 	"""
 	If the index of the target list that was first aligned is 0 (the first one), then other elements in the list go after this
 	"""
 	if alignment[0] == 0:
-		data = {'source_survey_itemID':source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
-		'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
-		'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
-		'target_text': target_segment_index[-1]}
+		data = {'source_survey_itemID':source_segment[0], 'target_survey_itemID': target_segment[0], 
+		'Study': target_segment[1], 'module': target_segment[2], 'item_type': target_segment[3], 
+		'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[-1], 
+		'target_text': target_segment[-1]}
 		df = df.append(data, ignore_index=True)
 
 	#If the index of the target list that was first aligned is the last segment on the list then it goes after all other segments.
@@ -25,10 +41,10 @@ def only_one_segment_in_source_align(alignment, source_segment_index, target_seg
 			'source_text': None, 'target_text':  item[6]}
 			df = df.append(data, ignore_index=True)
 
-		data = {'source_survey_itemID': source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
-		'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
-		'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
-		'target_text': target_segment_index[-1]}
+		data = {'source_survey_itemID': source_segment[0], 'target_survey_itemID': target_segment[0], 
+		'Study': target_segment[1], 'module': target_segment[2], 'item_type': target_segment[3], 
+		'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[-1], 
+		'target_text': target_segment[-1]}
 		df = df.append(data, ignore_index=True)
 	# If the index of the target list that was first aligned is neither the first nor the last segment, we have to find its place using the index.
 	else:
@@ -39,23 +55,40 @@ def only_one_segment_in_source_align(alignment, source_segment_index, target_seg
 				'source_text': None, 'target_text':  item[6]}
 				df = df.append(data, ignore_index=True)
 			elif i == alignment[0]:
-				data = {'source_survey_itemID': source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
-				'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
-				'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
-				'target_text': target_segment_index[-1]}
+				data = {'source_survey_itemID': source_segment[0], 'target_survey_itemID': target_segment[0], 
+				'Study': target_segment[1], 'module': target_segment[2], 'item_type': target_segment[3], 
+				'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[-1], 
+				'target_text': target_segment[-1]}
 				df = df.append(data, ignore_index=True)
 
 	return df
 
-def only_one_segment_in_target_align(alignment, source_segment_index, target_segment_index, list_source, aux_source, df):
+"""
+Fills the dataframe with remaining source segments that do not have target correspondencies.
+This method is called when the dataframe contains one target segment to two or more source segments.
+The alignment pair is defined in the find_best_match() method and the remaining source segments
+are included in this method, respecting the structure order.
+Args:
+	param1 alignment (list): Alignment pair represented by the index of target and source segments being aligned 
+	(index 0 = target,index 1 = source), selected with lenght of the segments strategy.
+	param2 source_segment (list): source segment that has a match according to find_best_match().
+	param3 target_segment (list): target segment that has a match according to find_best_match().
+	param4 list_source (list): list of source segments (contains segments of same item_name and item_type)
+	param5 aux_source (list): list of source segments, excluding the source_segment (contains segments of same item_name and item_type)
+	param6 df (pandas dataframe): dataframe to store the questionnaire alignment
+
+Returns:
+	df (pandas dataframe) with newly aligned survey item segments.
+"""
+def only_one_segment_in_target_align(alignment, source_segment, target_segment, list_source, aux_source, df):
 	"""
 	If the index of the source list that was first aligned is 0 (the first one), then other elements in the list go after this
 	"""
 	if alignment[1] == 0:
-		data = {'source_survey_itemID':source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
-		'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
-		'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
-		'target_text': target_segment_index[-1]}
+		data = {'source_survey_itemID':source_segment[0], 'target_survey_itemID': target_segment[0], 
+		'Study': target_segment[1], 'module': target_segment[2], 'item_type': target_segment[3], 
+		'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[-1], 
+		'target_text': target_segment[-1]}
 		df = df.append(data, ignore_index=True)
 
 	#If the index of the source list that was first aligned is the last segment on the list then it goes after all other segments.
@@ -66,10 +99,10 @@ def only_one_segment_in_target_align(alignment, source_segment_index, target_seg
 			'source_text': item[6], 'target_text': None}
 			df = df.append(data, ignore_index=True)
 
-		data = {'source_survey_itemID': source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
-		'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
-		'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
-		'target_text': target_segment_index[-1]}
+		data = {'source_survey_itemID': source_segment[0], 'target_survey_itemID': target_segment[0], 
+		'Study': target_segment[1], 'module': target_segment[2], 'item_type': target_segment[3], 
+		'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[-1], 
+		'target_text': target_segment[-1]}
 		df = df.append(data, ignore_index=True)
 	# If the index of the source list that was first aligned is neither the first nor the last segment, we have to find its place using the index.
 	else:
@@ -80,14 +113,24 @@ def only_one_segment_in_target_align(alignment, source_segment_index, target_seg
 				'source_text': item[6], 'target_text': None}
 				df = df.append(data, ignore_index=True)
 			elif i == alignment[1]:
-				data = {'source_survey_itemID': source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
-				'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
-				'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
-				'target_text': target_segment_index[-1]}
+				data = {'source_survey_itemID': source_segment[0], 'target_survey_itemID': target_segment[0], 
+				'Study': target_segment[1], 'module': target_segment[2], 'item_type': target_segment[3], 
+				'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[-1], 
+				'target_text': target_segment[-1]}
 				df = df.append(data, ignore_index=True)
 
 	return df
 
+"""
+Finds the best match for source and target segments (same item_type) based on the lenght of the segments.
+Args:
+	param1 list_source (list): list of source segments (contains segments of same item_name and item_type)
+	param2 list_target (list): list of target segments (contains segments of same item_name and item_type)
+
+Returns:
+	alignment (list). Alignment pair represented by the index of target and source segments being aligned 
+	(index 0 = target,index 1 = source), selected with lenght of the segments strategy.
+"""
 def find_best_match(list_source, list_target):
 	dict_source = dict()
 	dict_target = dict()
@@ -199,7 +242,7 @@ merged. There are five distinct cases to consider: 1) only source segments (df_t
 same number of segments.
 
 Args:
-	param1 df (pandas dataframe): dataframe to store the questionnaire alignment
+	param1 df (pandas dataframe): dataframe to store the questionnaire alignment.
 	param2 df_source (pandas dataframe): dataframe containing the data of the source questionnaire (always English).
 	param3 df_target (pandas dataframe): dataframe containing the data of the target questionnaire
 	param4 item_type (string): metadata that indicates if the dataframes contain introductions, instructions or requests.
