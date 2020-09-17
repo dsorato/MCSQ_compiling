@@ -6,7 +6,7 @@ import re
 from countryspecificrequest import *
 
 
-def only_one_segment_in_source_align(alignment, source_segment_index, target_segment_index, list_target, df):
+def only_one_segment_in_source_align(alignment, source_segment_index, target_segment_index, list_target, aux_target, df):
 	"""
 	If the index of the target list that was first aligned is 0 (the first one), then other elements in the list go after this
 	"""
@@ -19,7 +19,7 @@ def only_one_segment_in_source_align(alignment, source_segment_index, target_seg
 
 	#If the index of the target list that was first aligned is the last segment on the list then it goes after all other segments.
 	elif alignment[0] == len(list_target)-1:
-		for i, item in enumerate(list_target):
+		for i, item in enumerate(aux_target):
 			data = {'source_survey_itemID': None, 'target_survey_itemID': item[0] , 'Study': item[1], 
 			'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
 			'source_text': None, 'target_text':  item[6]}
@@ -47,7 +47,7 @@ def only_one_segment_in_source_align(alignment, source_segment_index, target_seg
 
 	return df
 
-def only_one_segment_in_target_align(alignment, source_segment_index, target_segment_index, list_source, df):
+def only_one_segment_in_target_align(alignment, source_segment_index, target_segment_index, list_source, aux_source, df):
 	"""
 	If the index of the source list that was first aligned is 0 (the first one), then other elements in the list go after this
 	"""
@@ -60,7 +60,7 @@ def only_one_segment_in_target_align(alignment, source_segment_index, target_seg
 
 	#If the index of the source list that was first aligned is the last segment on the list then it goes after all other segments.
 	elif alignment[1] == len(list_source)-1:
-		for i, item in enumerate(list_source):
+		for i, item in enumerate(aux_source):
 			data = {'source_survey_itemID': item[0], 'target_survey_itemID':  None, 'Study': item[1], 
 			'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
 			'source_text': item[6], 'target_text': None}
@@ -132,7 +132,9 @@ def align_more_segments_in_source(df, list_source, list_target):
 	This is the case where there is only one target segment for two or more source segments
 	"""
 	if not aux_target:
-		df = only_one_segment_in_target_align(first_alignment, list_source[source_segment_index], list_target[target_segment_index], list_source, df)
+		df = only_one_segment_in_target_align(first_alignment, list_source[source_segment_index], list_target[target_segment_index], list_source, aux_source, df)
+
+	return df
 
 def align_more_segments_in_target(df, list_source, list_target):
 	"""
@@ -157,7 +159,7 @@ def align_more_segments_in_target(df, list_source, list_target):
 		print(list_source)
 		print(source_segment_index)
 		print(list_source[source_segment_index])
-		df = only_one_segment_in_source_align(first_alignment, list_source[source_segment_index], list_target[target_segment_index], list_target, df)
+		df = only_one_segment_in_source_align(first_alignment, list_source[source_segment_index], list_target[target_segment_index], list_target, aux_target, df)
 		
 	
 	# """
