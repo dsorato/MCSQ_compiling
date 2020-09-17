@@ -6,6 +6,48 @@ import re
 from countryspecificrequest import *
 
 
+def last_alignment(alignment, source_segment_index, target_segment_index, list_target, df):
+	"""
+	If the index of the target list that was first aligned is 0 (the first one), then other elements in the list go after this
+	"""
+	if alignment[0] == 0:
+		print(source_segment_index, target_segment_index)
+		data = {'source_survey_itemID':source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
+		'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
+		'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
+		'target_text': target_segment_index[-1]}
+		df = df.append(data, ignore_index=True)
+
+	#If the index of the target list that was first aligned is the last segment on the list then it goes after all other segments.
+	elif alignment[0] == len(list_target)-1:
+		for i, item in enumerate(list_target):
+			data = {'source_survey_itemID': None, 'target_survey_itemID': item[0] , 'Study': item[1], 
+			'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
+			'source_text': None, 'target_text':  item[6]}
+			df = df.append(data, ignore_index=True)
+
+		data = {'source_survey_itemID': source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
+		'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
+		'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
+		'target_text': target_segment_index[-1]}
+		df = df.append(data, ignore_index=True)
+	# If the index of the target list that was first aligned is neither the first nor the last segment, we have to find its place using the index.
+	else:
+		for i, item in enumerate(list_target):
+			if i != alignment[0]:
+				data = {'source_survey_itemID': None, 'target_survey_itemID': item[0] , 'Study': item[1], 
+				'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
+				'source_text': None, 'target_text':  item[6]}
+				df = df.append(data, ignore_index=True)
+			elif i == alignment[0]:
+				data = {'source_survey_itemID': source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
+				'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
+				'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
+				'target_text': target_segment_index[-1]}
+				df = df.append(data, ignore_index=True)
+
+	return df
+
 def find_best_match(list_source, list_target):
 	dict_source = dict()
 	dict_target = dict()
@@ -29,53 +71,7 @@ def find_best_match(list_source, list_target):
 			alignment = k
 			return alignment
 
-def last_alignment(alignment, source_segment_index, target_segment_index, list_target, df):
-	"""
-	If the index of the target list that was first aligned is 0 (the first one),
-	then other elements in the list go after this
-	"""
-	if alignment[0] == 0:
-		data = {'source_survey_itemID': source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
-		'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
-		'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
-		'target_text': target_segment_index[-1]}
-		df = df.append(data, ignore_index=True)
 
-	"""
-	If the index of the target list that was first aligned is the last segment on the list
-	then it goes after all other segments.
-	"""
-	elif alignment[0] == len(list_target)-1:
-		for i, item in enumerate(list_target):
-			data = {'source_survey_itemID': None, 'target_survey_itemID': item[0] , 'Study': item[1], 
-			'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
-			'source_text': None, 'target_text':  item[6]}
-			df = df.append(data, ignore_index=True)
-		data = {'source_survey_itemID': source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
-		'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
-		'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
-		'target_text': target_segment_index[-1]}
-		df = df.append(data, ignore_index=True)
-
-	"""
-	If the index of the target list that was first aligned is neither the first nor the last segment,
-	we have to find its place using the index.
-	"""
-	else:
-		for i, item in enumerate(list_target):
-			if i != alignment[0]:
-				data = {'source_survey_itemID': None, 'target_survey_itemID': item[0] , 'Study': item[1], 
-				'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
-				'source_text': None, 'target_text':  item[6]}
-				df = df.append(data, ignore_index=True)
-			elif i == alignment[0]:
-				data = {'source_survey_itemID': source_segment_index[0], 'target_survey_itemID': target_segment_index[0], 
-				'Study': target_segment_index[1], 'module': target_segment_index[2], 'item_type': target_segment_index[3], 
-				'item_name':target_segment_index[4], 'item_value': None, 'source_text': source_segment_index[-1], 
-				'target_text': target_segment_index[-1]}
-				df = df.append(data, ignore_index=True)
-
-	return df
 
 def align_more_segments_in_target(df, list_source, list_target):
 	"""
@@ -85,39 +81,50 @@ def align_more_segments_in_target(df, list_source, list_target):
 	first_alignment = find_best_match(list_source, list_target)
 	target_segment_index = first_alignment[0]
 	source_segment_index = first_alignment[1]
+	print(list_source)
 
-	aux_source = list_source
+	aux_source = list_source.copy()
 	del aux_source[source_segment_index]
 
-	aux_target = list_target
+	aux_target = list_target.copy()
 	del aux_target[target_segment_index]
 
 	"""
 	This is the case where there is only one source segment for two or more target segments
 	"""
 	if not aux_source:
-		df = last_alignment(first_alignment, source_segment_index, target_segment_index, list_target, df)
+		print(list_source)
+		print(source_segment_index)
+		print(list_source[source_segment_index])
+		df = last_alignment(first_alignment, list_source[source_segment_index], list_target[target_segment_index], list_target, df)
 		
 	
-	"""
-	If there are still other source segments, call best match method again
-	"""
-	else:
-		alignments = []
-		target_segments_paired = []
-		while not aux_source:
-			alignment = recursive_best_match(aux_source, aux_target)
-			target_segment_index = first_alignment[0]
-			source_segment_index = first_alignment[1]
-			del aux_source[source_segment_index]
-			del aux_target[target_segment_index]
-			alignments.append([target_segment_index, source_segment_index])
-			target_segments_paired.append(target_segment_index)
+	# """
+	# If there are still other source segments, call best match method again
+	# """
+	# else:
+	# 	alignments = []
+	# 	target_segments_paired = []
+	# 	while not aux_source:
+	# 		alignment = recursive_best_match(aux_source, aux_target)
+			
+	# 		target_segment_index = first_alignment[0]
+	# 		source_segment_index = first_alignment[1]
 
-		sorted_aligments = sorted(alignments)
-		indexes_of_target_segment_index = [index for index, value in enumerate(list_target)]
-		target_segments_without_pair = list(set(indexes_of_target_segment_index) - set(target_segments_paired))
-		
+	# 		del aux_source[source_segment_index]
+	# 		del aux_target[target_segment_index]
+
+	# 		alignments.append([target_segment_index, source_segment_index])
+	# 		target_segments_paired.append(target_segment_index)
+
+	# 	sorted_aligments = sorted(alignments)
+	# 	indexes_of_target_segment_index = [index for index, value in enumerate(list_target)]
+	# 	target_segments_without_pair = list(set(indexes_of_target_segment_index) - set(target_segments_paired))
+	# 	print('**********')
+	# 	print(alignments)
+	# 	print(target_segments_without_pair)
+
+	return df
 
 
 
