@@ -431,6 +431,46 @@ def prepare_alignment_with_more_segments_in_target(df, list_source, list_target,
 
 	return df 
 
+def same_source_target_index_card_instructions(source_index, target_index, aux_source, aux_target, list_source,list_target,item_type,df):
+	if source_index == 0 and target_index == 0:
+		data = {'source_survey_itemID': list_source[0][0], 'target_survey_itemID': list_target[0][0], 
+		'Study': list_source[0][1], 'module': list_source[0][2], 'item_type': item_type, 
+		'item_name':list_source[0][4], 'item_value': None, 'source_text': list_source[0][6], 
+		'target_text':  list_target[0][6]}
+		df = df.append(data, ignore_index=True)
+
+		for i, item in enumerate(aux_source):
+			data = {'source_survey_itemID': item[0], 'target_survey_itemID': aux_target[i][0] , 'Study': item[1], 
+			'module': item[2], 'item_type': item_type, 'item_name':item[4], 'item_value': None, 
+			'source_text': item[6], 'target_text':  aux_target[i][6]}
+			df = df.append(data, ignore_index=True)
+
+		return df
+
+	elif source_index == len(list_source)-1 and target_index == len(list_target)-1:
+		for i, item in enumerate(aux_source):
+			data = {'source_survey_itemID': item[0], 'target_survey_itemID': aux_target[i][0] , 'Study': item[1], 
+			'module': item[2], 'item_type': item_type, 'item_name':item[4], 'item_value': None, 
+			'source_text': item[6], 'target_text':  aux_target[i][6]}
+			df = df.append(data, ignore_index=True)
+
+		data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0] , 
+		'Study': list_source[source_index][1], 'module': list_source[source_index][2], 'item_type': item_type, 
+		'item_name':list_source[source_index][4], 'item_value': None, 
+		'source_text': list_source[source_index][6], 'target_text':  list_target[i][6]}
+		df = df.append(data, ignore_index=True)
+
+	return df
+
+
+
+def different_source_target_index_card_instructions(source_index, target_index, aux_source, aux_target, list_source,list_target,item_type,df):
+	list_source[source_index], list_source[0] = list_source[0], list_source[source_index]
+	list_target[target_index], list_target[0] = list_target[0], list_target[target_index]
+
+	df = same_source_target_index_card_instructions(0, 0, aux_source, aux_target, list_source,list_target,item_type,df)
+
+	return df
 
 
 
@@ -482,7 +522,7 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 
 		elif len(list_target) == len(list_source):
 			showc = identify_showc_segment(list_source, list_target, item_type)
-			if showc != 'No showc segment identified':
+			if item_type == 'INSTRUCTION' and showc != 'No showc segment identified':
 				target_index = showc[0]
 				source_index = showc[1]
 
@@ -492,51 +532,26 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 				aux_target = list_target.copy()
 				del aux_target[target_index]
 
-				if source_index == 0:
-					data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0] , 
-					'Study': list_source[source_index][1], 'module': list_source[source_index][2], 'item_type': item_type, 
-					'item_name':list_source[source_index][4], 'item_value': None, 
-					'source_text': list_source[source_index][6], 'target_text':  list_target[target_index][6]}
-					df = df.append(data, ignore_index=True)
-
-					for i, item in enumerate(aux_source):
-						data = {'source_survey_itemID': item[0], 'target_survey_itemID': aux_target[i][0] , 'Study': item[1], 
-						'module': item[2], 'item_type': item_type, 'item_name':item[4], 'item_value': None, 
-						'source_text': item[6], 'target_text':  aux_target[i][6]}
-						df = df.append(data, ignore_index=True)
-
-				elif source_index == len(list_source)-1:
-					for i, item in enumerate(aux_source):
-						data = {'source_survey_itemID': item[0], 'target_survey_itemID': aux_target[i][0] , 'Study': item[1], 
-						'module': item[2], 'item_type': item_type, 'item_name':item[4], 'item_value': None, 
-						'source_text': item[6], 'target_text':  aux_target[i][6]}
-						df = df.append(data, ignore_index=True)
-					data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0] , 
-					'Study': list_source[source_index][1], 'module': list_source[source_index][2], 'item_type': item_type, 
-					'item_name':list_source[source_index][4], 'item_value': None, 
-					'source_text': list_source[source_index][6], 'target_text':  list_target[i][6]}
-					df = df.append(data, ignore_index=True)
-
+				if target_index == source_index:
+					df = same_source_target_index_card_instructions(source_index, target_index, aux_source, aux_target, 
+						list_source,list_target,item_type,df)
+					return df
 				else:
-					for i, item in enumerate(list_source):
-						data = {'source_survey_itemID': item[0], 'target_survey_itemID': list_target[i][0] , 'Study': item[1], 
-						'module': item[2], 'item_type': item_type, 'item_name':item[4], 'item_value': None, 
-						'source_text': item[6], 'target_text':  list_target[i][6]}
-						df = df.append(data, ignore_index=True)
-
+					df = different_source_target_index_card_instructions(source_index, target_index, aux_source, aux_target, 
+						list_source,list_target,item_type,df)
+					return df
 
 			else:
-
 				for i, item in enumerate(list_source):
 					data = {'source_survey_itemID': item[0], 'target_survey_itemID': list_target[i][0] , 'Study': item[1], 
 					'module': item[2], 'item_type': item_type, 'item_name':item[4], 'item_value': None, 
 					'source_text': item[6], 'target_text':  list_target[i][6]}
 					df = df.append(data, ignore_index=True)
-
-						
-
+				return df
 
 	return df
+
+
 
 """
 Aligns response segments by merging them on item_value metadata.
