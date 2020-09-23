@@ -2075,7 +2075,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<markorcode>)(marqueu|codificar)\s(?P<all>)tot(s|es)\s(?P<that>)que\s(?P<apply>)(corresponguin|calgui)"
+		regex= r"^(?P<markorcode>)(marqueu|codificar)\s(?P<all>)tot(s|es)\s(?P<thepeople>)(les persones)?\s?(?P<that>)que\s(?P<apply>)(corresponguin|calgui)"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
@@ -2095,7 +2095,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<insist>)insistiu"
+		regex= r"^(?P<insist>)insisti(u|r)"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True

@@ -60,7 +60,7 @@ def find_best_match(list_source, list_target, item_type):
 
 	for target_k, target_v in list(dict_target.items()):
 		for source_k, source_v in list(dict_source.items()):
-			alignment_candidates[target_k, source_k] = target_v/source_v
+			alignment_candidates[target_k, source_k] = source_v/target_v
 
 	best_candidate = min(alignment_candidates.values(), key=lambda x:abs(x-1))
 	for k, v in list(alignment_candidates.items()):
@@ -391,8 +391,8 @@ def treat_multiple_pairless_source_segments(list_source, list_target, sorted_ali
 
 	else:
 		for alignment in sorted_aligments:
-			source_index = alignment[1]
-			target_index = alignment[0]
+			source_index = alignment[0]
+			target_index = alignment[1]
 			
 			for pairless in source_segments_without_pair:
 				if pairless < source_index:
