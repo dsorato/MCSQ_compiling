@@ -457,7 +457,7 @@ def same_source_target_index_card_instructions(source_index, target_index, aux_s
 		data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0] , 
 		'Study': list_source[source_index][1], 'module': list_source[source_index][2], 'item_type': item_type, 
 		'item_name':list_source[source_index][4], 'item_value': None, 
-		'source_text': list_source[source_index][6], 'target_text':  list_target[i][6]}
+		'source_text': list_source[source_index][6], 'target_text':  list_target[target_index][6]}
 		df = df.append(data, ignore_index=True)
 
 	return df
