@@ -8,7 +8,7 @@ class ESSSModulesR02:
 	modules = {'D':'D - Health and care seekin health, medicine, and doctor/patient relations',
 	'E': 'E - Economic morality Trust and interactions between producers and consumers',
 	'G': 'SUPP_G - Family Work and Wellbeing work-life balance', 'H': 'SUPP_H - Human values scale', 
-	'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions'}
+	'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions', 'K': 'SUPP_K - National Module'}
 
 class ESSSModulesR03:
 	modules = {'D':'D - Timing of life; the life course; timing of key life events, attitudes to ideal age, youngest age and oldest age of life events, planning for retirement',
