@@ -10,6 +10,16 @@ def check(n, l):
     subs = [l[i:i+n] for i in range(len(l)) if len(l[i:i+n]) == n]
     return any([(sorted(sub) in range(min(l), max(l)+1)) for sub in subs])
 
+"""
+Searches in list_source, list_target if there are intructions that seem to be show card segments that should be aligned together.
+This method was implemented as an additional strategy to align correctly instruction segments.
+Args:
+	param1 list_source (list): list of source segments (contains segments of same item_name and item_type)
+	param2 list_target (list): list of target segments (contains segments of same item_name and item_type)
+	param3 item_type (string): item_type metadata being analyzed. In this method we want to consider only instruction segments.
+Returns:
+	str indicating if instructions that follow the show card segments were found.
+"""
 def identify_showc_segment(list_source, list_target, item_type):
 	if item_type == 'INSTRUCTION':
 		possible_card_instruction_source = 'dummy value'
@@ -64,11 +74,24 @@ def find_best_match(list_source, list_target, item_type):
 
 	best_candidate = min(alignment_candidates.values(), key=lambda x:abs(x-1))
 	for k, v in list(alignment_candidates.items()):
-		# print(k,v)
 		if v == best_candidate:
 			alignment = k
 			return alignment
 
+"""
+Gets the original index of aligned segments, as the auxiliary lists are being modified and the indexes
+does not correspond to the original ones.
+Args:
+	param1 list_source (list): list of source segments (contains segments of same item_name and item_type).
+	param2 list_target (list): list of target segments (contains segments of same item_name and item_type).
+	param3 source_segment_index (int): source segment aligned in aux_source list.
+	param4 target_segment_index (int): target segment aligned in aux_target list.
+	param5 aux_source (list): auxiliary list of source segments being modified in outer loop (contains segments of same item_name and item_type).
+	param6 aux_target (list): auxiliary list of target segments being modified in outer loop (contains segments of same item_name and item_type).
+
+Returns:
+	original_index_target (int), original_index_source (int). Original indexes (in list_source, list_target) of source/target segments aligned.
+"""
 def get_original_index(list_source, list_target, source_segment_index, target_segment_index, aux_source, aux_target):
 	target_segment_text = aux_target[target_segment_index]
 	original_index_target = list_target.index(target_segment_text)
@@ -754,8 +777,10 @@ Returns:
 def align_responses(df, df_source, df_target):
 	df_source = df_source[df_source['item_type']=='RESPONSE']
 	df_target = df_target[df_target['item_type']=='RESPONSE']
+	print(df_target)
 
 	df_merge = pd.merge(df_source, df_target, on='item_value')
+	print(df_merge)
 
 	for i, row in df_merge.iterrows():
 		data = {'source_survey_itemID': row['survey_item_ID_x'], 'target_survey_itemID':  row['survey_item_ID_y'], 'Study': row['Study_x'], 
@@ -849,13 +874,15 @@ Args:
 
 Returns:
 	country_specific_requests (Python object). Instance of python object that encapsulates the item names of 
-	teh country specific questions.
+	the country specific questions.
 """
 def instantiate_country_specific_request_object(study):
 	if 'ESS_R01' in study:
 		country_specific_requests = ESSCountrySpecificR01()
 	elif 'ESS_R02' in study:
 		country_specific_requests = ESSCountrySpecificR02()
+	elif 'ESS_R03' in study:
+		country_specific_requests = ESSCountrySpecificR03()
 
 	return country_specific_requests
 
@@ -863,8 +890,8 @@ def instantiate_country_specific_request_object(study):
 
 def main(folder_path, filename_source, filename_target):
 	path = os.chdir(folder_path)
-	df_source = pd.read_csv(filename_source)
-	df_target = pd.read_csv(filename_target)
+	df_source = pd.read_csv(filename_source,  dtype=str)
+	df_target = pd.read_csv(filename_target,  dtype=str)
 
 	df = pd.DataFrame(columns=['source_survey_itemID', 'target_survey_itemID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 
 		'source_text', 'target_text'])

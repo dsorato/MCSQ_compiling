@@ -208,9 +208,9 @@ def process_answer_segment(raw_item, survey_item_prefix, study, item_name, df_qu
 		
 		if answer_text:
 			if answer_value:
-				item_value = answer_value
+				item_value = str(answer_value)
 			else:
-				item_value = i
+				item_value = str(i)
 
 			responses.append(answer_text)
 

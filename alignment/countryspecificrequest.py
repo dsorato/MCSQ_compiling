@@ -5,3 +5,7 @@ class ESSCountrySpecificR01():
 class ESSCountrySpecificR02():
 	item_names = ['B12', 'B20b', 'B22', 'C10', 'C12', 'F6', 'F55', 'F36', 'F49']
 	item_names = [x.lower() for x in item_names]
+
+class ESSCountrySpecificR03():
+	item_names = ['B12', 'B20b', 'B22', 'C18', 'C20', 'F6', 'F55', 'F36', 'F49']
+	item_names = [x.lower() for x in item_names]
