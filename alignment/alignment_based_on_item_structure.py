@@ -16,12 +16,12 @@ def identify_showc_segment(list_source, list_target, item_type):
 		possible_card_instruction_target = 'dummy value'
 
 		for i, item in enumerate(list_source):
-			if re.compile(r'\s\d+\b|\s[A-Z]\b|\s[A-Z]\d+\b').findall(item[-1]):
+			if re.compile(r'\s\d+\b|\s[A-Z]\b|\s[A-Z]\d+\b').search(item[-1]):
 				possible_card_instruction_source = i
 				break
 
 		for i, item in enumerate(list_target):
-			if re.compile(r'\s\d+\b|\s[A-Z]\b|\s[A-Z]\d+\b').findall(item[-1]):
+			if re.compile(r'\s\d+\b|\s[A-Z]\b|\s[A-Z]\d+\b').search(item[-1]):
 				possible_card_instruction_target = i
 				break
 
@@ -60,7 +60,7 @@ def find_best_match(list_source, list_target, item_type):
 
 	for target_k, target_v in list(dict_target.items()):
 		for source_k, source_v in list(dict_source.items()):
-			alignment_candidates[target_k, source_k] = source_v/target_v
+			alignment_candidates[target_k, source_k] = target_v/source_v
 
 	best_candidate = min(alignment_candidates.values(), key=lambda x:abs(x-1))
 	for k, v in list(alignment_candidates.items()):
@@ -854,6 +854,8 @@ Returns:
 def instantiate_country_specific_request_object(study):
 	if 'ESS_R01' in study:
 		country_specific_requests = ESSCountrySpecificR01()
+	elif 'ESS_R02' in study:
+		country_specific_requests = ESSCountrySpecificR02()
 
 	return country_specific_requests
 
