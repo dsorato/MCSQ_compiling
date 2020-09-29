@@ -311,9 +311,10 @@ def main(folder_path, has_supplementary):
 			csv_name = file.replace('.txt', '')
 			
 			if has_supplementary == 1:
-				supplementary = pd.read_csv('SUPP_'+csv_name+'.csv')
+				supplementary = pd.read_csv('SUPP_'+csv_name+'.csv', dtype=str)
 				for i, row in supplementary.iterrows():
 					supplementary.at[i,'survey_item_ID'] = ut.update_survey_item_id(survey_item_prefix)
+					# supplementary.at[i,'item_value'] = str(row['item_value']) 
 
 				df_all = df_questionnaire.append(supplementary, ignore_index=True)
 				df_all.to_csv(str(csv_name)+'.csv', encoding='utf-8-sig', index=False)
