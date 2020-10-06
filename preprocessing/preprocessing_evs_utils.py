@@ -136,6 +136,41 @@ def clean_text(text, filename):
 
 	return text
 
+"""
+Removes undesired characters from request/response text. 
+Args:
+	param text (string): request/response text extracted from the input file.
+	param filename (string): name of the input file.
+Returns: 
+	clean request/response text (string). 
+"""
+def clean_answer_text_evs(text, filename):
+	if isinstance(text, str):
+		text = re.sub(r'\s([?.!"](?:\s|$))', r'\1', text)
+		text = re.sub("…", "...", text)
+		text = re.sub(" :", ":", text)
+		text = re.sub(";", ",", text)
+		text = re.sub("’", "'", text)
+		text = re.sub("[.]{4,}", "", text)
+		text = re.sub("[_]{2,}", "", text)
+		text = re.sub('>', "",text)
+		text = re.sub('<', "",text)
+		text = re.sub('Q[0-9]*\.', "",text)
+		text = re.sub('\[', "",text)
+		text = re.sub('\]', "",text)
+		text = re.sub('e\.g\.', "e.g.,",text)
+		text = re.sub('^[A-Z]\s', "",text)
+		text = text.replace('\n',' ')
+		text = text.rstrip()
+		text = standardize_special_response_category(filename, text)
+	else:
+		text = ''
+
+
+
+	return text
+
+
 
 """
 Standartizes text of special response categories (don't know, no answer, not applicable),
@@ -175,7 +210,13 @@ def standardize_special_response_category(filename, text):
 		text = re.sub('^EOS', "Ei osaa sanoa",text, flags=re.IGNORECASE)
 	
 	if 'FRE' in filename:
+		text = re.sub('^NSP (Spontané)', "Ne sait pas (Spontané)",text, flags=re.IGNORECASE)
+		text = re.sub('^SR (Spontané)', "Pas de réponse (Spontané)",text, flags=re.IGNORECASE)
+		text = re.sub('^NSP (Spontané, ne rien suggérer)', "Ne sait pas (Spontané, ne rien suggérer)",text, flags=re.IGNORECASE)
+		text = re.sub('^SR (Spontané, ne rien suggérer)', "Pas de réponse (Spontané, ne rien suggérer)",text, flags=re.IGNORECASE)
+		text = re.sub('^NAP', "Non applicable",text)
 		text = re.sub('^NSP', "Ne sait pas",text, flags=re.IGNORECASE)
+		text = re.sub('^NS\b', "Ne sait pas",text, flags=re.IGNORECASE)
 		text = re.sub('^S\.R\.', "Pas de réponse",text)
 		text = re.sub('^S\.R', "Pas de réponse",text)
 		text = re.sub('^SR\.', "Pas de réponse",text)
@@ -183,7 +224,7 @@ def standardize_special_response_category(filename, text):
 		text = re.sub('^s\.r\.', "Pas de réponse",text)
 		text = re.sub('^S\.r', "Pas de réponse",text)
 		text = re.sub('^SR', "Pas de réponse",text)
-		text = re.sub('^NAP', "Non applicable",text)
+		
 		text = text.replace('77777 - Non applicable', 'Non applicable')
 	
 	if 'GER' in filename:
@@ -205,6 +246,8 @@ def standardize_special_response_category(filename, text):
 		text = re.sub('^S\.R\.', "Pas de réponse",text)
 
 	if 'POR' in filename:
+		text = re.sub('NS (não sabe)', "Não sabe",text, flags=re.IGNORECASE)
+		text = re.sub('NR (não responde)', "Não responde",text, flags=re.IGNORECASE)
 		text = re.sub('^Na\b', "Não se aplica",text, flags=re.IGNORECASE)
 		text = re.sub('^NAP', "Não se aplica",text)
 		text = re.sub('^Ns', "Não sabe",text, flags=re.IGNORECASE)
@@ -214,6 +257,7 @@ def standardize_special_response_category(filename, text):
 		text = text.replace('Não se aplica (não se aplica)', "Não se aplica")
 		text = text.replace('Não sabe (não sabe)', "Não sabe")
 		text = text.replace('Não responde (não responde)', "Não responde")
+		
 
 	if 'RUS_EE' in filename or 'RUS_AZ' in filename or 'RUS_GE' in filename or 'RUS_MD' in filename or 'RUS_LV' in filename:
 		text = re.sub('^Н.О.', "Нет ответа",text)

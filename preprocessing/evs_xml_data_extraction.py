@@ -322,7 +322,7 @@ def process_response_with_id_node(filename, node, survey_item_prefix, study, df_
 		module = "".join(module)
 		item_name = last_row['item_name'].values
 		item_name = "".join(item_name)
-		text = clean_text(txt.text, filename)
+		text = clean_answer_text_evs(txt.text, filename)
 
 		"""
 		Workround added to treat cases such as

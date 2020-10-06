@@ -5,7 +5,7 @@ Author contact: danielly.sorato@gmail.com
 """
 
 import xml.etree.ElementTree as ET
-from sentence_splitter import SentenceSplitter, split_text_into_sentences
+# from sentence_splitter import SentenceSplitter, split_text_into_sentences
 import pandas as pd 
 import nltk.data
 import sys
@@ -51,8 +51,8 @@ def clean_answer_category(text):
 	else:
 		text = ''
 
-
 	return text
+
 def clean(text):
 	if isinstance(text, str):
 		text = re.sub("…", "...", text)
@@ -190,26 +190,32 @@ def main(filename):
 	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
 	ut.reset_initial_sufix()
 
-	#Decide on a (sentence) spliter based on the language.
-	#ICE, HUN, LAV, LIT and SLO languages are not present in the NLTK library, 
-	#so another splitter library is necessary 
-	splitter = None
-	if 'ICE_IS' in filename:
-		splitter = SentenceSplitter(language='is')
-	elif 'HUN_HU' in filename:
-		splitter = SentenceSplitter(language='hu')
-	elif 'LAV_LV' in filename:
-		splitter = SentenceSplitter(language='lv')
-	elif 'LIT_LT' in filename:
-		splitter = SentenceSplitter(language='lt')
-	elif 'SLO_SK' in filename:
-		splitter = SentenceSplitter(language='sk')
-	else:
-		#Punkt Sentence Tokenizer from NLTK	
-		sentence_splitter_prefix = 'tokenizers/punkt/'
-		sentence_splitter_suffix = ut.determine_sentence_tokenizer(filename)
-		sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
-		tokenizer = nltk.data.load(sentence_splitter)
+	#Punkt Sentence Tokenizer from NLTK	
+	sentence_splitter_prefix = 'tokenizers/punkt/'
+	sentence_splitter_suffix = ut.determine_sentence_tokenizer(filename)
+	sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
+	tokenizer = nltk.data.load(sentence_splitter)
+
+	# #Decide on a (sentence) spliter based on the language.
+	# #ICE, HUN, LAV, LIT and SLO languages are not present in the NLTK library, 
+	# #so another splitter library is necessary 
+	# splitter = None
+	# if 'ICE_IS' in filename:
+	# 	splitter = SentenceSplitter(language='is')
+	# elif 'HUN_HU' in filename:
+	# 	splitter = SentenceSplitter(language='hu')
+	# elif 'LAV_LV' in filename:
+	# 	splitter = SentenceSplitter(language='lv')
+	# elif 'LIT_LT' in filename:
+	# 	splitter = SentenceSplitter(language='lt')
+	# elif 'SLO_SK' in filename:
+	# 	splitter = SentenceSplitter(language='sk')
+	# else:
+	# 	#Punkt Sentence Tokenizer from NLTK	
+	# 	sentence_splitter_prefix = 'tokenizers/punkt/'
+	# 	sentence_splitter_suffix = ut.determine_sentence_tokenizer(filename)
+	# 	sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
+	# 	tokenizer = nltk.data.load(sentence_splitter)
 
 	#Parse the input XML file by filename
 	file = str(filename)

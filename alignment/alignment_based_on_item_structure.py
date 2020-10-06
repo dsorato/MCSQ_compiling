@@ -883,6 +883,14 @@ def instantiate_country_specific_request_object(study):
 		country_specific_requests = ESSCountrySpecificR02()
 	elif 'ESS_R03' in study:
 		country_specific_requests = ESSCountrySpecificR03()
+	elif 'ESS_R04' in study:
+		country_specific_requests = ESSCountrySpecificR04()
+	elif 'ESS_R05' in study:
+		country_specific_requests = ESSCountrySpecificR05()
+	elif 'ESS_R06' in study:
+		country_specific_requests = ESSCountrySpecificR06()
+	elif 'EVS_R04' in study:
+		country_specific_requests = EVSCountrySpecificR04()
 
 	return country_specific_requests
 
@@ -904,8 +912,8 @@ def main(folder_path, filename_source, filename_target):
 	else:
 		source_language_country = 'ENG_SOURCE'
 
-
-	country_specific_requests = instantiate_country_specific_request_object(study)
+	if 'EVS' in study or 'ESS' in study:
+		country_specific_requests = instantiate_country_specific_request_object(study)
 
 	"""
 	Computes the intersection between the modules of source and target questionnaires.
@@ -920,8 +928,9 @@ def main(folder_path, filename_source, filename_target):
 		
 		for unique_item_name in unique_item_names_source:
 			process_responses = True
-			if unique_item_name.lower() in country_specific_requests.item_names:
-				process_responses = False
+			if 'EVS' in study or 'ESS' in study:
+				if unique_item_name.lower() in country_specific_requests.item_names:
+					process_responses = False
 			"""
 			Computes the intersection between the item names of source and target questionnaires.
 			We are only interested in aligning questions that are present in both files.
