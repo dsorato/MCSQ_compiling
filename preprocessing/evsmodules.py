@@ -65,7 +65,7 @@ class EVSModules1999():
 	'V15','V16','V17','V18','V19','V20','V21','V22','V23','V24','V25','V26','V27','V30','V31','V32','V33','V34',
 	'V35','V36','V37','V38','V39','V40','V41','V42','V43','V44','V45','V52','V53','V55','V58','V59','V60','V61',
 	'V62','V63','V64','V65','V59_TR','V54','V56','V57','O1','V66','V68','V67',
-	'v10', 'v11_gb', 'v6a_gb', 'v65a_gb', 'v65a_pt', 'v178a_pt']
+	'v10', 'v11_gb', 'v6a_gb', 'v6a_ua','v6b_ua', 'v6c_ua,' 'v65a_gb', 'v65a_pt', 'v178a_pt', 'v178a_at']
 	perceptions_of_life = [x.lower() for x in perceptions_of_life]
 
 	politics_and_society = ['V190','V191','O24','V192','V193','V194','V195','V196','V197','V198','V199','O25',
@@ -77,7 +77,9 @@ class EVSModules1999():
 	'V282','V283','V284','V285','V286','V287','V288','V289','V290','V256','V257','V69','V70','V191_4',
 	'c1','c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9', 'c10', 'c29', 'c30', 'c31', 'c32', 'c33', 'c34',
 	'c35', 'v189a_gb', 'v189b_gb', 'v199a_gb', 'v199b_gb', 'v199c_gb', 'v212a_gb', 'v212b_gb', 'v183a_pt',
-	'v183b_pt', 'v183c_pt', 'v183d_pt', 'v183e_pt', 'v190_gb', 'v191_gb', 'v212a_cz', 'o22_01']
+	'v183b_pt', 'v183c_pt', 'v183d_pt', 'v183e_pt', 'v190_gb', 'v191_gb', 'v212a_cz', 'o22_01', 
+	'v212a_at', 'v278a_de', 'v279a_de', 'v290a_de', 'v290b_de', 'v290c_de', 'v290d_de', 'v184_2c',
+	'v212a_ua', 'v212b_ua', 'v260_ua', 'v261_ua', 'v262_ua', 'o48_ua']
 	politics_and_society = [x.lower() for x in politics_and_society]
 
 	environment = ['v10', 'v8', 'v9']
@@ -85,12 +87,13 @@ class EVSModules1999():
 	family = ['V148','V149','V152','V150','V151','V153','V133','V134','V135','V136','V137','V138','V139',
 	'V140','V141','V142','V143','V144','V145','V146','V147','O16','V154','V157','V159','V155','V156','V158',
 	'V160','V161',
-	'v147a_gb', 'v154_5c', 'v155_5c', 'v156_5c', 'v157_5c', 'v158_5c', 'v159_5c', 'v160_5c', 'v161_5c']
+	'v147a_gb', 'v154_5c', 'v155_5c', 'v156_5c', 'v157_5c', 'v158_5c', 'v159_5c', 'v160_5c', 'v161_5c',
+	'v153a_at']
 	family = [x.lower() for x in family]
 
 	work = ['V99','V98','O5','V71','V73','V74','V76','V77','V78','V80','V82','V83','V84','V85','V72','V75',
 	'V79','V81','O2','O3','V86','V87','V88','V89','O4','V90','V91','V92','V93','V94','V95','V96','V97',
-	'v90a_gb', 'v85a_pt', 'o5_lu']
+	'v90a_gb', 'v85a_pt', 'o5_lu', 'v90_at', 'v91_at', 'v92_at', 'v93_at', 'v94_at', 'v95_at']
 	work = [x.lower() for x in work]
 
 	religion_and_morale = ['O6','V100','V101','V102','V103','V103r_gb','V104','V104r_gb','V105','V106','V107',
@@ -100,7 +103,7 @@ class EVSModules1999():
 	'V227','V228','V229','V230','V237','V238','V239','V240','V241','V242','O34','O36','O37','O38','V243',
 	'V244','V245','V246','V247','V248','V249','V250','O39','O40','O41','O42','O43','O44',
 	'v242a_gb', 'v243_lu', 'v244_lu', 'v245_lu', 'v246_lu', 'v247_lu', 'v248_lu','v249_lu','v250_lu', 'o39_lu',
-	'o40_lu','o41_lu']
+	'o40_lu','o41_lu', 'o44a_de', 'v124_de', 'v102_by', 'v104_by', 'v102_ee', 'v104_ee', 'v102_ua', 'v104_ua']
 	religion_and_morale = [x.lower() for x in religion_and_morale]
 
 	national_identity = ['V251','V251_MT','V252','V252_MT','V253','V253_MT','V254','V255','O45','O46',
@@ -111,7 +114,8 @@ class EVSModules1999():
 	'V299','V300','V301','V302','V303','V303_r','V304','V304_r','V305','V306','V307','V308','V308_r','V309',
 	'V309_r','V310','V310_r','V310_r2','V311_2','V311_3','V311','V312','V314','V315','V316','V317_2',
 	'V317_3','V317','V318','O49','V320','V320_CS','V320_ppp','V320_r','V323','V322', 'c36', 'c39',
-	'v320_pt']
+	'v320_pt', 'v320_at', 'v292a_de', 'v292b_de', 'v292c_de', 'v292z_de', 'v302a_de', 'v304_de', 'v316a_de',
+	'v320_de', 'v322a_ua']
 	socio_demographics = [x.lower() for x in socio_demographics]
 
 	administrative = ['O52_r','O50','O53','V324','V325']
