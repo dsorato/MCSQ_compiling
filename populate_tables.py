@@ -72,14 +72,12 @@ def write_response_table(text, item_value):
 
 
 
-def write_alignment_table(source_text, target_text, source_survey_item_elementid,target_survey_item_elementid):
+def write_alignment_table(source_text, target_text, source_survey_itemid,target_survey_itemid):
 	session = session_factory()
-	item = Alignment(source_text, target_text, source_survey_item_elementid,target_survey_item_elementid)
+	item = Alignment(source_text, target_text, source_survey_itemid,target_survey_itemid)
 	session.add(item)
 	session.commit()
 	session.close()
-
-
 
 
 def write_survey_item_table(survey_itemid, surveyid, text, item_value, moduleid, requestid, responseid, instructionid, introductionid, country_language, item_is_source, item_name, item_type):
