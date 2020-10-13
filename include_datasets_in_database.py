@@ -86,7 +86,7 @@ def populate_request_table(df):
 	df_request = df_request.drop_duplicates('text')
 
 	dictionary_requests = dict()
-	for i, row in df_instructions.iterrows(): 
+	for i, row in df_request.iterrows(): 
 		write_request_table(row['text'])
 		request_id = get_request_id(row['text'])
 		dictionary_requests[row['text']] = request_id
