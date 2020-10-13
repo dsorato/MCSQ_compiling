@@ -69,8 +69,8 @@ def get_response_id(text, item_value):
 
 def get_module_id(module_name):
 	session = session_factory()
-	if "'" in text:
-		text = text.replace("'", "''")
+	if "'" in module_name:
+		module_name = module_name.replace("'", "''")
 
 	result = session.execute("select moduleid from module where module_name='"+module_name+"'")
 	
