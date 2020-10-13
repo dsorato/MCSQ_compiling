@@ -207,15 +207,14 @@ def main(folder_path, concatenate):
 			language = file.replace('.csv', '')
 			df = pd.read_csv(file, dtype=str)
 
-			dictionary_modules = populate_module_table(df)
-			dictionary_surveys = populate_survey_table(df)
-			dictionary_introductions = populate_introduction_table(df)
-			dictionary_instructions = populate_instruction_table(df)
-			dictionary_requests = populate_request_table(df)
-			dictionary_responses = populate_response_table(df)
+			d_modules = populate_module_table(df)
+			d_surveys = populate_survey_table(df)
+			d_introductions = populate_introduction_table(df)
+			d_instructions = populate_instruction_table(df)
+			d_requests = populate_request_table(df)
+			d_responses = populate_response_table(df)
 			populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructions, d_requests, d_responses)
 
-			
 
 				
 
