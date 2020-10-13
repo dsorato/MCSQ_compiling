@@ -81,8 +81,8 @@ def get_module_id(module_name):
 
 def get_survey_id(surveyid):
 	session = session_factory()
-	if "'" in text:
-		text = text.replace("'", "''")
+	if "'" in surveyid:
+		surveyid = surveyid.replace("'", "''")
 
 	result = session.execute("select surveyid from survey where surveyid='"+surveyid+"'")
 	
