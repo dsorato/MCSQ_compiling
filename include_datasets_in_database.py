@@ -16,6 +16,8 @@ def get_metadata_from_survey_item_id(survey_item_id):
 	survey_item_id_split = survey_item_id.split('_')
 	surveyid = survey_item_id_split[0]+'_'+survey_item_id_split[1]+'_'+survey_item_id_split[2]+'_'+survey_item_id_split[3]+'_'+survey_item_id_split[4]
 	study = survey_item_id_split[0]
+	if study == 'SHA':
+		study = 'SHARE'
 	wave_round = survey_item_id_split[1]
 	year = survey_item_id_split[2]
 	country_language = survey_item_id_split[3]+'_'+survey_item_id_split[4]
