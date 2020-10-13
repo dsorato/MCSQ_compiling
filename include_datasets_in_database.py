@@ -43,11 +43,11 @@ def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructio
 		elif row['item_type'] == 'REQUEST':
 			request_id = d_requests[row['text']]
 		elif row['item_type'] == 'RESPONSE':
+			item_value = row['item_value']
+			
 			if isinstance(row['item_value'], str):
 				if str(row['item_value'])[-2:] == '.0':
-					item_value = row['item_value'][:-2]
-				else:
-					item_value = row['item_value']
+					item_value = row['item_value'][:-2]					
 
 				response_id = d_responses[row['text']+item_value]
 			else:
@@ -58,7 +58,7 @@ def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructio
 		else:
 			item_is_source = False
 
-		write_survey_item_table(row['survey_item_ID'], surveyid, row['text'], row['item_value'], module_id, request_id, response_id, 
+		write_survey_item_table(row['survey_item_ID'], surveyid, row['text'], item_value, module_id, request_id, response_id, 
 			instruction_id, introduction_id, country_language, item_is_source, row['item_name'], row['item_type'])
 
 
