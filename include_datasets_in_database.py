@@ -12,6 +12,15 @@ import re
 from populate_tables import *
 from retrieve_from_tables import *
 
+"""
+Gets surveyid, study, wave_round, year and country_language metadata, contained in survey_item_ID values.
+
+Args:
+	param1 survey_item_id (string): survey_item_id from survey_item_ID column contained in input csv file.
+
+Returns: 
+	surveyid (string), study (string), wave_round (string), year (string) and country_language (string) metadata.
+"""
 def get_metadata_from_survey_item_id(survey_item_id):
 	survey_item_id_split = survey_item_id.split('_')
 	surveyid = survey_item_id_split[0]+'_'+survey_item_id_split[1]+'_'+survey_item_id_split[2]+'_'+survey_item_id_split[3]+'_'+survey_item_id_split[4]
@@ -24,6 +33,19 @@ def get_metadata_from_survey_item_id(survey_item_id):
 
 	return surveyid, study, wave_round, year, country_language
 
+"""
+Prepares the data and calls write_survey_item_table() function to populate survey_item table.
+
+Args:
+	param1 df (pandas dataframe): input csv file.
+	param2 d_surveys (dictionary): dictionary containing surveyid strings and their ids in MCSQ.
+	param3 d_modules (dictionary): dictionary containing modules and their ids in MCSQ.
+	param4 d_introductions (dictionary): dictionary containing introduction texts and their ids in MCSQ.
+	param5 d_instructions (dictionary): dictionary containing instruction texts and their ids in MCSQ.
+	param6 d_requests (dictionary): dictionary containing request texts and their ids in MCSQ.
+	param7 d_responses (dictionary): dictionary containing response texts and their ids in MCSQ.
+
+"""
 def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructions, d_requests, d_responses):
 	for i, row in df.iterrows():
 		surveyid, study, wave_round, year, country_language = get_metadata_from_survey_item_id(row['survey_item_ID'])
@@ -62,7 +84,14 @@ def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructio
 			instruction_id, introduction_id, country_language, item_is_source, row['item_name'], row['item_type'])
 
 
+"""
+Prepares the data and calls write_introduction_table() function to populate introduction table.
 
+Args:
+	param1 df (pandas dataframe): input csv file.
+Returns: 
+	dictionary_introductions (dictionary). A dictionary containing unique introduction texts and their IDs in MCSQ.
+"""	
 def populate_introduction_table(df):
 	df_introduction = df[df['item_type']=='INTRODUCTION']
 	df_introduction = df_introduction.drop_duplicates('text')
@@ -75,6 +104,15 @@ def populate_introduction_table(df):
 
 	return dictionary_introductions
 
+
+"""
+Prepares the data and calls write_instruction_table() function to populate instruction table.
+
+Args:
+	param1 df (pandas dataframe): input csv file.
+Returns: 
+	dictionary_instructions (dictionary). A dictionary containing unique instruction texts and their IDs in MCSQ.
+"""	
 def populate_instruction_table(df):
 	df_instructions = df[df['item_type']=='INSTRUCTION']
 	df_instructions = df_instructions.drop_duplicates('text')
@@ -87,6 +125,15 @@ def populate_instruction_table(df):
 
 	return dictionary_instructions
 
+
+"""
+Prepares the data and calls write_request_table() function to populate request table.
+
+Args:
+	param1 df (pandas dataframe): input csv file.
+Returns: 
+	dictionary_requests (dictionary). A dictionary containing unique request texts and their IDs in MCSQ.
+"""	
 def populate_request_table(df):
 	df_request = df[df['item_type']=='REQUEST']
 	df_request = df_request.drop_duplicates('text')
@@ -99,6 +146,15 @@ def populate_request_table(df):
 
 	return dictionary_requests
 
+
+"""
+Prepares the data and calls write_response_table() function to populate response table.
+
+Args:
+	param1 df (pandas dataframe): input csv file.
+Returns: 
+	dictionary_responses (dictionary). A dictionary containing unique response texts, their item values and their IDs in MCSQ.
+"""	
 def populate_response_table(df):
 	df_response = df[df['item_type']=='RESPONSE']
 
@@ -119,15 +175,20 @@ def populate_response_table(df):
 			response_id = get_response_id(text, item_value)
 			dictionary_responses[text+item_value] = response_id
 		else:
-			write_response_table(text, item_value)
-			response_id = get_response_id(text, item_value)
+			write_response_table(text, None)
+			response_id = get_response_id(text, None)
 			dictionary_responses[text+'None'] = response_id
-
-
-
 
 	return dictionary_responses
 
+"""
+Prepares the data and calls write_module_table() function to populate module table.
+
+Args:
+	param1 df (pandas dataframe): input csv file.
+Returns: 
+	dictionary_modules (dictionary). A dictionary containing unique module names and their IDs in MCSQ.
+"""	
 def populate_module_table(df):
 	dictionary_modules = dict()
 
@@ -141,6 +202,14 @@ def populate_module_table(df):
 
 	return dictionary_modules
 
+"""
+Prepares the data and calls write_survey_table() function to populate survey table.
+
+Args:
+	param1 df (pandas dataframe): input csv file.
+Returns: 
+	dictionary_surveys (dictionary). A dictionary containing unique surveyids strings and their IDs in MCSQ.
+"""	
 def populate_survey_table(df):
 	unique_studies = df.Study.unique()
 	first_survey_item_id = []
@@ -165,7 +234,16 @@ def populate_survey_table(df):
 	return dictionary_surveys
 
 	
+"""
+Concatenate and outrput all files from a same language.
 
+Args:
+	param1 files (list): all files (same language) in directory.
+	param2 metainfo (string): name of output csv file, e.g. CAT.csv
+	param3 folder_path (string): path of directory.
+Returns: 
+	csv file containing all data for a given language.
+"""	
 def concatenate_files(files, metainfo, folder_path):
 	file_list = list()
 	for index, file in enumerate(files):
