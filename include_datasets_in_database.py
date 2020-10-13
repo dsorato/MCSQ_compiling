@@ -44,7 +44,12 @@ def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructio
 			request_id = d_requests[row['text']]
 		elif row['item_type'] == 'RESPONSE':
 			if isinstance(row['item_value'], str):
-				response_id = d_responses[row['text']+row['item_value']]
+				if str(row['item_value'])[-2:] == '.0':
+					item_value = row['item_value'][:-2]
+				else:
+					item_value = row['item_value']
+
+				response_id = d_responses[row['text']+item_value]
 			else:
 				response_id = d_responses[row['text']+'None']
 
