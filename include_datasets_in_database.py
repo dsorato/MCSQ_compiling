@@ -104,8 +104,8 @@ def populate_response_table(df):
 
 	for value in unique_values:
 		write_response_table(value[0], value[1])
-		response_id = get_response_id(text, item_value)
-		dictionary_responses[[row['text'], row['item_value']]] = response_id
+		response_id = get_response_id(value[0], value[1])
+		dictionary_responses[[value[0], value[1]]] = response_id
 
 	return dictionary_responses
 
