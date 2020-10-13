@@ -13,9 +13,8 @@ class Module(Base):
     # emits CREATE SEQUENCE + INTEGER
     moduleid = Column(Integer, Sequence('module_id_seq'), primary_key=True)
     module_name = Column(String, nullable=False)
-    module_description = Column(String, nullable=False)
 
     def __init__(self, module_name, module_description):
         self.module_name = module_name
-        self.module_description = module_description
+
        
