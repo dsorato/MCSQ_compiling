@@ -36,13 +36,13 @@ def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructio
 		instruction_id = None
 		introduction_id = None
 
-		if item_type == 'INTRODUCTION':
+		if row['item_type'] == 'INTRODUCTION':
 			introduction_id = d_introductions[row['text']]
-		elif item_type == 'INSTRUCTION':
+		elif row['item_type'] == 'INSTRUCTION':
 			instruction_id = d_instructions[row['text']]
-		elif item_type == 'REQUEST':
+		elif row['item_type'] == 'REQUEST':
 			request_id = d_requests[row['text']]
-		elif item_type == 'RESPONSE':
+		elif row['item_type'] == 'RESPONSE':
 			if isinstance(row['item_value'], str):
 				response_id = d_responses[row['text']+row['item_value']]
 			else:
