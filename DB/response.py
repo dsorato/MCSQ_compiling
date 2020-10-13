@@ -13,7 +13,7 @@ class Response(Base):
     __tablename__ = 'response'
 
     # emits CREATE SEQUENCE + INTEGER
-    responseid = Column(Integer, Sequence('response_item_id_seq'), primary_key=True)
+    responseid = Column(Integer, Sequence('response_id_seq'), primary_key=True)
     text = Column(String)
     item_value = Column(String)
 
