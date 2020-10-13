@@ -43,7 +43,10 @@ def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructio
 		elif item_type == 'REQUEST':
 			request_id = d_requests[row['text']]
 		elif item_type == 'RESPONSE':
-			response_id = d_responses[row['text']+row['item_value']]
+			if isinstance(row['item_value'], str):
+				response_id = d_responses[row['text']+row['item_value']]
+			else:
+				response_id = d_responses[row['text']+'None']
 
 		if country_language == 'ENG_SOURCE':
 			item_is_source = True
@@ -103,9 +106,24 @@ def populate_response_table(df):
 			unique_values.append([row['text'], row['item_value']])
 
 	for value in unique_values:
-		write_response_table(value[0], value[1])
-		response_id = get_response_id(value[0], value[1])
-		dictionary_responses[value[0]+value[1]] = response_id
+		text = value[0]
+		item_value = value[1]
+		if isinstance(item_value, str):
+			if str(item_value)[-2:] == '.0':
+				print(item_value)
+				item_value = item_value[:-2]
+				print(item_value)
+
+			write_response_table(text, item_value)
+			response_id = get_response_id(text, item_value)
+			dictionary_responses[text+item_value] = response_id
+		else:
+			write_response_table(text, item_value)
+			response_id = get_response_id(text, item_value)
+			dictionary_responses[text+'None'] = response_id
+
+
+
 
 	return dictionary_responses
 
