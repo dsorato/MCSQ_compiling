@@ -43,7 +43,7 @@ def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructio
 		elif item_type == 'REQUEST':
 			request_id = d_requests[row['text']]
 		elif item_type == 'RESPONSE':
-			response_id = d_responses[[row['text'], row['item_value']]]
+			response_id = d_responses[row['text']+row['item_value']]
 
 		if country_language == 'ENG_SOURCE':
 			item_is_source = True
@@ -105,7 +105,7 @@ def populate_response_table(df):
 	for value in unique_values:
 		write_response_table(value[0], value[1])
 		response_id = get_response_id(value[0], value[1])
-		dictionary_responses[[value[0], value[1]]] = response_id
+		dictionary_responses[value[0]+value[1]] = response_id
 
 	return dictionary_responses
 
