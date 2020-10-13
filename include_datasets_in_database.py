@@ -12,6 +12,15 @@ import re
 from populate_tables import *
 from retrieve_from_tables import *
 
+"""
+Gets surveyid, study, wave_round, year and country_language metadata, contained in survey_item_ID values.
+
+Args:
+	param1 survey_item_id (string): survey_item_id from survey_item_ID column contained in input csv file.
+
+Returns: 
+	surveyid (string), study (string), wave_round (string), year (string) and country_language (string) metadata.
+"""
 def get_metadata_from_survey_item_id(survey_item_id):
 	survey_item_id_split = survey_item_id.split('_')
 	surveyid = survey_item_id_split[0]+'_'+survey_item_id_split[1]+'_'+survey_item_id_split[2]+'_'+survey_item_id_split[3]+'_'+survey_item_id_split[4]
@@ -24,6 +33,14 @@ def get_metadata_from_survey_item_id(survey_item_id):
 
 	return surveyid, study, wave_round, year, country_language
 
+"""
+Prepares the data and calls write_survey_item_table() function to populate survey_item table.
+
+Args:
+	param1 df (pandas dataframe): input csv file.
+	param2 df (pandas dataframe): input csv file.
+
+"""
 def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructions, d_requests, d_responses):
 	for i, row in df.iterrows():
 		surveyid, study, wave_round, year, country_language = get_metadata_from_survey_item_id(row['survey_item_ID'])
@@ -119,8 +136,8 @@ def populate_response_table(df):
 			response_id = get_response_id(text, item_value)
 			dictionary_responses[text+item_value] = response_id
 		else:
-			write_response_table(text, item_value)
-			response_id = get_response_id(text, item_value)
+			write_response_table(text, None)
+			response_id = get_response_id(text, None)
 			dictionary_responses[text+'None'] = response_id
 
 
