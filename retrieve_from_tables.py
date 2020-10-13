@@ -60,7 +60,10 @@ def get_response_id(text, item_value):
 	if "'" in text:
 		text = text.replace("'", "''")
 
-	result = session.execute("select responseid from response where text='"+text+"' and item_value='"+item_value+"'")
+	if isinstance(item_value, str):
+		result = session.execute("select responseid from response where text='"+text+"' and item_value='"+item_value+"'")
+	else:
+		result = session.execute("select responseid from response where text='"+text+"' and item_value is null")
 	
 	session.close()
 
