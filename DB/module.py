@@ -14,7 +14,7 @@ class Module(Base):
     moduleid = Column(Integer, Sequence('module_id_seq'), primary_key=True)
     module_name = Column(String, nullable=False)
 
-    def __init__(self, module_name, module_description):
+    def __init__(self, module_name):
         self.module_name = module_name
 
        
