@@ -92,13 +92,3 @@ def write_survey_item_table(survey_itemid, surveyid, text, item_value, moduleid,
 
 
 
-
-
-
-
-
-
-
-
-
-

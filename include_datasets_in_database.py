@@ -58,8 +58,6 @@ def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructio
 
 
 
-
-
 def populate_introduction_table(df):
 	df_introduction = df[df['item_type']=='INTRODUCTION']
 	df_introduction = df_introduction.drop_duplicates('text')
@@ -110,9 +108,7 @@ def populate_response_table(df):
 		item_value = value[1]
 		if isinstance(item_value, str):
 			if str(item_value)[-2:] == '.0':
-				print(item_value)
 				item_value = item_value[:-2]
-				print(item_value)
 
 			write_response_table(text, item_value)
 			response_id = get_response_id(text, item_value)

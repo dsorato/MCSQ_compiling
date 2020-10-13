@@ -35,9 +35,10 @@ class Survey_item(Base):
 
 
 
-    def __init__(self, surveyid, text, item_value, moduleid, requestid, responseid, instructionid, introductionid, 
+    def __init__(self, survey_itemid, surveyid, text, item_value, moduleid, requestid, responseid, instructionid, introductionid, 
         country_language, item_is_source, item_name, item_type):
         
+        self.survey_itemid = survey_itemid
         self.surveyid = surveyid
         self.text = text
         self.item_value = item_value
