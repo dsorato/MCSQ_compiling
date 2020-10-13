@@ -15,6 +15,7 @@ class Survey_item(Base):
     survey_itemid = Column(String, primary_key=True)
     surveyid = Column(String, ForeignKey('survey.surveyid'), nullable=False)
     text = Column(String)
+    item_value = Column(String)
     moduleid = Column(Integer, ForeignKey('module.moduleid'))
     requestid = Column(Integer, ForeignKey('request.requestid'))
     responseid = Column(Integer, ForeignKey('response.responseid'))
@@ -34,10 +35,12 @@ class Survey_item(Base):
 
 
 
-    def __init__(self, surveyid, text, moduleid, requestid, responseid, instructionid, introductionid, 
+    def __init__(self, surveyid, text, item_value, moduleid, requestid, responseid, instructionid, introductionid, 
         country_language, item_is_source, item_name, item_type):
         
         self.surveyid = surveyid
+        self.text = text
+        self.item_value = item_value
         self.moduleid = moduleid
         self.requestid = requestid
         self.responseid = responseid

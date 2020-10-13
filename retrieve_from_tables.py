@@ -72,13 +72,24 @@ def get_module_id(module_name):
 	if "'" in text:
 		text = text.replace("'", "''")
 
-	result = session.execute("select moduleid from response where module_name='"+module_name+"'")
+	result = session.execute("select moduleid from module where module_name='"+module_name+"'")
 	
 	session.close()
 
 	for i in result:
 		return i[0]
 
+def get_survey_id(surveyid):
+	session = session_factory()
+	if "'" in text:
+		text = text.replace("'", "''")
+
+	result = session.execute("select surveyid from survey where surveyid='"+surveyid+"'")
+	
+	session.close()
+
+	for i in result:
+		return i[0]
 
 
 # def get_survey_item_info_from_id(item_id, column, survey_itemid):

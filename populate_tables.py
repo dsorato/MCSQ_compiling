@@ -82,9 +82,9 @@ def write_alignment_table(source_text, target_text, source_survey_item_elementid
 
 
 
-def write_survey_item_table(survey_itemid, surveyid, moduleid, requestid, responseid, response_item_id, instructionid,introductionid, country_language, item_is_source, item_name, item_type):
+def write_survey_item_table(survey_itemid, surveyid, text, item_value, moduleid, requestid, responseid, instructionid, introductionid, country_language, item_is_source, item_name, item_type):
 	session = session_factory()
-	item = Survey_item(survey_itemid, surveyid, moduleid, requestid, responseid, response_item_id, instructionid,introductionid, country_language, item_is_source, item_name, item_type)
+	item = Survey_item(survey_itemid, surveyid, text, item_value, moduleid, requestid, responseid, instructionid, introductionid, country_language, item_is_source, item_name, item_type)
 	session.add(item)
 	session.commit()
 	session.close()

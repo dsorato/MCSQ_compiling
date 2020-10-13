@@ -9,14 +9,51 @@ import numpy as np
 import sys
 import os
 import re
-# from populate_tables import *
-# from retrieve_from_tables import *
+from populate_tables import *
+from retrieve_from_tables import *
 
-def populate_survey_item(df, d_modules, d_introductions, d_instructions, d_requests, d_responses):
+def get_metadata_from_survey_item_id(survey_item_id):
+	survey_item_id_split = survey_item_id.split('_')
+	surveyid = survey_item_id_split[0]+'_'+survey_item_id_split[1]+'_'+survey_item_id_split[2]+'_'+survey_item_id_split[3]+'_'+survey_item_id_split[4]
+	study = survey_item_id_split[0]
+	wave_round = survey_item_id_split[1]
+	year = survey_item_id_split[2]
+	country_language = survey_item_id_split[3]+'_'+survey_item_id_split[4]
+
+	return surveyid, study, wave_round, year, country_language
+
+def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructions, d_requests, d_responses):
 	for i, row in df.iterrows():
+		surveyid, study, wave_round, year, country_language = get_metadata_from_survey_item_id(row['survey_item_ID'])
 
-surveyid, text, moduleid, requestid, responseid, instructionid, introductionid, 
-        country_language, item_is_source, item_name, item_type
+		survey_id = d_surveys[surveyid]
+		module_id = d_modules[row['module']]
+
+		request_id = None
+		response_id = None
+		instruction_id = None
+		introduction_id = None
+
+		if item_type == 'INTRODUCTION':
+			introduction_id = d_introductions[row['text']]
+		elif item_type == 'INSTRUCTION':
+			instruction_id = d_instructions[row['text']]
+		elif item_type == 'REQUEST':
+			request_id = d_requests[row['text']]
+		elif item_type == 'RESPONSE':
+			response_id = d_responses[[row['text'], row['item_value']]]
+
+		if country_language == 'ENG_SOURCE':
+			item_is_source = True
+		else:
+			item_is_source = False
+
+		write_survey_item_table(row['survey_item_ID'], surveyid, row['text'], row['item_value'], module_id, request_id, response_id, 
+			instruction_id, introduction_id, country_language, item_is_source, row['item_name'], row['item_type'])
+
+
+
+
 
 def populate_introduction_table(df):
 	df_introduction = df[df['item_type']=='INTRODUCTION']
@@ -26,7 +63,7 @@ def populate_introduction_table(df):
 	for i, row in df_introduction.iterrows(): 
 		write_introduction_table(row['text'])
 		introduction_id = get_introduction_id(row['text'])
-		dictionary_introductions[introduction_id] = row['text']
+		dictionary_introductions[row['text']] = introduction_id
 
 	return dictionary_introductions
 
@@ -38,7 +75,7 @@ def populate_instruction_table(df):
 	for i, row in df_instructions.iterrows(): 
 		write_instruction_table(row['text'])
 		instruction_id = get_instruction_id(row['text'])
-		dictionary_instructions[instruction_id] = row['text']
+		dictionary_instructions[row['text']] = instruction_id
 
 	return dictionary_instructions
 
@@ -50,7 +87,7 @@ def populate_request_table(df):
 	for i, row in df_instructions.iterrows(): 
 		write_request_table(row['text'])
 		request_id = get_request_id(row['text'])
-		dictionary_requests[request_id] = row['text']
+		dictionary_requests[row['text']] = request_id
 
 	return dictionary_requests
 
@@ -65,8 +102,8 @@ def populate_response_table(df):
 
 	for value in unique_values:
 		write_response_table(value[0], value[1])
-		responseid = get_response_id(text, item_value)
-		dictionary_responses[responseid] = [row['text'], row['item_value']]
+		response_id = get_response_id(text, item_value)
+		dictionary_responses[[row['text'], row['item_value']]] = response_id
 
 	return dictionary_responses
 
@@ -78,7 +115,7 @@ def populate_module_table(df):
 
 	for module in unique_modules:
 		module_id = get_module_id(module)
-		dictionary_modules[module_id] = module
+		dictionary_modules[module] =  module_id
 
 
 	return dictionary_modules
@@ -94,15 +131,18 @@ def populate_survey_table(df):
 
 	surveys = []
 	for survey_item_id in first_survey_item_id:
-		survey_item_id_split = survey_item_id.split('_')
-		surveyid = survey_item_id_split[0]+'_'+survey_item_id_split[1]+'_'+survey_item_id_split[2]+'_'+survey_item_id_split[3]+'_'+survey_item_id_split[4]
-		study = survey_item_id_split[0]
-		wave_round = survey_item_id_split[1]
-		year = survey_item_id_split[2]
-		country_language = survey_item_id_split[3]+'_'+survey_item_id_split[4]
+		surveyid, study, wave_round, year, country_language = get_metadata_from_survey_item_id(survey_item_id)
 		surveys.append([surveyid, study, wave_round, year, country_language])
 
 	write_survey_table(surveys)
+
+	dictionary_surveys = dict()
+	for survey in surveys:
+		survey_id = get_survey_id(survey[0])
+		dictionary_surveys[survey[0]] = survey_id
+
+	return dictionary_surveys
+
 	
 
 def concatenate_files(files, metainfo, folder_path):
@@ -146,12 +186,14 @@ def main(folder_path, concatenate):
 			print(file)
 			language = file.replace('.csv', '')
 			df = pd.read_csv(file, dtype=str)
-			# populate_survey_table(df)
+
 			dictionary_modules = populate_module_table(df)
+			dictionary_surveys = populate_survey_table(df)
 			dictionary_introductions = populate_introduction_table(df)
 			dictionary_instructions = populate_instruction_table(df)
 			dictionary_requests = populate_request_table(df)
 			dictionary_responses = populate_response_table(df)
+			populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructions, d_requests, d_responses)
 
 			
 
