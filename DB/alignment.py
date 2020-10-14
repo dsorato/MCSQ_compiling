@@ -15,8 +15,8 @@ class Alignment(Base):
     alignmentid = Column(Integer, Sequence('alignment_id_seq'), primary_key=True)
     source_text = Column(String)
     target_text = Column(String)
-    source_survey_itemid = Column(String, nullable=False)
-    target_survey_itemid = Column(String, nullable=False)
+    source_survey_itemid = Column(String)
+    target_survey_itemid = Column(String)
 
    
 
