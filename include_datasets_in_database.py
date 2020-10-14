@@ -62,10 +62,16 @@ def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructio
 
 		if row['item_type'] == 'INTRODUCTION':
 			introduction_id = d_introductions[row['text']]
+			item_value = None
+
 		elif row['item_type'] == 'INSTRUCTION':
 			instruction_id = d_instructions[row['text']]
+			item_value = None
+
 		elif row['item_type'] == 'REQUEST':
 			request_id = d_requests[row['text']]
+			item_value = None
+			
 		elif row['item_type'] == 'RESPONSE':
 			if isinstance(row['item_value'], str):
 				if str(row['item_value'])[-2:] == '.0':
