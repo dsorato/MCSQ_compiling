@@ -10,6 +10,7 @@ Welcome to MCSQ compiling's documentation!
    :maxdepth: 2
 
    preprocessing.rst
+   alignment.rst
 
 
 
