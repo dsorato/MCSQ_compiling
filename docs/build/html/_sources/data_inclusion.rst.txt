@@ -1,0 +1,8 @@
+Data inclusion in ER model
+==========================================
+
+.. automodule:: include_alignments_in_database
+   :members:
+
+.. automodule:: include_datasets_in_database
+   :members:
