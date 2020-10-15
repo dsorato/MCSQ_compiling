@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Preprocessing &#8212; MCSQ compiling 1.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to MCSQ compiling’s documentation!" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to MCSQ compiling’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 1.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Preprocessing</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-preprocessing.ess_special_answer_categories">
+<span id="preprocessing"></span><h1>Preprocessing<a class="headerlink" href="#module-preprocessing.ess_special_answer_categories" title="Permalink to this headline">¶</a></h1>
+<p>Definitions of text for special answer categories in ESS questionnaires, for each language.
+Russian text is also divided by country.</p>
+<span class="target" id="module-preprocessing.preprocessing_ess_utils"></span><span class="target" id="module-preprocessing.txt2spreadsheet"></span><dl class="py function">
+<dt id="preprocessing.txt2spreadsheet.retrieve_raw_items_from_file">
+<code class="sig-prename descclassname">preprocessing.txt2spreadsheet.</code><code class="sig-name descname">retrieve_raw_items_from_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/txt2spreadsheet.html#retrieve_raw_items_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.txt2spreadsheet.retrieve_raw_items_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the raw items from ESS plain text file, based on an item name regex pattern.
+Also excludes blank lines and non relevant scale items.
+:param param1 file: input ESS plain text file.
+:type param1 file: Python module</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>retrieved raw items (list of strings).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.txt2spreadsheet.set_initial_structures">
+<code class="sig-prename descclassname">preprocessing.txt2spreadsheet.</code><code class="sig-name descname">set_initial_structures</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/txt2spreadsheet.html#set_initial_structures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.txt2spreadsheet.set_initial_structures" title="Permalink to this definition">¶</a></dt>
+<dd><p>A pandas dataframe to store questionnaire data.</p>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to MCSQ compiling’s documentation!</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/preprocessing.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to MCSQ compiling’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 1.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Preprocessing</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

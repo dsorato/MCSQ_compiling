@@ -10,16 +10,16 @@ scale_items_to_ignore = ['01', '02', '03', '04', '05', '06', '07', '08', '09',
 '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 
-"""
-Extracts the raw items from ESS plain text file, based on an item name regex pattern.
-Also excludes blank lines and non relevant scale items.
-Args:
-	param1 file (Python module): input ESS plain text file.
-
-Returns: 
-	retrieved raw items (list of strings). 
-"""
 def retrieve_raw_items_from_file(file):
+	"""
+	Extracts the raw items from ESS plain text file, based on an item name regex pattern.
+	Also excludes blank lines and non relevant scale items.
+	Args:
+		param1 file (Python module): input ESS plain text file.
+
+	Returns: 
+		retrieved raw items (list of strings). 
+	"""
 	item_name_question_pattern = re.compile("(?:[A-N][A-Z]?[1-9]{1,3}[a-z]?)+")
 	# item_name_question_pattern = re.compile("(?:[A-K][A-Z]?\s?[1-9]{1,3}[a-z]?)+")
 	
