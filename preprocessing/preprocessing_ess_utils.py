@@ -4,34 +4,36 @@ from ess_special_answer_categories import *
 from essmodules import * 
 
 
-"""
-Removes spaces in item names such as A 1, because the MCSQ standard
-are item names without spaces (A1).
-Args:
-	param1 item_name (string): item_name retrieved from the input file.
-Returns:
-	item_name (string) withour spaces.
-"""
+
 def remove_spaces_from_item_name(item_name):
+	"""
+	Removes spaces in item names such as A 1, because the MCSQ standard
+	are item names without spaces (A1).
+	Args:
+		param1 item_name (string): item_name retrieved from the input file.
+	Returns:
+		item_name (string) withour spaces.
+	"""
 	return item_name.replace(" ", "")
-"""
-Retrieves the country/language and study metadata based on the input filename,
-or survey_item_ID prefix.
-The filenames respect a nomenclature rule, as follows:
-SSS_RRR_YYYY_CC_LLL
-S = study name 
-R = round or wave
-Y = study year
-C = Country (ISO code with two digits, except for SOURCE)
-L = Language
 
-Args:
-	param1 filename (string): name of the input file.
-
-Returns: 
-	country/language (string) and study metadata (string).
-"""
 def get_country_language_and_study_info(filename):
+	"""
+	Retrieves the country/language and study metadata based on the input filename,
+	or survey_item_ID prefix.
+	The filenames respect a nomenclature rule, as follows:
+	SSS_RRR_YYYY_CC_LLL
+	S = study name 
+	R = round or wave
+	Y = study year
+	C = Country (ISO code with two digits, except for SOURCE)
+	L = Language
+
+	Args:
+		param1 filename (string): name of the input file.
+
+	Returns: 
+		country/language (string) and study metadata (string).
+	"""
 	if 'txt' in filename:
 		filename_without_extension = re.sub('\.txt', '', filename)
 		filename_split = filename_without_extension.split('_')
@@ -43,17 +45,18 @@ def get_country_language_and_study_info(filename):
 
 	return study, country_language
 
-"""
-Transforms study metadata present in the input file to the standard
-used in the MCSQ format.
 
-Args:
-	param1 study (string): study metadata extracted from input file (Study column).
-
-Returns:
-	Standardized study parameter (string).
-"""
 def standardize_study_metadata(study):
+	"""
+	Transforms study metadata present in the input file to the standard
+	used in the MCSQ format.
+
+	Args:
+		param1 study (string): study metadata extracted from input file (Study column).
+
+	Returns:
+		Standardized study parameter (string).
+	"""
 	dict_year_round = {'ESS Round 1':'ESS_R01_2002', 'ESS Round 2':'ESS_R02_2004',
 	'ESS Round 3':'ESS_R03_2006', 'ESS Round 4':'ESS_R04_2008', 'ESS Round 5':'ESS_R05_2010', 
 	'ESS Round 6':'ESS_R06_2012', 'ESS Round 7':'ESS_R07_2014', 'ESS Round 8':'ESS_R08_2016',
@@ -64,16 +67,17 @@ def standardize_study_metadata(study):
 			return v
 
 
-"""
-Standardizes the item name metadata of supplementary modules G, H and I
 
-Args:
-	param1 item_name: item_name metadata, extracted from input file.
-
-Returns:
-	Standardized item_name, when applicable.
-"""
 def standardize_supplementary_item_name(item_name):
+	"""
+	Standardizes the item name metadata of supplementary modules G, H and I
+
+	Args:
+		param1 item_name: item_name metadata, extracted from input file.
+
+	Returns:
+		Standardized item_name, when applicable.
+	"""
 	if 'GF' in item_name:
 		return item_name.replace('GF', 'G')
 	elif 'IF' in item_name:
@@ -90,34 +94,36 @@ def standardize_supplementary_item_name(item_name):
 		return item_name
 
 
-"""
-Matches the item_name against the dictionary stored in the ESSModulesRRR objects.
-Rotating/supplementary modules are defined by round because they may change from
-round to round.
-Args:
-	param1 essmodules (Python object): ESSModulesRRR object, instantiated according to the round.
-	param2 item_name (string): name of survey item, retrieved in previous steps.
 
-Returns: 
-	matching value for item name (string).
-"""
 def retrieve_supplementary_module(essmodules,item_name):
+	"""
+	Matches the item_name against the dictionary stored in the ESSModulesRRR objects.
+	Rotating/supplementary modules are defined by round because they may change from
+	round to round.
+	Args:
+		param1 essmodules (Python object): ESSModulesRRR object, instantiated according to the round.
+		param2 item_name (string): name of survey item, retrieved in previous steps.
+
+	Returns: 
+		matching value for item name (string).
+	"""
 	for k,v in list(essmodules.modules.items()):
 		if re.compile(k).match(item_name):
 			return v
 
-"""
-Retrieves the module of the survey_item, based on information from the ESSModulesRRR objects.
-This information comes from the source questionnaires.
 
-Args:
-	param1 item_name (string): name of survey item, retrieved in previous steps.
-	param2 study (string): study metadata, embedded in the file name.
-
-Returns: 
-	module of survey_item (string).
-"""
 def retrieve_item_module(item_name, study):
+	"""
+	Retrieves the module of the survey_item, based on information from the ESSModulesRRR objects.
+	This information comes from the source questionnaires.
+
+	Args:
+		param1 item_name (string): name of survey item, retrieved in previous steps.
+		param2 study (string): study metadata, embedded in the file name.
+
+	Returns: 
+		module of survey_item (string).
+	"""
 	if re.compile(r'A').match(item_name):
 		return 'A - Media; social trust'
 	elif re.compile(r'B').match(item_name):
@@ -172,19 +178,20 @@ def retrieve_item_module(item_name, study):
 			v = retrieve_supplementary_module(essmodules,item_name) 
 			return v
 
-"""
-Cleans Request, Introduction and Instruction text segments by removing
-undesired characters and standartizing some character representations.
-A string input is expected, if the input is not a string instance, 
-the method returns '', so the entry is ignored in the data extraction loop.
 
-Args:
-	param1 text (string expected): text to be cleaned.
-
-Returns: 
-	cleaned text (string).
-"""
 def clean_text(text):
+	"""
+	Cleans Request, Introduction and Instruction text segments by removing
+	undesired characters and standartizing some character representations.
+	A string input is expected, if the input is not a string instance, 
+	the method returns '', so the entry is ignored in the data extraction loop.
+
+	Args:
+		param1 text (string expected): text to be cleaned.
+
+	Returns: 
+		cleaned text (string).
+	"""
 	if isinstance(text, str):
 		text = re.sub(r'\s([?.!"](?:\s|$))', r'\1', text)
 		text = re.sub('å','å', text)
@@ -257,17 +264,18 @@ def clean_text(text):
 
 	return text
 
-"""
-Switches abbreviations of the word interviewer for the full form.
 
-Args:
-	param1 text (string): sentence being analyzed.
-	param2 country_language (string): country_language metadata embedded in file name.
-
-Returns: 
-	text (string) without abbreviations for the word interviewer, when applicable.
-"""
 def expand_interviewer_abbreviations(text, country_language):
+	"""
+	Switches abbreviations of the word interviewer for the full form.
+
+	Args:
+		param1 text (string): sentence being analyzed.
+		param2 country_language (string): country_language metadata embedded in file name.
+
+	Returns: 
+		text (string) without abbreviations for the word interviewer, when applicable.
+	"""
 	if 'CZE' in country_language:
 		text = text.replace('Taz.', 'Tazatel')
 	elif '_ES' in country_language or 'POR' in country_language:
@@ -284,18 +292,19 @@ def expand_interviewer_abbreviations(text, country_language):
 
 	return text
 
-"""
-Instantiates the SpecialAnswerCategories object that stores both the text
-and category values of the special answers (don't know, refusal, not applicable 
-and write down) in accordance to the country_language metadata parameter.
 
-Args:
-	param1 country_language (string): country_language metadata parameter, embedded in file name.
-
-Returns: 
-	instance of SpecialAnswerCategories object (Python object), in accordance to the country_language.
-"""
 def instantiate_special_answer_category_object(country_language):
+	"""
+	Instantiates the SpecialAnswerCategories object that stores both the text
+	and category values of the special answers (don't know, refusal, not applicable 
+	and write down) in accordance to the country_language metadata parameter.
+
+	Args:
+		param1 country_language (string): country_language metadata parameter, embedded in file name.
+
+	Returns: 
+		instance of SpecialAnswerCategories object (Python object), in accordance to the country_language.
+	"""
 	if 'CAT' in country_language:
 		ess_special_answer_categories = SpecialAnswerCategoriesCAT()
 	elif 'CZE' in country_language:
@@ -326,22 +335,23 @@ def instantiate_special_answer_category_object(country_language):
 
 	return ess_special_answer_categories
 
-"""
-Verifies if a given answer segment is one of the special answer categories,
-by testing the answer text against the attributes of SpecialAnswerCategories object.
-This method serves the purpose of standartizing the special answer category values.
 
-Args:
-	param1 text (string): answer segment currently being analyzed.
-	param2 answer_value (string): answer category value, defined in clean_answer() method.
-	param3 ess_special_answer_categories (Python object): instance of SpecialAnswerCategories object, 
-	in accordance to the country_language.
-
-Returns: 
-	answer text (string) and its category value (string). When the answer is a special answer category, 
-	the text and category values are the ones stored in the SpecialAnswerCategories object.
-"""
 def check_if_answer_is_special_category(text, answer_value, ess_special_answer_categories):
+	"""
+	Verifies if a given answer segment is one of the special answer categories,
+	by testing the answer text against the attributes of SpecialAnswerCategories object.
+	This method serves the purpose of standartizing the special answer category values.
+
+	Args:
+		param1 text (string): answer segment currently being analyzed.
+		param2 answer_value (string): answer category value, defined in clean_answer() method.
+		param3 ess_special_answer_categories (Python object): instance of SpecialAnswerCategories object, 
+		in accordance to the country_language.
+
+	Returns: 
+		answer text (string) and its category value (string). When the answer is a special answer category, 
+		the text and category values are the ones stored in the SpecialAnswerCategories object.
+	"""
 	if text.lower() == ess_special_answer_categories.dont_know[0].lower():
 		return ess_special_answer_categories.dont_know[0], ess_special_answer_categories.dont_know[1]
 	elif text.lower() == ess_special_answer_categories.refuse[0].lower():
@@ -353,20 +363,21 @@ def check_if_answer_is_special_category(text, answer_value, ess_special_answer_c
 
 	return text, answer_value
 
-"""
-Cleans the answer segment, by standartizing the text (when it is a special answer category),
-and attributing an category value to it. 
 
-Args:
-	param1 text (string): answer segment currently being analyzed.
-	param2 ess_special_answer_categories (Python object): instance of SpecialAnswerCategories object, 
-	in accordance to the country_language.
-
-Returns: 
-	answer text (string) and its category value (string). When the answer is a special answer category, 
-	the text and category values are the ones stored in the SpecialAnswerCategories object.
-"""
 def clean_answer(text, ess_special_answer_categories):
+	"""
+	Cleans the answer segment, by standartizing the text (when it is a special answer category),
+	and attributing an category value to it. 
+
+	Args:
+		param1 text (string): answer segment currently being analyzed.
+		param2 ess_special_answer_categories (Python object): instance of SpecialAnswerCategories object, 
+		in accordance to the country_language.
+
+	Returns: 
+		answer text (string) and its category value (string). When the answer is a special answer category, 
+		the text and category values are the ones stored in the SpecialAnswerCategories object.
+	"""
 	answer_value = None
 	if isinstance(text, str) == False:
 		return None, None
@@ -488,16 +499,17 @@ def clean_answer(text, ess_special_answer_categories):
 	return answer_text, answer_value
 
 
-"""
-Calls the appropriate instruction recognition method, according to the language.
-Args:
-	param1 sentence (string): sentence being analyzed in outer loop of data extraction.
-	param2 country_language (string): country_language metadata, embedded in file name.
 
-Returns: 
-	bypass the return of instruction_recognition methods (boolean).
-"""
 def check_if_segment_is_instruction(sentence, country_language):
+	"""
+	Calls the appropriate instruction recognition method, according to the language.
+	Args:
+		param1 sentence (string): sentence being analyzed in outer loop of data extraction.
+		param2 country_language (string): country_language metadata, embedded in file name.
+
+	Returns: 
+		bypass the return of instruction_recognition methods (boolean).
+	"""
 	if 'CZE' in country_language:
 		return instruction_recognition_czech(sentence,country_language)
 	if 'ENG' in country_language:
@@ -515,18 +527,19 @@ def check_if_segment_is_instruction(sentence, country_language):
 	if 'RUS' in country_language:
 		return instruction_recognition_russian(sentence,country_language)
 
-"""
-Recognizes an instruction segment for texts written in German,
-based on regex named groups patterns.
 
-Args:
-	param1 text (string): text (in German) currently being analyzed.
-	param2 country_language (string): country_language metadata embedded in file name.
-
-Returns: 
-	True if the segment is an instruction or False if it is not.
-"""
 def instruction_recognition_russian(text,country_language):
+	"""
+	Recognizes an instruction segment for texts written in German,
+	based on regex named groups patterns.
+
+	Args:
+		param1 text (string): text (in German) currently being analyzed.
+		param2 country_language (string): country_language metadata embedded in file name.
+
+	Returns: 
+		True if the segment is an instruction or False if it is not.
+	"""
 	text = text.translate(str.maketrans(' ', ' ', string.punctuation))
 
 	regex= r"^(?P<interviewer>)(ИНТЕРВЬЮЕР|ИНТЕРВЬЮЕРА)"
@@ -967,18 +980,19 @@ def instruction_recognition_russian(text,country_language):
  
 
 
-"""
-Recognizes an instruction segment for texts written in German,
-based on regex named groups patterns.
 
-Args:
-	param1 text (string): text (in German) currently being analyzed.
-	param2 country_language (string): country_language metadata embedded in file name.
-
-Returns: 
-	True if the segment is an instruction or False if it is not.
-"""
 def instruction_recognition_german(text,country_language):
+	"""
+	Recognizes an instruction segment for texts written in German,
+	based on regex named groups patterns.
+
+	Args:
+		param1 text (string): text (in German) currently being analyzed.
+		param2 country_language (string): country_language metadata embedded in file name.
+
+	Returns: 
+		True if the segment is an instruction or False if it is not.
+	"""
 	text = text.translate(str.maketrans(' ', ' ', string.punctuation))
 	regex= r"^(?P<interviewer>)(Befrager|Interviewer)"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -1172,18 +1186,19 @@ def instruction_recognition_german(text,country_language):
 	
 
 
-"""
-Recognizes an instruction segment for texts written in Norwegian,
-based on regex named groups patterns.
 
-Args:
-	param1 text (string): text (in Norwegian) currently being analyzed.
-	param2 country_language (string): country_language metadata embedded in file name.
-
-Returns: 
-	True if the segment is an instruction or False if it is not.
-"""
 def instruction_recognition_norwegian(text,country_language):
+	"""
+	Recognizes an instruction segment for texts written in Norwegian,
+	based on regex named groups patterns.
+
+	Args:
+		param1 text (string): text (in Norwegian) currently being analyzed.
+		param2 country_language (string): country_language metadata embedded in file name.
+
+	Returns: 
+		True if the segment is an instruction or False if it is not.
+	"""
 	text = text.translate(str.maketrans(' ', ' ', string.punctuation))
 	regex= r"^(?P<programmer>)programmerer:"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -1309,18 +1324,19 @@ def instruction_recognition_norwegian(text,country_language):
 		return True
 
 
-"""
-Recognizes an instruction segment for texts written in French,
-based on regex named groups patterns.
 
-Args:
-	param1 text (string): text (in French) currently being analyzed.
-	param2 country_language (string): country_language metadata embedded in file name.
-
-Returns: 
-	True if the segment is an instruction or False if it is not.
-"""
 def instruction_recognition_french(text,country_language):
+	"""
+	Recognizes an instruction segment for texts written in French,
+	based on regex named groups patterns.
+
+	Args:
+		param1 text (string): text (in French) currently being analyzed.
+		param2 country_language (string): country_language metadata embedded in file name.
+
+	Returns: 
+		True if the segment is an instruction or False if it is not.
+	"""
 	regex= r"^(?P<programmer>)Programmeur:"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -1495,18 +1511,18 @@ def instruction_recognition_french(text,country_language):
 
 
 
-"""
-Recognizes an instruction segment for texts written in English,
-based on regex named groups patterns.
-
-Args:
-	param1 text (string): text (in English) currently being analyzed.
-	param2 country_language (string): country_language metadata embedded in file name.
-
-Returns: 
-	True if the segment is an instruction or False if it is not.
-"""
 def instruction_recognition_english(text,country_language):
+	"""
+	Recognizes an instruction segment for texts written in English,
+	based on regex named groups patterns.
+
+	Args:
+		param1 text (string): text (in English) currently being analyzed.
+		param2 country_language (string): country_language metadata embedded in file name.
+
+	Returns: 
+		True if the segment is an instruction or False if it is not.
+	"""
 	text = text.translate(str.maketrans(' ', ' ', string.punctuation))
 	regex= r"^(?P<programmer>)Programmer:"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -1656,18 +1672,19 @@ def instruction_recognition_english(text,country_language):
 
 	return False
 
-"""
-Recognizes an instruction segment for texts written in Czech,
-based on regex named groups patterns.
 
-Args:
-	param1 text (string): text (in Czech) currently being analyzed.
-	param2 country_language (string): country_language metadata embedded in file name.
-
-Returns: 
-	True if the segment is an instruction or False if it is not.
-"""
 def instruction_recognition_czech(text,country_language):
+	"""
+	Recognizes an instruction segment for texts written in Czech,
+	based on regex named groups patterns.
+
+	Args:
+		param1 text (string): text (in Czech) currently being analyzed.
+		param2 country_language (string): country_language metadata embedded in file name.
+
+	Returns: 
+		True if the segment is an instruction or False if it is not.
+	"""
 	regex= r"^(?P<interviewer>)(tazatele|taz:)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -1806,18 +1823,19 @@ def instruction_recognition_czech(text,country_language):
 
 	return False
 
-"""
-Recognizes an instruction segment for texts written in Portuguese,
-based on regex named groups patterns.
 
-Args:
-	param1 text (string): text (in Portuguese) currently being analyzed.
-	param2 country_language (string): country_language metadata embedded in file name.
-
-Returns: 
-	True if the segment is an instruction or False if it is not.
-"""
 def instruction_recognition_portuguese(text,country_language):
+	"""
+	Recognizes an instruction segment for texts written in Portuguese,
+	based on regex named groups patterns.
+
+	Args:
+		param1 text (string): text (in Portuguese) currently being analyzed.
+		param2 country_language (string): country_language metadata embedded in file name.
+
+	Returns: 
+		True if the segment is an instruction or False if it is not.
+	"""
 	regex= r"^(?P<programador>)programador"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -1959,18 +1977,19 @@ def instruction_recognition_portuguese(text,country_language):
 
 	return False
 
-"""
-Recognizes an instruction segment for texts written either in Spanish or Catalan,
-based on regex named groups patterns.
 
-Args:
-	param1 text (string): text (in Spanish or Catalan) currently being analyzed.
-	param2 country_language (string): country_language metadata embedded in file name.
-
-Returns: 
-	True if the segment is an instruction or False if it is not.
-"""
 def instruction_recognition_catalan_spanish(text,country_language):
+	"""
+	Recognizes an instruction segment for texts written either in Spanish or Catalan,
+	based on regex named groups patterns.
+
+	Args:
+		param1 text (string): text (in Spanish or Catalan) currently being analyzed.
+		param2 country_language (string): country_language metadata embedded in file name.
+
+	Returns: 
+		True if the segment is an instruction or False if it is not.
+	"""
 	regex= r"^(?P<programador>)programador"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:

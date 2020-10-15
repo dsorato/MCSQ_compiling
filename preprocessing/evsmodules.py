@@ -1,4 +1,11 @@
 class EVSModules2008():
+	"""
+	Class encapsulating variables that compose the following modules in EVS 2008:
+	Perceptions of life, Politics and society, Environment, Family, Work, Religion and morale, 
+	National Identity, Life Experiences, Socio demographics, Respondent Parents, Respondent Partner,
+	Administrative.
+	"""
+
 	perceptions_of_life = ['V2','V3','V4','V5','V1','V6','V8','V9','V167','V168','V169','V170','V171','V172',
 	'V173','V174','V175','V176','V177','V178','V179','V180','V181','V184','V185','V97','V98','V99',
 	'V100','V7','V10','V11','V12','V13','V14','V15','V16','V17','V18','V19','V20','V21','V22','V23','V24','V25',
@@ -60,6 +67,11 @@ class EVSModules2008():
 	administrative = [x.lower() for x in administrative]
 
 class EVSModules1999():
+	"""
+	Class encapsulating variables that compose the following modules in EVS 1999:
+	Perceptions of life, Politics and society, Environment, Family, Work, Religion and morale, 
+	National Identity, Life Experiences, Socio demographics, Administrative.
+	"""
 	perceptions_of_life = ['V2','V3','V4','V5','V1','V6','V11','V162','V163','V164','V165','V166','V167','V168',
 	'V169','V170','V171','V172','V173','V174','V177','V178','V48','V49','V50','V51','V7','V12','V13','V14',
 	'V15','V16','V17','V18','V19','V20','V21','V22','V23','V24','V25','V26','V27','V30','V31','V32','V33','V34',

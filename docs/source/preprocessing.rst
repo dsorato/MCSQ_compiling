@@ -1,12 +1,10 @@
 Preprocessing
 ==========================================
 
-.. automodule:: preprocessing.ess_special_answer_categories
-   :members:
 
-.. automodule:: preprocessing.preprocessing_ess_utils
-   :members:
+.. toctree::
+   :maxdepth: 2
 
-.. automodule:: preprocessing.txt2spreadsheet
-   :members:
-
+   preprocessing_utils.rst
+   txt2spreadsheet.rst
+   categoriesmodules.rst
