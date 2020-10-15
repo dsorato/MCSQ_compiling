@@ -48,7 +48,8 @@ exclude_patterns = []
 
 autodoc_mock_imports = ["ess_special_answer_categories", 'essmodules', 
 'preprocessing_ess_utils','utils','evs_xml_data_extraction', 'preprocessing_evs_utils',
-'evsmodules', 'ess_xml_data_extraction', 'share_xml_data_extraction', 'countryspecificrequest']
+'evsmodules', 'ess_xml_data_extraction', 'share_xml_data_extraction', 'countryspecificrequest',
+'pandas', 'nltk']
 
 # -- Options for HTML output -------------------------------------------------
 
