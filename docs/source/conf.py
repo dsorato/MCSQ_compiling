@@ -16,7 +16,6 @@ import sphinx
 sys.path.append('/home/workspace/MCSQ_compiling/preprocessing')
 sys.path.insert(0, os.path.abspath('../..'))
 
-master_doc = 'contents'
 
 # -- Project information -----------------------------------------------------
 
