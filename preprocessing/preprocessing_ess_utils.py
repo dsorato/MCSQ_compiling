@@ -345,8 +345,7 @@ def check_if_answer_is_special_category(text, answer_value, ess_special_answer_c
 	Args:
 		param1 text (string): answer segment currently being analyzed.
 		param2 answer_value (string): answer category value, defined in clean_answer() method.
-		param3 ess_special_answer_categories (Python object): instance of SpecialAnswerCategories object, 
-		in accordance to the country_language.
+		param3 ess_special_answer_categories (Python object): instance of SpecialAnswerCategories object, in accordance to the country_language.
 
 	Returns: 
 		answer text (string) and its category value (string). When the answer is a special answer category, 
@@ -371,8 +370,7 @@ def clean_answer(text, ess_special_answer_categories):
 
 	Args:
 		param1 text (string): answer segment currently being analyzed.
-		param2 ess_special_answer_categories (Python object): instance of SpecialAnswerCategories object, 
-		in accordance to the country_language.
+		param2 ess_special_answer_categories (Python object): instance of SpecialAnswerCategories object, in accordance to the country_language.
 
 	Returns: 
 		answer text (string) and its category value (string). When the answer is a special answer category, 
