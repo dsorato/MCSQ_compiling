@@ -1,23 +1,22 @@
 import re
 import utils as ut
 
-"""
-Standartizes a response category value, if it is a special response category.
 
-Args:
-	param1 filename (string): name of the input file.
-	param2 catValu (string): response category value, extracted from input file.
-	param3 text (string): text of response category, to test against special response category patterns.
-
-Returns: 
-	standardized response category value (string). 
-"""
 def standardize_special_response_category_value(filename, catValu, text):
 	"""
+	Standartizes a response category value, if it is a special response category.
 	Standard:
 	Refusal=777
 	Don't know=888
 	Does not apply=999
+
+	Args:
+		param1 filename (string): name of the input file.
+		param2 catValu (string): response category value, extracted from input file.
+		param3 text (string): text of response category, to test against special response category patterns.
+
+	Returns: 
+		standardized response category value (string). 
 	"""
 	if ut.recognize_standard_response_scales(filename, text)=='refusal':
 		catValu = '777'
@@ -28,15 +27,15 @@ def standardize_special_response_category_value(filename, catValu, text):
 
 	return catValu
 
-"""
-Retrieves the country/language and study metadata based on the input filename.
-Args:
-	param filename (string): name of the input file.
-
-Returns: 
-	country/language (string) and study (string) metadata.
-"""
 def get_country_language_and_study_info(filename):
+	"""
+	Retrieves the country/language and study metadata based on the input filename.
+	Args:
+		param filename (string): name of the input file.
+
+	Returns: 
+		country/language (string) and study (string) metadata.
+	"""
 	filename_without_extension = re.sub('\.xml', '', filename)
 	filename_split = filename_without_extension.split('_')
 
@@ -45,15 +44,16 @@ def get_country_language_and_study_info(filename):
 
 	return study, country_language
 
-"""
-Standartizes a given item_name, if it is not in the standard
-Args:
-	param1 item_name (string): item name extracted from the input file.
 
-Returns: 
-	standardized item_name (string). 
-"""
 def standardize_item_name(item_name):
+	"""
+	Standartizes a given item_name, if it is not in the standard
+	Args:
+		param1 item_name (string): item name extracted from the input file.
+
+	Returns: 
+		standardized item_name (string). 
+	"""
 	item_name = item_name.lower()
 	item_name = re.sub("^q", "Q", item_name)
 	item_name = re.sub("^f", "Q", item_name)
@@ -74,15 +74,16 @@ def standardize_item_name(item_name):
 	return item_name
 
 
-"""
-Removes undesired characters from instruction text. 
-Args:
-	param1 text (string): instruction text extracted from the input file.
 
-Returns: 
-	clean instruction text (string) or '' when text is not an instance of a string. 
-"""
 def clean_instruction(text):
+	"""
+	Removes undesired characters from instruction text. 
+	Args:
+		param1 text (string): instruction text extracted from the input file.
+
+	Returns: 
+		clean instruction text (string) or '' when text is not an instance of a string. 
+	"""
 	if isinstance(text, str):
 		text = re.sub("…", "...", text)
 		text = re.sub("’", "'", text)
@@ -103,15 +104,16 @@ def clean_instruction(text):
 	return text
 
 
-"""
-Removes undesired characters from request/response text. 
-Args:
-	param text (string): request/response text extracted from the input file.
-	param filename (string): name of the input file.
-Returns: 
-	clean request/response text (string). 
-"""
+
 def clean_text(text, filename):
+	"""
+	Removes undesired characters from request/response text. 
+	Args:
+		param text (string): request/response text extracted from the input file.
+		param filename (string): name of the input file.
+	Returns: 
+		clean request/response text (string). 
+	"""
 	if isinstance(text, str):
 		text = re.sub(r'\s([?.!"](?:\s|$))', r'\1', text)
 		text = re.sub("…", "...", text)
@@ -136,15 +138,16 @@ def clean_text(text, filename):
 
 	return text
 
-"""
-Removes undesired characters from request/response text. 
-Args:
-	param text (string): request/response text extracted from the input file.
-	param filename (string): name of the input file.
-Returns: 
-	clean request/response text (string). 
-"""
+
 def clean_answer_text_evs(text, filename):
+	"""
+	Removes undesired characters from request/response text. 
+	Args:
+		param text (string): request/response text extracted from the input file.
+		param filename (string): name of the input file.
+	Returns: 
+		clean request/response text (string). 
+	"""
 	if isinstance(text, str):
 		text = re.sub(r'\s([?.!"](?:\s|$))', r'\1', text)
 		text = re.sub("…", "...", text)
@@ -172,18 +175,19 @@ def clean_answer_text_evs(text, filename):
 
 
 
-"""
-Standartizes text of special response categories (don't know, no answer, not applicable),
-according to the language (informed in the the filename).
 
-Args:
-	param1 filename (string): name of the input file.
-	param2 text (string): response text.
-
-Returns: 
-	standardized response category text (string).
-"""
 def standardize_special_response_category(filename, text):
+	"""
+	Standartizes text of special response categories (don't know, no answer, not applicable),
+	according to the language (informed in the the filename).
+
+	Args:
+		param1 filename (string): name of the input file.
+		param2 text (string): response text.
+
+	Returns: 
+		standardized response category text (string).
+	"""
 	if 'CZE' in filename:
 		text = text.replace(' Nehodí se', "NEHODÍ SE")
 		text = text.replace('Nehodí se', "NEHODÍ SE")

@@ -5,15 +5,16 @@ import pandas as pd
 import os
 import re
 
-"""
-Returns the ISO codes for language and country based on the values retrieved from input file.
-Only for target languages of MCSQ.
-Args:
-	param1 language_country (string): language and country information retrieved from input file.
-Returns:
-	language_country (string). Variable representing the language and country metadata in ISO codes.
-"""
+
 def get_language_country_iso_codes(language_country):
+	"""
+	Returns the ISO codes for language and country based on the values retrieved from input file.
+	Only for target languages of MCSQ.
+	Args:
+		param1 language_country (string): language and country information retrieved from input file.
+	Returns:
+		language_country (string). Variable representing the language and country metadata in ISO codes.
+	"""
 	if language_country in ['seSE', 'nlNL', 'dkDK', 'grGR', 'nlBE', 'heIL', 'arIL', 
 	'siSI', 'hrHR', 'fiFI', 'bgBG', 'seFI', 'eeEE', 'plPL', 'roRO', 'skSK', 'mtMT', 
 	'huHU', 'lvLV', 'ltLT',  'grCY']:
@@ -56,16 +57,17 @@ def get_language_country_iso_codes(language_country):
 		return 'RUS_IL'
 
 
-"""
-Returns the module of the question based on the item_name variable.
-This information comes from http://www.share-project.org/special-data-sets/share-covid-19-questionnaire.html
 
-Args:
-	param1 item_name (string): item_name information retrieved from input file.
-Returns:
-	module (string). Module of the question.
-"""
 def retrieve_module_from_item_name(item_name):
+	"""
+	Returns the module of the question based on the item_name variable.
+	This information comes from http://www.share-project.org/special-data-sets/share-covid-19-questionnaire.html
+
+	Args:
+		param1 item_name (string): item_name information retrieved from input file.
+	Returns:
+		module (string). Module of the question.
+	"""
 	if 'CAA' in item_name or 'CADN' in item_name:
 		return 'A - Intro and basic demographics'
 	elif 'CAPH' in item_name or 'CAH' in item_name or 'CAMH' in item_name  and item_name != 'CAHH017_':
@@ -83,18 +85,19 @@ def retrieve_module_from_item_name(item_name):
 	elif 'CAF' in item_name:
 		return 'F - Finale'
 
-"""
-Set initial structures that are necessary for the extraction of each questionnaire.
-
-Args:
-	param1 language_country (string): language and country of the subdataframe being analyzed
-
-Returns: 
-	df_questionnaire to store questionnaire data (pandas dataframe),
-	survey_item_prefix, which is the prefix of survey_item_ID (string), 
-	and sentence splitter to segment request/introduction/instruction segments when necessary (NLTK object). 
-"""
 def set_initial_structures(language_country):
+	"""
+	Set initial structures that are necessary for the extraction of each questionnaire.
+
+	Args:
+		param1 language_country (string): language and country of the subdataframe being analyzed
+
+	Returns: 
+		df_questionnaire to store questionnaire data (pandas dataframe),
+		survey_item_prefix, which is the prefix of survey_item_ID (string), 
+		and sentence splitter to segment request/introduction/instruction segments when necessary (NLTK object). 
+	"""
+
 	"""
 	A pandas dataframe to store questionnaire data.
 	"""
@@ -120,14 +123,15 @@ def set_initial_structures(language_country):
 
 
   
-"""
-Replaces abbreviations and fills text from the text of input file.
-Args:
-	param1 sentence (string): text segment from input file.
-Returns:
-	sentence (string). Text segment without abbreviations and fills text.
-"""
+
 def replace_abbreviations_and_fills(sentence):
+	"""
+	Replaces abbreviations and fills text from the text of input file.
+	Args:
+		param1 sentence (string): text segment from input file.
+	Returns:
+		sentence (string). Text segment without abbreviations and fills text.
+	"""
 	if ' Ud.' in sentence:
 		sentence = sentence.replace(' Ud.', ' usted')
 	if ' R ' in sentence:
@@ -158,19 +162,20 @@ def replace_abbreviations_and_fills(sentence):
 	return sentence
 
 
-"""
-Extracts and processes the answer segments from the input file.
 
-Args:
-	param1 row (pandas dataframe object): dataframe row being currently analyzed.
-	param2 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
-	param3 survey_item_prefix (string): prefix of survey_item_ID.
-	param4 splitter (NLTK object): NLTK object for sentence segmentation instantiated in accordance to the language.
-
-Returns:
-	updated df_questionnaire with new valid answer segments.
-"""
 def preprocess_answer_segment(row, df_questionnaire, survey_item_prefix, splitter):
+	"""
+	Extracts and processes the answer segments from the input file.
+
+	Args:
+		param1 row (pandas dataframe object): dataframe row being currently analyzed.
+		param2 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+		param3 survey_item_prefix (string): prefix of survey_item_ID.
+		param4 splitter (NLTK object): NLTK object for sentence segmentation instantiated in accordance to the language.
+
+	Returns:
+		updated df_questionnaire with new valid answer segments.
+	"""
 	sentence = replace_abbreviations_and_fills(row['text'])
 
 	if df_questionnaire.empty:
@@ -184,19 +189,20 @@ def preprocess_answer_segment(row, df_questionnaire, survey_item_prefix, splitte
 
 	return df_questionnaire
 
-"""
-Extracts and processes the question segments from the input file.
 
-Args:
-	param1 row (pandas dataframe object): dataframe row being currently analyzed.
-	param2 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
-	param3 survey_item_prefix (string): prefix of survey_item_ID.
-	param4 splitter (NLTK object): NLTK object for sentence segmentation instantiated in accordance to the language.
-
-Returns:
-	updated df_questionnaire with new valid question segments.
-"""
 def preprocess_question_segment(row, df_questionnaire, survey_item_prefix, splitter):
+	"""
+	Extracts and processes the question segments from the input file.
+
+	Args:
+		param1 row (pandas dataframe object): dataframe row being currently analyzed.
+		param2 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+		param3 survey_item_prefix (string): prefix of survey_item_ID.
+		param4 splitter (NLTK object): NLTK object for sentence segmentation instantiated in accordance to the language.
+
+	Returns:
+		updated df_questionnaire with new valid question segments.
+	"""
 	raw_item = replace_abbreviations_and_fills(row['text'])
 	sentences = splitter.tokenize(raw_item)
 	for sentence in sentences:
@@ -211,19 +217,19 @@ def preprocess_question_segment(row, df_questionnaire, survey_item_prefix, split
 
 	return df_questionnaire
 
-"""
-Extracts and processes the instruction segments from the input file.
-
-Args:
-	param1 row (pandas dataframe object): dataframe row being currently analyzed.
-	param2 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
-	param3 survey_item_prefix (string): prefix of survey_item_ID.
-	param4 splitter (NLTK object): NLTK object for sentence segmentation instantiated in accordance to the language.
-
-Returns:
-	updated df_questionnaire with new valid instruction segments.
-"""
 def preprocess_instruction_segment(row, df_questionnaire, survey_item_prefix, splitter):
+	"""
+	Extracts and processes the instruction segments from the input file.
+
+	Args:
+		param1 row (pandas dataframe object): dataframe row being currently analyzed.
+		param2 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+		param3 survey_item_prefix (string): prefix of survey_item_ID.
+		param4 splitter (NLTK object): NLTK object for sentence segmentation instantiated in accordance to the language.
+
+	Returns:
+		updated df_questionnaire with new valid instruction segments.
+	"""
 	raw_item = replace_abbreviations_and_fills(row['text'])
 	sentences = splitter.tokenize(raw_item)
 	for sentence in sentences:

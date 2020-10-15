@@ -37,19 +37,20 @@ def decide_on_survey_item_id(prefix, old_item_name, new_item_name):
 
 	return survey_item_id
 
-"""
-Recognizes special answer categories from EVS by testing the answer segment against the
-language dependent pattern definitions for the special categories.
 
-Args:
-	param1 filename (string): input file name.
-	param2 text (string): answer text segment.
-
-Returns: 
-	If a pattern was found, returns a string informing the special category,
-	otherwise returns None.
-"""
 def recognize_standard_response_scales(filename, text):
+	"""
+	Recognizes special answer categories from EVS by testing the answer segment against the
+	language dependent pattern definitions for the special categories.
+
+	Args:
+		param1 filename (string): input file name.
+		param2 text (string): answer text segment.
+
+	Returns: 
+		If a pattern was found, returns a string informing the special category,
+		otherwise returns None.
+	"""
 	if 'CZE' in filename:
 		dk_pattern = re.compile("(Neví)", re.IGNORECASE)
 		refusal_pattern = re.compile("(Neodpověděl|neodpověděl(a)|BEZ ODPOVĚDI)", re.IGNORECASE)
@@ -183,17 +184,18 @@ def recognize_standard_response_scales(filename, text):
 			return None
 
 
-"""
-Determines the full name of the country, based on ISO code for country
-that is embedded in the file name.
 
-Args:
-	param1 filename (string): input file name.
-
-Returns: 
-	full name of the country (string).
-"""
 def determine_country(filename):
+	"""
+	Determines the full name of the country, based on ISO code for country
+	that is embedded in the file name.
+
+	Args:
+		param1 filename (string): input file name.
+
+	Returns: 
+		full name of the country (string).
+	"""
 	if '_AT' in filename:
 		country = 'Austria'
 	if '_AZ' in filename:
@@ -281,17 +283,18 @@ def determine_country(filename):
 
 	return country
 
-"""
-Provide the sentence splitter suffix to instantiate it in accordance 
-to the target language (information emebedded on filename).
 
-Args:
-	param1 filename (string): input file name.
-
-Returns: 
-	a sentence splitter suffix (string) according to the target language.
-"""
 def determine_sentence_tokenizer(filename):
+	"""
+	Provide the sentence splitter suffix to instantiate it in accordance 
+	to the target language (information emebedded on filename).
+
+	Args:
+		param1 filename (string): input file name.
+
+	Returns: 
+		a sentence splitter suffix (string) according to the target language.
+	"""
 	#there is no sentence segmentation for bulgarian in NLTK.. 
 	if 'BUL_' in filename:
 		sentence_splitter_suffix = 'turkish.pickle'
@@ -356,19 +359,17 @@ def determine_sentence_tokenizer(filename):
 
 
 
-"""
-Decide what sentence splitter should be instantiated, according to 
-the information embedded in the filename.
 
-Args:
-	param1 filename (string): input file name.
-
-Returns: 
-	a sentence splitter (NLTK object) instantiated according to the target language.
-"""
 def get_sentence_splitter(filename):
 	"""
-	Instantiate Punkt Sentence Tokenizer from NLTK	
+	Decide what Instantiate Punkt Sentence Tokenizer from NLTK should be instantiated, according to 
+	the information embedded in the filename.
+
+	Args:
+		param1 filename (string): input file name.
+
+	Returns: 
+		a sentence splitter (NLTK object) instantiated according to the target language.
 	"""
 	sentence_splitter_prefix = 'tokenizers/punkt/'
 	sentence_splitter_suffix = determine_sentence_tokenizer(filename)

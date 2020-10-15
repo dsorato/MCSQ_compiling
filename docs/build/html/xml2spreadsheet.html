@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plain xml to spreadsheet &#8212; MCSQ compiling 1.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Preprocessing SHARE COVID Questionnaires" href="preprocessing_share.html" />
+    <link rel="prev" title="Plain text to spreadsheet (ESS)" href="txt2spreadsheet.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="preprocessing_share.html" title="Preprocessing SHARE COVID Questionnaires"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="txt2spreadsheet.html" title="Plain text to spreadsheet (ESS)"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="preprocessing.html" accesskey="U">Preprocessing</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Plain xml to spreadsheet</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-preprocessing.main_xml_files">
+<span id="plain-xml-to-spreadsheet"></span><h1>Plain xml to spreadsheet<a class="headerlink" href="#module-preprocessing.main_xml_files" title="Permalink to this headline">¶</a></h1>
+<p>Main method that calls for EVS/ESS scripts to generate MCSQ spreadsheet inputs
+Author: Danielly Sorato
+Author contact: <a class="reference external" href="mailto:danielly&#46;sorato&#37;&#52;&#48;gmail&#46;com">danielly<span>&#46;</span>sorato<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+<dl class="py function">
+<dt id="preprocessing.main_xml_files.main">
+<code class="sig-prename descclassname">preprocessing.main_xml_files.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">folder_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/main_xml_files.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.main_xml_files.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>This main file calls the transformation algorithms inside evs_xml_data_extraction,
+ess_xml_data_extraction and ess_xml_data_extraction scripts.</p>
+<p>evs_xml_data_extraction is called for EVS files
+ess_xml_data_extraction is called for ESS files
+share_xml_data_extraction is called for SHARE files</p>
+<p>The algorithm transforms a XML file to a structured spreadsheet format
+with valuable metadata.</p>
+<p>Call main script using folder_path, for instance:
+reset &amp;&amp; python3 main.py /path/to/your/data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>folder_path</strong> (<em>param1</em>) – the path of the directory containing the files to tranform</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-preprocessing.evs_xml_data_extraction"></span><dl class="py function">
+<dt id="preprocessing.evs_xml_data_extraction.process_ivuinstr_node">
+<code class="sig-prename descclassname">preprocessing.evs_xml_data_extraction.</code><code class="sig-name descname">process_ivuinstr_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">ivuInstr</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">study</span></em>, <em class="sig-param"><span class="n">item_name</span></em>, <em class="sig-param"><span class="n">module</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/evs_xml_data_extraction.html#process_ivuinstr_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.evs_xml_data_extraction.process_ivuinstr_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts information from ivuInstr node (instructions). The text is split into sentences and appropriate
+metadata is attributed to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>param1</em>) – name of the input file. It will be used to instantiate the sentence splitter.</p></li>
+<li><p><strong>ivuInstr</strong> (<em>param2</em>) – valid node that is being analyzed.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param3</em>) – prefix of the survey_item_ID metadata</p></li>
+<li><p><strong>study</strong> (<em>param4</em>) – study metadata, retrieved from the filename.</p></li>
+<li><p><strong>item_name</strong> (<em>param5</em>) – item_name metadata, retrieved from the process_valid_node() method.</p></li>
+<li><p><strong>module</strong> (<em>param6</em>) – module of survey_item, extracted in previous steps of the loop.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param7</em>) – pandas dataframe where the questionnaire is being stored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>updated df_questionnaire when new valid information extracted from the ivuInstr node is included,
+or df_questionnaire in the same state it was when no new valid segments are included.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.evs_xml_data_extraction.process_preqtxt_node">
+<code class="sig-prename descclassname">preprocessing.evs_xml_data_extraction.</code><code class="sig-name descname">process_preqtxt_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">preQTxt</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">study</span></em>, <em class="sig-param"><span class="n">item_name</span></em>, <em class="sig-param"><span class="n">module</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/evs_xml_data_extraction.html#process_preqtxt_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.evs_xml_data_extraction.process_preqtxt_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts information from preQTxt node (requests and introductions). The text is split into
+sentences and appropriate metadata is attributed to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>param1</em>) – name of the input file. It will be used to instantiate the sentence splitter.</p></li>
+<li><p><strong>preQTxt</strong> (<em>param2</em>) – valid node that is being analyzed.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param3</em>) – prefix of the survey_item_ID metadata</p></li>
+<li><p><strong>study</strong> (<em>param4</em>) – study metadata, retrieved from the filename.</p></li>
+<li><p><strong>item_name</strong> (<em>param5</em>) – item_name metadata, retrieved from the process_valid_node() method.</p></li>
+<li><p><strong>module</strong> (<em>param6</em>) – module of survey_item, extracted in previous steps of the loop.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param</em>) – pandas dataframe where the questionnaire is being stored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>updated df_questionnaire when new valid information extracted from the preQTxt node is included,
+or df_questionnaire in the same state it was when no new valid segments are included.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.evs_xml_data_extraction.process_qstnLit_node">
+<code class="sig-prename descclassname">preprocessing.evs_xml_data_extraction.</code><code class="sig-name descname">process_qstnLit_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">qstnLit</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">study</span></em>, <em class="sig-param"><span class="n">item_name</span></em>, <em class="sig-param"><span class="n">module</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/evs_xml_data_extraction.html#process_qstnLit_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.evs_xml_data_extraction.process_qstnLit_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts information from qstnLit node (requests). The text is split into sentences and appropriate
+metadata is attributed to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>param1</em>) – name of the input file. It will be used to instantiate the sentence splitter.</p></li>
+<li><p><strong>qstnLit</strong> (<em>param2</em>) – valid node that is being analyzed.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param3</em>) – prefix of the survey_item_ID metadata</p></li>
+<li><p><strong>study</strong> (<em>param4</em>) – study metadata, retrieved from the filename.</p></li>
+<li><p><strong>item_name</strong> (<em>param5</em>) – item_name metadata, retrieved from the process_valid_node() method.</p></li>
+<li><p><strong>module</strong> (<em>param6</em>) – module of survey_item, extracted in previous steps of the loop.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param7</em>) – pandas dataframe where the questionnaire is being stored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>updated df_questionnaire when new valid information extracted from the qstnLit node is included,
+or df_questionnaire in the same state it was when no new valid segments are included.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.evs_xml_data_extraction.process_response_with_id_node">
+<code class="sig-prename descclassname">preprocessing.evs_xml_data_extraction.</code><code class="sig-name descname">process_response_with_id_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">study</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">response_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/evs_xml_data_extraction.html#process_response_with_id_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.evs_xml_data_extraction.process_response_with_id_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts information of a response node that contains the attribute ID.
+If the node has the ID attribute, the translation text is in this node.
+The text and category value will be stored in the response_dict dictionary,
+to be used in response categories with references to the ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>param1</em>) – name of the input file.</p></li>
+<li><p><strong>node</strong> (<em>param2</em>) – response category node that is being analyzed.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param3</em>) – prefix of the survey_item_ID metadata</p></li>
+<li><p><strong>study</strong> (<em>param4</em>) – study metadata, retrieved from the filename.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param5</em>) – pandas dataframe where the questionnaire is being stored.</p></li>
+<li><p><strong>response_dict</strong> (<em>param6</em>) – dictionary that stores response category text and value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_questionnaire (pandas dataframe), with new information extracted from the response node and updated response_dict.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.evs_xml_data_extraction.process_response_with_id_reference_node">
+<code class="sig-prename descclassname">preprocessing.evs_xml_data_extraction.</code><code class="sig-name descname">process_response_with_id_reference_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">study</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">response_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/evs_xml_data_extraction.html#process_response_with_id_reference_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.evs_xml_data_extraction.process_response_with_id_reference_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts information of a response node that contains a reference to an ID (attribute sdatrefs).
+The response text and category value are retrieved from the response_dict dictionary,
+updated in the process_response_with_id_node method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<em>param</em>) – response category node that is being analyzed.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param</em>) – prefix of the survey_item_ID metadata</p></li>
+<li><p><strong>study</strong> (<em>param</em>) – study metadata, retrieved from the filename.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param</em>) – pandas dataframe where the questionnaire is being stored.</p></li>
+<li><p><strong>response_dict</strong> (<em>param</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_questionnaire (pandas dataframe), with new information extracted from the response node.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.evs_xml_data_extraction.process_txt_node">
+<code class="sig-prename descclassname">preprocessing.evs_xml_data_extraction.</code><code class="sig-name descname">process_txt_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">txt</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">study</span></em>, <em class="sig-param"><span class="n">item_name</span></em>, <em class="sig-param"><span class="n">module</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/evs_xml_data_extraction.html#process_txt_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.evs_xml_data_extraction.process_txt_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts information from txt node (requests). The text is split into sentences and appropriate
+metadata is attributed to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>param1</em>) – name of the input file. It will be used to instantiate the sentence splitter.</p></li>
+<li><p><strong>txt</strong> (<em>param2</em>) – valid node that is being analyzed.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param3</em>) – prefix of the survey_item_ID metadata</p></li>
+<li><p><strong>study</strong> (<em>param4</em>) – study metadata, retrieved from the filename.</p></li>
+<li><p><strong>item_name</strong> (<em>param5</em>) – item_name metadata, retrieved from the process_valid_node() method.</p></li>
+<li><p><strong>module</strong> (<em>param6</em>) – module of survey_item, extracted in previous steps of the loop.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param7</em>) – pandas dataframe where the questionnaire is being stored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>updated df_questionnaire when new valid information extracted from the txt node is included,
+or df_questionnaire in the same state it was when no new valid segments are included.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.evs_xml_data_extraction.process_valid_node">
+<code class="sig-prename descclassname">preprocessing.evs_xml_data_extraction.</code><code class="sig-name descname">process_valid_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">study</span></em>, <em class="sig-param"><span class="n">module</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/evs_xml_data_extraction.html#process_valid_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.evs_xml_data_extraction.process_valid_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the appropriate method to extract information from node and its children, when the node is valid
+(variable listed in EVSModulesYYYY classes), depending on node tag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>param1</em>) – name of the input file. It will be used to instantiate the sentence splitter.</p></li>
+<li><p><strong>node</strong> (<em>param2</em>) – valid node that is being analyzed.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param3</em>) – prefix of the survey_item_ID metadata</p></li>
+<li><p><strong>study</strong> (<em>param4</em>) – study metadata, retrieved from the filename.</p></li>
+<li><p><strong>module</strong> (<em>param5</em>) – module of survey_item, extracted in previous steps of the loop.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param6</em>) – pandas dataframe where the questionnaire is being stored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>updated df_questionnaire when new valid information extracted from node is included,
+or df_questionnaire in the same state it was when no new valid segments are included.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.evs_xml_data_extraction.retrieve_item_module">
+<code class="sig-prename descclassname">preprocessing.evs_xml_data_extraction.</code><code class="sig-name descname">retrieve_item_module</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">study</span></em>, <em class="sig-param"><span class="n">country_language</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/evs_xml_data_extraction.html#retrieve_item_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.evs_xml_data_extraction.retrieve_item_module" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the module of the survey_item, based on information from the EVSModulesYYYY objects.
+This information comes from the EVS_modules_reference.xlsx file, sent by Evelyn.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>study</strong> (<em>param1</em>) – study metadata, embedded in the file name.</p></li>
+<li><p><strong>country_language</strong> (<em>param2</em>) – country_language metadata, embedded in the file name.</p></li>
+<li><p><strong>name</strong> (<em>param3</em>) – attribute ‘name’ of the analyzed node, which is an EVS variable.</p></li>
+<li><p><strong>interest variables are listed in the EVSModulesYYYY objects.</strong> (<em>The</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>appropriate module of survey_item (string).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="txt2spreadsheet.html"
+                        title="previous chapter">Plain text to spreadsheet (ESS)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="preprocessing_share.html"
+                        title="next chapter">Preprocessing SHARE COVID Questionnaires</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/xml2spreadsheet.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="preprocessing_share.html" title="Preprocessing SHARE COVID Questionnaires"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="txt2spreadsheet.html" title="Plain text to spreadsheet (ESS)"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="preprocessing.html" >Preprocessing</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Plain xml to spreadsheet</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

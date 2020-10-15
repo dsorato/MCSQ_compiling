@@ -46,8 +46,9 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
-autodoc_mock_imports = ["ess_special_answer_categories", 'essmodules', 'preprocessing_ess_utils',
-'utils']
+autodoc_mock_imports = ["ess_special_answer_categories", 'essmodules', 
+'preprocessing_ess_utils','utils','evs_xml_data_extraction', 'preprocessing_evs_utils',
+'evsmodules', 'ess_xml_data_extraction', 'share_xml_data_extraction']
 
 # -- Options for HTML output -------------------------------------------------
 

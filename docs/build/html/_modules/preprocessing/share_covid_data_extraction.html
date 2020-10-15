@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>preprocessing.share_covid_data_extraction &#8212; MCSQ compiling 1.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">preprocessing.share_covid_data_extraction</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for preprocessing.share_covid_data_extraction</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">utils</span> <span class="k">as</span> <span class="nn">ut</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+<div class="viewcode-block" id="get_language_country_iso_codes"><a class="viewcode-back" href="../../preprocessing_share.html#preprocessing.share_covid_data_extraction.get_language_country_iso_codes">[docs]</a><span class="k">def</span> <span class="nf">get_language_country_iso_codes</span><span class="p">(</span><span class="n">language_country</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Returns the ISO codes for language and country based on the values retrieved from input file.</span>
+<span class="sd">	Only for target languages of MCSQ.</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 language_country (string): language and country information retrieved from input file.</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		language_country (string). Variable representing the language and country metadata in ISO codes.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="n">language_country</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;seSE&#39;</span><span class="p">,</span> <span class="s1">&#39;nlNL&#39;</span><span class="p">,</span> <span class="s1">&#39;dkDK&#39;</span><span class="p">,</span> <span class="s1">&#39;grGR&#39;</span><span class="p">,</span> <span class="s1">&#39;nlBE&#39;</span><span class="p">,</span> <span class="s1">&#39;heIL&#39;</span><span class="p">,</span> <span class="s1">&#39;arIL&#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;siSI&#39;</span><span class="p">,</span> <span class="s1">&#39;hrHR&#39;</span><span class="p">,</span> <span class="s1">&#39;fiFI&#39;</span><span class="p">,</span> <span class="s1">&#39;bgBG&#39;</span><span class="p">,</span> <span class="s1">&#39;seFI&#39;</span><span class="p">,</span> <span class="s1">&#39;eeEE&#39;</span><span class="p">,</span> <span class="s1">&#39;plPL&#39;</span><span class="p">,</span> <span class="s1">&#39;roRO&#39;</span><span class="p">,</span> <span class="s1">&#39;skSK&#39;</span><span class="p">,</span> <span class="s1">&#39;mtMT&#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;huHU&#39;</span><span class="p">,</span> <span class="s1">&#39;lvLV&#39;</span><span class="p">,</span> <span class="s1">&#39;ltLT&#39;</span><span class="p">,</span>  <span class="s1">&#39;grCY&#39;</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="kc">None</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;en&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;ENG_SOURCE&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;enMT&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;ENG_MT&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;deAT&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;GER_AT&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;deCH&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;GER_CH&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;deDE&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;GER_DE&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;deLU&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;GER_LU&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;czCZ&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;CZE_CZ&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;frFR&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;FRE_FR&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;frCH&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;FRE_CH&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;frBE&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;FRE_BE&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;frLU&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;FRE_LU&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;itIT&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;ITA_IT&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;itCH&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;ITA_CH&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;esES&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;SPA_ES&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;ptPT&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;POR_PT&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;ruEE&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;RUS_EE&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;ruLV&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;RUS_LV&#39;</span>
+	<span class="k">elif</span> <span class="n">language_country</span> <span class="o">==</span> <span class="s1">&#39;ruIL&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;RUS_IL&#39;</span></div>
+
+
+
+<div class="viewcode-block" id="retrieve_module_from_item_name"><a class="viewcode-back" href="../../preprocessing_share.html#preprocessing.share_covid_data_extraction.retrieve_module_from_item_name">[docs]</a><span class="k">def</span> <span class="nf">retrieve_module_from_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Returns the module of the question based on the item_name variable.</span>
+<span class="sd">	This information comes from http://www.share-project.org/special-data-sets/share-covid-19-questionnaire.html</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 item_name (string): item_name information retrieved from input file.</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		module (string). Module of the question.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="s1">&#39;CAA&#39;</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">or</span> <span class="s1">&#39;CADN&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;A - Intro and basic demographics&#39;</span>
+	<span class="k">elif</span> <span class="s1">&#39;CAPH&#39;</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">or</span> <span class="s1">&#39;CAH&#39;</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">or</span> <span class="s1">&#39;CAMH&#39;</span> <span class="ow">in</span> <span class="n">item_name</span>  <span class="ow">and</span> <span class="n">item_name</span> <span class="o">!=</span> <span class="s1">&#39;CAHH017_&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;H - Health (physical and mental) and health behavior&#39;</span>
+	<span class="k">elif</span> <span class="s1">&#39;CAC&#39;</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">and</span> <span class="n">item_name</span> <span class="o">!=</span> <span class="s1">&#39;CACO007_&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;C - Corona-related infection&#39;</span>
+	<span class="k">elif</span> <span class="s1">&#39;CAQ&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;Q - Quality of healthcare&#39;</span>
+	<span class="k">elif</span> <span class="s1">&#39;CAW&#39;</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">or</span> <span class="s1">&#39;CAEP&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;W - Work&#39;</span>
+	<span class="k">elif</span> <span class="s1">&#39;CAE&#39;</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">or</span> <span class="n">item_name</span> <span class="o">==</span> <span class="s1">&#39;CACO007_&#39;</span> <span class="ow">or</span> <span class="n">item_name</span> <span class="o">==</span> <span class="s1">&#39;CAHH017_&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;E - Economic situation&#39;</span>
+	<span class="k">elif</span> <span class="s1">&#39;CAS&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;S - Social Networks&#39;</span>
+	<span class="k">elif</span> <span class="s1">&#39;CAF&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;F - Finale&#39;</span></div>
+
+<div class="viewcode-block" id="set_initial_structures"><a class="viewcode-back" href="../../preprocessing_share.html#preprocessing.share_covid_data_extraction.set_initial_structures">[docs]</a><span class="k">def</span> <span class="nf">set_initial_structures</span><span class="p">(</span><span class="n">language_country</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Set initial structures that are necessary for the extraction of each questionnaire.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 language_country (string): language and country of the subdataframe being analyzed</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		df_questionnaire to store questionnaire data (pandas dataframe),</span>
+<span class="sd">		survey_item_prefix, which is the prefix of survey_item_ID (string), </span>
+<span class="sd">		and sentence splitter to segment request/introduction/instruction segments when necessary (NLTK object). </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A pandas dataframe to store questionnaire data.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">])</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	The prefix of a EVS survey item is study+&#39;_&#39;+language+&#39;_&#39;+country+&#39;_&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">survey_item_prefix</span> <span class="o">=</span> <span class="s1">&#39;SHA_COVID_2020_&#39;</span><span class="o">+</span><span class="n">language_country</span><span class="o">+</span><span class="s1">&#39;_&#39;</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Reset the initial survey_id sufix, because main is called iterativelly for every file in folder.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">ut</span><span class="o">.</span><span class="n">reset_initial_sufix</span><span class="p">()</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Instantiate a NLTK sentence splitter based on file input language. </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">splitter</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_sentence_splitter</span><span class="p">(</span><span class="n">language_country</span><span class="p">)</span>
+
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span></div>
+
+
+  
+
+<div class="viewcode-block" id="replace_abbreviations_and_fills"><a class="viewcode-back" href="../../preprocessing_share.html#preprocessing.share_covid_data_extraction.replace_abbreviations_and_fills">[docs]</a><span class="k">def</span> <span class="nf">replace_abbreviations_and_fills</span><span class="p">(</span><span class="n">sentence</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Replaces abbreviations and fills text from the text of input file.</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 sentence (string): text segment from input file.</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		sentence (string). Text segment without abbreviations and fills text.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="s1">&#39; Ud.&#39;</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">:</span>
+		<span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; Ud.&#39;</span><span class="p">,</span> <span class="s1">&#39; usted&#39;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="s1">&#39; R &#39;</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">:</span>
+		<span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; R &#39;</span><span class="p">,</span> <span class="s1">&#39; respondent &#39;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="s1">&#39; R.&#39;</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">:</span>
+		<span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; R.&#39;</span><span class="p">,</span> <span class="s1">&#39; respondent.&#39;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="s2">&quot; R&#39;s&quot;</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">:</span>
+		<span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; R&#39;s&quot;</span><span class="p">,</span> <span class="s2">&quot; respondent&#39;s&quot;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="s1">&#39;IWER&#39;</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">:</span>
+		<span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;IWER&#39;</span><span class="p">,</span> <span class="s1">&#39;Interviewer&#39;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="s1">&#39;[FILL in name of CTL institution]&#39;</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">:</span>
+		<span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[FILL in name of CTL institution]&#39;</span><span class="p">,</span> <span class="s1">&#39;[Institution]&#39;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="s1">&#39;[FILL in name of Survey Agency]&#39;</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">:</span>
+		<span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[FILL in name of Survey Agency]&#39;</span><span class="p">,</span> <span class="s1">&#39;[Survey Agency]&#39;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="s1">&#39;[FILL in telephone number of survey agency]&#39;</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">:</span>
+		<span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[FILL in telephone number of survey agency]&#39;</span><span class="p">,</span> <span class="s1">&#39;[Telephone of Survey Agency]&#39;</span><span class="p">)</span>
+
+		 
+
+	<span class="n">sentence</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; :&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">sentence</span><span class="p">)</span>
+	<span class="n">sentence</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;’&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="n">sentence</span><span class="p">)</span>
+	<span class="n">sentence</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;…&quot;</span><span class="p">,</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">sentence</span><span class="p">)</span>
+	<span class="n">sentence</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; :&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">sentence</span><span class="p">)</span>
+	<span class="n">sentence</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;’&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="n">sentence</span><span class="p">)</span>
+	<span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&amp;nbsp;&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+	<span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; ?&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">sentence</span></div>
+
+
+
+<div class="viewcode-block" id="preprocess_answer_segment"><a class="viewcode-back" href="../../preprocessing_share.html#preprocessing.share_covid_data_extraction.preprocess_answer_segment">[docs]</a><span class="k">def</span> <span class="nf">preprocess_answer_segment</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Extracts and processes the answer segments from the input file.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 row (pandas dataframe object): dataframe row being currently analyzed.</span>
+<span class="sd">		param2 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.</span>
+<span class="sd">		param3 survey_item_prefix (string): prefix of survey_item_ID.</span>
+<span class="sd">		param4 splitter (NLTK object): NLTK object for sentence segmentation instantiated in accordance to the language.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		updated df_questionnaire with new valid answer segments.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">sentence</span> <span class="o">=</span> <span class="n">replace_abbreviations_and_fills</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+
+	<span class="k">if</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+		<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+
+	<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;survey_item_ID&quot;</span><span class="p">:</span> <span class="n">survey_item_id</span><span class="p">,</span><span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">survey_item_prefix</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">retrieve_module_from_item_name</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]),</span>
+	<span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="s1">&#39;RESPONSE&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_order&#39;</span><span class="p">],</span>  <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">sentence</span><span class="p">}</span>
+	<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>	
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
+
+
+<div class="viewcode-block" id="preprocess_question_segment"><a class="viewcode-back" href="../../preprocessing_share.html#preprocessing.share_covid_data_extraction.preprocess_question_segment">[docs]</a><span class="k">def</span> <span class="nf">preprocess_question_segment</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Extracts and processes the question segments from the input file.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 row (pandas dataframe object): dataframe row being currently analyzed.</span>
+<span class="sd">		param2 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.</span>
+<span class="sd">		param3 survey_item_prefix (string): prefix of survey_item_ID.</span>
+<span class="sd">		param4 splitter (NLTK object): NLTK object for sentence segmentation instantiated in accordance to the language.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		updated df_questionnaire with new valid question segments.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">raw_item</span> <span class="o">=</span> <span class="n">replace_abbreviations_and_fills</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+	<span class="n">sentences</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">raw_item</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+			<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+
+		<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;survey_item_ID&quot;</span><span class="p">:</span> <span class="n">survey_item_id</span><span class="p">,</span><span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">survey_item_prefix</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">retrieve_module_from_item_name</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]),</span>
+		<span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="s1">&#39;REQUEST&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">sentence</span><span class="p">}</span>
+		<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>	
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
+
+<div class="viewcode-block" id="preprocess_instruction_segment"><a class="viewcode-back" href="../../preprocessing_share.html#preprocessing.share_covid_data_extraction.preprocess_instruction_segment">[docs]</a><span class="k">def</span> <span class="nf">preprocess_instruction_segment</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Extracts and processes the instruction segments from the input file.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 row (pandas dataframe object): dataframe row being currently analyzed.</span>
+<span class="sd">		param2 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.</span>
+<span class="sd">		param3 survey_item_prefix (string): prefix of survey_item_ID.</span>
+<span class="sd">		param4 splitter (NLTK object): NLTK object for sentence segmentation instantiated in accordance to the language.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		updated df_questionnaire with new valid instruction segments.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">raw_item</span> <span class="o">=</span> <span class="n">replace_abbreviations_and_fills</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+	<span class="n">sentences</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">raw_item</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+			<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+
+		<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;survey_item_ID&quot;</span><span class="p">:</span> <span class="n">survey_item_id</span><span class="p">,</span><span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">survey_item_prefix</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">retrieve_module_from_item_name</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]),</span>
+		<span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="s1">&#39;INSTRUCTION&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">sentence</span><span class="p">}</span>
+		<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>	
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">folder_path</span><span class="p">):</span>
+	<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
+	<span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.csv&quot;</span><span class="p">):</span>
+			<span class="n">questionnaire</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+			<span class="n">unique_country_language_pairs</span> <span class="o">=</span> <span class="n">questionnaire</span><span class="p">[</span><span class="s1">&#39;lang&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+
+		<span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">unique_country_language_pairs</span><span class="p">:</span>
+			<span class="n">language_country</span> <span class="o">=</span> <span class="n">get_language_country_iso_codes</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">language_country</span><span class="p">:</span> 
+				<span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span> <span class="o">=</span> <span class="n">set_initial_structures</span><span class="p">(</span><span class="n">language_country</span><span class="p">)</span>
+				<span class="n">filter_df_by_lang</span> <span class="o">=</span> <span class="n">questionnaire</span><span class="p">[</span><span class="s1">&#39;lang&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">pair</span>
+				<span class="n">df</span> <span class="o">=</span> <span class="n">questionnaire</span><span class="p">[</span><span class="n">filter_df_by_lang</span><span class="p">]</span>
+				<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+					<span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;QText&#39;</span><span class="p">:</span>
+						<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">preprocess_question_segment</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span><span class="p">)</span>
+					<span class="k">elif</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Response option&#39;</span><span class="p">:</span>
+						<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">preprocess_answer_segment</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span><span class="p">)</span>
+					<span class="k">elif</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;QInstruction&#39;</span><span class="p">:</span>
+						<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">preprocess_instruction_segment</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span><span class="p">)</span>
+
+				<span class="n">df_questionnaire</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+
+
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="n">folder_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Executing data extraction script for SHARE COVID-19 questionnaires&quot;</span><span class="p">)</span>
+	<span class="n">main</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">preprocessing.share_covid_data_extraction</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

@@ -12,25 +12,26 @@ import evs_xml_data_extraction
 import ess_xml_data_extraction 
 import share_xml_data_extraction 
 
-"""
-This main file calls the transformation algorithms inside evs_xml_data_extraction,
-ess_xml_data_extraction and ess_xml_data_extraction scripts.
 
-evs_xml_data_extraction is called for EVS files
-ess_xml_data_extraction is called for ESS files
-share_xml_data_extraction is called for SHARE files
-
-The algorithm transforms a XML file to a structured spreadsheet format
-with valuable metadata.
-
-Call main script using folder_path, for instance: 
-reset && python3 main.py /path/to/your/data
-
-Args:
-	param1 folder_path: the path of the directory containing the files to tranform
-
-"""
 def main(folder_path):
+	"""
+	This main file calls the transformation algorithms inside evs_xml_data_extraction,
+	ess_xml_data_extraction and ess_xml_data_extraction scripts.
+
+	evs_xml_data_extraction is called for EVS files
+	ess_xml_data_extraction is called for ESS files
+	share_xml_data_extraction is called for SHARE files
+
+	The algorithm transforms a XML file to a structured spreadsheet format
+	with valuable metadata.
+
+	Call main script using folder_path, for instance: 
+	reset && python3 main.py /path/to/your/data
+
+	Args:
+		param1 folder_path: the path of the directory containing the files to tranform
+
+	"""
 	path = os.chdir(folder_path)
 	files = os.listdir(path)
 
