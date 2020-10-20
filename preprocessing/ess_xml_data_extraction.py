@@ -15,6 +15,15 @@ from preprocessing_ess_utils import *
 
 
 def clean_answer_category(text):
+	"""
+	Cleans the answer segment, by standardizing the text and removing undesired elements.
+
+	Args:
+		param1 text (string): answer segment currently being analyzed.
+
+	Returns: 
+		standardized answer text (string).
+	"""
 	if isinstance(text, str):
 		text = re.sub("…", "...", text)
 		text = re.sub("’", "'", text)
@@ -58,11 +67,21 @@ def clean_answer_category(text):
 	return text
 
 def clean(text):
+	"""
+	Cleans the question or instruction segment, by standardizing the text and removing undesired elements.
+
+	Args:
+		param1 text (string): question or instruction segment currently being analyzed.
+
+	Returns: 
+		standardized question or instruction text (string).
+	"""
 	if isinstance(text, str):
 		text = text.replace('\n','')
 		text = text.replace('\r','')
 		text = text.replace(' ?','?')
 		text = re.sub("»", "", text)
+		text = re.sub("^\s?\.\s?", "", text)
 		text = re.sub("«", "", text)
 		text = re.sub("…", "...", text)
 		text = re.sub("’", "'", text)
@@ -115,7 +134,16 @@ def identify_showcard_instruction(text, country_language):
 	return item_type
 
 def get_answer_id(node, parent_map):
-	#Get the answer id from node attributes, if it exists
+	"""
+	Gets the answer id from node attributes, if it exists
+	Args:
+		param1 node: current xml tree node being analyzed in outer loop.
+		param2 parent_map (dictionary): a dictionary containing information about parent-child relationships in XML tree.
+
+	Returns: 
+		answer_id (string) if it exists, otherwise None.
+	"""
+
 	parent = parent_map[node]
 	parent_of_parent = parent_map[parent]
 	if 'answer_id' in parent_map[parent_of_parent].attrib:
@@ -123,21 +151,17 @@ def get_answer_id(node, parent_map):
 	else:
 		answer_id = None
 
-	return answer_id
+	return str(answer_id)
 
-def append_data_to_df(df_question_instruction, parent_map, node, item_name, item_type, splitter, country_language):
+def segment_question_instruction(df_question_instruction, parent_map, node, item_name, item_type, splitter, country_language):
 	if node.text != '' and  isinstance(node.text, str):
-		print(node.text)
 		sentences = splitter.tokenize(clean(node.text))
-		print(sentences)
-
 		item_name, modified_item_type = adjust_item_name(item_name)
 		if modified_item_type != None:
 			item_type = modified_item_type
 
 		for sentence in sentences:
 			if item_type == 'REQUEST':
-				print(item_name, sentence)
 				data = {'answer_id': get_answer_id(node, parent_map), 'item_name':item_name,
 				'item_type':identify_showcard_instruction(sentence, country_language), 'text':sentence}
 			else:
@@ -150,9 +174,16 @@ def append_data_to_df(df_question_instruction, parent_map, node, item_name, item
 	return df_question_instruction
 
 
-#Automatically adjust item_name inconsistencies present in source XML file, 
-#so it is in accordance to our standards.
 def adjust_item_name(item_name):
+	"""
+	Adjust item_name inconsistencies (and item_type in some cases) present in source XML file.
+	Args:
+		param1 item_name (string): item_name metadata, extracted from input file.
+
+	Returns: 
+		adjusted item_name and item_type metadata.
+	"""
+
 	item_type = None
 	if 'in' in item_name and 'minutes' not in item_name:
 		item_name = item_name.split('in')
@@ -180,16 +211,27 @@ def adjust_item_name(item_name):
 	if '_' in item_name:
 		item_name = item_name.split('_')
 		item_name = item_name[0]
+	if '.' in item_name:
+		item_name = item_name.split('.')
+		item_name = item_name[0]+item_name[1].lower()
 
-	print(item_name)
 	return item_name, item_type
 
 
-def process_question_instruction_node(ess_questions, df_question_instruction, parent_map, item_name, item_type, splitter, country_language):
+def process_question_instruction_node(ess_questions_instructions, df_question_instruction, parent_map, splitter, country_language):
 	"""
 	Iterates through question nodes to extract questions and instructions (introduction is not present in metadata)
+	Args:
+		param1 ess_questions_instructions: question and instruction nodes.
+		param2 df_question_instruction (pandas dataframe): a dataframe to store processed question and instruction segments
+		param3 parent_map (dictionary): a dictionary containing information about parent-child relationships in XML tree.
+		param4 splitter (NLTK object): sentence segmentation from NLTK library.
+		param5 country_language (string): country and language metadata, extracted from the input file name.
+
+	Returns: 
+		Updated df_question_instruction dataframe, with new question and instruction segments.
 	"""
-	for question in ess_questions:
+	for question in ess_questions_instructions:
 		for node in question.getiterator():
 			if node.tag == 'question' and 'name' in node.attrib and 'tmt_id' in node.attrib:
 				item_name = node.attrib['name']
@@ -197,21 +239,31 @@ def process_question_instruction_node(ess_questions, df_question_instruction, pa
 				if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QText':
 					text = node.text
 					item_type = 'REQUEST'
-					df_question_instruction = append_data_to_df(df_question_instruction, parent_map, node, item_name, item_type, splitter,
+					df_question_instruction = segment_question_instruction(df_question_instruction, parent_map, node, item_name, item_type, splitter,
 					 country_language)
 
 				if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QInstruction':
 					text = node.text
 					item_type = 'INSTRUCTION'
-					df_question_instruction = append_data_to_df(df_question_instruction, parent_map, node, item_name, item_type, splitter, 
+					df_question_instruction = segment_question_instruction(df_question_instruction, parent_map, node, item_name, item_type, splitter, 
 					 country_language)
 
 	return df_question_instruction
 
 
-def process_answer_node(ess_answers, df_answers, parent_map, item_name, item_type):
+def process_answer_node(ess_answers, df_answers, parent_map, ess_special_answer_categories):
 	"""
 	Iterates through answer nodes to extract answers 
+
+	Args:
+		param1 ess_answers: answer nodes.
+		param2 df_answers (pandas dataframe): a dataframe to store processed answer segments
+		param3 parent_map (dictionary): a dictionary containing information about parent-child relationships in XML tree.
+		param4 ess_special_answer_categories (Python object): instance of SpecialAnswerCategories object, in accordance to the country_language.
+
+
+	Returns: 
+		Updated df_answers dataframe, with new answer segments.
 	"""
 	for answer in ess_answers:
 		for node in answer.getiterator():
@@ -226,13 +278,16 @@ def process_answer_node(ess_answers, df_answers, parent_map, item_name, item_typ
 			if node.tag == 'text' and 'translation_id' in node.attrib and node.attrib['translation_id'] != '1':
 				text = node.text
 				if node.text != '' and  isinstance(node.text, str) and 'does not exist in' not in text:
-					item_type = 'RESPONSE'
 					parent = parent_map[node]
 					parent_of_parent = parent_map[parent]
 					answer_id = parent_map[parent_of_parent].attrib['tmt_id']
 					item_value = parent_map[node].attrib['order']
+					text = clean_answer_category(text)
+
+					text, item_value = check_if_answer_is_special_category(text, item_value, ess_special_answer_categories)
+
 					data = {'answer_id': answer_id, 'item_name': item_name, 'item_type':'RESPONSE', 
-					'text': clean_answer_category(text), 'item_value': str(item_value)}
+					'text': text, 'item_value': str(item_value)}
 					df_answers = df_answers.append(data, ignore_index=True)
 
 	return df_answers
@@ -248,7 +303,7 @@ def set_initial_structures(filename):
 		df_questionnaire to store questionnaire data (pandas dataframe),
 		survey_item_prefix, which is the prefix of survey_item_ID (string), 
 		study/country_language, which are metadata parameters embedded in the file name (string and string)
-		and sentence splitter to segment request/introduction/instruction segments when necessary (NLTK object). 
+		and sentence splitter to segment request/instruction segments when necessary (NLTK object). 
 	"""
 
 	"""
@@ -302,44 +357,52 @@ def main(filename):
 	Create a dictionary containing parent-child relations of the parsed tree
 	"""
 	parent_map = dict((c, p) for p in tree.getiterator() for c in p)
-	ess_questions = root.findall('.//questionnaire/questions')
+	ess_questions_instructions = root.findall('.//questionnaire/questions')
 	ess_answers = root.findall('.//questionnaire/answers')
 	ess_showcards = root.findall('.//questionnaire/showcards')
 
 	df_questionnaire, survey_item_prefix, study, country_language,splitter = set_initial_structures(filename)
+	ess_special_answer_categories = instantiate_special_answer_category_object(country_language)
 
 	df_question_instruction =  pd.DataFrame(columns=['answer_id', 'item_name', 'item_type', 'text']) 
-	df_answers =  pd.DataFrame(columns=['answer_id', 'item_name', 'item_type', 'text', 'item_value']) 
-	item_name = ''
-	text = ''
-	item_type = ''
+	df_answers =  pd.DataFrame(columns=['answer_id', 'item_name', 'text', 'item_value']) 
+	# item_name = ''
+	# text = ''
+	# item_type = ''
 	item_value = None
 
-	df_question_instruction = process_question_instruction_node(ess_questions, df_question_instruction, parent_map, item_name, 
-		item_type, splitter, country_language)
-	df_answers = process_answer_node(ess_answers, df_answers, parent_map, item_name, item_type)
+	df_question_instruction = process_question_instruction_node(ess_questions_instructions, df_question_instruction, parent_map, 
+		splitter, country_language)
+	df_answers = process_answer_node(ess_answers, df_answers, parent_map, ess_special_answer_categories)
 
 	
-	old_item_name = 'A1'
-	for i, i_row in df_question_instruction.iterrows():
-		item_name = i_row['item_name']
-		data = {'survey_item_ID': ut.update_survey_item_id(survey_item_prefix), 'Study': study,
-		'module':retrieve_item_module(item_name, study), 'item_type': i_row['item_type'], 
-		'item_name':  item_name, 'item_value':None, 'text':i_row['text']}
-		df_questionnaire = df_questionnaire.append(data, ignore_index=True)
-		old_item_name = item_name
+	unique_item_names_question_instruction = df_question_instruction.item_name.unique()	
+	
+	for unique_item_name in unique_item_names_question_instruction:
+		print(unique_item_name)
 
-		corresponding_answer = df_answers[df_answers.item_name == i_row['item_name']]
-		print(corresponding_answer)
-		if corresponding_answer.empty == False and i_row['item_type'] == 'REQUEST':
-			for j, j_row in corresponding_answer.iterrows():
+		df_question_instruction_by_item_name = df_question_instruction[df_question_instruction['item_name'].str.lower()==unique_item_name.lower()]
+		df_answers_by_item_name = df_answers[df_answers['item_name'].str.lower()==unique_item_name.lower()]
+		module = retrieve_item_module(unique_item_name, study)
+
+		for i, row in df_question_instruction_by_item_name.iterrows():
+			item_name = row['item_name']
+				
+			if 'Row ' not in item_name and item_name != 'CI':
+				data = {'survey_item_ID': ut.update_survey_item_id(survey_item_prefix), 'Study': study,
+				'module': module, 'item_type': row['item_type'], 
+				'item_name':  item_name, 'item_value':None, 'text': row['text']}
+				df_questionnaire = df_questionnaire.append(data, ignore_index=True)
+
+		if df_answers_by_item_name.empty == False:
+			for j, row in df_answers_by_item_name.iterrows():
 				data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 'Study': study,
-				'module':retrieve_item_module(item_name, study),'item_type': j_row['item_type'], 
-				'item_name':  item_name, 'item_value':j_row['item_value'], 'text':j_row['text']}
+				'module': module,'item_type': row['item_type'], 
+				'item_name':  item_name, 'item_value':row['item_value'], 'text':row['text']}
 				df_questionnaire = df_questionnaire.append(data, ignore_index=True)
 			
-	df_question_instruction.to_csv('questions.csv', encoding='utf-8-sig', index=False)
-	df_answers.to_csv('answers.csv', encoding='utf-8-sig', index=False)
+	# df_question_instruction.to_csv('questions.csv', encoding='utf-8-sig', index=False)
+	# df_answers.to_csv('answers.csv', encoding='utf-8-sig', index=False)
 	df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8-sig', index=False)
 	
 

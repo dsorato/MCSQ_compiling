@@ -182,7 +182,7 @@ def retrieve_item_module(item_name, study):
 def clean_text(text):
 	"""
 	Cleans Request, Introduction and Instruction text segments by removing
-	undesired characters and standartizing some character representations.
+	undesired characters and standardizing some character representations.
 	A string input is expected, if the input is not a string instance, 
 	the method returns '', so the entry is ignored in the data extraction loop.
 
@@ -340,7 +340,7 @@ def check_if_answer_is_special_category(text, answer_value, ess_special_answer_c
 	"""
 	Verifies if a given answer segment is one of the special answer categories,
 	by testing the answer text against the attributes of SpecialAnswerCategories object.
-	This method serves the purpose of standartizing the special answer category values.
+	This method serves the purpose of standardizing the special answer category values.
 
 	Args:
 		param1 text (string): answer segment currently being analyzed.
@@ -365,7 +365,7 @@ def check_if_answer_is_special_category(text, answer_value, ess_special_answer_c
 
 def clean_answer(text, ess_special_answer_categories):
 	"""
-	Cleans the answer segment, by standartizing the text (when it is a special answer category),
+	Cleans the answer segment, by standardizing the text (when it is a special answer category),
 	and attributing an category value to it. 
 
 	Args:

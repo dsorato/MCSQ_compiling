@@ -4,3 +4,5 @@ Plain xml to spreadsheet
    :members:
 .. automodule:: preprocessing.evs_xml_data_extraction
    :members:
+.. automodule:: preprocessing.ess_xml_data_extraction
+   :members:
