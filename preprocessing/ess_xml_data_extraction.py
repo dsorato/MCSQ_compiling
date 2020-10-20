@@ -3,15 +3,14 @@ Python3 script to transform XML ESS data into spreadsheet format used as input f
 Author: Danielly Sorato 
 Author contact: danielly.sorato@gmail.com
 """
-
 import xml.etree.ElementTree as ET
-# from sentence_splitter import SentenceSplitter, split_text_into_sentences
 import pandas as pd 
 import nltk.data
 import sys
 import re
 import string
 import utils as ut
+from preprocessing_ess_utils import *
 
 
 
@@ -45,7 +44,12 @@ def clean_answer_category(text):
 		text = re.sub('&gt', " ",text)
 		text = re.sub('&nbsp', " ",text)
 		text = re.sub(';', "",text)
-		text = text.replace('\n',' ')
+		text = text.replace('------->','')
+		text = text.replace('\n','')
+		text = text.replace('(','')
+		text = text.replace(')','')
+		text = text.replace('[','')
+		text = text.replace(']','')
 		text = text.rstrip()
 		text = text.lstrip()
 	else:
@@ -55,12 +59,16 @@ def clean_answer_category(text):
 
 def clean(text):
 	if isinstance(text, str):
+		text = text.replace('\n','')
+		text = text.replace('\r','')
+		text = text.replace(' ?','?')
+		text = re.sub("»", "", text)
+		text = re.sub("«", "", text)
 		text = re.sub("…", "...", text)
 		text = re.sub("’", "'", text)
 		text = re.sub(" :", ":", text)
 		text = re.sub("Enq.:", "Enquêteur:", text, flags=re.I)
 		text = re.sub("INT.:", "INTERVIEWER:", text, flags=re.I)
-		text = re.sub("\s+\?", "?", text)
 		text = re.sub("[.]{4,}", "", text)
 		text = re.sub("[!]{2,}", "!", text)
 		text = re.sub('</strong>', "",text)
@@ -81,7 +89,7 @@ def clean(text):
 		text = re.sub('&gt', " ",text)
 		text = re.sub('&nbsp', " ",text)
 		text = re.sub(';', "",text)
-		text = text.replace('\n',' ')
+		
 		text = text.rstrip()
 		text = text.lstrip()
 	else:
@@ -90,13 +98,15 @@ def clean(text):
 
 	return text
 
-def identify_showcard_instruction(text, language_country):
+def identify_showcard_instruction(text, country_language):
 	item_type = 'REQUEST'
-	if 'FRE' in language_country:
-		if 'CH' in language_country:
+	if 'FRE' in country_language:
+		if 'CH' in country_language or 'BE' in country_language:
 			showcard = 'CARTE'
-	if 'GER' in language_country:
-		if 'DE' in language_country:
+		else:
+			showcard = 'LISTE'
+	if 'GER' in country_language:
+		if 'DE' in country_language:
 			showcard = 'LISTE'
 
 	if re.compile(showcard).findall(text):
@@ -115,46 +125,34 @@ def get_answer_id(node, parent_map):
 
 	return answer_id
 
-def append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter, tokenizer, language_country):
+def append_data_to_df(df_question_instruction, parent_map, node, item_name, item_type, splitter, country_language):
 	if node.text != '' and  isinstance(node.text, str):
-		if splitter:
-			split_into_sentences = splitter.split(text=clean(node.text))
-		else:
-			split_into_sentences = tokenizer.tokenize(clean(node.text))
+		print(node.text)
+		sentences = splitter.tokenize(clean(node.text))
+		print(sentences)
 
 		item_name, modified_item_type = adjust_item_name(item_name)
 		if modified_item_type != None:
 			item_type = modified_item_type
 
-		for text in split_into_sentences:
+		for sentence in sentences:
 			if item_type == 'REQUEST':
+				print(item_name, sentence)
 				data = {'answer_id': get_answer_id(node, parent_map), 'item_name':item_name,
-				'item_type':identify_showcard_instruction(text, language_country), 'text':text}
+				'item_type':identify_showcard_instruction(sentence, country_language), 'text':sentence}
 			else:
 				data = {'answer_id': None, 'item_name':item_name, 
-				'item_type':item_type, 'text':text}
-			df_questions = df_questions.append(data, ignore_index=True)
+				'item_type':item_type, 'text':sentence}
+			df_question_instruction = df_question_instruction.append(data, ignore_index=True)
 	else:
-		return df_questions
+		return df_question_instruction
 
-	return df_questions
+	return df_question_instruction
 
-#Get module metadata based on item_name
-def get_module(item_name):
-	module = None
-	#The item names in ESS follow the pattern letter + number + sometimes letter (e.g. A1, F30, B2a etc)
-	#Find the module based on regex pattern split.
-	match = re.match(r"([a-z]+)([0-9]+)", item_name, re.IGNORECASE)
-	if match:
-		items = match.groups()
-		module = items[0]
-
-	return module
 
 #Automatically adjust item_name inconsistencies present in source XML file, 
 #so it is in accordance to our standards.
 def adjust_item_name(item_name):
-	print(item_name)
 	item_type = None
 	if 'in' in item_name and 'minutes' not in item_name:
 		item_name = item_name.split('in')
@@ -186,63 +184,11 @@ def adjust_item_name(item_name):
 	print(item_name)
 	return item_name, item_type
 
-def main(filename):
-	#Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder 
-	ut.reset_initial_sufix()
 
-	#Punkt Sentence Tokenizer from NLTK	
-	sentence_splitter_prefix = 'tokenizers/punkt/'
-	sentence_splitter_suffix = ut.determine_sentence_tokenizer(filename)
-	sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
-	tokenizer = nltk.data.load(sentence_splitter)
-
-	# #Decide on a (sentence) spliter based on the language.
-	# #ICE, HUN, LAV, LIT and SLO languages are not present in the NLTK library, 
-	# #so another splitter library is necessary 
-	# splitter = None
-	# if 'ICE_IS' in filename:
-	# 	splitter = SentenceSplitter(language='is')
-	# elif 'HUN_HU' in filename:
-	# 	splitter = SentenceSplitter(language='hu')
-	# elif 'LAV_LV' in filename:
-	# 	splitter = SentenceSplitter(language='lv')
-	# elif 'LIT_LT' in filename:
-	# 	splitter = SentenceSplitter(language='lt')
-	# elif 'SLO_SK' in filename:
-	# 	splitter = SentenceSplitter(language='sk')
-	# else:
-	# 	#Punkt Sentence Tokenizer from NLTK	
-	# 	sentence_splitter_prefix = 'tokenizers/punkt/'
-	# 	sentence_splitter_suffix = ut.determine_sentence_tokenizer(filename)
-	# 	sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
-	# 	tokenizer = nltk.data.load(sentence_splitter)
-
-	#Parse the input XML file by filename
-	file = str(filename)
-	tree = ET.parse(file)
-	root = tree.getroot()
-
-	#Create a dictionary containing parent-child relations of the parsed tree
-	parent_map = dict((c, p) for p in tree.getiterator() for c in p)
-	ess_questions = root.findall('.//questionnaire/questions')
-	ess_answers = root.findall('.//questionnaire/answers')
-	ess_showcards = root.findall('.//questionnaire/showcards')
-
-	survey_id = filename.replace('.xml', '')
-	#The prefix is study+'_'+language+'_'+country+'_'
-	prefix = survey_id+'_'
-	split_survey_id = survey_id.split('_')
-	language_country = split_survey_id[3]+'_'+split_survey_id[4]
-
-	df_survey_item = pd.DataFrame(columns=['survey_itemid', 'module','item_type', 'item_name', 'item_value', language_country, 'item_is_source'])
-
-	df_questions =  pd.DataFrame(columns=['answer_id', 'item_name', 'item_type', 'text']) 
-	df_answers =  pd.DataFrame(columns=['answer_id', 'item_name', 'item_type', 'text', 'item_value']) 
-	item_name = ''
-	text = ''
-	item_type = ''
-	item_value = None
-	#Iterate through question nodes to extract questions and instructions (introduction is not present in metadata)
+def process_question_instruction_node(ess_questions, df_question_instruction, parent_map, item_name, item_type, splitter, country_language):
+	"""
+	Iterates through question nodes to extract questions and instructions (introduction is not present in metadata)
+	"""
 	for question in ess_questions:
 		for node in question.getiterator():
 			if node.tag == 'question' and 'name' in node.attrib and 'tmt_id' in node.attrib:
@@ -251,23 +197,32 @@ def main(filename):
 				if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QText':
 					text = node.text
 					item_type = 'REQUEST'
-					df_questions = append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter,
-					tokenizer, language_country)
+					df_question_instruction = append_data_to_df(df_question_instruction, parent_map, node, item_name, item_type, splitter,
+					 country_language)
 
 				if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QInstruction':
 					text = node.text
 					item_type = 'INSTRUCTION'
-					df_questions = append_data_to_df(df_questions, parent_map, node, item_name, item_type, splitter, 
-					tokenizer, language_country)
+					df_question_instruction = append_data_to_df(df_question_instruction, parent_map, node, item_name, item_type, splitter, 
+					 country_language)
 
-	#Iterate through answer nodes to extract answers 
+	return df_question_instruction
+
+
+def process_answer_node(ess_answers, df_answers, parent_map, item_name, item_type):
+	"""
+	Iterates through answer nodes to extract answers 
+	"""
 	for answer in ess_answers:
 		for node in answer.getiterator():
 			if node.tag == 'answer' and 'name' in node.attrib and 'tmt_id' in node.attrib:
 				item_name = node.attrib['name']
-				item_name = item_name.split('_')
-				item_name = item_name[1]
-			#translation_id == 1 is the english version
+				if '_' in item_name:
+					item_name = item_name.split('_')
+					item_name = item_name[1]
+			"""
+			translation_id == 1 is the english version
+			"""
 			if node.tag == 'text' and 'translation_id' in node.attrib and node.attrib['translation_id'] != '1':
 				text = node.text
 				if node.text != '' and  isinstance(node.text, str) and 'does not exist in' not in text:
@@ -275,44 +230,121 @@ def main(filename):
 					parent = parent_map[node]
 					parent_of_parent = parent_map[parent]
 					answer_id = parent_map[parent_of_parent].attrib['tmt_id']
-					item_value = parent_map[node].attrib['labelvalue']
+					item_value = parent_map[node].attrib['order']
 					data = {'answer_id': answer_id, 'item_name': item_name, 'item_type':'RESPONSE', 
-					'text': clean_answer_category(text), 'item_value': item_value}
+					'text': clean_answer_category(text), 'item_value': str(item_value)}
 					df_answers = df_answers.append(data, ignore_index=True)
 
-	#Decide if items are source. In ESS, source is English and the nomenclature contains SOURCE in it
-	if 'ENG_SOURCE' in language_country:
-		item_is_source = True
-	else: 
-		item_is_source = False
+	return df_answers
 
+def set_initial_structures(filename):
+	"""
+	Set initial structures that are necessary for the extraction of each questionnaire.
+
+	Args:
+		param1 filename (string): name of the input file.
+
+	Returns: 
+		df_questionnaire to store questionnaire data (pandas dataframe),
+		survey_item_prefix, which is the prefix of survey_item_ID (string), 
+		study/country_language, which are metadata parameters embedded in the file name (string and string)
+		and sentence splitter to segment request/introduction/instruction segments when necessary (NLTK object). 
+	"""
+
+	"""
+	A pandas dataframe to store questionnaire data.
+	"""
+	df_questionnaire = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 'text'])
+
+	"""
+	The prefix of a EVS survey item is study+'_'+language+'_'+country+'_'
+	"""
+	survey_item_prefix = re.sub('\.xml', '', filename)+'_'
+
+	"""
+	Reset the initial survey_id sufix, because main is called iterativelly for every file in folder.
+	"""
+	ut.reset_initial_sufix()
+
+	"""
+	Retrieve study and country_language information from the name of the input file. 
+	"""
+	study, country_language = get_country_language_and_study_info(filename)
+
+	"""
+	Instantiate a NLTK sentence splitter based on file input language. 
+	"""
+	splitter = ut.get_sentence_splitter(filename)
+
+
+	return df_questionnaire, survey_item_prefix, study, country_language,splitter
+
+
+def main(filename):
+	"""
+	Reset the initial survey_id sufix, because main is called iterativelly for every file in folder.
+	"""
+	ut.reset_initial_sufix()
+
+	"""
+	Instantiate a NLTK sentence splitter based on file input language. 
+	"""
+	splitter = ut.get_sentence_splitter(filename)
+
+	"""
+	Parse the input XML file by filename
+	"""
+	file = str(filename)
+	tree = ET.parse(file)
+	root = tree.getroot()
+
+	"""
+	Create a dictionary containing parent-child relations of the parsed tree
+	"""
+	parent_map = dict((c, p) for p in tree.getiterator() for c in p)
+	ess_questions = root.findall('.//questionnaire/questions')
+	ess_answers = root.findall('.//questionnaire/answers')
+	ess_showcards = root.findall('.//questionnaire/showcards')
+
+	df_questionnaire, survey_item_prefix, study, country_language,splitter = set_initial_structures(filename)
+
+	df_question_instruction =  pd.DataFrame(columns=['answer_id', 'item_name', 'item_type', 'text']) 
+	df_answers =  pd.DataFrame(columns=['answer_id', 'item_name', 'item_type', 'text', 'item_value']) 
+	item_name = ''
+	text = ''
+	item_type = ''
+	item_value = None
+
+	df_question_instruction = process_question_instruction_node(ess_questions, df_question_instruction, parent_map, item_name, 
+		item_type, splitter, country_language)
+	df_answers = process_answer_node(ess_answers, df_answers, parent_map, item_name, item_type)
+
+	
 	old_item_name = 'A1'
-	for i, i_row in df_questions.iterrows():
-		survey_item_id = ut.decide_on_survey_item_id(prefix, old_item_name, i_row['item_name'])
-		module = get_module(i_row['item_name'])
+	for i, i_row in df_question_instruction.iterrows():
 		item_name = i_row['item_name']
+		data = {'survey_item_ID': ut.update_survey_item_id(survey_item_prefix), 'Study': study,
+		'module':retrieve_item_module(item_name, study), 'item_type': i_row['item_type'], 
+		'item_name':  item_name, 'item_value':None, 'text':i_row['text']}
+		df_questionnaire = df_questionnaire.append(data, ignore_index=True)
 		old_item_name = item_name
-		data = {'survey_itemid':survey_item_id, 'module':module,'item_type': i_row['item_type'], 
-		'item_name':  item_name, 'item_value':None, language_country:i_row['text'], 'item_is_source': item_is_source}
-		df_survey_item = df_survey_item.append(data, ignore_index=True)
 
-		if i_row['answer_id'] != None:
-			corresponding_answer = df_answers[df_answers.answer_id == i_row['answer_id']]
+		corresponding_answer = df_answers[df_answers.item_name == i_row['item_name']]
+		print(corresponding_answer)
+		if corresponding_answer.empty == False and i_row['item_type'] == 'REQUEST':
 			for j, j_row in corresponding_answer.iterrows():
-				data = {'survey_itemid':survey_item_id, 'module':module,'item_type': j_row['item_type'], 
-				'item_name':  item_name, 'item_value':j_row['item_value'], language_country:j_row['text'], 
-				'item_is_source': item_is_source}
-				df_survey_item = df_survey_item.append(data, ignore_index=True)
+				data = {'survey_item_ID':ut.update_survey_item_id(survey_item_prefix), 'Study': study,
+				'module':retrieve_item_module(item_name, study),'item_type': j_row['item_type'], 
+				'item_name':  item_name, 'item_value':j_row['item_value'], 'text':j_row['text']}
+				df_questionnaire = df_questionnaire.append(data, ignore_index=True)
 			
-	df_questions.to_csv('questions.csv', encoding='utf-8-sig', index=False)
+	df_question_instruction.to_csv('questions.csv', encoding='utf-8-sig', index=False)
 	df_answers.to_csv('answers.csv', encoding='utf-8-sig', index=False)
-	df_survey_item.to_csv(survey_id+'.csv', encoding='utf-8-sig', index=False)
+	df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8-sig', index=False)
 	
 
 
 if __name__ == "__main__":
-	#Call script using filename. 
-	#For instance: reset && python3 evs_data_extraction.py EVS_FRE_FR_R05_2017.xlsx
 	filename = str(sys.argv[1])
-	print("Executing data cleaning/extraction script for ESS 2018 (xml files)")
+	print("Executing data cleaning/extraction script for ESS R08 (xml files)")
 	main(filename)
