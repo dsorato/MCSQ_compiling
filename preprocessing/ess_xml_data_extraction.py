@@ -337,16 +337,6 @@ def set_initial_structures(filename):
 
 def main(filename):
 	"""
-	Reset the initial survey_id sufix, because main is called iterativelly for every file in folder.
-	"""
-	ut.reset_initial_sufix()
-
-	"""
-	Instantiate a NLTK sentence splitter based on file input language. 
-	"""
-	splitter = ut.get_sentence_splitter(filename)
-
-	"""
 	Parse the input XML file by filename
 	"""
 	file = str(filename)
@@ -389,7 +379,12 @@ def main(filename):
 			item_name = row['item_name']
 				
 			if 'Row ' not in item_name and item_name != 'CI':
-				data = {'survey_item_ID': ut.update_survey_item_id(survey_item_prefix), 'Study': study,
+				if df_questionnaire.empty:
+					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+				else:
+					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+					
+				data = {'survey_item_ID': survey_item_id, 'Study': study,
 				'module': module, 'item_type': row['item_type'], 
 				'item_name':  item_name, 'item_value':None, 'text': row['text']}
 				df_questionnaire = df_questionnaire.append(data, ignore_index=True)
