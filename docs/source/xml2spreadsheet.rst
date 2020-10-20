@@ -1,4 +1,4 @@
-Plain xml to spreadsheet 
+Data preprocessing and transformation methods for ESS/EVS data (XML to spreadsheet)
 ==========================================
 .. automodule:: preprocessing.main_xml_files
    :members:
