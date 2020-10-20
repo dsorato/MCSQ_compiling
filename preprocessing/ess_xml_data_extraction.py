@@ -44,6 +44,10 @@ def clean_answer_category(text):
 		text = re.sub('</br>', " ",text)
 		text = re.sub('<br />', " ",text)
 		text = re.sub('<br>', " ",text)
+		text = re.sub('<b><b>', " ",text)
+		text = re.sub('</b></b>', " ",text)
+		text = re.sub('<b>', " ",text)
+		text = re.sub('</b>', " ",text)
 		text = re.sub('</u>', " ",text)
 		text = re.sub('<u>', " ",text)
 		text = re.sub('&lt;', " ",text)
@@ -54,6 +58,8 @@ def clean_answer_category(text):
 		text = re.sub('&nbsp', " ",text)
 		text = re.sub(';', "",text)
 		text = text.replace('------->','')
+		text = text.replace('__________','')
+		text = text.replace('________________________','')
 		text = text.replace('\n','')
 		text = text.replace('(','')
 		text = text.replace(')','')
@@ -94,6 +100,11 @@ def clean(text):
 		text = re.sub('<strong>', "",text)
 		text = re.sub('</p>', "",text)
 		text = re.sub('<p>', "",text)
+		text = re.sub('~', " ",text)
+		text = re.sub('<b><b>', " ",text)
+		text = re.sub('</b></b>', " ",text)
+		text = re.sub('<b>', " ",text)
+		text = re.sub('</b>', " ",text)
 		text = re.sub('</em>', "",text)
 		text = re.sub('<em>', "",text)
 		text = re.sub('</br>', " ",text)
@@ -108,6 +119,7 @@ def clean(text):
 		text = re.sub('&gt', " ",text)
 		text = re.sub('&nbsp', " ",text)
 		text = re.sub(';', "",text)
+		text = text.replace('einfg.','einfügen')
 		
 		text = text.rstrip()
 		text = text.lstrip()
@@ -125,8 +137,16 @@ def identify_showcard_instruction(text, country_language):
 		else:
 			showcard = 'LISTE'
 	if 'GER' in country_language:
-		if 'DE' in country_language:
+		if 'CH' in country_language or 'AT' in country_language:
+			showcard = 'KARTE'
+		else:
 			showcard = 'LISTE'
+
+	if 'NOR' in country_language:
+		showcard = 'KORT'
+
+	if 'RUS' in country_language:
+		showcard = 'КАРТОЧКУ'
 
 	if re.compile(showcard).findall(text):
 		item_type = 'INSTRUCTION'
@@ -208,6 +228,11 @@ def adjust_item_name(item_name):
 		item_name = item_name.split('_')
 		item_name = item_name[-1]
 		return item_name, item_type
+	if ' below ' in item_name:
+		item_type = 'INTRODUCTION'
+		item_name = item_name.split(' below ')
+		item_name = item_name[-1]
+		return item_name, item_type
 	if '_' in item_name:
 		item_name = item_name.split('_')
 		item_name = item_name[0]
@@ -281,14 +306,22 @@ def process_answer_node(ess_answers, df_answers, parent_map, ess_special_answer_
 					parent = parent_map[node]
 					parent_of_parent = parent_map[parent]
 					answer_id = parent_map[parent_of_parent].attrib['tmt_id']
-					item_value = parent_map[node].attrib['order']
+
+					if 'labelvalue' in parent_map[node].attrib:
+						item_value = parent_map[node].attrib['labelvalue']
+					else:
+						item_value = parent_map[node].attrib['order']
+					
 					text = clean_answer_category(text)
 
 					text, item_value = check_if_answer_is_special_category(text, item_value, ess_special_answer_categories)
 
-					data = {'answer_id': answer_id, 'item_name': item_name, 'item_type':'RESPONSE', 
-					'text': text, 'item_value': str(item_value)}
-					df_answers = df_answers.append(data, ignore_index=True)
+					if 'labelvalue' in parent_map[node].attrib and str(parent_map[node].attrib['labelvalue']) == str(text):
+						pass
+					else:				
+						data = {'answer_id': answer_id, 'item_name': item_name, 'item_type':'RESPONSE', 
+						'text': text, 'item_value': str(item_value)}
+						df_answers = df_answers.append(data, ignore_index=True)
 
 	return df_answers
 
@@ -354,11 +387,24 @@ def main(filename):
 	df_questionnaire, survey_item_prefix, study, country_language,splitter = set_initial_structures(filename)
 	ess_special_answer_categories = instantiate_special_answer_category_object(country_language)
 
+	if 'GER_AT' in filename:
+		ess_special_answer_categories.refuse[0] = 'Verweigert'
+		ess_special_answer_categories.dont_know[0] = 'Weiß nicht'
+
+	if 'GER_CH' in filename:
+		ess_special_answer_categories.refuse[0] = 'Antwort verweigert'
+		ess_special_answer_categories.dont_know[0] = 'Weiss nicht'
+
+	if 'GER_DE' in filename:
+		ess_special_answer_categories.refuse[0] = 'Antwort verweigert'
+
+	if 'NOR_NO' in filename:
+		ess_special_answer_categories.refuse[0] = 'Nekter'
+
+
+
 	df_question_instruction =  pd.DataFrame(columns=['answer_id', 'item_name', 'item_type', 'text']) 
 	df_answers =  pd.DataFrame(columns=['answer_id', 'item_name', 'text', 'item_value']) 
-	# item_name = ''
-	# text = ''
-	# item_type = ''
 	item_value = None
 
 	df_question_instruction = process_question_instruction_node(ess_questions_instructions, df_question_instruction, parent_map, 
@@ -369,25 +415,31 @@ def main(filename):
 	unique_item_names_question_instruction = df_question_instruction.item_name.unique()	
 	
 	for unique_item_name in unique_item_names_question_instruction:
-		print(unique_item_name)
 
 		df_question_instruction_by_item_name = df_question_instruction[df_question_instruction['item_name'].str.lower()==unique_item_name.lower()]
 		df_answers_by_item_name = df_answers[df_answers['item_name'].str.lower()==unique_item_name.lower()]
 		module = retrieve_item_module(unique_item_name, study)
 
+		last_item_name = ''
 		for i, row in df_question_instruction_by_item_name.iterrows():
 			item_name = row['item_name']
+
+			if item_name =='Instruction' or item_name == 'Intro':
+				item_name = last_item_name
 				
-			if 'Row ' not in item_name and item_name != 'CI':
+			if 'Row ' not in item_name and item_name != 'CI' and item_name != 'outro':
+
 				if df_questionnaire.empty:
 					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
 				else:
 					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
-					
+
 				data = {'survey_item_ID': survey_item_id, 'Study': study,
 				'module': module, 'item_type': row['item_type'], 
 				'item_name':  item_name, 'item_value':None, 'text': row['text']}
 				df_questionnaire = df_questionnaire.append(data, ignore_index=True)
+
+				last_item_name = item_name
 
 		if df_answers_by_item_name.empty == False:
 			for j, row in df_answers_by_item_name.iterrows():
