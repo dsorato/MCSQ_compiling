@@ -13,11 +13,6 @@ import utils as ut
 from preprocessing_ess_utils import *
 import math
 
-constants_dict = dict()
-response_types_dict = dict()
-instruction_constants = ['ASKALL','C_CERT','INT_INS','R_LINE','R_ONLY','SHOWC','CHECK_APP','GO_TO','SKIP_MSG']
-response_constants = ['DK', 'DKext', 'NA','NAext','NAP','OTHER','DK_cawi_mail','DKext_cawi_mail','NA_cawi_mail','NAext_cawi_mail','WOULD_NOT_MIND']
-
 
 def dk_nr_standard(item_value):
 	# Standard
@@ -188,17 +183,20 @@ def process_request_segment(row, study, survey_item_prefix, splitter, df_questio
 	else:
 		text = row['Translated'] 
 
-	if df_questionnaire.empty:
-		survey_item_id = ut.get_survey_item_id(survey_item_prefix)
-	else:
-		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
-
+	last_row = df_questionnaire.iloc[-1]
 	sentences = splitter.tokenize(text)
 	for sentence in sentences:
-		data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
-		'item_type':'REQUEST', 'item_name': row['QuestionName'], 
-		'item_value':None, 'text':clean_text(sentence)}
-		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+		
+		if sentence != last_row['text']:
+			if df_questionnaire.empty:
+				survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+			else:
+				survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+			'item_type':'REQUEST', 'item_name': row['QuestionName'], 
+			'item_value':None, 'text':clean_text(sentence)}
+			df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
 
@@ -278,6 +276,7 @@ def main(folder_path):
 		if file.endswith(".xlsx"):	
 			print(file)
 			df_questionnaire, survey_item_prefix, study, country_language,splitter = set_initial_structures(file)
+			item_names_dict = dict()
 
 			constants = pd.read_excel(open(file, 'rb'), sheet_name='Constants')
 			response_types = pd.read_excel(open(file, 'rb'), sheet_name='AnswerTypes')
