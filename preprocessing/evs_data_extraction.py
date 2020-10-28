@@ -115,7 +115,7 @@ def process_constant(constants, constant_code):
 
 	if not mask.empty:
 
-		if math.isnan(mask['Translation'].values[0]) or mask['Translation'].values[0] == 'Translation':
+		if isinstance(mask['Translation'].values[0], float) or mask['Translation'].values[0] == 'Translation':
 
 			constant_text = mask['TranslatableElement'].values[0]
 		else:
@@ -164,13 +164,24 @@ def process_request_segment(row, study, survey_item_prefix, splitter, module_dic
 	else:
 		text = row['Translated'] 
 
-	last_row = df_questionnaire.iloc[-1]
-
 	text = clean_text(text)
 	sentences = splitter.tokenize(text)
 
-	for sentence in sentences:
-		if sentence != last_row['text']:
+	if df_questionnaire.empty ==False:
+		last_row = df_questionnaire.iloc[-1]
+		for sentence in sentences:
+			if sentence != last_row['text']:
+				if df_questionnaire.empty:
+					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+				else:
+					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
+				'item_type':'REQUEST', 'item_name': row['QuestionName'], 
+				'item_value':None, 'text':sentence}
+				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+	else:
+		for sentence in sentences:
 			if df_questionnaire.empty:
 				survey_item_id = ut.get_survey_item_id(survey_item_prefix)
 			else:
@@ -322,7 +333,7 @@ def main(folder_path):
 			if 'ENG' not in country_language:
 				questionnaire = questionnaire[questionnaire['Translated'].notna()]
 				response_types = response_types[response_types['Translation'].notna()]
-				response_types = response_types[response_types['Translated'].notna()]
+				constants = constants[constants['Translation'].notna()]
 				
 			for i, row in questionnaire.iterrows():
 				if row['QuestionElement'] == 'Constant':
