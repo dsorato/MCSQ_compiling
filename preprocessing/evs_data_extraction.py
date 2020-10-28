@@ -364,6 +364,30 @@ def process_constant_segment(constants, row, study, survey_item_prefix, splitter
 
 	return df_questionnaire
 
+
+def process_request_segment(row, study, survey_item_prefix, splitter, df_questionnaire):
+	if isinstance(row['Translated'], float) or row['Translated'] == 'Translation':
+		if isinstance(row['TranslatableElement'], float):
+			return df_questionnaire
+		else:
+			text = row['TranslatableElement'] 
+	else:
+		text = row['Translated'] 
+
+		if df_questionnaire.empty:
+			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+		else:
+			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+		sentences = splitter.tokenize(text)
+		for sentence in sentences:
+			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+			'item_type':'REQUEST', 'item_name': row['QuestionName'], 
+			'item_value':None, 'text':clean_text(sentence)}
+			df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+
+	return df_questionnaire
+
 def main(folder_path):
 	path = os.chdir(folder_path)
 	files = os.listdir(path)
@@ -374,14 +398,25 @@ def main(folder_path):
 			df_questionnaire, survey_item_prefix, study, country_language,splitter = set_initial_structures(file)
 
 			constants = pd.read_excel(open(file, 'rb'), sheet_name='Constants')
-			questionnaire = pd.read_excel(open(file, 'rb'), sheet_name='Questionnaire')
-			questionnaire = questionnaire[questionnaire['Translated'].notna()]
 			response_types = pd.read_excel(open(file, 'rb'), sheet_name='AnswerTypes')
+
+			questionnaire = pd.read_excel(open(file, 'rb'), sheet_name='Questionnaire', dtype=str)
+			questionnaire['TranslatableElement'] = questionnaire['TranslatableElement'].replace(['NA'],'NAext')
+			questionnaire['Translated'] = questionnaire['Translated'].replace(['NA'],'NAext')
+			questionnaire['TranslatableElement'] = questionnaire['TranslatableElement'].replace(['DK'],'DKext')
+			questionnaire['Translated'] = questionnaire['Translated'].replace(['DK'],'DKext')
+			# questionnaire = questionnaire[questionnaire['Translated'].notna()]
+			
 
 			for i, row in questionnaire.iterrows():
 				if row['QuestionElement'] == 'Constant':
 					df_questionnaire = process_constant_segment(constants, row, study, survey_item_prefix, splitter, df_questionnaire)
+				elif row['QuestionElement'] in ['QInstruction', 'QItemInstruction', 'QItem']:
+					df_questionnaire = process_request_segment(row, study, survey_item_prefix, splitter, df_questionnaire)
 					
+
+
+
 
 			
 			# list_unique_modules = questionnaire.Module.unique()
