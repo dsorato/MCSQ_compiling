@@ -10,7 +10,7 @@ import numpy as np
 import sys
 import os
 import re
-from utils import *
+import utils as ut
 
 initial_sufix = 0
 constants_dict = dict()
@@ -159,39 +159,67 @@ def replace_intro_in_item_name(column_item_name, item_name):
 
 	return item_name
 
-def main(filename):
-	sentence_splitter_prefix = 'tokenizers/punkt/'
 
-	sentence_splitter_suffix = determine_sentence_tokenizer(filename)
+def set_initial_structures(filename):
+	"""
+	Set initial structures that are necessary for the extraction of each questionnaire.
 
-	sentence_splitter = sentence_splitter_prefix+sentence_splitter_suffix
-	tokenizer = nltk.data.load(sentence_splitter)
+	Args:
+		param1 filename (string): name of the input file.
 
-	constants = pd.read_excel(open(filename, 'rb'), sheet_name='Constants')
-	#dropping unecessary information
-	constants = constants.drop(['QuestionElement', 'PAPI', 'CAPI', 'CAWI', 'MAIL'], axis=1)
+	Returns: 
+		df_questionnaire to store questionnaire data (pandas dataframe),
+		survey_item_prefix, which is the prefix of survey_item_ID (string), 
+		study/country_language, which are metadata parameters embedded in the file name (string and string)
+		and sentence splitter to segment request/introduction/instruction segments when necessary (NLTK object). 
+	"""
 
-	questionnaire = pd.read_excel(open(filename, 'rb'), sheet_name='Questionnaire')
+	"""
+	A pandas dataframe to store questionnaire data.
+	"""
+	df_questionnaire = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 'text'])
 
-	response_types = pd.read_excel(open(filename, 'rb'), sheet_name='AnswerTypes')
-	
-	list_unique_modules = questionnaire.Module.unique()
-	list_unique_modules = ['No module' if isinstance(x, float) else x for x in list_unique_modules]
+	"""
+	The prefix of a EVS survey item is study+'_'+language+'_'+country+'_'
+	"""
+	survey_item_prefix = re.sub('\.xlsx', '', filename)+'_'
 
-	filename_without_path = filename.split('/')[-1]
-	filename_without_extension = filename_without_path.replace('.xlsx', '')
-	metadata = filename_without_extension.split('_')
-	study = metadata[0]+'_'+metadata[1]+'_'+metadata[2]
-	country_language = metadata[3]+'_'+metadata[4]
-	#The prefix is study+'_'+language+'_'+country+'_'
-	prefix = filename_without_extension+'_'
+	"""
+	Reset the initial survey_id sufix, because main is called iterativelly for every file in folder.
+	"""
+	ut.reset_initial_sufix()
 
-	if 'ENG_GB' in country_language:
-		item_is_source = True
-	else:
-		item_is_source = False
+	"""
+	Retrieve study and country_language information from the name of the input file. 
+	"""
+	study, country_language = get_country_language_and_study_info(filename)
 
-	df = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', country_language, 'item_is_source'])
+	"""
+	Instantiate a NLTK sentence splitter based on file input language. 
+	"""
+	splitter = ut.get_sentence_splitter(filename)
+
+
+	return df_questionnaire, survey_item_prefix, study, country_language,splitter
+
+def main(folder_path):
+	path = os.chdir(folder_path)
+	files = os.listdir(path)
+
+	for index, file in enumerate(files):
+		if file.endswith(".xlsx"):	
+			constants = pd.read_excel(open(filename, 'rb'), sheet_name='Constants')
+			"""
+			dropping unecessary information from constants sheet
+			"""
+			constants = constants.drop(['QuestionElement', 'PAPI', 'CAPI', 'CAWI', 'MAIL'], axis=1)
+			questionnaire = pd.read_excel(open(filename, 'rb'), sheet_name='Questionnaire')
+			response_types = pd.read_excel(open(filename, 'rb'), sheet_name='AnswerTypes')
+			
+			list_unique_modules = questionnaire.Module.unique()
+			list_unique_modules = ['No module' if isinstance(x, float) else x for x in list_unique_modules]
+
+
 
 	old_item_name = 'Q1'
 	for index, row in questionnaire.iterrows(): 
@@ -264,8 +292,6 @@ def main(filename):
 
 
 if __name__ == "__main__":
-	#Call script using filename. 
-	#For instance: reset && python3 evs_data_extraction.py EVS_R05_2017_POR_LU.xls
-	filename = str(sys.argv[1])
+	folder_path = str(sys.argv[1])
 	print("Executing data cleaning/extraction script for EVS 2017")
-	main(filename)
+	main(folder_path)
