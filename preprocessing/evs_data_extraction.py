@@ -248,6 +248,28 @@ def process_response_segment(row, study, survey_item_prefix, df_questionnaire):
 
 	return df_questionnaire
 
+def process_response_type_segment(response_types, code, row, study, survey_item_prefix, df_questionnaire):
+	mask = response_types.loc[response_types['Code'] == code]
+
+	if not mask.empty:
+		for i, mask_row in mask.iterrows():
+			if isinstance(mask_row['Translation'], float) or mask_row['Translation'] == 'Translation': 
+				if isinstance(mask_row['Translatable Element'], float):
+					text = ''
+				else:
+					text = mask_row['Translatable Element']
+			else:
+				text = mask_row['Translation'] 
+
+			if text != '':
+				survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+				'item_type':'RESPONSE', 'item_name': row['QuestionName'], 
+				'item_value':row['QuestionElementNr'], 'text':clean_text(text)}
+				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+
+	return df_questionnaire
+
 def main(folder_path):
 	path = os.chdir(folder_path)
 	files = os.listdir(path)
@@ -277,17 +299,10 @@ def main(folder_path):
 						df_questionnaire = process_instruction_segment(row, study, survey_item_prefix, splitter, df_questionnaire)
 				elif row['QuestionElement'] == 'Answer':
 					df_questionnaire = process_response_segment(row, study, survey_item_prefix, df_questionnaire)
-					
+				elif row['QuestionElement'] == 'AnswerType':
+					df_questionnaire = process_response_type_segment(response_types, row['TranslatableElement'], row, study, 
+						survey_item_prefix, df_questionnaire)
 
-
-
-
-			
-			# list_unique_modules = questionnaire.Module.unique()
-			# list_unique_modules = ['No module' if isinstance(x, float) else x for x in list_unique_modules]
-
-			# df_questionnaire = process_questionnaire(questionnaire, constants, response_types, df_questionnaire, 
-			# 	survey_item_prefix, study, splitter)
 
 			csv_name = file.replace('.xlsx', '')
 			df_questionnaire.to_csv(csv_name+'.csv', encoding='utf-8-sig', index=False)
