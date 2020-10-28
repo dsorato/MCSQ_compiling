@@ -41,11 +41,14 @@ def clean_text(text):
 		text = re.sub("\n", " ", text)
 		text = re.sub("…", "...", text)
 		text = re.sub("’", "'", text)
+		text = text.replace('e.g.', 'eg')
+		text = text.replace('e.g', 'eg')
+		text = text.replace('[', '')
+		text = text.replace(']', '')
 		text = re.sub("[.]{4,}", "", text)
 		tags = re.compile(r'<.*?>')
 		text = tags.sub('', text)
 		text = text.rstrip()
-
 
 	return text
 
@@ -57,6 +60,26 @@ def remove_trailing(clean):
 		without_trailing.append(item)
 
 	return without_trailing
+
+def get_module(row, module_dict):
+	if isinstance(row['Module'], str):
+		module = module_dict[row['Module']]
+	else:
+		module = row['Module']
+
+	return module
+
+def adjust_item_name(row):
+	print(row)
+	if isinstance(row['QuestionElementNr'], str) and isinstance(row['QuestionName'], str):
+		if 'a' not in row['QuestionName'] and row['QuestionElementNr'] != ' ':
+			item_name = row['QuestionName']+chr(int(row['QuestionElementNr'])+64).lower()
+		else:
+			item_name = row['QuestionName']
+	else:
+		item_name = row['QuestionName']
+
+	return item_name
 
 def standardize_item_type_in_constants_sheet(item_type):
 	"""
@@ -116,16 +139,17 @@ def process_constant_segment(constants, row, study, survey_item_prefix, splitter
 		if item_type == 'RESPONSE':
 			item_value = dk_nr_standard(row['QuestionElementNr']) 
 
-			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': module_dict[row['Module']], 
+			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
 			'item_type':item_type, 'item_name': row['QuestionName'], 
 			'item_value':item_value, 'text':clean_text(constant_text)}
 			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 		else:
+			constant_text = clean_text(constant_text)
 			sentences = splitter.tokenize(constant_text)
 			for sentence in sentences:
-				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': module_dict[row['Module']], 
+				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
 				'item_type':item_type, 'item_name': row['QuestionName'], 
-				'item_value':None, 'text':clean_text(sentence)}
+				'item_value':None, 'text': sentence}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
@@ -141,24 +165,20 @@ def process_request_segment(row, study, survey_item_prefix, splitter, module_dic
 		text = row['Translated'] 
 
 	last_row = df_questionnaire.iloc[-1]
-	
-	if row['QuestionElement'] == 'QItem' and isinstance(row['QuestionElementNr'], str):
-		item_name = row['QuestionName']+chr(int(row['QuestionElementNr'])+64).lower()
-	else:
-		item_name = row['QuestionName']
 
+	text = clean_text(text)
 	sentences = splitter.tokenize(text)
+
 	for sentence in sentences:
-		
 		if sentence != last_row['text']:
 			if df_questionnaire.empty:
 				survey_item_id = ut.get_survey_item_id(survey_item_prefix)
 			else:
 				survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': module_dict[row['Module']], 
-			'item_type':'REQUEST', 'item_name': item_name, 
-			'item_value':None, 'text':clean_text(sentence)}
+			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
+			'item_type':'REQUEST', 'item_name': row['QuestionName'], 
+			'item_value':None, 'text':sentence}
 			df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
@@ -177,12 +197,12 @@ def process_instruction_segment(row, study, survey_item_prefix, splitter, module
 	else:
 		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-
+	text = clean_text(text)
 	sentences = splitter.tokenize(text)
 	for sentence in sentences:
-		data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': module_dict[row['Module']], 
+		data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
 		'item_type':'INSTRUCTION', 'item_name': row['QuestionName'], 
-		'item_value':None, 'text':clean_text(sentence)}
+		'item_value':None, 'text': sentence}
 		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
@@ -203,7 +223,7 @@ def process_response_segment(row, study, survey_item_prefix, module_dict, df_que
 		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
 
-	data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': module_dict[row['Module']], 
+	data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
 	'item_type':'RESPONSE', 'item_name': row['QuestionName'], 
 	'item_value':row['QuestionElementNr'], 'text':clean_text(text)}
 	df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
@@ -225,7 +245,7 @@ def process_response_type_segment(response_types, code, row, study, survey_item_
 
 			if text != '':
 				survey_item_id = ut.update_survey_item_id(survey_item_prefix)
-				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': module_dict[row['Module']], 
+				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
 				'item_type':'RESPONSE', 'item_name': row['QuestionName'], 
 				'item_value':row['QuestionElementNr'], 'text':clean_text(text)}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
@@ -321,13 +341,6 @@ def main(folder_path):
 
 			csv_name = file.replace('.xlsx', '')
 			df_questionnaire.to_csv(csv_name+'.csv', encoding='utf-8-sig', index=False)
-
-
-
-
-	
-			
-	
 
 
 if __name__ == "__main__":
