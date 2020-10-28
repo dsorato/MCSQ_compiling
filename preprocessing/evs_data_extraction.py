@@ -3,7 +3,6 @@ Python3 script  to transform EVS spreadsheet data (from TMT) into spreadsheet fo
 Author: Danielly Sorato 
 Author contact: danielly.sorato@gmail.com
 """
-
 import pandas as pd
 import nltk.data
 import numpy as np
@@ -11,8 +10,9 @@ import sys
 import os
 import re
 import utils as ut
+from preprocessing_ess_utils import *
+import math
 
-initial_sufix = 0
 constants_dict = dict()
 response_types_dict = dict()
 instruction_constants = ['ASKALL','C_CERT','INT_INS','R_LINE','R_ONLY','SHOWC','CHECK_APP','GO_TO','SKIP_MSG']
@@ -26,9 +26,16 @@ def dk_nr_standard(item_value):
 	# Does not apply 999
 	if isinstance(item_value, str) or isinstance(item_value, int):
 		item_value = str(item_value)
-		item_value = re.sub("[8]{2,}", "888", item_value)
-		item_value = re.sub("[9]{2,}", "999", item_value)
-		item_value = re.sub("[7]{2,}", "777", item_value)
+		if item_value == '8':
+			return "888"
+		elif item_value == '9':
+			return "999"
+		elif item_value == '7':
+			return "777"
+		else:
+			item_value = re.sub("[8]{2,}", "888", item_value)
+			item_value = re.sub("[9]{2,}", "999", item_value)
+			item_value = re.sub("[7]{2,}", "777", item_value)
 
 
 	return item_value
@@ -36,6 +43,7 @@ def dk_nr_standard(item_value):
 
 def clean_text(text):
 	if isinstance(text, str):
+		text = re.sub("\n", " ", text)
 		text = re.sub("…", "...", text)
 		text = re.sub("’", "'", text)
 		text = re.sub("[.]{4,}", "", text)
@@ -159,6 +167,88 @@ def replace_intro_in_item_name(column_item_name, item_name):
 
 	return item_name
 
+def process_questionnaire(questionnaire, constants, response_types, df_questionnaire, survey_item_prefix, study, splitter):
+	for index, row in questionnaire.iterrows(): 
+		"""
+		case 1: Translated row is not null = We have the tranlated text
+		"""
+		if pd.isna(row['Translated']) == False and pd.isna(row['QuestionName']) == False:
+			if row['QuestionName'] != 'IWER_INTRO' and row['QuestionName'] != 'INTRO0' and 'SECTION' not in row['QuestionName']:
+				"""
+				item is a constant. A constant can be type: INSTRUCTION, INTRODUCTION or REQUEST
+				"""
+				if pd.notna(row['Translated']) and row['QuestionElement'] == 'Constant' and row['Translated'] not in response_constants:
+					constant = row['Translated']
+					text = extract_constant(constants, constant)
+					column_item_name = list(questionnaire['QuestionName'])
+					item_name = replace_intro_in_item_name(column_item_name, row['QuestionName']) 
+					
+					if text != '':
+						if df_questionnaire.empty:
+							survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+						else:
+							survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+						data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+						'item_type':decide_item_type_constant(constant, row), 'item_name': item_name, 
+						'item_value':None, 'text':clean_text(text)}
+						df_questionnaire = df_questionnaire.append(data, ignore_index = True)		
+				elif pd.notna(row['Translated']) and (row['QuestionElement'] == 'AnswerType' or row['QuestionElement'] == 'Answer' or row['Translated'] in response_constants):
+					"""
+					item is a response. A response can be only type RESPONSE
+					"""		
+					response = row['Translated']
+					if response in response_constants:
+						text = extract_constant(constants, response)
+						if text != '':
+							survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+							data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+							'item_type':decide_item_type_constant(constant, row), 'item_name': row['QuestionName'], 
+							'item_value':None, 'text':clean_text(text)}
+							df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+					#response != 'Translation' is a workaround to deal with incorrecly translated segments
+					elif row['QuestionElement'] == 'Answer' and response != 'Translation':
+						if text != '':
+							if df_questionnaire.empty:
+								survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+							else:
+								survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+							data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+							'item_type':decide_item_type_constant(constant, row), 'item_name': item_name, 
+							'item_value':None, 'text':clean_text(text)}
+							df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+					else:
+						text = extract_response_types(response_types, text)
+						if text != '':
+							for item in text:
+								if item != 'Translation':
+
+									survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+									data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+									'item_type': 'RESPONSE', 'item_name': row['QuestionName'], 
+									'item_value':dk_nr_standard(row['QuestionElementNr']), 'text':clean_text(item)}
+									df_questionnaire = df_questionnaire.append(data, ignore_index = True)			
+				# item type can be INTRODUCTION, INSTRUCTION or REQUEST
+				else:
+					if pd.notna(row['Translated']):
+						if df_questionnaire.empty:
+							survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+						else:
+							survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+						text = clean_text(row['Translated'])
+						column_item_name = list(questionnaire['QuestionName'])
+						item_name = replace_intro_in_item_name(column_item_name, row['QuestionName']) 
+						sentences = splitter.tokenize(text)
+
+						for sentence in sentences:
+							data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+							'item_type':decide_item_type_other(row), 'item_name': item_name, 
+							'item_value':None, 'text':clean_text(sentence)}
+							df_questionnaire = df_questionnaire.append(data, ignore_index = True)		
+	return df_questionnaire
 
 def set_initial_structures(filename):
 	"""
@@ -202,93 +292,113 @@ def set_initial_structures(filename):
 
 	return df_questionnaire, survey_item_prefix, study, country_language,splitter
 
+def standardize_item_type_in_constants_sheet(item_type):
+	"""
+	Standardizes the names of item_types in the TMT export to the item_types used in MCSQ. 
+
+	Args:
+		param1 item_type (string): item_type retrieved from column QuestionElement of constants sheet.
+
+	Returns: 
+		Standardized item_type (string).
+	"""
+	if item_type == 'IWER':
+		return 'INSTRUCTION'
+	elif item_type == 'Answer':
+		return 'RESPONSE'
+	elif item_type == 'QItemInstruction':
+		return 'REQUEST'
+
+def process_constant(constants, constant_code):
+	"""
+	Gets the text of a constant code in the constants sheet.
+	There are many missing values in the Translation column, as a workaround the TranslatableElement
+	is also considered as valid text.
+
+	Args:
+		param1 constants (pandas dataframe): pandas dataframe with contents of constants sheet.
+		param2 constant_code (string): Code of constant, extracted from input file in outer loop.
+
+	Returns: 
+		constant_text, which is the text of the desired constant code (string) and its item_type (string).
+	"""
+	mask = constants.loc[constants['Code'] == constant_code]
+
+	if not mask.empty:
+
+		if math.isnan(mask['Translation'].values[0]) or mask['Translation'].values[0] == 'Translation':
+
+			constant_text = mask['TranslatableElement'].values[0]
+		else:
+			constant_text = mask['Translation'].values[0]
+
+		item_type = standardize_item_type_in_constants_sheet(mask['QuestionElement'].values[0])
+
+		return constant_text, item_type
+	else:
+		return None, None
+
+def process_constant_segment(constants, row, study, survey_item_prefix, splitter, df_questionnaire):
+	constant_text, item_type = process_constant(constants, row['Translated'])
+
+	if constant_text != None:
+		if df_questionnaire.empty:
+			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+		else:
+			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+
+		if item_type == 'RESPONSE':
+			item_value = dk_nr_standard(row['QuestionElementNr']) 
+
+			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+			'item_type':item_type, 'item_name': row['QuestionName'], 
+			'item_value':item_value, 'text':clean_text(constant_text)}
+			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+		else:
+			sentences = splitter.tokenize(constant_text)
+			for sentence in sentences:
+				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+				'item_type':item_type, 'item_name': row['QuestionName'], 
+				'item_value':None, 'text':clean_text(sentence)}
+				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+
+	return df_questionnaire
+
 def main(folder_path):
 	path = os.chdir(folder_path)
 	files = os.listdir(path)
 
 	for index, file in enumerate(files):
 		if file.endswith(".xlsx"):	
-			constants = pd.read_excel(open(filename, 'rb'), sheet_name='Constants')
-			"""
-			dropping unecessary information from constants sheet
-			"""
-			constants = constants.drop(['QuestionElement', 'PAPI', 'CAPI', 'CAWI', 'MAIL'], axis=1)
-			questionnaire = pd.read_excel(open(filename, 'rb'), sheet_name='Questionnaire')
-			response_types = pd.read_excel(open(filename, 'rb'), sheet_name='AnswerTypes')
-			
-			list_unique_modules = questionnaire.Module.unique()
-			list_unique_modules = ['No module' if isinstance(x, float) else x for x in list_unique_modules]
+			print(file)
+			df_questionnaire, survey_item_prefix, study, country_language,splitter = set_initial_structures(file)
 
+			constants = pd.read_excel(open(file, 'rb'), sheet_name='Constants')
+			questionnaire = pd.read_excel(open(file, 'rb'), sheet_name='Questionnaire')
+			questionnaire = questionnaire[questionnaire['Translated'].notna()]
+			response_types = pd.read_excel(open(file, 'rb'), sheet_name='AnswerTypes')
 
-
-	old_item_name = 'Q1'
-	for index, row in questionnaire.iterrows(): 
-		#case 1: Translated row is not null = We have the tranlated text
-		if pd.isna(row['Translated']) == False and pd.isna(row['QuestionName']) == False:
-			if row['QuestionName'] != 'IWER_INTRO' and row['QuestionName'] != 'INTRO0' and 'SECTION' not in row['QuestionName']:
-				#item is a constant. A constant can be type: INSTRUCTION, INTRODUCTION or REQUEST
-				if pd.notna(row['Translated']) and row['QuestionElement'] == 'Constant' and row['Translated'] not in response_constants:
-					constant = row['Translated']
-					text = extract_constant(constants, constant)
-					column_item_name = list(questionnaire['QuestionName'])
-					item_name = replace_intro_in_item_name(column_item_name, row['QuestionName']) 
-					if text != '':
-						data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
-						'module': row['Module'], 'item_type':decide_item_type_constant(constant, row), 'item_name': item_name, 
-						'item_value':None, country_language:clean_text(text), 'item_is_source': item_is_source}
-						df = df.append(data, ignore_index = True)
-						old_item_name = item_name
-			
-				#item is a response. A response can be only type RESPONSE				
-				elif pd.notna(row['Translated']) and (row['QuestionElement'] == 'AnswerType' or row['QuestionElement'] == 'Answer' or 
-					row['Translated'] in response_constants):
-					response = row['Translated']
-					if response in response_constants:
-						text = extract_constant(constants, response)
-						if text != '':
-							item_name = row['QuestionName']
-							data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
-							'module': row['Module'], 'item_type':'RESPONSE', 'item_name':item_name, 
-							'item_value':dk_nr_standard(row['QuestionElementNr']), country_language:clean_text(text), 'item_is_source': item_is_source}
-							df = df.append(data, ignore_index = True)
-							old_item_name = item_name               
-					#response != 'Translation' is a workaround to deal with incorrecly translated segments
-					elif row['QuestionElement'] == 'Answer' and response != 'Translation':
-						item_name = row['QuestionName']
-						data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
-						'module': row['Module'], 'item_type':'RESPONSE', 'item_name':item_name, 
-						'item_value':dk_nr_standard(row['QuestionElementNr']), country_language:clean_text(response), 'item_is_source': item_is_source}
-						df = df.append(data, ignore_index = True)
-						old_item_name = item_name
-					else:
-						text = extract_response_types(response_types, text)
-						item_name = row['QuestionName']
-						if text != '':
-							for item in text:
-								if item != 'Translation':
-									data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
-									'module': row['Module'], 'item_type':'RESPONSE', 'item_name':item_name, 
-									'item_value':dk_nr_standard(row['QuestionElementNr']), country_language:clean_text(item), 'item_is_source': item_is_source}
-									df = df.append(data, ignore_index = True)
-									old_item_name = item_name
+			for i, row in questionnaire.iterrows():
+				if row['QuestionElement'] == 'Constant':
+					df_questionnaire = process_constant_segment(constants, row, study, survey_item_prefix, splitter, df_questionnaire)
+					
 
 			
-				# item type can be INTRODUCTION, INSTRUCTION or REQUEST
-				else:
-					if pd.notna(row['Translated']):
-						text = clean_text(row['Translated'])
-						column_item_name = list(questionnaire['QuestionName'])
-						item_name = replace_intro_in_item_name(column_item_name, row['QuestionName']) 
-						split_into_sentences = tokenizer.tokenize(text)
-						for item in split_into_sentences:
-							data = {'survey_item_ID':decide_on_survey_item_id(prefix, old_item_name, item_name), 'Study':study,
-							'module': row['Module'], 'item_type':decide_item_type_other(row), 'item_name':item_name, 
-							'item_value':None, country_language:clean_text(item), 'item_is_source': item_is_source}
-							df = df.append(data, ignore_index = True)
-							old_item_name = item_name
-			
-	df.to_csv(filename_without_extension+'.csv', encoding='utf-8-sig', index=False)
+			# list_unique_modules = questionnaire.Module.unique()
+			# list_unique_modules = ['No module' if isinstance(x, float) else x for x in list_unique_modules]
 
+			# df_questionnaire = process_questionnaire(questionnaire, constants, response_types, df_questionnaire, 
+			# 	survey_item_prefix, study, splitter)
+
+			csv_name = file.replace('.xlsx', '')
+			df_questionnaire.to_csv(csv_name+'.csv', encoding='utf-8-sig', index=False)
+
+
+
+
+	
+			
+	
 
 
 if __name__ == "__main__":
