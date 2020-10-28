@@ -58,49 +58,6 @@ def remove_trailing(clean):
 
 	return without_trailing
 
-
-def set_initial_structures(filename):
-	"""
-	Set initial structures that are necessary for the extraction of each questionnaire.
-
-	Args:
-		param1 filename (string): name of the input file.
-
-	Returns: 
-		df_questionnaire to store questionnaire data (pandas dataframe),
-		survey_item_prefix, which is the prefix of survey_item_ID (string), 
-		study/country_language, which are metadata parameters embedded in the file name (string and string)
-		and sentence splitter to segment request/introduction/instruction segments when necessary (NLTK object). 
-	"""
-
-	"""
-	A pandas dataframe to store questionnaire data.
-	"""
-	df_questionnaire = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 'text'])
-
-	"""
-	The prefix of a EVS survey item is study+'_'+language+'_'+country+'_'
-	"""
-	survey_item_prefix = re.sub('\.xlsx', '', filename)+'_'
-
-	"""
-	Reset the initial survey_id sufix, because main is called iterativelly for every file in folder.
-	"""
-	ut.reset_initial_sufix()
-
-	"""
-	Retrieve study and country_language information from the name of the input file. 
-	"""
-	study, country_language = get_country_language_and_study_info(filename)
-
-	"""
-	Instantiate a NLTK sentence splitter based on file input language. 
-	"""
-	splitter = ut.get_sentence_splitter(filename)
-
-
-	return df_questionnaire, survey_item_prefix, study, country_language,splitter
-
 def standardize_item_type_in_constants_sheet(item_type):
 	"""
 	Standardizes the names of item_types in the TMT export to the item_types used in MCSQ. 
@@ -147,7 +104,7 @@ def process_constant(constants, constant_code):
 	else:
 		return None, None
 
-def process_constant_segment(constants, row, study, survey_item_prefix, splitter, df_questionnaire):
+def process_constant_segment(constants, row, study, survey_item_prefix, splitter, module_dict, df_questionnaire):
 	constant_text, item_type = process_constant(constants, row['Translated'])
 
 	if constant_text != None:
@@ -159,14 +116,14 @@ def process_constant_segment(constants, row, study, survey_item_prefix, splitter
 		if item_type == 'RESPONSE':
 			item_value = dk_nr_standard(row['QuestionElementNr']) 
 
-			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': module_dict[row['Module']], 
 			'item_type':item_type, 'item_name': row['QuestionName'], 
 			'item_value':item_value, 'text':clean_text(constant_text)}
 			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 		else:
 			sentences = splitter.tokenize(constant_text)
 			for sentence in sentences:
-				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': module_dict[row['Module']], 
 				'item_type':item_type, 'item_name': row['QuestionName'], 
 				'item_value':None, 'text':clean_text(sentence)}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
@@ -174,7 +131,7 @@ def process_constant_segment(constants, row, study, survey_item_prefix, splitter
 	return df_questionnaire
 
 
-def process_request_segment(row, study, survey_item_prefix, splitter, df_questionnaire):
+def process_request_segment(row, study, survey_item_prefix, splitter, module_dict, df_questionnaire):
 	if isinstance(row['Translated'], float) or row['Translated'] == 'Translation':
 		if isinstance(row['TranslatableElement'], float):
 			return df_questionnaire
@@ -184,6 +141,12 @@ def process_request_segment(row, study, survey_item_prefix, splitter, df_questio
 		text = row['Translated'] 
 
 	last_row = df_questionnaire.iloc[-1]
+	
+	if row['QuestionElement'] == 'QItem' and isinstance(row['QuestionElementNr'], str):
+		item_name = row['QuestionName']+chr(int(row['QuestionElementNr'])+64).lower()
+	else:
+		item_name = row['QuestionName']
+
 	sentences = splitter.tokenize(text)
 	for sentence in sentences:
 		
@@ -193,14 +156,14 @@ def process_request_segment(row, study, survey_item_prefix, splitter, df_questio
 			else:
 				survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
-			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
-			'item_type':'REQUEST', 'item_name': row['QuestionName'], 
+			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': module_dict[row['Module']], 
+			'item_type':'REQUEST', 'item_name': item_name, 
 			'item_value':None, 'text':clean_text(sentence)}
 			df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
 
-def process_instruction_segment(row, study, survey_item_prefix, splitter, df_questionnaire):
+def process_instruction_segment(row, study, survey_item_prefix, splitter, module_dict, df_questionnaire):
 	if isinstance(row['Translated'], float) or row['Translated'] == 'Translation':
 		if isinstance(row['TranslatableElement'], float):
 			return df_questionnaire
@@ -214,9 +177,10 @@ def process_instruction_segment(row, study, survey_item_prefix, splitter, df_que
 	else:
 		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
+
 	sentences = splitter.tokenize(text)
 	for sentence in sentences:
-		data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+		data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': module_dict[row['Module']], 
 		'item_type':'INSTRUCTION', 'item_name': row['QuestionName'], 
 		'item_value':None, 'text':clean_text(sentence)}
 		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
@@ -224,7 +188,7 @@ def process_instruction_segment(row, study, survey_item_prefix, splitter, df_que
 	return df_questionnaire
 
 
-def process_response_segment(row, study, survey_item_prefix, df_questionnaire):
+def process_response_segment(row, study, survey_item_prefix, module_dict, df_questionnaire):
 	if isinstance(row['Translated'], float) or row['Translated'] == 'Translation':
 		if isinstance(row['TranslatableElement'], float):
 			return df_questionnaire
@@ -239,14 +203,14 @@ def process_response_segment(row, study, survey_item_prefix, df_questionnaire):
 		survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
 
-	data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+	data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': module_dict[row['Module']], 
 	'item_type':'RESPONSE', 'item_name': row['QuestionName'], 
 	'item_value':row['QuestionElementNr'], 'text':clean_text(text)}
 	df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
 
-def process_response_type_segment(response_types, code, row, study, survey_item_prefix, df_questionnaire):
+def process_response_type_segment(response_types, code, row, study, survey_item_prefix, module_dict, df_questionnaire):
 	mask = response_types.loc[response_types['Code'] == code]
 
 	if not mask.empty:
@@ -261,12 +225,60 @@ def process_response_type_segment(response_types, code, row, study, survey_item_
 
 			if text != '':
 				survey_item_id = ut.update_survey_item_id(survey_item_prefix)
-				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': row['Module'], 
+				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': module_dict[row['Module']], 
 				'item_type':'RESPONSE', 'item_name': row['QuestionName'], 
 				'item_value':row['QuestionElementNr'], 'text':clean_text(text)}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
+
+def set_initial_structures(filename):
+	"""
+	Set initial structures that are necessary for the extraction of each questionnaire.
+
+	Args:
+		param1 filename (string): name of the input file.
+
+	Returns: 
+		df_questionnaire to store questionnaire data (pandas dataframe),
+		survey_item_prefix, which is the prefix of survey_item_ID (string), 
+		study/country_language, which are metadata parameters embedded in the file name (string and string),
+		sentence splitter to segment request/introduction/instruction segments when necessary (NLTK object)
+		and module_dict (dictionary) holding the names of modules. 
+	"""
+
+	"""
+	A pandas dataframe to store questionnaire data.
+	"""
+	df_questionnaire = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 'text'])
+
+	"""
+	The prefix of a EVS survey item is study+'_'+language+'_'+country+'_'
+	"""
+	survey_item_prefix = re.sub('\.xlsx', '', filename)+'_'
+
+	"""
+	Reset the initial survey_id sufix, because main is called iterativelly for every file in folder.
+	"""
+	ut.reset_initial_sufix()
+
+	"""
+	Retrieve study and country_language information from the name of the input file. 
+	"""
+	study, country_language = get_country_language_and_study_info(filename)
+
+	"""
+	Instantiate a NLTK sentence splitter based on file input language. 
+	"""
+	splitter = ut.get_sentence_splitter(filename)
+
+	"""
+	Module dictionnaire
+	"""
+	module_dict = {'A': 'Perceptions of Life', 'B': 'Family', 'C': 'Politics and society',
+	'D': "Respondent's parents", 'E': 'Socio demographics'}
+
+	return df_questionnaire, survey_item_prefix, study, country_language,splitter, module_dict
 
 def main(folder_path):
 	path = os.chdir(folder_path)
@@ -275,7 +287,7 @@ def main(folder_path):
 	for index, file in enumerate(files):
 		if file.endswith(".xlsx"):	
 			print(file)
-			df_questionnaire, survey_item_prefix, study, country_language,splitter = set_initial_structures(file)
+			df_questionnaire, survey_item_prefix, study, country_language,splitter, module_dict = set_initial_structures(file)
 			item_names_dict = dict()
 
 			constants = pd.read_excel(open(file, 'rb'), sheet_name='Constants')
@@ -286,21 +298,25 @@ def main(folder_path):
 			questionnaire['Translated'] = questionnaire['Translated'].replace(['NA'],'NAext')
 			questionnaire['TranslatableElement'] = questionnaire['TranslatableElement'].replace(['DK'],'DKext')
 			questionnaire['Translated'] = questionnaire['Translated'].replace(['DK'],'DKext')
-			# questionnaire = questionnaire[questionnaire['Translated'].notna()]
-			
+
+			if 'ENG' not in country_language:
+				questionnaire = questionnaire[questionnaire['Translated'].notna()]
+				response_types = response_types[response_types['Translation'].notna()]
+				response_types = response_types[response_types['Translated'].notna()]
+				
 			for i, row in questionnaire.iterrows():
 				if row['QuestionElement'] == 'Constant':
-					df_questionnaire = process_constant_segment(constants, row, study, survey_item_prefix, splitter, df_questionnaire)
+					df_questionnaire = process_constant_segment(constants, row, study, survey_item_prefix, splitter, module_dict, df_questionnaire)
 				elif row['QuestionElement'] in ['QInstruction', 'QItemInstruction', 'QItem'] and row['QuestionName'] not in ['INTRO0', 'INTRO1']:
-					df_questionnaire = process_request_segment(row, study, survey_item_prefix, splitter, df_questionnaire)
+					df_questionnaire = process_request_segment(row, study, survey_item_prefix, splitter, module_dict, df_questionnaire)
 				elif row['QuestionElement'] == 'IWER':
 					if row['QuestionName'] != 'IWER_INTRO' and isinstance(row['QuestionName'], str):
-						df_questionnaire = process_instruction_segment(row, study, survey_item_prefix, splitter, df_questionnaire)
+						df_questionnaire = process_instruction_segment(row, study, survey_item_prefix, splitter, module_dict, df_questionnaire)
 				elif row['QuestionElement'] == 'Answer':
-					df_questionnaire = process_response_segment(row, study, survey_item_prefix, df_questionnaire)
+					df_questionnaire = process_response_segment(row, study, survey_item_prefix, module_dict, df_questionnaire)
 				elif row['QuestionElement'] == 'AnswerType':
 					df_questionnaire = process_response_type_segment(response_types, row['TranslatableElement'], row, study, 
-						survey_item_prefix, df_questionnaire)
+						survey_item_prefix, module_dict, df_questionnaire)
 
 
 			csv_name = file.replace('.xlsx', '')
