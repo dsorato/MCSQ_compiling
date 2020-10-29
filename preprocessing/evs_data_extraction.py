@@ -212,7 +212,7 @@ def process_instruction_segment(row, study, survey_item_prefix, splitter, module
 	sentences = splitter.tokenize(text)
 	for sentence in sentences:
 		data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
-		'item_type':'INSTRUCTION', 'item_name': row['QuestionName'], 'item_value':None, 'text': sentence
+		'item_type':'INSTRUCTION', 'item_name': row['QuestionName'], 'item_value':None, 'text': sentence,
 		'QuestionElement': row['QuestionElement']}
 		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
@@ -262,6 +262,39 @@ def process_response_type_segment(response_types, code, row, study, survey_item_
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
+
+def questionnaire_post_processing(df_questionnaire):
+	df_post= pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 'text'])
+	unique_item_names = df_questionnaire.item_name.unique()
+
+	for unique_item_name in unique_item_names:
+		df_by_item_name = df_questionnaire[df_questionnaire['item_name']==unique_item_name]
+
+		df_instruction = df_by_item_name[df_by_item_name['item_type']=='INSTRUCTION']
+		df_request = df_by_item_name[df_by_item_name['item_type']=='REQUEST']
+		df_response = df_by_item_name[df_by_item_name['item_type']=='RESPONSE']
+
+		del df_response['QuestionElement']
+
+		if df_instruction.empty == False:
+			del df_instruction['QuestionElement']
+			df_post = df_post.append(df_instruction, ignore_index=True)
+
+		for i, row in df_request.iterrows():
+			data = {'survey_item_ID': row['survey_item_ID'], 'Study':row['Study'], 'module':row['module'], 
+			'item_type':row['item_type'], 'item_name':row['item_name'], 'item_value':row['item_value'], 'text': row['text']}
+			df_post = df_post.append(data, ignore_index = True)	
+
+			if df_response.empty == False:
+				if row['QuestionElement'] == 'QItem':
+					df_post = df_post.append(df_response, ignore_index=True)
+
+		if df_response.empty == False:
+			last_row = df_post.iloc[-1]
+			if last_row['item_type'] != 'RESPONSE':
+				df_post = df_post.append(df_response, ignore_index=True)
+
+	return df_post
 
 def set_initial_structures(filename):
 	"""
@@ -352,38 +385,7 @@ def main(folder_path):
 
 
 			csv_name = file.replace('.xlsx', '')
-			df_questionnaire.to_csv(csv_name+'.csv', encoding='utf-8-sig', index=False)
-
-			df_post= pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 'text'])
-			unique_item_names = df_questionnaire.item_name.unique()
-
-			for item_name in unique_item_names:
-				df_by_item_name = df_questionnaire[df_questionnaire['item_name']==unique_item_name]
-
-				df_instruction = df_by_item_name[df_by_item_name['item_type']=='INSTRUCTION']
-				df_request = df_by_item_name[df_by_item_name['item_type']=='REQUEST']
-				df_response = df_by_item_name[df_by_item_name['item_type']=='RESPONSE']
-
-				del df_response['QuestionElement']
-
-				if df_instruction.empty == False:
-					del df_instruction['QuestionElement']
-					df_post = df_post.append(df_instruction, ignore_index=True)
-
-				for i, row in df_request.iterrows():
-					data = {'survey_item_ID': row['survey_item_ID'], 'Study':row['Study'], 'module':row['module'], 
-					'item_type':row['item_type'], 'item_name':row['item_name'], 'item_value':row['item_value'], 'text': row['text']}
-					df_post = df_post.append(data, ignore_index = True)	
-
-					if df_response.empty == False:
-						if row['QuestionElement'] == 'QItem':
-							df_post = df_post.append(df_response, ignore_index=True)
-
-				if df_response.empty == False:
-					last_row = df_post.iloc[-1]
-					if last_row['item_type'] != 'RESPONSE':
-						df_post = df_post.append(df_response, ignore_index=True)
-
+			df_post = questionnaire_post_processing(df_questionnaire)
 			df_post.to_csv(csv_name+'.csv', encoding='utf-8-sig', index=False)
 
 
