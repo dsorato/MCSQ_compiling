@@ -72,14 +72,13 @@ def get_module(row, module_dict):
 	return module
 
 def adjust_item_name(row):
-	print(row)
-	if isinstance(row['QuestionElementNr'], str) and isinstance(row['QuestionName'], str):
-		if 'a' not in row['QuestionName'] and row['QuestionElementNr'] != ' ':
-			item_name = row['QuestionName']+chr(int(row['QuestionElementNr'])+64).lower()
+	if isinstance(row['QuestionElementNr'], str) and isinstance(row['item_name'], str):
+		if 'a' not in row['item_name'] and row['QuestionElementNr'] != ' ':
+			item_name = row['item_name']+chr(int(row['QuestionElementNr'])+64).lower()
 		else:
-			item_name = row['QuestionName']
+			item_name = row['item_name']
 	else:
-		item_name = row['QuestionName']
+		item_name = row['item_name']
 
 	return item_name
 
@@ -143,7 +142,7 @@ def process_constant_segment(constants, row, study, survey_item_prefix, splitter
 
 			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
 			'item_type':item_type, 'item_name': row['QuestionName'], 'item_value':item_value, 
-			'text':clean_text(constant_text), 'QuestionElement': row['QuestionElement']}
+			'text':clean_text(constant_text), 'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
 			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 		else:
 			constant_text = clean_text(constant_text)
@@ -151,7 +150,7 @@ def process_constant_segment(constants, row, study, survey_item_prefix, splitter
 			for sentence in sentences:
 				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
 				'item_type':item_type, 'item_name': row['QuestionName'], 'item_value':None, 'text': sentence,
-				'QuestionElement': row['QuestionElement']}
+				'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
@@ -185,7 +184,7 @@ def process_request_segment(row, study, survey_item_prefix, splitter, module_dic
 
 				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
 				'item_type':item_type, 'item_name': row['QuestionName'], 'item_value':None, 'text':sentence,
-				'QuestionElement': row['QuestionElement']}
+				'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 	else:
 		for sentence in sentences:
@@ -196,7 +195,7 @@ def process_request_segment(row, study, survey_item_prefix, splitter, module_dic
 
 			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
 			'item_type':item_type, 'item_name': row['QuestionName'], 'item_value':None, 'text':sentence,
-			'QuestionElement': row['QuestionElement']}
+			'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
 			df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
@@ -220,7 +219,7 @@ def process_instruction_segment(row, study, survey_item_prefix, splitter, module
 	for sentence in sentences:
 		data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
 		'item_type':'INSTRUCTION', 'item_name': row['QuestionName'], 'item_value':None, 'text': sentence,
-		'QuestionElement': row['QuestionElement']}
+		'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
 		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
@@ -243,7 +242,7 @@ def process_response_segment(row, study, survey_item_prefix, module_dict, df_que
 
 	data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
 	'item_type':'RESPONSE', 'item_name': row['QuestionName'], 'item_value':row['QuestionElementNr'], 
-	'text':clean_text(text), 'QuestionElement': row['QuestionElement']}
+	'text':clean_text(text), 'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
 	df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
@@ -265,7 +264,7 @@ def process_response_type_segment(response_types, code, row, study, survey_item_
 				survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
 				'item_type':'RESPONSE', 'item_name': row['QuestionName'], 'item_value':row['QuestionElementNr'], 
-				'text':clean_text(text), 'QuestionElement': row['QuestionElement']}
+				'text':clean_text(text), 'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
@@ -277,6 +276,7 @@ def questionnaire_post_processing(df_with_intro):
 	for unique_item_name in unique_item_names:
 		df_by_item_name = df_with_intro[df_with_intro['item_name']==unique_item_name]
 		print(unique_item_name)
+		print(df_by_item_name)
 
 		df_instruction = df_by_item_name[df_by_item_name['item_type']=='INSTRUCTION']
 		df_introduction = df_by_item_name[df_by_item_name['item_type']=='INTRODUCTION']
@@ -294,38 +294,50 @@ def questionnaire_post_processing(df_with_intro):
 			df_post = df_post.append(df_introduction, ignore_index=True)
 
 		for i, row in df_request.iterrows():
+			item_name = adjust_item_name(row)
 			data = {'survey_item_ID': row['survey_item_ID'], 'Study':row['Study'], 'module':row['module'], 
-			'item_type':row['item_type'], 'item_name':row['item_name'], 'item_value':row['item_value'], 'text': row['text']}
+			'item_type':row['item_type'], 'item_name': item_name, 'item_value':row['item_value'], 
+			'text': row['text']}
 			df_post = df_post.append(data, ignore_index = True)	
 
 			if df_response.empty == False:
 				if row['QuestionElement'] == 'QItem':
-					df_post = df_post.append(df_response, ignore_index=True)
+					for i, response_row in df_response.iterrows():
+						data = {'survey_item_ID': response_row['survey_item_ID'], 'Study':response_row['Study'], 'module':response_row['module'], 
+						'item_type':response_row['item_type'], 'item_name': item_name, 'item_value':response_row['item_value'], 
+						'text': response_row['text']}
+						df_post = df_post.append(data, ignore_index=True)
 
 		if df_response.empty == False:
 			last_row = df_post.iloc[-1]
 			if last_row['item_type'] != 'RESPONSE':
-				df_post = df_post.append(df_response, ignore_index=True)
+				for i, response_row in df_response.iterrows():
+					data = {'survey_item_ID': response_row['survey_item_ID'], 'Study':response_row['Study'], 'module':response_row['module'], 
+					'item_type':response_row['item_type'], 'item_name': item_name, 'item_value':response_row['item_value'], 
+					'text': response_row['text']}
+					df_post = df_post.append(data, ignore_index=True)
 
 	return df_post
 
 def fix_intro_inconsistencies(df_questionnaire):
 	df_with_intro = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 
-		'item_value', 'text', 'QuestionElement'])
+		'item_value', 'text', 'QuestionElement', 'QuestionElementNr'])
 
 	row_iterator = df_questionnaire.iterrows()
 	_, last = next(row_iterator)  # take first item from row_iterator
 	for i, row in row_iterator:
-		print(last['item_name'], row['item_name'])
 		if isinstance(last['item_name'], float):
 			data = {'survey_item_ID': last['survey_item_ID'], 'Study':last['Study'], 'module':last['module'], 
-			'item_type':'INTRODUCTION', 'item_name':row['item_name'], 'item_value':last['item_value'], 'text': last['text']}
+			'item_type':'INTRODUCTION', 'item_name':row['item_name'], 'item_value':last['item_value'], 'text': last['text'],
+			'QuestionElementNr': last['QuestionElementNr']}
 		elif 'INTRO' in last['item_name'] or 'SECTION' in last['item_name']:
 			data = {'survey_item_ID': last['survey_item_ID'], 'Study':last['Study'], 'module':last['module'], 
-			'item_type':'INTRODUCTION', 'item_name':row['item_name'], 'item_value':last['item_value'], 'text': last['text']}
+			'item_type':'INTRODUCTION', 'item_name':row['item_name'], 'item_value':last['item_value'], 'text': last['text'],
+			'QuestionElementNr': last['QuestionElementNr']}
 		else:
 			data = {'survey_item_ID': last['survey_item_ID'], 'Study':last['Study'], 'module':last['module'], 
-			'item_type':last['item_type'], 'item_name':last['item_name'], 'item_value':last['item_value'], 'text': last['text']}
+			'item_type':last['item_type'], 'item_name':last['item_name'], 'item_value':last['item_value'], 'text': last['text'],
+			'QuestionElementNr': last['QuestionElementNr']}
 		
 		df_with_intro = df_with_intro.append(data, ignore_index = True)	
 		last = row
@@ -354,7 +366,7 @@ def set_initial_structures(filename):
 	A pandas dataframe to store questionnaire data.
 	"""
 	df_questionnaire = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 
-		'item_value', 'text', 'QuestionElement'])
+		'item_value', 'text', 'QuestionElement', 'QuestionElementNr'])
 
 	"""
 	The prefix of a EVS survey item is study+'_'+language+'_'+country+'_'
