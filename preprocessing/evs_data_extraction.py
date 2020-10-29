@@ -43,6 +43,8 @@ def clean_text(text):
 		text = re.sub("’", "'", text)
 		text = text.replace('e.g.', 'eg')
 		text = text.replace('e.g', 'eg')
+		text = text.replace('?:', '?')
+		text = text.replace('‑', '-')
 		text = text.replace('[', '')
 		text = text.replace(']', '')
 		text = re.sub("[.]{4,}", "", text)
@@ -291,7 +293,7 @@ def questionnaire_post_processing(df_with_intro):
 			del df_introduction['QuestionElement']
 			df_post = df_post.append(df_introduction, ignore_index=True)
 
-		for i, row in df_with_intro.iterrows():
+		for i, row in df_request.iterrows():
 			data = {'survey_item_ID': row['survey_item_ID'], 'Study':row['Study'], 'module':row['module'], 
 			'item_type':row['item_type'], 'item_name':row['item_name'], 'item_value':row['item_value'], 'text': row['text']}
 			df_post = df_post.append(data, ignore_index = True)	
