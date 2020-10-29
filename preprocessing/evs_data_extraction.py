@@ -167,6 +167,11 @@ def process_request_segment(row, study, survey_item_prefix, splitter, module_dic
 	text = clean_text(text)
 	sentences = splitter.tokenize(text)
 
+	if row['QuestionElement'] == 'QIntro':
+		item_type = 'INTRODUCTION'
+	else:
+		item_type = 'REQUEST'
+
 	if df_questionnaire.empty ==False:
 		last_row = df_questionnaire.iloc[-1]
 		for sentence in sentences:
@@ -177,7 +182,7 @@ def process_request_segment(row, study, survey_item_prefix, splitter, module_dic
 					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
 				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
-				'item_type':'REQUEST', 'item_name': row['QuestionName'], 'item_value':None, 'text':sentence,
+				'item_type':item_type, 'item_name': row['QuestionName'], 'item_value':None, 'text':sentence,
 				'QuestionElement': row['QuestionElement']}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 	else:
@@ -188,7 +193,7 @@ def process_request_segment(row, study, survey_item_prefix, splitter, module_dic
 				survey_item_id = ut.update_survey_item_id(survey_item_prefix)
 
 			data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module(row, module_dict), 
-			'item_type':'REQUEST', 'item_name': row['QuestionName'], 'item_value':None, 'text':sentence,
+			'item_type':item_type, 'item_name': row['QuestionName'], 'item_value':None, 'text':sentence,
 			'QuestionElement': row['QuestionElement']}
 			df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
@@ -263,14 +268,16 @@ def process_response_type_segment(response_types, code, row, study, survey_item_
 
 	return df_questionnaire
 
-def questionnaire_post_processing(df_questionnaire):
+def questionnaire_post_processing(df_with_intro):
 	df_post= pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 'text'])
-	unique_item_names = df_questionnaire.item_name.unique()
+	unique_item_names = df_with_intro.item_name.unique()
 
 	for unique_item_name in unique_item_names:
-		df_by_item_name = df_questionnaire[df_questionnaire['item_name']==unique_item_name]
+		df_by_item_name = df_with_intro[df_with_intro['item_name']==unique_item_name]
+		print(unique_item_name)
 
 		df_instruction = df_by_item_name[df_by_item_name['item_type']=='INSTRUCTION']
+		df_introduction = df_by_item_name[df_by_item_name['item_type']=='INTRODUCTION']
 		df_request = df_by_item_name[df_by_item_name['item_type']=='REQUEST']
 		df_response = df_by_item_name[df_by_item_name['item_type']=='RESPONSE']
 
@@ -280,7 +287,11 @@ def questionnaire_post_processing(df_questionnaire):
 			del df_instruction['QuestionElement']
 			df_post = df_post.append(df_instruction, ignore_index=True)
 
-		for i, row in df_request.iterrows():
+		if df_introduction.empty == False:
+			del df_introduction['QuestionElement']
+			df_post = df_post.append(df_introduction, ignore_index=True)
+
+		for i, row in df_with_intro.iterrows():
 			data = {'survey_item_ID': row['survey_item_ID'], 'Study':row['Study'], 'module':row['module'], 
 			'item_type':row['item_type'], 'item_name':row['item_name'], 'item_value':row['item_value'], 'text': row['text']}
 			df_post = df_post.append(data, ignore_index = True)	
@@ -295,6 +306,32 @@ def questionnaire_post_processing(df_questionnaire):
 				df_post = df_post.append(df_response, ignore_index=True)
 
 	return df_post
+
+def fix_intro_inconsistencies(df_questionnaire):
+	df_with_intro = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 
+		'item_value', 'text', 'QuestionElement'])
+
+	row_iterator = df_questionnaire.iterrows()
+	_, last = next(row_iterator)  # take first item from row_iterator
+	for i, row in row_iterator:
+		print(last['item_name'], row['item_name'])
+		if isinstance(last['item_name'], float):
+			data = {'survey_item_ID': last['survey_item_ID'], 'Study':last['Study'], 'module':last['module'], 
+			'item_type':'INTRODUCTION', 'item_name':row['item_name'], 'item_value':last['item_value'], 'text': last['text']}
+		elif 'INTRO' in last['item_name'] or 'SECTION' in last['item_name']:
+			data = {'survey_item_ID': last['survey_item_ID'], 'Study':last['Study'], 'module':last['module'], 
+			'item_type':'INTRODUCTION', 'item_name':row['item_name'], 'item_value':last['item_value'], 'text': last['text']}
+		else:
+			data = {'survey_item_ID': last['survey_item_ID'], 'Study':last['Study'], 'module':last['module'], 
+			'item_type':last['item_type'], 'item_name':last['item_name'], 'item_value':last['item_value'], 'text': last['text']}
+		
+		df_with_intro = df_with_intro.append(data, ignore_index = True)	
+		last = row
+
+	return df_with_intro
+
+
+
 
 def set_initial_structures(filename):
 	"""
@@ -341,7 +378,7 @@ def set_initial_structures(filename):
 	Module dictionnaire
 	"""
 	module_dict = {'A': 'Perceptions of Life', 'B': 'Family', 'C': 'Politics and society',
-	'D': "Respondent's parents", 'E': 'Socio demographics'}
+	'D': "Respondent's parents/Respondent's partner", 'E': 'Socio demographics'}
 
 	return df_questionnaire, survey_item_prefix, study, country_language,splitter, module_dict
 
@@ -372,7 +409,7 @@ def main(folder_path):
 			for i, row in questionnaire.iterrows():
 				if row['QuestionElement'] == 'Constant':
 					df_questionnaire = process_constant_segment(constants, row, study, survey_item_prefix, splitter, module_dict, df_questionnaire)
-				elif row['QuestionElement'] in ['QInstruction', 'QItemInstruction', 'QItem'] and row['QuestionName'] not in ['INTRO0', 'INTRO1']:
+				elif row['QuestionElement'] in ['QInstruction', 'QItemInstruction', 'QItem', 'QIntro'] and row['QuestionName'] not in ['INTRO0', 'INTRO1']:
 					df_questionnaire = process_request_segment(row, study, survey_item_prefix, splitter, module_dict, df_questionnaire)
 				elif row['QuestionElement'] == 'IWER':
 					if row['QuestionName'] != 'IWER_INTRO' and isinstance(row['QuestionName'], str):
@@ -385,7 +422,10 @@ def main(folder_path):
 
 
 			csv_name = file.replace('.xlsx', '')
-			df_post = questionnaire_post_processing(df_questionnaire)
+			df_questionnaire.to_csv(csv_name+'.csv', encoding='utf-8-sig', index=False)
+			df_with_intro = fix_intro_inconsistencies(df_questionnaire)
+			df_with_intro.to_csv(csv_name+'.csv', encoding='utf-8-sig', index=False)
+			df_post = questionnaire_post_processing(df_with_intro)
 			df_post.to_csv(csv_name+'.csv', encoding='utf-8-sig', index=False)
 
 
