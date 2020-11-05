@@ -62,6 +62,7 @@ def clean_text(text):
 		text = text.replace('e.g.', 'eg')
 		text = text.replace('e.g', 'eg')
 		text = text.replace('?:', '?')
+		text = text.replace(' ?', '?')
 		text = text.replace('‑', '-')
 		text = text.replace('[', '')
 		text = text.replace(']', '')
@@ -109,7 +110,7 @@ def adjust_item_name(QuestionElementNr, item_name):
 		adjusted item name metadata (string).
 	"""
 	if isinstance(QuestionElementNr, str) and isinstance(item_name, str):
-		if re.compile('[a-z]$').match(item_name) == None and QuestionElementNr != ' ':
+		if re.compile('^Q\d+[a-z]$').match(item_name) is None and QuestionElementNr != ' ':
 			item_name = item_name.rstrip()
 			item_name = item_name+chr(int(QuestionElementNr)+64).lower()
 		else:
@@ -287,12 +288,19 @@ def process_response_segment(row, study, module_dict, df_questionnaire):
 	else:
 		text = row['Translated'] 
 
-	if re.compile('^Religion\s\d+$').match(text) == None:
+	if re.compile('^Religion\s\d+$').match(text) is None:
 		item_value = row['QuestionElementNr']
+		if pd.isna(item_value):
+			item_value = '0'
+		if isinstance(row['TranslatableElement'], str):
+			if 'Code:' in row['TranslatableElement']:
+				item_value = '1'
+			if 'Write in' in row['TranslatableElement']:
+				item_value = '0'
 
 		data = {'Study':study, 'module': get_module(row, module_dict), 
 		'item_type':'RESPONSE', 'item_name': row['QuestionName'], 'item_value':str(item_value), 
-		'text':clean_text(text), 'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
+		'text':clean_text(text), 'QuestionElement': row['QuestionElement'], 'QuestionElementNr': item_value}
 
 		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
@@ -300,7 +308,6 @@ def process_response_segment(row, study, module_dict, df_questionnaire):
 
 def process_response_type_segment(response_types, code, row, study, module_dict, df_questionnaire):
 	mask = response_types.loc[response_types['Code'] == code]
-
 	if not mask.empty:
 		for i, mask_row in mask.iterrows():
 			if isinstance(mask_row['Translation'], float) or mask_row['Translation'] == 'Translation': 
@@ -315,7 +322,7 @@ def process_response_type_segment(response_types, code, row, study, module_dict,
 				text = mask_row['Translation'] 
 
 			if text != '':
-				if re.compile('Religion\s\d+').match(text) == None:
+				if re.compile('Religion\s\d+').match(text) is None:
 					item_name = row['QuestionName']
 
 					data = {'Study':study, 'module': get_module(row, module_dict), 
@@ -576,6 +583,9 @@ def main(folder_path):
 			questionnaire['Translated'] = questionnaire['Translated'].replace(['NA'],'NAext')
 			questionnaire['TranslatableElement'] = questionnaire['TranslatableElement'].replace(['DK'],'DKext')
 			questionnaire['Translated'] = questionnaire['Translated'].replace(['DK'],'DKext')
+
+			#drop consecutive duplicates
+			questionnaire = questionnaire.loc[questionnaire['Translated'].shift() != questionnaire['Translated']]
 
 			if 'ENG' not in country_language:
 				response_types = response_types[response_types['Translation'].notna()]
