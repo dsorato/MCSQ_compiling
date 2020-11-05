@@ -15,10 +15,17 @@ import math
 
 
 def dk_nr_standard(item_value):
-	# Standard
-	# Refusal 777
-	# Don't know 888
-	# Does not apply 999
+	"""
+	Standardizes special category values (don't know, refusal and not applicable).
+	Standard:
+	Refusal 777
+	Don't know 888
+	Does not apply 999
+	Args:
+		param1 item_value (string): item value metadata extarcted from QuestionElementNr in the input file.
+	Returns: 
+		Standardized item_value (string) metadata, if it is a special answer category
+	"""	
 	if isinstance(item_value, str) or isinstance(item_value, int):
 		item_value = str(item_value)
 		if item_value == '8':
@@ -37,6 +44,17 @@ def dk_nr_standard(item_value):
 
 
 def clean_text(text):
+	"""
+	Cleans text segments by removing undesired characters and character sequences.
+	A string input is expected, if the input is not a string instance, 
+	the method returns '', so the entry is ignored in the data extraction loop.
+
+	Args:
+		param1 text (string expected): text to be cleaned.
+
+	Returns: 
+		cleaned text (string).
+	"""
 	if isinstance(text, str):
 		text = re.sub("\n", " ", text)
 		text = re.sub("…", "...", text)
@@ -56,16 +74,20 @@ def clean_text(text):
 
 	return text
 
-
-def remove_trailing(clean):
-	without_trailing = []
-	for item in clean:
-		item = item.rstrip()
-		without_trailing.append(item)
-
-	return without_trailing
-
 def get_module(row, module_dict):
+	"""
+	Gets the module metadata. Initial information comes from the column Module of the input file,
+	in the form A, B, C, etc. If the letter is present in the module_dict (hard coded), then return 
+	the full module name, otherwise return original value from the column Module of the input file.
+	A string is expected in row['Module'].
+
+	Args:
+		param1 row: pandas dataframe row being currently analyzed.
+		param2 module_dict (dictionary): hard coded dictionary contaning the full name of modules.
+
+	Returns: 
+		module name metadata (string).
+	"""
 	if isinstance(row['Module'], str):
 		module = module_dict[row['Module']]
 	else:
@@ -410,7 +432,19 @@ def questionnaire_post_processing(df_with_intro, survey_item_prefix):
 
 	return df_post
 
-def fix_intro_inconsistencies(df_questionnaire):
+def fix_item_name_inconsistencies(df_questionnaire):
+	"""
+	Substitutes the item names like SECTION10, INTRO1, etc for item names in standardized format.
+	If the item name has the aforementioned inconsistency, the method substitutes it for the next item
+	name in df_questionnaire. Also sets the item type to INTRODUCTION if item name contains INTRO.
+
+	Args:
+		param1 df_questionnaire (pandas dataframe): name of the input file.
+
+	Returns: 
+		df_with_intro (pandas dataframe) with updated rows where the aforementioned incostistency was found.
+		
+	"""
 	df_with_intro = pd.DataFrame(columns=['Study', 'module', 'item_type', 'item_name', 
 		'item_value', 'text', 'QuestionElement', 'QuestionElementNr'])
 
@@ -527,7 +561,7 @@ def main(folder_path):
 
 			csv_name = file.replace('.xlsx', '')
 			df_questionnaire.to_csv(csv_name+'.csv', encoding='utf-8-sig', index=False)
-			df_with_intro = fix_intro_inconsistencies(df_questionnaire)
+			df_with_intro = fix_item_name_inconsistencies(df_questionnaire)
 			# df_with_intro.to_csv(csv_name+'intro.csv', encoding='utf-8-sig', index=False)
 			df_post = questionnaire_post_processing(df_with_intro, survey_item_prefix)
 			df_post.to_csv(csv_name+'.csv', encoding='utf-8-sig', index=False)
