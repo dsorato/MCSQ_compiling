@@ -96,6 +96,18 @@ def get_module(row, module_dict):
 	return module
 
 def adjust_item_name(QuestionElementNr, item_name):
+	"""
+	Tries to solve the problem of QItems not having different item names by combining the initial
+	item name information from the column QuestionName of the input file with a transformation of the
+	value in the QuestionElementNr column.
+
+	Args:
+		param1 QuestionElementNr (string): item value (in row) extracted from QuestionElementNr column of input file.
+		param2 item_name (string): item name (in row) extracted from QuestionName column of input file.
+
+	Returns: 
+		adjusted item name metadata (string).
+	"""
 	if isinstance(QuestionElementNr, str) and isinstance(item_name, str):
 		if re.compile('[a-z]$').match(item_name) == None and QuestionElementNr != ' ':
 			item_name = item_name.rstrip()
@@ -155,6 +167,24 @@ def process_constant(constants, constant_code):
 		return None, None
 
 def process_constant_segment(constants, row, study, splitter, module_dict, df_questionnaire):
+	"""
+	Processes the text segments of a constant, extracted in the process_constant() method and
+	adds it to the questionnaire dataframe (df_questionnaire). If the segment is an instruction of the 
+	type SHOWC, combine the text with the card number, available in QuestionElementNr column of the
+	input file.
+
+	Args:
+		param1 constants (pandas dataframe): pandas dataframe with contents of constants sheet.
+		param2 row (series): current row of input file being analyzed in outter loop.
+		param3 study (string): metadata parameter about study embedded in the file name.
+		param4 splitter (NLTK object): sentence segmentation from NLTK library.
+		param5 module_dict (dictionary): hard coded dictionary contaning the full name of modules.
+		param6 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+
+	Returns: 
+		updated df_questionnaire (pandas dataframe) with constant text and its metadata, 
+		if the contant text exists.
+	"""
 	constant_text, item_type = process_constant(constants, row['Translated'])
 
 	if constant_text != None:
@@ -166,13 +196,20 @@ def process_constant_segment(constants, row, study, splitter, module_dict, df_qu
 			'text':clean_text(constant_text), 'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
 			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 		else:
-			constant_text = clean_text(constant_text)
-			sentences = splitter.tokenize(constant_text)
-			for sentence in sentences:
+			if item_type == 'INSTRUCTION' and row['TranslatableElement'] == 'SHOWC':
+				constant_text = constant_text+' '+row['QuestionElementNr']
 				data = {'Study':study, 'module': get_module(row, module_dict), 
-				'item_type':item_type, 'item_name': row['QuestionName'], 'item_value':None, 'text': sentence,
-				'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
-				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+					'item_type':item_type, 'item_name': row['QuestionName'], 'item_value':None, 'text': constant_text,
+					'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
+				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+			else:
+				constant_text = clean_text(constant_text)
+				sentences = splitter.tokenize(constant_text)
+				for sentence in sentences:
+					data = {'Study':study, 'module': get_module(row, module_dict), 
+					'item_type':item_type, 'item_name': row['QuestionName'], 'item_value':None, 'text': sentence,
+					'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
+					df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
 
 	return df_questionnaire
 
