@@ -448,6 +448,23 @@ def process_response_segment(row, study, country_language, module_dict, df_quest
 	return df_questionnaire
 
 def process_response_type_segment(response_types, code, row, study, country_language, module_dict, df_questionnaire):
+	"""
+	Processes response type segments if the code is in the response_type sheet. Builds a mask based on response code
+	and iterates through text segments in mask dataframe to extract the response segments. If the segment is of type
+	Religion n, Education n, PARTY n, the segment is ignored because these are placeholders.
+
+	Args:
+		param1 response_types (pandas dataframe): pandas dataframe with contents of response type sheet.
+		param2 code (string): code of response type.
+		param3 row (series): current row of input file being analyzed in outter loop.
+		param4 study (string): metadata parameter about study embedded in the file name.
+		param5 country_language (string): metadata parameter about country_language embedded in the file name.
+		param6 module_dict (dictionary): hard coded dictionary contaning the full name of modules.
+		param7 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+
+	Returns: 
+		updated df_questionnaire (pandas dataframe) with response text and its metadata.
+	"""
 	mask = response_types.loc[response_types['Code'] == code]
 	
 	if not mask.empty:
