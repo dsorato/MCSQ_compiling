@@ -215,6 +215,22 @@ def process_constant_segment(constants, row, study, splitter, module_dict, df_qu
 	return df_questionnaire
 
 def add_valid_request_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire):
+	"""
+	Splits text into sentences, assigns item_type metadata based on information contained in
+	QuestionElement column and adds segments to the questionnaire dataframe (df_questionnaire).
+
+	Args:
+		param1 text (string): text segments from input file.
+		param2 study (string): metadata parameter about study embedded in the file name.
+		param3 row (series): current row of input file being analyzed in outter loop.
+		param4 last_row (series): previous row of input file being analyzed in outter loop.
+		param5 module_dict (dictionary): hard coded dictionary contaning the full name of modules.
+		param6 splitter (NLTK object): sentence segmentation from NLTK library.
+		param7 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+
+	Returns: 
+		updated df_questionnaire (pandas dataframe) with request/introduction text and its metadata.
+	"""
 	text = clean_text(text)
 	sentences = splitter.tokenize(text)
 
@@ -234,6 +250,22 @@ def add_valid_request_segments(text, study, row,last_row, module_dict, splitter,
 
 
 def process_request_segment(row, study, country_language, splitter, module_dict, df_questionnaire):
+	"""
+	Processes request segments and calls the add_valid_request_segments() method when the segment
+	is valid. A text segment is valid if: 1) its QuestionElementNr attribute is different from the previous row
+	2)  its QuestionElement attribute is different from the previous row.
+
+	Args:
+		param1 row (series): current row of input file being analyzed in outter loop.
+		param2 study (string): metadata parameter about study embedded in the file name.
+		param3 country_language (string): metadata parameter about country_language embedded in the file name.
+		param4 splitter (NLTK object): sentence segmentation from NLTK library.
+		param5 module_dict (dictionary): hard coded dictionary contaning the full name of modules.
+		param6 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+
+	Returns: 
+		updated df_questionnaire (pandas dataframe) with request text and its metadata.
+	"""
 	if isinstance(row['Translated'], float) or row['Translated'] == 'Translation':
 		if 'ENG' in country_language:
 			if isinstance(row['TranslatableElement'], float):
@@ -248,8 +280,6 @@ def process_request_segment(row, study, country_language, splitter, module_dict,
 	if df_questionnaire.empty ==False:
 		last_row = df_questionnaire.iloc[-1]
 		if last_row['QuestionElementNr'] != row['QuestionElementNr']:
-			df_questionnaire = add_valid_request_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)
-		elif last_row['QuestionElement'] == row['QuestionElement'] and last_row['QuestionElementNr'] != row['QuestionElementNr']:
 			df_questionnaire = add_valid_request_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)
 		elif last_row['QuestionElement'] != row['QuestionElement']:
 			df_questionnaire = add_valid_request_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)	
@@ -279,6 +309,21 @@ def process_request_segment(row, study, country_language, splitter, module_dict,
 	return df_questionnaire
 
 def add_valid_instruction_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire):
+	"""
+	Splits text into sentences and adds segments to the questionnaire dataframe (df_questionnaire).
+
+	Args:
+		param1 text (string): text segments from input file.
+		param2 study (string): metadata parameter about study embedded in the file name.
+		param3 row (series): current row of input file being analyzed in outter loop.
+		param4 last_row (series): previous row of input file being analyzed in outter loop.
+		param5 module_dict (dictionary): hard coded dictionary contaning the full name of modules.
+		param6 splitter (NLTK object): sentence segmentation from NLTK library.
+		param7 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+
+	Returns: 
+		updated df_questionnaire (pandas dataframe) with instruction text and its metadata.
+	"""
 	text = clean_text(text)
 	sentences = splitter.tokenize(text)
 	for sentence in sentences:
@@ -290,6 +335,22 @@ def add_valid_instruction_segments(text, study, row,last_row, module_dict, split
 	return df_questionnaire
 
 def process_instruction_segment(row, study, country_language, splitter, module_dict, df_questionnaire):
+	"""
+	Processes instruction segments and calls the add_valid_instruction_segments() method when the segment
+	is valid. A text segment is valid if: 1) its QuestionElementNr attribute is different from the previous row
+	2)  its QuestionElement attribute is different from the previous row.
+
+	Args:
+		param1 row (series): current row of input file being analyzed in outter loop.
+		param2 study (string): metadata parameter about study embedded in the file name.
+		param3 country_language (string): metadata parameter about country_language embedded in the file name.
+		param4 splitter (NLTK object): sentence segmentation from NLTK library.
+		param5 module_dict (dictionary): hard coded dictionary contaning the full name of modules.
+		param6 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+
+	Returns: 
+		updated df_questionnaire (pandas dataframe) with instruction text and its metadata.
+	"""
 	if isinstance(row['Translated'], float) or row['Translated'] == 'Translation':
 		if 'ENG' in country_language:
 			if isinstance(row['TranslatableElement'], float):
@@ -304,15 +365,8 @@ def process_instruction_segment(row, study, country_language, splitter, module_d
 	if df_questionnaire.empty ==False:
 		last_row = df_questionnaire.iloc[-1]
 		if last_row['QuestionElementNr'] != row['QuestionElementNr']:
-			print(text)
-			df_questionnaire = add_valid_instruction_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)
-			
-		elif last_row['QuestionElement'] == row['QuestionElement'] and last_row['QuestionElementNr'] != row['QuestionElementNr']:
-			print(text)
-			df_questionnaire = add_valid_instruction_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)
-
+			df_questionnaire = add_valid_instruction_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)	
 		elif last_row['QuestionElement'] != row['QuestionElement']:
-			print(text)
 			df_questionnaire = add_valid_instruction_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)	
 	else:
 		df_questionnaire = add_valid_instruction_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)
@@ -320,6 +374,21 @@ def process_instruction_segment(row, study, country_language, splitter, module_d
 	return df_questionnaire
 
 def add_valid_response_segments(item_value, text, study, row,last_row, module_dict, df_questionnaire):
+	"""
+	Adds reponse segments to the questionnaire dataframe (df_questionnaire).
+
+	Args:
+		param1 item_value (string): item_value metadata, extracted from QuestionElementNr and modified in process_response_segment()
+		param2 text (string): text segments from input file.
+		param3 study (string): metadata parameter about study embedded in the file name.
+		param4 row (series): current row of input file being analyzed in outter loop.
+		param5 last_row (series): previous row of input file being analyzed in outter loop.
+		param6 module_dict (dictionary): hard coded dictionary contaning the full name of modules.
+		param7 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+
+	Returns: 
+		updated df_questionnaire (pandas dataframe) with instruction text and its metadata.
+	"""
 	data = {'Study':study, 'module': get_module(row, module_dict), 
 		'item_type':'RESPONSE', 'item_name': row['QuestionName'], 'item_value':str(item_value), 
 		'text':clean_text(text), 'QuestionElement': row['QuestionElement'], 'QuestionElementNr': item_value}
@@ -330,6 +399,22 @@ def add_valid_response_segments(item_value, text, study, row,last_row, module_di
 
 
 def process_response_segment(row, study, country_language, module_dict, df_questionnaire):
+	"""
+	Processes response segments and calls the add_valid_response_segments() method when the segment
+	is valid. A text segment is valid if: 1) its QuestionElementNr attribute is different from the previous row
+	2)  its QuestionElement attribute is different from the previous row.
+
+	Args:
+		param1 row (series): current row of input file being analyzed in outter loop.
+		param2 study (string): metadata parameter about study embedded in the file name.
+		param3 country_language (string): metadata parameter about country_language embedded in the file name.
+		param4 splitter (NLTK object): sentence segmentation from NLTK library.
+		param5 module_dict (dictionary): hard coded dictionary contaning the full name of modules.
+		param6 df_questionnaire (pandas dataframe): pandas dataframe to store questionnaire data.
+
+	Returns: 
+		updated df_questionnaire (pandas dataframe) with response text and its metadata.
+	"""
 	if isinstance(row['Translated'], float) or row['Translated'] == 'Translation':
 		if 'ENG' in country_language:
 			if isinstance(row['TranslatableElement'], float):
@@ -355,8 +440,6 @@ def process_response_segment(row, study, country_language, module_dict, df_quest
 			last_row = df_questionnaire.iloc[-1]
 			if last_row['QuestionElementNr'] != row['QuestionElementNr']:
 				df_questionnaire = add_valid_response_segments(item_value, text, study, row,last_row, module_dict, df_questionnaire)	
-			elif last_row['QuestionElement'] == row['QuestionElement'] and last_row['QuestionElementNr'] != row['QuestionElementNr']:				
-				df_questionnaire = add_valid_response_segments(item_value, text, study, row,last_row, module_dict, df_questionnaire)
 			elif last_row['QuestionElement'] != row['QuestionElement']:
 				df_questionnaire = add_valid_response_segments(item_value, text, study, row,last_row, module_dict, df_questionnaire)
 		else:
