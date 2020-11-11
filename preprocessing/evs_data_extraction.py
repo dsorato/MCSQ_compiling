@@ -254,7 +254,27 @@ def process_request_segment(row, study, country_language, splitter, module_dict,
 		elif last_row['QuestionElement'] != row['QuestionElement']:
 			df_questionnaire = add_valid_request_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)	
 	else:
-		df_questionnaire = add_valid_request_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)
+		text = clean_text(text)
+		sentences = splitter.tokenize(text)
+
+		if row['QuestionElement'] == 'QIntro':
+			item_type = 'INTRODUCTION'
+		else:
+			item_type = 'REQUEST'
+			
+		for i, sentence in enumerate(sentences):
+			if i > 0:
+				last_row = df_questionnaire.iloc[-1]
+				if sentence != last_row['text']:
+					data = {'Study':study, 'module': get_module(row, module_dict), 
+					'item_type':item_type, 'item_name': row['QuestionName'], 'item_value':None, 'text':sentence,
+					'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
+					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+			else:
+				data = {'Study':study, 'module': get_module(row, module_dict), 
+				'item_type':item_type, 'item_name': row['QuestionName'], 'item_value':None, 'text':sentence,
+				'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
+				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
 	return df_questionnaire
 

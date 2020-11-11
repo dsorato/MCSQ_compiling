@@ -62,3 +62,9 @@ class EVSCountrySpecificR04():
 	item_names = ['Q23a', 'Q24a', 'Q75a', 'Q75b', 'Q110', 'Q116', 'Q127', 'Q134', 'Q140']
 	item_names = [x.lower() for x in item_names]
 
+class EVSCountrySpecificR05():
+	"""
+	Item names of country specific questions in EVS round 5.
+	"""
+	item_names = ['Q13a', 'Q106', 'Q98', 'Q49']
+	item_names = [x.lower() for x in item_names]
