@@ -214,19 +214,7 @@ def process_constant_segment(constants, row, study, splitter, module_dict, df_qu
 
 	return df_questionnaire
 
-
-def process_request_segment(row, study, splitter, module_dict, df_questionnaire):
-	if isinstance(row['Translated'], float) or row['Translated'] == 'Translation':
-		if 'ENG' in study:
-			if isinstance(row['TranslatableElement'], float):
-				return df_questionnaire
-			else:
-				text = row['TranslatableElement']
-		else:
-			return df_questionnaire
-	else:
-		text = row['Translated']
-
+def add_valid_request_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire):
 	text = clean_text(text)
 	sentences = splitter.tokenize(text)
 
@@ -234,27 +222,20 @@ def process_request_segment(row, study, splitter, module_dict, df_questionnaire)
 		item_type = 'INTRODUCTION'
 	else:
 		item_type = 'REQUEST'
-
-	if df_questionnaire.empty ==False:
-		last_row = df_questionnaire.iloc[-1]
-		for sentence in sentences:
-			if sentence != last_row['text']:
-				data = {'Study':study, 'module': get_module(row, module_dict), 
-				'item_type':item_type, 'item_name': row['QuestionName'], 'item_value':None, 'text':sentence,
-				'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
-				df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
-	else:
-		for sentence in sentences:
+			
+	for sentence in sentences:
+		if sentence != last_row['text']:
 			data = {'Study':study, 'module': get_module(row, module_dict), 
 			'item_type':item_type, 'item_name': row['QuestionName'], 'item_value':None, 'text':sentence,
 			'QuestionElement': row['QuestionElement'], 'QuestionElementNr': row['QuestionElementNr']}
-			df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
-	return df_questionnaire
+	return 	df_questionnaire
 
-def process_instruction_segment(row, study, splitter, module_dict, df_questionnaire):
+
+def process_request_segment(row, study, country_language, splitter, module_dict, df_questionnaire):
 	if isinstance(row['Translated'], float) or row['Translated'] == 'Translation':
-		if 'ENG' in study:
+		if 'ENG' in country_language:
 			if isinstance(row['TranslatableElement'], float):
 				return df_questionnaire
 			else:
@@ -264,7 +245,20 @@ def process_instruction_segment(row, study, splitter, module_dict, df_questionna
 	else:
 		text = row['Translated']
 
+	if df_questionnaire.empty ==False:
+		last_row = df_questionnaire.iloc[-1]
+		if last_row['QuestionElementNr'] != row['QuestionElementNr']:
+			df_questionnaire = add_valid_request_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)
+		elif last_row['QuestionElement'] == row['QuestionElement'] and last_row['QuestionElementNr'] != row['QuestionElementNr']:
+			df_questionnaire = add_valid_request_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)
+		elif last_row['QuestionElement'] != row['QuestionElement']:
+			df_questionnaire = add_valid_request_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)	
+	else:
+		df_questionnaire = add_valid_request_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)
 
+	return df_questionnaire
+
+def add_valid_instruction_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire):
 	text = clean_text(text)
 	sentences = splitter.tokenize(text)
 	for sentence in sentences:
@@ -275,10 +269,49 @@ def process_instruction_segment(row, study, splitter, module_dict, df_questionna
 
 	return df_questionnaire
 
-
-def process_response_segment(row, study, module_dict, df_questionnaire):
+def process_instruction_segment(row, study, country_language, splitter, module_dict, df_questionnaire):
 	if isinstance(row['Translated'], float) or row['Translated'] == 'Translation':
-		if 'ENG' in study:
+		if 'ENG' in country_language:
+			if isinstance(row['TranslatableElement'], float):
+				return df_questionnaire
+			else:
+				text = row['TranslatableElement']
+		else:
+			return df_questionnaire
+	else:
+		text = row['Translated']
+
+	if df_questionnaire.empty ==False:
+		last_row = df_questionnaire.iloc[-1]
+		if last_row['QuestionElementNr'] != row['QuestionElementNr']:
+			print(text)
+			df_questionnaire = add_valid_instruction_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)
+			
+		elif last_row['QuestionElement'] == row['QuestionElement'] and last_row['QuestionElementNr'] != row['QuestionElementNr']:
+			print(text)
+			df_questionnaire = add_valid_instruction_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)
+
+		elif last_row['QuestionElement'] != row['QuestionElement']:
+			print(text)
+			df_questionnaire = add_valid_instruction_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)	
+	else:
+		df_questionnaire = add_valid_instruction_segments(text, study, row,last_row, module_dict, splitter, df_questionnaire)
+
+	return df_questionnaire
+
+def add_valid_response_segments(item_value, text, study, row,last_row, module_dict, df_questionnaire):
+	data = {'Study':study, 'module': get_module(row, module_dict), 
+		'item_type':'RESPONSE', 'item_name': row['QuestionName'], 'item_value':str(item_value), 
+		'text':clean_text(text), 'QuestionElement': row['QuestionElement'], 'QuestionElementNr': item_value}
+
+	df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+
+	return df_questionnaire
+
+
+def process_response_segment(row, study, country_language, module_dict, df_questionnaire):
+	if isinstance(row['Translated'], float) or row['Translated'] == 'Translation':
+		if 'ENG' in country_language:
 			if isinstance(row['TranslatableElement'], float):
 				return df_questionnaire
 			else:
@@ -288,7 +321,7 @@ def process_response_segment(row, study, module_dict, df_questionnaire):
 	else:
 		text = row['Translated'] 
 
-	if re.compile('^Religion\s\d+$').match(text) is None:
+	if re.compile('^Religion\s\d+$').match(text) is None and re.compile('^Education\s\d+$').match(text) is None and re.compile('^PARTY\s\d+').match(text) is None:
 		item_value = row['QuestionElementNr']
 		if pd.isna(item_value):
 			item_value = '0'
@@ -298,20 +331,26 @@ def process_response_segment(row, study, module_dict, df_questionnaire):
 			if 'Write in' in row['TranslatableElement']:
 				item_value = '0'
 
-		data = {'Study':study, 'module': get_module(row, module_dict), 
-		'item_type':'RESPONSE', 'item_name': row['QuestionName'], 'item_value':str(item_value), 
-		'text':clean_text(text), 'QuestionElement': row['QuestionElement'], 'QuestionElementNr': item_value}
-
-		df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+		if df_questionnaire.empty ==False:
+			last_row = df_questionnaire.iloc[-1]
+			if last_row['QuestionElementNr'] != row['QuestionElementNr']:
+				df_questionnaire = add_valid_response_segments(item_value, text, study, row,last_row, module_dict, df_questionnaire)	
+			elif last_row['QuestionElement'] == row['QuestionElement'] and last_row['QuestionElementNr'] != row['QuestionElementNr']:				
+				df_questionnaire = add_valid_response_segments(item_value, text, study, row,last_row, module_dict, df_questionnaire)
+			elif last_row['QuestionElement'] != row['QuestionElement']:
+				df_questionnaire = add_valid_response_segments(item_value, text, study, row,last_row, module_dict, df_questionnaire)
+		else:
+			df_questionnaire = add_valid_response_segments(item_value, text, study, row,last_row, module_dict, df_questionnaire) 
 
 	return df_questionnaire
 
-def process_response_type_segment(response_types, code, row, study, module_dict, df_questionnaire):
+def process_response_type_segment(response_types, code, row, study, country_language, module_dict, df_questionnaire):
 	mask = response_types.loc[response_types['Code'] == code]
+	
 	if not mask.empty:
 		for i, mask_row in mask.iterrows():
 			if isinstance(mask_row['Translation'], float) or mask_row['Translation'] == 'Translation': 
-				if 'ENG' in study:
+				if 'ENG' in country_language:
 					if isinstance(mask_row['Translatable Element'], float):
 						return df_questionnaire
 					else:
@@ -322,7 +361,7 @@ def process_response_type_segment(response_types, code, row, study, module_dict,
 				text = mask_row['Translation'] 
 
 			if text != '':
-				if re.compile('Religion\s\d+').match(text) is None:
+				if re.compile('^Religion\s\d+$').match(text) is None and re.compile('^Education\s\d+$').match(text) is None and re.compile('^PARTY\s\d+').match(text) is None:
 					item_name = row['QuestionName']
 
 					data = {'Study':study, 'module': get_module(row, module_dict), 
@@ -586,6 +625,7 @@ def main(folder_path):
 
 			#drop consecutive duplicates
 			questionnaire = questionnaire.loc[questionnaire['Translated'].shift() != questionnaire['Translated']]
+			# questionnaire = questionnaire.loc[questionnaire['TranslatableElement'].shift() != questionnaire['Translated']]
 
 			if 'ENG' not in country_language:
 				response_types = response_types[response_types['Translation'].notna()]
@@ -595,15 +635,15 @@ def main(folder_path):
 				if row['QuestionElement'] == 'Constant':
 					df_questionnaire = process_constant_segment(constants, row, study, splitter, module_dict, df_questionnaire)
 				elif row['QuestionElement'] in ['QInstruction', 'QItemInstruction', 'QItem', 'QIntro'] and row['QuestionName'] not in ['INTRO0', 'INTRO1']:
-					df_questionnaire = process_request_segment(row, study, splitter, module_dict, df_questionnaire)
+					df_questionnaire = process_request_segment(row, study, country_language, splitter, module_dict, df_questionnaire)
 				elif row['QuestionElement'] == 'IWER':
 					if row['QuestionName'] != 'IWER_INTRO' and isinstance(row['QuestionName'], str):
-						df_questionnaire = process_instruction_segment(row, study, splitter, module_dict, df_questionnaire)
+						df_questionnaire = process_instruction_segment(row, study, country_language, splitter, module_dict, df_questionnaire)
 				elif row['QuestionElement'] == 'Answer':
-					df_questionnaire = process_response_segment(row, study, module_dict, df_questionnaire)
+					df_questionnaire = process_response_segment(row, study, country_language, module_dict, df_questionnaire)
 				elif row['QuestionElement'] == 'AnswerType':
 					df_questionnaire = process_response_type_segment(response_types, row['TranslatableElement'], row, study, 
-					 module_dict, df_questionnaire)
+					 country_language, module_dict, df_questionnaire)
 
 
 			csv_name = file.replace('.xlsx', '')
