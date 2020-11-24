@@ -63,14 +63,15 @@ Extract answers text from XML node
 :param df_answers: pandas dataframe containing answers extracted from XML file
 :returns: answers dataframe, with new answer category retrieved (when appliable)
 """
-def extract_answers(name, subnode, df_answers):
-	text = subnode.find('Text')
-	exp = text.find('Expression')
-	if 'Text' in exp.attrib:
-		value, text = clean_answer_and_value(exp.attrib['Text'])
-		if text != None:
-			data = {'response_table_name': name, 'category_value':value, 'categories': text}
-			df_answers = df_answers.append(data, ignore_index = True)
+def extract_answers(subnode, df_answers, name):
+	for child in subnode.getiterator():
+		if child.tag == 'answer_element':
+			category_value = child.attrib['labelvalue']
+			text_nodes = child.findall('text')
+			for text_node in text_nodes:
+				if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
+					data = {'name': name, 'category_value':category_value, 'text': text_node.text}
+					df_answers = df_answers.append(data, ignore_index = True)
 
 	return df_answers
 
@@ -83,14 +84,15 @@ Extract questions text from XML node
 :param df_questions: pandas dataframe containing questions extracted from XML file
 :returns: questions dataframe, with new question retrieved (when appliable)
 """
-def extract_questions(name, subnode, df_questions):
-	text = subnode.find('Text')
-	exp = text.find('Expression')
-	if 'Text' in exp.attrib:
-		text = clean_question_text(exp.attrib['Text'])
-		if text != None:
-			data = {'question_name': name, 'text': text}
-			df_questions = df_questions.append(data, ignore_index = True)
+def extract_questions(subnode, df_questions, name):
+	for child in subnode.getiterator():
+		if child.tag == 'question_element' and 'type_name' in child.attrib:
+			if child.attrib['type_name'] == 'QText':
+				text_nodes = child.findall('text')
+				for text_node in text_nodes:
+					if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
+						data = {'name': name, 'text': text_node.text}
+						df_questions = df_questions.append(data, ignore_index = True)
 
 	return df_questions
 
@@ -107,39 +109,27 @@ def main(filename):
 	"""
 	parent_map = dict((c, p) for p in tree.getiterator() for c in p)
 
-	"""
-	Relevant SHARE information (questions, answers, instructions) are in child nodes 
-	of MetaDefinition (child of MetaDefinitionCollection) nodes.
-	"""
-	share_metadefinitions = root.findall('.//MetaDefinitionCollection/MetaDefinition')
+	questions = root.findall('.//questionnaire/questions')
+	answers = root.findall('.//questionnaire/answers')
 
-	df_answers = pd.DataFrame(columns=['response_table_name', 'category_value', 'categories'])
-	df_questions = pd.DataFrame(columns=['question_name', 'text'])
+	df_answers = pd.DataFrame(columns=['name', 'category_value', 'text'])
+	df_questions = pd.DataFrame(columns=['name', 'text'])
 
 	dict_name_and_answer = dict()
 
-	for node in share_metadefinitions:
-		name = node.attrib['Name']
+	for node in questions:
 		for subnode in node.getiterator():
-			if subnode.tag == 'RoleTexts':
-				if subnode.attrib['Role'] == 'Category':
-					df_answers = extract_answers(name, subnode, df_answers)
-				elif subnode.attrib['Role'] == 'Question':
-					if name not in ignore_elements:
-						df_questions = extract_questions(name, subnode, df_questions)
+			if subnode.tag == 'question':
+				name = subnode.attrib['name']
+				df_questions = extract_questions(subnode, df_questions, name)
 					
+	for node in answers:
+		for subnode in node.getiterator():
+			if subnode.tag == 'answer':
+				name = subnode.attrib['name']
+				df_answers = extract_answers(subnode, df_answers, name)				
 							
-		# if node.attrib['DefinitionStructure'] == 'Block':
-		# 	if 'Section_' in node.attrib['Name']:
-		# 		for subnode in node.getiterator():
-		# 			if subnode.tag == 'Expression' and 'Text' in subnode.attrib:
-		# 				subnode_parent = parent_map[subnode]
-		# 				parent_of_parent = parent_map[subnode_parent]
-		# 				if 'Role' in parent_of_parent.attrib and parent_of_parent.attrib['Role'] != 'Category':
-		# 					print(subnode.tag, subnode.attrib)
-		# 				# for subsubnode in subnode.getiterator():
-		# 				# 	if subsubnode.tag == 'Text':
-
+	
 
 
 	df_answers.to_csv('share_answers_por_pt.csv', encoding='utf-8', index=False)
