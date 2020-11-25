@@ -118,7 +118,6 @@ def clean_text(text, country_language):
 	text = text.replace('{', '')
 	text = text.replace('etc.', '')
 	text = text.replace('^FLMonthFill ^FLYearFill', '...')
-
 	text = re.sub('\^SHOWCARD_ID', 'X', text)
 	text = re.sub('^\s?\d+\.\s', '', text)
 	text = re.sub('\^FLCurr', 'euros', text)
@@ -158,9 +157,10 @@ def extract_answers(subnode, df_answers, name, country_language):
 			for text_node in text_nodes:
 				if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
 					text = clean_text(text_node.text, country_language)
-					if re.compile('\^PreloadChild').match(text) is None and re.compile('\^FLChild').match(text) is None and re.compile('\^FLSNmember').match(text) is None:
-						data = {'item_name': name, 'item_value':item_value, 'text': text}
-						df_answers = df_answers.append(data, ignore_index = True)
+					if text is not None:
+						if re.compile('\^PreloadChild').match(text) is None and re.compile('\^FLChild').match(text) is None and re.compile('\^FLSNmember').match(text) is None:
+							data = {'item_name': name, 'item_value':item_value, 'text': text}
+							df_answers = df_answers.append(data, ignore_index = True)
 
 	return df_answers
 
@@ -181,10 +181,11 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 				for text_node in text_nodes:
 					if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
 						text = clean_text(text_node.text, country_language)
-						sentences = splitter.tokenize(text)
-						for sentence in sentences:
-							data = {'item_name': name, 'text': sentence}
-							df_questions = df_questions.append(data, ignore_index = True)
+						if text is not None:
+							sentences = splitter.tokenize(text)
+							for sentence in sentences:
+								data = {'item_name': name, 'text': sentence}
+								df_questions = df_questions.append(data, ignore_index = True)
 		elif child.tag == 'procedure':
 			proc_name = child.attrib['name']
 			fills = child.find('fills')
@@ -198,9 +199,10 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 					for text_node in text_nodes:
 						if text_node.attrib['translation_id'] != '1' and text_node.text is not None and text_node.text != '{}':
 							text = clean_text(text_node.text, country_language)
-							order = parent_map[text_node].attrib['order']
-							data = {'item_name': proc_name, 'fill_name':fill_name, 'order':order, 'text': text}
-							df_procedures = df_procedures.append(data, ignore_index = True)
+							if text is not None:
+								order = parent_map[text_node].attrib['order']
+								data = {'item_name': proc_name, 'fill_name':fill_name, 'order':order, 'text': text}
+								df_procedures = df_procedures.append(data, ignore_index = True)
 
 
 	return df_questions, df_procedures
