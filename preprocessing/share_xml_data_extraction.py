@@ -12,13 +12,17 @@ from preprocessing_ess_utils import *
 
 
 
-"""
-Clean question text 
-:param text: text to be cleaned
-:returns: cleaned question text.
-"""
+def replace_fill_in_answer(text):
+	text = re.sub('\^FLCurr', 'euros', text)
+	text = re.sub('\^img_infinity_correct_copy', '', text)
+	text = re.sub('\^img_infinity_incorrect_copy', '', text)
+	
+
+	return text
+
 def clean_text(text, country_language):
 	text = text.replace('<b>', '')
+	text = text.replace('.?', '?')
 	text = text.replace('</b>', '')
 	text = text.replace('<br>', '')
 	text = text.replace('<br />', '')
@@ -56,13 +60,13 @@ Extract answers text from XML node
 def extract_answers(subnode, df_answers, name, country_language):
 	for child in subnode.getiterator():
 		if child.tag == 'answer_element':
-			category_value = child.attrib['labelvalue']
+			item_value = child.attrib['labelvalue']
 			text_nodes = child.findall('text')
 			for text_node in text_nodes:
 				if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
 					text = clean_text(text_node.text, country_language)
 					if re.compile('\^PreloadChild').match(text) is None and re.compile('\^FLChild').match(text) is None and re.compile('\^FLSNmember').match(text) is None:
-						data = {'name': name, 'category_value':category_value, 'text': text}
+						data = {'item_name': name, 'item_value':item_value, 'text': text}
 						df_answers = df_answers.append(data, ignore_index = True)
 
 	return df_answers
@@ -86,7 +90,7 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 						text = clean_text(text_node.text, country_language)
 						sentences = splitter.tokenize(text)
 						for sentence in sentences:
-							data = {'name': name, 'text': sentence}
+							data = {'item_name': name, 'text': sentence}
 							df_questions = df_questions.append(data, ignore_index = True)
 		elif child.tag == 'procedure':
 			proc_name = child.attrib['name']
@@ -102,7 +106,7 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 						if text_node.attrib['translation_id'] != '1' and text_node.text is not None and text_node.text != '{}':
 							text = clean_text(text_node.text, country_language)
 							order = parent_map[text_node].attrib['order']
-							data = {'name': proc_name, 'fill_name':fill_name, 'order':order, 'text': text}
+							data = {'item_name': proc_name, 'fill_name':fill_name, 'order':order, 'text': text}
 							df_procedures = df_procedures.append(data, ignore_index = True)
 
 
@@ -171,11 +175,11 @@ def main(filename):
 	questions = root.findall('.//questionnaire/questions')
 	answers = root.findall('.//questionnaire/answers')
 
-	df_answers = pd.DataFrame(columns=['name', 'category_value', 'text'])
-	df_questions = pd.DataFrame(columns=['name', 'text'])
-	df_procedures = pd.DataFrame(columns=['name', 'fill_name', 'order', 'text'])
+	df_answers = pd.DataFrame(columns=['item_name', 'item_value', 'text'])
+	df_questions = pd.DataFrame(columns=['item_name', 'text'])
+	df_procedures = pd.DataFrame(columns=['item_name', 'fill_name', 'order', 'text'])
 
-	dict_name_and_answer = dict()
+	special_answer_categories = instantiate_special_answer_category_object(country_language)
 
 	for node in questions:
 		for subnode in node.getiterator():
@@ -188,7 +192,45 @@ def main(filename):
 		for subnode in node.getiterator():
 			if subnode.tag == 'answer':
 				name = subnode.attrib['name']
-				df_answers = extract_answers(subnode, df_answers, name, country_language)				
+				df_answers = extract_answers(subnode, df_answers, name, country_language)
+
+
+	unique_question_item_names = df_questions.item_name.unique()
+	for unique_item_name in unique_question_item_names:
+		df_questions_by_item_name = df_questions[df_questions['item_name'].str.lower()==unique_item_name.lower()]
+		df_answers_by_item_name = df_answers[df_answers['item_name'].str.lower()==unique_item_name.lower()]
+
+		for i, row in df_questions_by_item_name.iterrows():
+			if df_questionnaire.empty:
+				survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+			else:
+				survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
+
+			data = {'survey_item_ID':survey_item_id, 'Study':'SHA_2019', 'module': None, 'item_type':'REQUEST', 'item_name':row['item_name'], 
+			'item_value':None, 'text':row['text']}
+			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+		if df_answers_by_item_name.empty == False:
+			for i, row in df_answers_by_item_name.iterrows():
+				survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
+				text = replace_fill_in_answer(row['text'])
+				
+
+				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_2019', 'module': None, 'item_type':'RESPONSE', 'item_name':row['item_name'], 
+				'item_value':row['item_value'], 'text':text}
+				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+		else:
+			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+			answer_text, item_value = special_answer_categories.write_down[0], special_answer_categories.write_down[1]
+			last_row = df_questionnaire.iloc[-1]
+
+			data = {"survey_item_ID": survey_item_id,'Study':'SHA_2019', 'module': None, 
+			'item_type': 'RESPONSE', 'item_name': last_row['item_name'], 'item_value': item_value,  'text': answer_text}
+			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+
+
+				
 							
 	
 
@@ -196,6 +238,7 @@ def main(filename):
 	df_answers.to_csv('share_answers.csv', encoding='utf-8', index=False)
 	df_questions.to_csv('share_questions.csv', encoding='utf-8', index=False)
 	df_procedures.to_csv('share_procedures.csv', encoding='utf-8', index=False)
+	df_questionnaire.to_csv('df_questionnaire.csv', encoding='utf-8', index=False)
 
 
 """
