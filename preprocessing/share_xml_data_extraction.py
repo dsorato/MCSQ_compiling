@@ -10,12 +10,92 @@ import re
 import utils as ut
 from preprocessing_ess_utils import *
 
+def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id, item_name):
+	if len(fills) == 1:
+		df_procedure_filtered = df_procedures[df_procedures['fill_name'].str.lower()==fills[0].lower()]
+		last_text = None
+		if df_procedure_filtered.empty == False:
+			for i, row in df_procedure_filtered.iterrows():
+				text_var = text.replace(fills[0], row['text'])
+				text_var = text_var.replace('^', '')
 
+				if last_text is None or text_var != last_text:
+					data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': None, 'item_type':'REQUEST', 'item_name':item_name, 
+					'item_value':None, 'text':text_var}
+					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+				last_text = text_var
+	else:
+		texts = []
+		for i, fill in enumerate(fills):
+			df_procedure_filtered = df_procedures[df_procedures['fill_name'].str.lower()==fill.lower()]
+			last_text = None
+			if df_procedure_filtered.empty == False:
+				for i, row in df_procedure_filtered.iterrows():
+					if i == 0:
+						text_var = text.replace(fill, row['text'])
+						text_var = text_var.replace('^', '')
+						if last_text is None or text_var != last_text:
+							texts.append(text_var)
+							last_text = text_var
+					else:
+						texts_aux = []
+						for text in texts:
+							text_var = text.replace(fill, row['text'])
+							text_var = text_var.replace('^', '')
+							if last_text is None or text_var != last_text:
+								texts_aux.append(text_var)
+								last_text = text_var
+						texts = texts_aux
+
+		for text in texts:
+			data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': None, 'item_type':'REQUEST', 'item_name':item_name, 
+				'item_value':None, 'text':text}
+			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+
+
+
+	return df_questionnaire
+
+
+
+
+def fill_extraction(text):
+	match = re.compile('\^FL.*_\d').findall(text)
+	fill_list = []
+	if match:
+		for item in match:
+			split = item.split('^')
+			for substring in split:
+				if substring != '':
+					if ' ' in substring:
+						split_substring = substring.split(' ')
+						for s in split_substring:
+							match = re.compile('FL').match(s)
+							if match:
+								if ',' in substring:
+									substring = substring.replace(',', '')
+								fill_list.append(s)
+					else:
+						if ',' in substring:
+							substring = substring.replace(',', '')
+
+						fill_list.append(substring)
+	
+	if not fill_list:
+		return None
+	else:
+		return fill_list
 
 def replace_fill_in_answer(text):
 	text = re.sub('\^FLCurr', 'euros', text)
 	text = re.sub('\^img_infinity_correct_copy', '', text)
 	text = re.sub('\^img_infinity_incorrect_copy', '', text)
+	text = re.sub('\^CH004_FirstNameOfChild', 'Tom/Maria', text)
+	text = re.sub('\^FLLastYear', '2018', text)
+	text = re.sub('\^XT008_MonthDied', '', text)
+
 	
 
 	return text
@@ -36,7 +116,20 @@ def clean_text(text, country_language):
 	text = text.replace('\n', ' ').replace('\r', '')
 	text = text.replace('}', '')
 	text = text.replace('{', '')
+	text = text.replace('etc.', '')
+	text = text.replace('^FLMonthFill ^FLYearFill', '...')
+
+	text = re.sub('\^SHOWCARD_ID', 'X', text)
 	text = re.sub('^\s?\d+\.\s', '', text)
+	text = re.sub('\^FLCurr', 'euros', text)
+	text = re.sub('\^img_infinity_correct_copy', '', text)
+	text = re.sub('\^img_infinity_incorrect_copy', '', text)
+	text = re.sub('\^CH004_FirstNameOfChild', 'Tom/Maria', text)
+	text = re.sub('\^FLLastYear', '2018', text)
+	text = re.sub('\^XT008_MonthDied', '', text)
+	text = re.sub('\^FLMedia', '', text)
+	text = re.sub('\^FLMedia2', '', text)
+	text = re.sub('\^FLMedia2', '', text)
 
 	if 'ENG' not in country_language:
 		text = text.replace('else', ' ')
@@ -137,7 +230,7 @@ def set_initial_structures(filename):
 	"""
 	The prefix of a EVS survey item is study+'_'+language+'_'+country+'_'
 	"""
-	survey_item_prefix = re.sub('\.txt', '', filename)+'_'
+	survey_item_prefix = re.sub('\.xml', '', filename)+'_'
 
 	"""
 	Reset the initial survey_id sufix, because main is called iterativelly for every file in folder.
@@ -206,39 +299,37 @@ def main(filename):
 			else:
 				survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
 
-			data = {'survey_item_ID':survey_item_id, 'Study':'SHA_2019', 'module': None, 'item_type':'REQUEST', 'item_name':row['item_name'], 
-			'item_value':None, 'text':row['text']}
-			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+			fills = fill_extraction(row['text'])
 
-		if df_answers_by_item_name.empty == False:
-			for i, row in df_answers_by_item_name.iterrows():
-				survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
-				text = replace_fill_in_answer(row['text'])
-				
-
-				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_2019', 'module': None, 'item_type':'RESPONSE', 'item_name':row['item_name'], 
-				'item_value':row['item_value'], 'text':text}
+			if fills is None:
+				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': None, 'item_type':'REQUEST', 'item_name':row['item_name'], 
+				'item_value':None, 'text':row['text']}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
-		else:
-			survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+			else:
+				for fill in fills:
+					df_questionnaire = fill_unrolling(row['text'], fills, df_procedures, df_questionnaire, survey_item_id, row['item_name'])
+
+		if df_answers_by_item_name.empty:
 			answer_text, item_value = special_answer_categories.write_down[0], special_answer_categories.write_down[1]
 			last_row = df_questionnaire.iloc[-1]
 
-			data = {"survey_item_ID": survey_item_id,'Study':'SHA_2019', 'module': None, 
-			'item_type': 'RESPONSE', 'item_name': last_row['item_name'], 'item_value': item_value,  'text': answer_text}
-			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+			if last_row['text'] != answer_text:
+				survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+				data = {"survey_item_ID": survey_item_id,'Study':'SHA_R08_2019', 'module': None, 
+				'item_type': 'RESPONSE', 'item_name': last_row['item_name'], 'item_value': item_value,  'text': answer_text}
+				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+		else:
+			for i, row in df_answers_by_item_name.iterrows():
+				survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
+				text = replace_fill_in_answer(row['text'])
 
+				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': None, 'item_type':'RESPONSE', 'item_name':row['item_name'], 
+				'item_value':row['item_value'], 'text':text}
+				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
+			
 
-				
-							
-	
-
-
-	df_answers.to_csv('share_answers.csv', encoding='utf-8', index=False)
-	df_questions.to_csv('share_questions.csv', encoding='utf-8', index=False)
-	df_procedures.to_csv('share_procedures.csv', encoding='utf-8', index=False)
-	df_questionnaire.to_csv('df_questionnaire.csv', encoding='utf-8', index=False)
+	df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8', index=False)
 
 
 """
