@@ -20,7 +20,12 @@ def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id,
 				text_var = text_var.replace('^', '')
 
 				if last_text is None or text_var != last_text:
-					data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': None, 'item_type':'REQUEST', 'item_name':item_name, 
+					if 'intro' in item_name.lower():
+						item_type = 'INTRODUCTION'
+					else:
+						item_type = 'REQUEST'
+
+					data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2018', 'module': None, 'item_type':item_type, 'item_name':item_name, 
 					'item_value':None, 'text':text_var}
 					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
@@ -49,7 +54,12 @@ def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id,
 						texts = texts_aux
 
 		for text in texts:
-			data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': None, 'item_type':'REQUEST', 'item_name':item_name, 
+			if 'intro' in item_name.lower():
+				item_type = 'INTRODUCTION'
+			else:
+				item_type = 'REQUEST'
+
+			data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2018', 'module': None, 'item_type':item_type, 'item_name':item_name, 
 				'item_value':None, 'text':text}
 			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
@@ -95,6 +105,9 @@ def replace_fill_in_answer(text):
 	text = re.sub('\^CH004_FirstNameOfChild', 'Tom/Maria', text)
 	text = re.sub('\^FLLastYear', '2018', text)
 	text = re.sub('\^XT008_MonthDied', '', text)
+	text = re.sub('\^FLRosterName', 'Tom/Maria', text)
+	text = re.sub('\+piNameChild\+', 'Tom/Maria', text)
+	text = re.sub('\^piName', 'Tom/Maria', text)
 
 	
 
@@ -113,25 +126,53 @@ def clean_text(text, country_language):
 	text = text.replace('</em>', ' ')
 	text = text.replace('@B', '')
 	text = text.replace('@b', ' ')
+	text = text.replace('@/', ' ')
 	text = text.replace('\n', ' ').replace('\r', '')
 	text = text.replace('}', '')
 	text = text.replace('{', '')
 	text = text.replace('etc.', '')
+	text = text.replace('</p>', '')
+	text = text.replace('<p>', '')
+	text = re.sub('\^FLChildName', 'Tom/Maria', text)
+
+	
+
 	text = text.replace('^FLMonthFill ^FLYearFill', '...')
 	text = re.sub('\^SHOWCARD_ID', 'X', text)
 	text = re.sub('^\s?\d+\.\s', '', text)
 	text = re.sub('\^FLCurr', 'euros', text)
 	text = re.sub('\^img_infinity_correct_copy', '', text)
 	text = re.sub('\^img_infinity_incorrect_copy', '', text)
-	text = re.sub('\^CH004_FirstNameOfChild', 'Tom/Maria', text)
-	text = re.sub('\^FLLastYear', '2018', text)
+	text = re.sub('\^CH004_FirstNameOfChild', 'Tommy/Mary', text)
+	text = re.sub('\^FLLastInterviewMonthYear', '2017', text)
+	text = re.sub('\^FLTwoYearsBackMonth', '2016', text)
+	text = re.sub('\^FLLastYearMonth', '2017', text)
+	text = re.sub('\^FLLastYear', '2017', text)
 	text = re.sub('\^XT008_MonthDied', '', text)
 	text = re.sub('\^FLMedia', '', text)
 	text = re.sub('\^FLMedia2', '', text)
 	text = re.sub('\^FLMedia2', '', text)
+	text = re.sub('\^SN002_Roster', 'Tom/Maria', text)
+	text = re.sub('\^FLRosterName', 'Tom/Maria', text)
+	text = re.sub('\^FLChildName', 'Tom/Maria', text)
+	text = re.sub('\+piNameChild\+', 'Tom/Maria', text)
+	text = re.sub('\^piName', 'Tom/Maria', text)
+	text = re.sub('\^FLRespondentName', 'Tom/Maria', text)
+	text = re.sub('\^localRelationText', '', text)
+	text = re.sub('\^FLAgeTen', '80', text)
+	text = re.sub('\^img_cube_score_2', '', text)
+	text = re.sub('\^img_cube_score_1', '', text)
+	text = re.sub('\^EP127_PeriodFromMonth', '', text)
+	text = re.sub('\^EP129_PeriodToMonth', '', text)
+	text = re.sub('\^piRelation', '', text)
+	text = re.sub('\^TempRelationshipString', '', text)
 
 	if 'ENG' not in country_language:
 		text = text.replace('else', ' ')
+
+	if 'SPA' in country_language:
+		text = text.replace('Ud.', 'usted')
+		text = text.replace('Ud', 'usted')
 
 	
 	text = text.rstrip()
@@ -304,7 +345,12 @@ def main(filename):
 			fills = fill_extraction(row['text'])
 
 			if fills is None:
-				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': None, 'item_type':'REQUEST', 'item_name':row['item_name'], 
+				if 'intro' in row['item_name'].lower():
+					item_type = 'INTRODUCTION'
+				else:
+					item_type = 'REQUEST'
+
+				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2018', 'module': None, 'item_type':item_type, 'item_name':row['item_name'], 
 				'item_value':None, 'text':row['text']}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 			else:
@@ -312,22 +358,25 @@ def main(filename):
 					df_questionnaire = fill_unrolling(row['text'], fills, df_procedures, df_questionnaire, survey_item_id, row['item_name'])
 
 		if df_answers_by_item_name.empty:
-			answer_text, item_value = special_answer_categories.write_down[0], special_answer_categories.write_down[1]
 			last_row = df_questionnaire.iloc[-1]
-
-			if last_row['text'] != answer_text:
-				survey_item_id = ut.update_survey_item_id(survey_item_prefix)
-				data = {"survey_item_ID": survey_item_id,'Study':'SHA_R08_2019', 'module': None, 
-				'item_type': 'RESPONSE', 'item_name': last_row['item_name'], 'item_value': item_value,  'text': answer_text}
-				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+			if last_row['item_type'] != 'INTRODUCTION':
+				answer_text, item_value = special_answer_categories.write_down[0], special_answer_categories.write_down[1]
+				
+				if last_row['text'] != answer_text:
+					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
+					data = {"survey_item_ID": survey_item_id,'Study':'SHA_R08_2018', 'module': None, 
+					'item_type': 'RESPONSE', 'item_name': last_row['item_name'], 'item_value': item_value,  'text': answer_text}
+					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 		else:
-			for i, row in df_answers_by_item_name.iterrows():
-				survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
-				text = replace_fill_in_answer(row['text'])
+			last_row = df_questionnaire.iloc[-1]
+			if last_row['item_type'] != 'INTRODUCTION':
+				for i, row in df_answers_by_item_name.iterrows():
+					survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
+					text = replace_fill_in_answer(row['text'])
 
-				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': None, 'item_type':'RESPONSE', 'item_name':row['item_name'], 
-				'item_value':row['item_value'], 'text':text}
-				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+					data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2018', 'module': None, 'item_type':'RESPONSE', 'item_name':row['item_name'], 
+					'item_value':row['item_value'], 'text':text}
+					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
 			
 
