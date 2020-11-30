@@ -9,8 +9,31 @@ import sys
 import re
 import utils as ut
 from preprocessing_ess_utils import *
+from sharemodules import *
 
-def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id, item_name):
+
+def get_module_metadata(item_name, share_modules):
+	module = None
+	for k, v in list(share_modules.modules.items()):
+		if item_name[:2] == k:
+			return v
+
+	return module
+
+def fill_substitution_in_answer(text, fills, df_procedures):
+	texts = []
+	df_procedure_filtered = df_procedures[df_procedures['fill_name'].str.lower()==fills[0].lower()]
+	if df_procedure_filtered.empty == False:
+		for i, row in df_procedure_filtered.iterrows():
+			text_var = text.replace(fills[0], row['text'])
+			text_var = text_var.replace('^', '')
+			texts.append(text_var)
+
+	return texts
+
+				
+
+def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id, item_name, share_modules):
 	if len(fills) == 1:
 		df_procedure_filtered = df_procedures[df_procedures['fill_name'].str.lower()==fills[0].lower()]
 		last_text = None
@@ -25,7 +48,8 @@ def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id,
 					else:
 						item_type = 'REQUEST'
 
-					data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2018', 'module': None, 'item_type':item_type, 'item_name':item_name, 
+					data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': get_module_metadata(item_name, share_modules), 
+					'item_type':item_type, 'item_name':item_name, 
 					'item_value':None, 'text':text_var}
 					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
@@ -59,8 +83,8 @@ def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id,
 			else:
 				item_type = 'REQUEST'
 
-			data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2018', 'module': None, 'item_type':item_type, 'item_name':item_name, 
-				'item_value':None, 'text':text}
+			data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': get_module_metadata(item_name, share_modules), 
+			'item_type':item_type, 'item_name':item_name, 'item_value':None, 'text':text}
 			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
 
@@ -223,6 +247,9 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 					if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
 						text = clean_text(text_node.text, country_language)
 						if text is not None:
+							if name == 'THIS_INTERVIEW':
+								last_row = df_questions.iloc[-1]
+								name = last_row['item_name']
 							sentences = splitter.tokenize(text)
 							for sentence in sentences:
 								data = {'item_name': name, 'text': sentence}
@@ -317,6 +344,8 @@ def main(filename):
 
 	special_answer_categories = instantiate_special_answer_category_object(country_language)
 
+	share_modules = SHAREModules()
+
 	for node in questions:
 		for subnode in node.getiterator():
 			if subnode.tag == 'question':
@@ -350,12 +379,13 @@ def main(filename):
 				else:
 					item_type = 'REQUEST'
 
-				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2018', 'module': None, 'item_type':item_type, 'item_name':row['item_name'], 
+				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': get_module_metadata(row['item_name'], share_modules), 
+				'item_type':item_type, 'item_name':row['item_name'], 
 				'item_value':None, 'text':row['text']}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 			else:
 				for fill in fills:
-					df_questionnaire = fill_unrolling(row['text'], fills, df_procedures, df_questionnaire, survey_item_id, row['item_name'])
+					df_questionnaire = fill_unrolling(row['text'], fills, df_procedures, df_questionnaire, survey_item_id, row['item_name'], share_modules)
 
 		if df_answers_by_item_name.empty:
 			last_row = df_questionnaire.iloc[-1]
@@ -364,19 +394,32 @@ def main(filename):
 				
 				if last_row['text'] != answer_text:
 					survey_item_id = ut.update_survey_item_id(survey_item_prefix)
-					data = {"survey_item_ID": survey_item_id,'Study':'SHA_R08_2018', 'module': None, 
+					data = {"survey_item_ID": survey_item_id,'Study':'SHA_R08_2019', 'module': get_module_metadata(last_row['item_name'], share_modules), 
 					'item_type': 'RESPONSE', 'item_name': last_row['item_name'], 'item_value': item_value,  'text': answer_text}
 					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 		else:
 			last_row = df_questionnaire.iloc[-1]
 			if last_row['item_type'] != 'INTRODUCTION':
 				for i, row in df_answers_by_item_name.iterrows():
+					
 					survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
 					text = replace_fill_in_answer(row['text'])
 
-					data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2018', 'module': None, 'item_type':'RESPONSE', 'item_name':row['item_name'], 
-					'item_value':row['item_value'], 'text':text}
-					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+					fills = fill_extraction(row['text'])
+					if fills:
+						texts = fill_substitution_in_answer(row['text'], fills, df_procedures)
+
+						if texts:
+							for text in texts:
+								data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': get_module_metadata(row['item_name'], share_modules), 
+								'item_type':'RESPONSE', 'item_name':row['item_name'], 
+								'item_value':row['item_value'], 'text':text}
+								df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+					else:
+						data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': get_module_metadata(row['item_name'], share_modules), 
+						'item_type':'RESPONSE', 'item_name':row['item_name'], 
+						'item_value':row['item_value'], 'text':text}
+						df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
 			
 
