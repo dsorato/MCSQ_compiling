@@ -9,7 +9,17 @@ import pandas as pd
 import nltk
 
 initial_sufix = 0
+initial_showcard = 0
 
+def reset_initial_showcard():
+	global initial_showcard
+	initial_showcard = 0
+
+def update_showcard_id():
+	global initial_showcard
+	initial_showcard = initial_showcard + 1
+	
+	return initial_showcard
 
 def reset_initial_sufix():
 	global initial_sufix
