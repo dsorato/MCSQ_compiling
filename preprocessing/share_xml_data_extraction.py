@@ -268,7 +268,7 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 						if text_node.attrib['translation_id'] == '1' and text_node.text is not None:
 							text = clean_text(text_node.text, country_language)
 
-					if text is not None:
+					if text is not None and '^LblOnlyTesting' not in text and '^LblSucInstalled' not in text:
 						if name == 'THIS_INTERVIEW':
 							last_row = df_questions.iloc[-1]
 							name = last_row['item_name']
@@ -347,14 +347,19 @@ def set_initial_structures(filename, output_source_questionnaire_flag):
 	"""
 	Retrieve study and country_language information from the name of the input file. 
 	"""
-	study, country_language = get_country_language_and_study_info(filename)
-
+	if output_source_questionnaire_flag == '0':
+		study, country_language = get_country_language_and_study_info(filename)
+	else:
+		study, country_language = get_country_language_and_study_info('SHA_R08_2019_ENG_SOURCE')
+	
 	"""
 	Instantiate a NLTK sentence splitter based on file input language. 
 	"""
-	splitter = ut.get_sentence_splitter(filename)
-
-
+	if output_source_questionnaire_flag == '0':
+		splitter = ut.get_sentence_splitter(filename)
+	else:
+		splitter = ut.get_sentence_splitter('SHA_R08_2019_ENG_SOURCE')
+	
 	return df_questionnaire, survey_item_prefix, study, country_language,splitter
 
 def main(filename):
