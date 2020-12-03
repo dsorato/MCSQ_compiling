@@ -102,7 +102,7 @@ def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id,
 								last_text = text_var
 						texts = texts_aux
 
-		for text in texts:
+		for i, text in enumerate(texts):
 			text, item_type = eliminate_showcardID_and_adjust_item_type(text, item_name)
 
 			data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': get_module_metadata(item_name, share_modules), 
@@ -197,6 +197,7 @@ def clean_text(text, country_language):
 	text = re.sub('\^SN002_Roster', 'Tom/Maria', text)
 	text = re.sub('\^FLRosterName', 'Tom/Maria', text)
 	text = re.sub('\^FLChildName', 'Tom/Maria', text)
+	text = re.sub('\^FLChildname', 'Tom/Maria', text)
 	text = re.sub('\+piNameChild\+', 'Tom/Maria', text)
 	text = re.sub('\^piName', 'Tom/Maria', text)
 	text = re.sub('\^FLRespondentName', 'Tom/Maria', text)
@@ -296,7 +297,7 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 							if text_node.attrib['translation_id'] == '1' and text_node.text is not None and text_node.text != '{}':
 								text = clean_text(text_node.text, country_language)
 
-						if text is not None:
+						if text is not None and '+piHO004_OthPer+' not in text:
 							order = parent_map[text_node].attrib['order']
 							data = {'item_name': proc_name, 'fill_name':fill_name, 'order':order, 'text': text}
 							df_procedures = df_procedures.append(data, ignore_index = True)
@@ -362,48 +363,7 @@ def set_initial_structures(filename, output_source_questionnaire_flag):
 	
 	return df_questionnaire, survey_item_prefix, study, country_language,splitter
 
-def main(filename):
-	output_source_questionnaire_flag = '0'
-
-	"""
-	Parse tree of input XML file.
-	"""
-	file = str(filename)
-	tree = ET.parse(file)
-	root = tree.getroot()
-
-	"""
-	Create a dictionary to map the information of node relations.
-	"""
-	parent_map = dict((c, p) for p in tree.getiterator() for c in p)
-
-	df_questionnaire, survey_item_prefix, study, country_language,splitter = set_initial_structures(filename, output_source_questionnaire_flag)
-
-	questions = root.findall('.//questionnaire/questions')
-	answers = root.findall('.//questionnaire/answers')
-
-	df_answers = pd.DataFrame(columns=['item_name', 'item_value', 'text'])
-	df_questions = pd.DataFrame(columns=['item_name', 'text'])
-	df_procedures = pd.DataFrame(columns=['item_name', 'fill_name', 'order', 'text'])
-
-	special_answer_categories = instantiate_special_answer_category_object(country_language)
-	share_modules = SHAREModules()
-	
-
-	for node in questions:
-		for subnode in node.getiterator():
-			if subnode.tag == 'question':
-				name = subnode.attrib['name']
-				df_questions, df_procedures = extract_questions_and_procedures(subnode, df_questions, df_procedures, parent_map, name, splitter, country_language, output_source_questionnaire_flag)
-
-					
-	for node in answers:
-		for subnode in node.getiterator():
-			if subnode.tag == 'answer':
-				name = subnode.attrib['name']
-				df_answers = extract_answers(subnode, df_answers, name, country_language, output_source_questionnaire_flag)
-
-
+def build_questionnaire_structure(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories):
 	unique_question_item_names = df_questions.item_name.unique()
 	for unique_item_name in unique_question_item_names:
 		df_questions_by_item_name = df_questions[df_questions['item_name'].str.lower()==unique_item_name.lower()]
@@ -463,6 +423,52 @@ def main(filename):
 						'item_value':row['item_value'], 'text':re.sub(' +', ' ', text)}
 						df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
+	return df_questionnaire
+
+def main(filename):
+	output_source_questionnaire_flag = '0'
+
+	"""
+	Parse tree of input XML file.
+	"""
+	file = str(filename)
+	tree = ET.parse(file)
+	root = tree.getroot()
+
+	"""
+	Create a dictionary to map the information of node relations.
+	"""
+	parent_map = dict((c, p) for p in tree.getiterator() for c in p)
+
+	df_questionnaire, survey_item_prefix, study, country_language,splitter = set_initial_structures(filename, output_source_questionnaire_flag)
+
+	questions = root.findall('.//questionnaire/questions')
+	answers = root.findall('.//questionnaire/answers')
+
+	df_answers = pd.DataFrame(columns=['item_name', 'item_value', 'text'])
+	df_questions = pd.DataFrame(columns=['item_name', 'text'])
+	df_procedures = pd.DataFrame(columns=['item_name', 'fill_name', 'order', 'text'])
+
+	special_answer_categories = instantiate_special_answer_category_object(country_language)
+	share_modules = SHAREModules()
+	
+
+	for node in questions:
+		for subnode in node.getiterator():
+			if subnode.tag == 'question':
+				name = subnode.attrib['name']
+				df_questions, df_procedures = extract_questions_and_procedures(subnode, df_questions, df_procedures, parent_map, name, splitter, country_language, output_source_questionnaire_flag)
+
+					
+	for node in answers:
+		for subnode in node.getiterator():
+			if subnode.tag == 'answer':
+				name = subnode.attrib['name']
+				df_answers = extract_answers(subnode, df_answers, name, country_language, output_source_questionnaire_flag)
+
+
+	
+	df_questionnaire = build_questionnaire_structure(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories)
 			
 	if output_source_questionnaire_flag == '0':
 		df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8', index=False)
