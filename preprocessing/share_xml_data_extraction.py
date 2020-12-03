@@ -24,17 +24,32 @@ def fill_substitution_in_answer(text, fills, df_procedures):
 	texts = []
 	df_procedure_filtered = df_procedures[df_procedures['fill_name'].str.lower()==fills[0].lower()]
 	if df_procedure_filtered.empty == False:
+		last_text = None
 		for i, row in df_procedure_filtered.iterrows():
 			text_var = text.replace(fills[0], row['text'])
 			text_var = text_var.replace('^', ' ')
-			texts.append(text_var)
+			if last_text is None or text_var != last_text:
+				texts.append(text_var)
+				last_text = text_var
 
 	return texts
 
 def eliminate_showcardID_and_adjust_item_type(text, item_name):
 	if 'intro' in item_name.lower():
 		item_type = 'INTRODUCTION'
-		if '^SHOWCARD_ID.' in text:
+		if '^SHOWCARD_ID, si us plau.' in text:
+			text = re.sub('\^SHOWCARD_ID', str(ut.update_showcard_id()), text)
+			item_type = 'INSTRUCTION'
+		elif 'SHOWCARD_ID, si us plau.' in text:
+			text = re.sub('SHOWCARD_ID', str(ut.update_showcard_id()), text)
+			item_type = 'INSTRUCTION'
+		elif '^SHOWCARD_ID, por favor.' in text:
+			text = re.sub('\^SHOWCARD_ID', str(ut.update_showcard_id()), text)
+			item_type = 'INSTRUCTION'
+		elif 'SHOWCARD_ID, por favor.' in text:
+			text = re.sub('SHOWCARD_ID', str(ut.update_showcard_id()), text)
+			item_type = 'INSTRUCTION'
+		elif '^SHOWCARD_ID.' in text:
 			text = re.sub('\^SHOWCARD_ID', str(ut.update_showcard_id()), text)
 			item_type = 'INSTRUCTION'
 		elif '^SHOWCARD_ID' in text:
@@ -44,6 +59,18 @@ def eliminate_showcardID_and_adjust_item_type(text, item_name):
 			item_type = 'INSTRUCTION'
 		elif 'SHOWCARD_ID' in text:
 			text = re.sub('SHOWCARD_ID', str(ut.update_showcard_id()), text)
+	elif '^SHOWCARD_ID, si us plau.' in text:
+		text = re.sub('\^SHOWCARD_ID', str(ut.update_showcard_id()), text)
+		item_type = 'INSTRUCTION'
+	elif 'SHOWCARD_ID, si us plau.' in text:
+		text = re.sub('SHOWCARD_ID', str(ut.update_showcard_id()), text)
+		item_type = 'INSTRUCTION'
+	elif '^SHOWCARD_ID, por favor.' in text:
+		text = re.sub('\^SHOWCARD_ID', str(ut.update_showcard_id()), text)
+		item_type = 'INSTRUCTION'
+	elif 'SHOWCARD_ID, por favor.' in text:
+		text = re.sub('SHOWCARD_ID', str(ut.update_showcard_id()), text)
+		item_type = 'INSTRUCTION'
 	elif '^SHOWCARD_ID.' in text:
 		text = re.sub('\^SHOWCARD_ID', str(ut.update_showcard_id()), text)
 		item_type = 'INSTRUCTION'
@@ -73,12 +100,13 @@ def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id,
 				if last_text is None or text_var != last_text:
 					text_var, item_type = eliminate_showcardID_and_adjust_item_type(text_var, item_name)
 
-					data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': get_module_metadata(item_name, share_modules), 
-					'item_type':item_type, 'item_name':item_name, 
-					'item_value':None, 'text': re.sub(' +', ' ', text_var)}
-					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+					if '{empty}' not in text_var and 'empty' not in text_var:
+						data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': get_module_metadata(item_name, share_modules), 
+						'item_type':item_type, 'item_name':item_name, 
+						'item_value':None, 'text': re.sub(' +', ' ', text_var)}
+						df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
-				last_text = text_var
+						last_text = text_var
 	else:
 		texts = []
 		for i, fill in enumerate(fills):
@@ -105,9 +133,10 @@ def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id,
 		for i, text in enumerate(texts):
 			text, item_type = eliminate_showcardID_and_adjust_item_type(text, item_name)
 
-			data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': get_module_metadata(item_name, share_modules), 
-			'item_type':item_type, 'item_name':item_name, 'item_value':None, 'text':re.sub(' +', ' ', text)}
-			df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+			if '{empty}' not in text and 'empty' not in text:
+				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': get_module_metadata(item_name, share_modules), 
+				'item_type':item_type, 'item_name':item_name, 'item_value':None, 'text':re.sub(' +', ' ', text)}
+				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
 
 	return df_questionnaire
@@ -247,7 +276,7 @@ def extract_answers(subnode, df_answers, name, country_language, output_source_q
 					if text_node.attrib['translation_id'] == '1' and text_node.text is not None:
 						text = clean_text(text_node.text, country_language)
 
-				if text is not None:
+				if text is not None and '{empty}' not in text and 'empty' not in text:
 					if re.compile('\^PreloadChild').match(text) is None and re.compile('\^FLChild').match(text) is None and re.compile('\^FLSNmember').match(text) is None:
 						data = {'item_name': name, 'item_value':item_value, 'text': text}
 						df_answers = df_answers.append(data, ignore_index = True)
@@ -297,7 +326,7 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 							if text_node.attrib['translation_id'] == '1' and text_node.text is not None and text_node.text != '{}':
 								text = clean_text(text_node.text, country_language)
 
-						if text is not None and '+piHO004_OthPer+' not in text:
+						if text is not None and '+piHO004_OthPer+' not in text and '{empty}' not in text and 'empty' not in text:
 							order = parent_map[text_node].attrib['order']
 							data = {'item_name': proc_name, 'fill_name':fill_name, 'order':order, 'text': text}
 							df_procedures = df_procedures.append(data, ignore_index = True)
