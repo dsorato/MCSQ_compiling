@@ -15,7 +15,7 @@ class ESSSModulesR02:
 	'E': 'E - Economic morality Trust and interactions between producers and consumers',
 	'G': 'SUPP_G - Family Work and Wellbeing work-life balance', 'H': 'SUPP_H - Human values scale', 
 	'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions', 'K': 'SUPP_K - National Module',
-	'N': 'SUPP_N - National Module (Germany)'}
+	'N': 'SUPP_N - National Module (Germany)'} 
 
 class ESSSModulesR03:
 	"""
