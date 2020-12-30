@@ -14,7 +14,8 @@ class ESSSModulesR02:
 	modules = {'D':'D - Health and care seekin health, medicine, and doctor/patient relations',
 	'E': 'E - Economic morality Trust and interactions between producers and consumers',
 	'G': 'SUPP_G - Family Work and Wellbeing work-life balance', 'H': 'SUPP_H - Human values scale', 
-	'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions', 'K': 'SUPP_K - National Module'}
+	'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions', 'K': 'SUPP_K - National Module',
+	'N': 'SUPP_N - National Module (Germany)'}
 
 class ESSSModulesR03:
 	"""
