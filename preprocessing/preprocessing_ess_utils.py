@@ -487,6 +487,34 @@ def clean_answer(text, ess_special_answer_categories):
 		text = text.split('N', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'N'
+	elif re.compile(r'^Z\s.+').match(text):
+		text = text.split('Z', 1)
+		answer_text = text[1].rstrip()
+		answer_value = 'Z'
+	elif re.compile(r'^T\s.+').match(text):
+		text = text.split('T', 1)
+		answer_text = text[1].rstrip()
+		answer_value = 'T'
+	elif re.compile(r'^Y\s.+').match(text):
+		text = text.split('Y', 1)
+		answer_text = text[1].rstrip()
+		answer_value = 'Y'
+	elif re.compile(r'^Q\s.+').match(text):
+		text = text.split('Q', 1)
+		answer_text = text[1].rstrip()
+		answer_value = 'Q'
+	elif re.compile(r'^E\s.+').match(text):
+		text = text.split('E', 1)
+		answer_text = text[1].rstrip()
+		answer_value = 'E'
+	elif re.compile(r'^L\s.+').match(text):
+		text = text.split('L', 1)
+		answer_text = text[1].rstrip()
+		answer_value = 'L'
+	elif re.compile(r'^B\s.+').match(text):
+		text = text.split('B', 1)
+		answer_text = text[1].rstrip()
+		answer_value = 'B'
 	else:
 		answer_text = text.strip()
 		answer_value = None
