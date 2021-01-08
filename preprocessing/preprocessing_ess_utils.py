@@ -1398,6 +1398,11 @@ def instruction_recognition_french(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<attention>)ATTENTION:"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 	regex= r"^(?P<show>)(montrer|montrez)?\s?(?P<again>)(encore|toujours|A NOUVEAU)?\s?(?P<the>)(la)?\s?(?P<card>)carte"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -2152,7 +2157,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 			return True
 
 
-		regex= r"^(?P<continue>)seguir\s(con la|mostrando)\s(?P<card>)tarjeta"
+		regex= r"^(?P<continue>)(seguir|siga)\s(con la|mostrando)\s(?P<card>)tarjeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True

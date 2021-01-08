@@ -23,7 +23,8 @@ class ESSSModulesR03:
 	"""
 	modules = {'D':'D - Timing of life; the life course; timing of key life events, attitudes to ideal age, youngest age and oldest age of life events, planning for retirement',
 	'E': 'E - Personal and social well-being, helping others, feelings in the last week, life satisfaction, satisfaction with work',
-	'G': 'SUPP_G - Human values scale','H': 'SUPP_H - Test questions', 'I': 'SUPP_I - Interviewer self-completion questions'}
+	'G': 'SUPP_G - Human values scale','H': 'SUPP_H - Test questions', 'I': 'SUPP_I - Interviewer self-completion questions',
+	'R': 'SUPP_R - National Module'}
 
 class ESSSModulesR04:
 	"""
