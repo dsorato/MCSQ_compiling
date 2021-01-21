@@ -1,3 +1,5 @@
+#TODO ARRUMAR NOME DOS MODULOS PARECE QUE R06 E R07 ESTAO TROCADOS
+
 class ESSSModulesR01:
 	"""
 	Rotating modules in ESS round 1.
@@ -23,7 +25,7 @@ class ESSSModulesR03:
 	"""
 	modules = {'D':'D - Timing of life; the life course; timing of key life events, attitudes to ideal age, youngest age and oldest age of life events, planning for retirement',
 	'E': 'E - Personal and social well-being, helping others, feelings in the last week, life satisfaction, satisfaction with work',
-	'G': 'SUPP_G - Human values scale','H': 'SUPP_H - Test questions', 'I': 'SUPP_I - Interviewer self-completion questions',
+	'G': 'SUPP_G - Human values scale','H': 'SUPP_H - Test questions', 'I': 'SUPP_I - Interviewer self-completion questions', 'K': 'SUPP_K - National Module',
 	'R': 'SUPP_R - National Module'}
 
 class ESSSModulesR04:
@@ -47,16 +49,16 @@ class ESSSModulesR06:
 	"""
 	Rotating modules in ESS round 6.
 	"""
-	modules = {'D':'D - Immigration, including: attitudes, perceptions and policy preferences',
-	'E': 'E - Health,including health conditions, fruit, vegetable and alcohol consumption and smoking behaviour',
+	modules = {'D':'D - Personal and social wellbeing, helping others, feelings in the last week, life satisfaction, physical activity',
+	'E': 'E - Understandings and evaluation of different elements of democracy',
 	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions'}
 
 class ESSSModulesR07:
 	"""
 	Rotating modules in ESS round 7.
 	"""
-	modules = {'D':'D - Personal and social wellbeing, helping others, feelings in the last week, life satisfaction, physical activity',
-	'E': 'E - Understandings and evaluation of different elements of democracy',
+	modules = {'D':'D - Immigration, including: attitudes, perceptions and policy preferences',
+	'E': 'E - Health, including health conditions, fruit, vegetable and alcohol consumption and smoking behaviour',
 	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions'}
 
 class ESSSModulesR08:
