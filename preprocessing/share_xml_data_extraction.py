@@ -14,7 +14,7 @@ from sharemodules import *
 
 def get_module_metadata(item_name, share_modules):
 	module = None
-	for k, v in list(share_modules.modules.items()):
+	for k, v in list(share_modules.items()):
 		if item_name[:2] == k:
 			return v
 
@@ -185,7 +185,12 @@ def replace_fill_in_answer(text):
 
 	return text
 
-def clean_text(text, country_language):
+
+def clean_answer_text(text, country_language):
+	text = text.replace('etc.', '')
+	text = text.replace('e.g.', 'eg')
+	text = text.replace('(Ex.', '(Ex:')
+	text = text.replace('@B', '')
 	text = text.replace(' ?', '?')
 	text = text.replace('<b>', '')
 	text = text.replace('.?', '?')
@@ -199,18 +204,57 @@ def clean_text(text, country_language):
 	text = text.replace('&nbsp;', ' ')
 	text = text.replace('<em>', ' ')
 	text = text.replace('</em>', ' ')
+	text = text.replace('@b', ' ')
+	text = text.replace('@/', ' ')
+	text = text.replace('}', '')
+	text = text.replace('{', '')
+	text = text.replace('</p>', '')
+	text = text.replace('<p>', '')
+	text = text.replace('[br]', '')
+
+	text = text.rstrip()
+
+	if text == '':
+		text = None
+
+	return text
+
+def clean_text(text, country_language):
+	text = text.replace('etc.', '')
+	text = text.replace('e.g.', 'eg')
+	text = text.replace('(Ex.', '(Ex:')
 	text = text.replace('@B', '')
+	text = text.replace(' ?', '?')
+	text = text.replace('<b>', '')
+	text = text.replace('.?', '?')
+	text = text.replace('</b>', '')
+	text = text.replace('<B>', '')
+	text = text.replace('</B>', '')
+	text = text.replace('<br>', '')
+	text = text.replace('<br />', '')
+	text = text.replace('<strong>', '')
+	text = text.replace('</strong>', '')
+	text = text.replace('&nbsp;', ' ')
+	text = text.replace('<em>', ' ')
+	text = text.replace('</em>', ' ')
 	text = text.replace('@b', ' ')
 	text = text.replace('@/', ' ')
 	text = text.replace('\n', ' ').replace('\r', '')
 	text = text.replace('}', '')
 	text = text.replace('{', '')
-	text = text.replace('etc.', '')
 	text = text.replace('</p>', '')
 	text = text.replace('<p>', '')
+	text = text.replace('[br]', '')
 	text = re.sub('\^FLChildName', 'Tom/Maria', text)
 	text = text.replace('^FLMonthFill ^FLYearFill', '...')
 	text = re.sub('^\s?\d+\.\s', '', text)
+	text = re.sub('\^FL_ADDRESS', '...', text)
+	text = re.sub('\^FL_TEL', '', text)
+	text = re.sub('\^FL_XT622_5L', 'Tom/Maria', text)
+	text = re.sub('\^FL_XT625_1', 'Tom/Maria', text)
+	text = re.sub('\+FL_year\+', '2017', text)
+	text = re.sub('\^CHILDNAME', 'Tom/Maria', text)
+	text = re.sub('\^DN002_MoBirth', '', text)
 	text = re.sub('\^FLCurr', 'euros', text)
 	text = re.sub('\^img_infinity_correct_copy', '', text)
 	text = re.sub('\^img_infinity_incorrect_copy', '', text)
@@ -283,6 +327,100 @@ def extract_answers(subnode, df_answers, name, country_language, output_source_q
 
 	return df_answers
 
+def split_answer_text_item_value_from_categories(text):
+	"""
+	Splits the answer text and its item value in the category node
+	Args:
+		param1 text (string): text from category node, containing item value and answer text segment
+
+	Returns: 
+		item_value (string) and answer text segment (string)
+	"""
+	if '. ' in text:
+		text = text.split('. ')
+		item_value = text[0] 
+		answer_text = text[1]
+	elif '.' in text:
+		text = text.split('.')
+		item_value = text[0] 
+		answer_text = text[1]
+	else:
+		item_value = '0'
+		answer_text = text
+
+
+	return item_value, answer_text
+
+def extract_categories(subnode, df_answers, name, country_language):
+	"""
+	Extracts the categories (i.e., answers) from SHARE W07 XML files.
+	Args:
+		param1 subnode: subnode of categories node.
+		param2 df_answers (pandas dataframe): a dataframe to store answer text and its attributes
+		param3 country_language (string): country and language metadata, contained in the filename
+
+	Returns: 
+		retrieved answer segments. 
+	"""
+	fl_child = re.compile('(\^FLChild\[.+\]|{llista amb el nom dels fills})')
+	fl_job =  re.compile('\^(Sec_RE\.)?FJobTitle\[.+\]')
+	fl_movies= re.compile('.*\^FLMovies\[.+\]')
+	fl_default= re.compile('.*\^FLDefault\[.+\]')
+
+	
+	for child in subnode.getiterator():
+		if child.tag == 'category_element':
+			text_nodes = child.findall('text')
+			for text_node in text_nodes:
+				text = None
+				if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
+					print(text_node.text)
+					if fl_child.match(text_node.text) is None and fl_job.match(text_node.text) is None and fl_movies.match(text_node.text) is None and fl_default.match(text_node.text) is None:
+						item_value, text = split_answer_text_item_value_from_categories(text_node.text)
+						text = clean_answer_text(text, country_language)
+
+				if text is not None and '{empty}' not in text and 'empty' not in text:
+					print(text)
+					data = {'item_name': name, 'item_value':item_value, 'text': text}
+					df_answers = df_answers.append(data, ignore_index = True)
+
+	return df_answers
+
+def extract_qenums(subnode, df_answers, name, country_language):
+	"""
+	Extracts the qenums (i.e., answers) from SHARE W07 XML files.
+	Args:
+		param1 subnode: subnode of categories node.
+		param2 df_answers (pandas dataframe): a dataframe to store answer text and its attributes
+		param3 country_language (string): country and language metadata, contained in the filename
+
+	Returns: 
+		retrieved answer segments. 
+	"""
+	fl_child = re.compile(r'(\^FLChild\[.+\]|{llista amb el nom dels fills})')
+	fl_job =  re.compile(r'\^(Sec_RE\.)?FJobTitle\[.+\]')
+	fl_movies= re.compile(r'\^FLMovies\[.+\]')
+	fl_default= re.compile(r'\^FLDefault\[.+\]')
+
+	item_value = 0
+
+	for child in subnode.getiterator():
+		if child.tag == 'qenum_element':
+			text_nodes = child.findall('text')		
+			for text_node in text_nodes:
+				text = None
+				if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
+					if fl_child.match(text_node.text) is None and fl_job.match(text_node.text) is None and fl_movies.match(text_node.text) is None and fl_default.match(text_node.text) is None:
+						text = clean_text(text_node.text, country_language)
+
+				if text is not None and '{empty}' not in text and 'empty' not in text:
+					data = {'item_name': name, 'item_value':item_value, 'text': text}
+					df_answers = df_answers.append(data, ignore_index = True)
+					item_value = item_value+1
+
+	return df_answers
+
+
 
 def extract_questions_and_procedures(subnode, df_questions, df_procedures, parent_map, name, splitter, country_language, output_source_questionnaire_flag):
 	for child in subnode.getiterator():
@@ -327,6 +465,54 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 								text = clean_text(text_node.text, country_language)
 
 						if text is not None and '+piHO004_OthPer+' not in text and '{empty}' not in text and 'empty' not in text:
+							order = parent_map[text_node].attrib['order']
+							data = {'item_name': proc_name, 'fill_name':fill_name, 'order':order, 'text': text}
+							df_procedures = df_procedures.append(data, ignore_index = True)
+
+
+	return df_questions, df_procedures
+
+
+def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, parent_map, name, splitter, country_language):
+	for child in subnode.getiterator():
+		if child.tag == 'question_element' and 'type_name' in child.attrib:
+			if child.attrib['type_name'] == 'QText' or child.attrib['type_name'] == 'QInstruction':
+				
+				text_nodes = child.findall('text')
+				for text_node in text_nodes:
+					text = None
+					if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
+						text = clean_text(text_node.text, country_language)
+
+					if text is not None:
+						if child.attrib['type_name'] == 'QText':
+							item_type = 'REQUEST'
+						else:
+							item_type = 'INSTRUCTION'
+
+						if name == 'THIS_INTERVIEW':
+							last_row = df_questions.iloc[-1]
+							name = last_row['item_name']
+						sentences = splitter.tokenize(text)
+						for sentence in sentences:
+							data = {'item_name': name, 'item_type':item_type, 'text': sentence}
+							df_questions = df_questions.append(data, ignore_index = True)	
+		elif child.tag == 'procedure':
+			proc_name = child.attrib['name']
+			fills = child.find('fills')
+			fill_nodes = fills.findall('fill')
+			for fill_node in fill_nodes:
+				fill_name = fill_node.attrib['name']
+				fill_option_nodes = fill_node.findall('fill_option')
+
+				for fill_option_node in fill_option_nodes:
+					text_nodes = fill_option_node.findall('text')
+					for text_node in text_nodes:
+						text = None
+						if text_node.attrib['translation_id'] != '1' and text_node.text is not None and text_node.text != '{}':
+							text = clean_text(text_node.text, country_language)
+
+						if text is not None and '{empty}' not in text and 'empty' not in text:
 							order = parent_map[text_node].attrib['order']
 							data = {'item_name': proc_name, 'fill_name':fill_name, 'order':order, 'text': text}
 							df_procedures = df_procedures.append(data, ignore_index = True)
@@ -473,36 +659,82 @@ def main(filename):
 
 	questions = root.findall('.//questionnaire/questions')
 	answers = root.findall('.//questionnaire/answers')
+	"""
+	The categories and qenums nodes in w7 correspond to the answer nodes in w8
+	"""
+	categories = root.findall('.//questionnaire/categories')
+	qenums = root.findall('.//questionnaire/qenums')
 
 	df_answers = pd.DataFrame(columns=['item_name', 'item_value', 'text'])
-	df_questions = pd.DataFrame(columns=['item_name', 'text'])
 	df_procedures = pd.DataFrame(columns=['item_name', 'fill_name', 'order', 'text'])
+	if 'SHA_R07' in filename:
+		df_questions = pd.DataFrame(columns=['item_name', 'item_type', 'text'])
+	elif 'SHA_R08' in filename:
+		df_questions = pd.DataFrame(columns=['item_name', 'text'])
 
 	special_answer_categories = instantiate_special_answer_category_object(country_language)
-	share_modules = SHAREModules()
-	
 
-	for node in questions:
-		for subnode in node.getiterator():
-			if subnode.tag == 'question':
-				name = subnode.attrib['name']
-				df_questions, df_procedures = extract_questions_and_procedures(subnode, df_questions, df_procedures, parent_map, name, splitter, country_language, output_source_questionnaire_flag)
+	"""
+	Instantiate SHAREModules object, that encapsulates the dictionaries containing the module names by round.
+	"""
+	share_modules_object = SHAREModules()
+
+	
+	if 'SHA_R08' in filename:
+		share_modules = share_modules_object.modules_w8
+		for node in questions:
+			for subnode in node.getiterator():
+				if subnode.tag == 'question':
+					name = subnode.attrib['name']
+					df_questions, df_procedures = extract_questions_and_procedures(subnode, df_questions, df_procedures, parent_map, name, splitter, country_language, output_source_questionnaire_flag)
 
 					
-	for node in answers:
-		for subnode in node.getiterator():
-			if subnode.tag == 'answer':
-				name = subnode.attrib['name']
-				df_answers = extract_answers(subnode, df_answers, name, country_language, output_source_questionnaire_flag)
+		for node in answers:
+			for subnode in node.getiterator():
+				if subnode.tag == 'answer':
+					name = subnode.attrib['name']
+					df_answers = extract_answers(subnode, df_answers, name, country_language, output_source_questionnaire_flag)
 
 
-	
-	df_questionnaire = build_questionnaire_structure(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories)
-			
-	if output_source_questionnaire_flag == '0':
+		
+		df_questionnaire = build_questionnaire_structure(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories)
+				
+		if output_source_questionnaire_flag == '0':
+			df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8', index=False)
+		else:
+			df_questionnaire.to_csv('SHA_R08_2019_ENG_SOURCE.csv', encoding='utf-8', index=False)
+
+
+	elif 'SHA_R07' in filename:
+		share_modules = share_modules_object.modules_w7
+		for node in questions:
+			for subnode in node.getiterator():
+				if subnode.tag == 'question':
+					name = subnode.attrib['name']
+					df_questions, df_procedures = extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, parent_map, name, splitter, country_language)
+
+		for node in categories:
+			for subnode in node.getiterator():
+				if 'tmt_id' in subnode.attrib:
+					tmt_id = subnode.attrib['tmt_id']
+					df_answers = extract_categories(subnode, df_answers, tmt_id, country_language)
+
+
+		for node in qenums:
+			for subnode in node.getiterator():
+				if 'question_id' in subnode.attrib:
+					question_id = subnode.attrib['question_id']
+					df_answers = extract_qenums(subnode, df_answers, question_id, country_language)
+
+
+		df_questionnaire = build_questionnaire_structure(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories)
 		df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8', index=False)
-	else:
-		df_questionnaire.to_csv('SHA_R08_2019_ENG_SOURCE.csv', encoding='utf-8', index=False)
+
+		df_questions.to_csv('df_questions.csv', encoding='utf-8', index=False)
+		df_answers.to_csv('df_answers.csv', encoding='utf-8', index=False)
+		df_procedures.to_csv('df_procedures.csv', encoding='utf-8', index=False)
+
+
 
 
 """
