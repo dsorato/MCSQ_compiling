@@ -35,6 +35,9 @@ class SHAREModules:
 	'CS': 'CS - Chair Stand'}
 
 	modules_w7 = {
+	'SC': 'SC - Self-Completion',
+	'WQ': 'WQ - Work quality',
+	'DQ': 'DQ - Work disability',
 	'RC': 'RC - Retrospective Children History',
 	'RP': 'RP - Retrospective Partner History',
 	'RA': 'RA - Retrospective Accomodation',

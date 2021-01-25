@@ -10,6 +10,7 @@ import re
 import utils as ut
 from preprocessing_ess_utils import *
 from sharemodules import *
+from share_w7_instructions import *
 
 
 def get_module_metadata(item_name, share_modules):
@@ -34,7 +35,7 @@ def fill_substitution_in_answer(text, fills, df_procedures):
 
 	return texts
 
-def eliminate_showcardID_and_adjust_item_type(text, item_name):
+def eliminate_showcardID_and_adjust_item_type(text, item_name, w7_flag):
 	if 'intro' in item_name.lower():
 		item_type = 'INTRODUCTION'
 		if '^SHOWCARD_ID, si us plau.' in text:
@@ -84,11 +85,20 @@ def eliminate_showcardID_and_adjust_item_type(text, item_name):
 		text = re.sub('SHOWCARD_ID', str(ut.update_showcard_id()), text)
 		item_type = 'REQUEST'
 	else:
-		item_type = 'REQUEST'	
+		if w7_flag == True:
+			item_type = None
+		else:
+			item_type = 'REQUEST'	
 
 	return text, item_type		
 
-def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id, item_name, share_modules):
+
+def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id, item_name, share_modules, w7_flag, item_type_w7):
+	if w7_flag:
+		study = 'SHA_R07_2017'
+	else:
+		study = 'SHA_R08_2019'
+
 	if len(fills) == 1:
 		df_procedure_filtered = df_procedures[df_procedures['fill_name'].str.lower()==fills[0].lower()]
 		last_text = None
@@ -98,10 +108,12 @@ def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id,
 				text_var = text_var.replace('^', ' ')
 
 				if last_text is None or text_var != last_text:
-					text_var, item_type = eliminate_showcardID_and_adjust_item_type(text_var, item_name)
+					text_var, item_type = eliminate_showcardID_and_adjust_item_type(text_var, item_name, w7_flag)
+					if w7_flag and item_type is None:
+						item_type = item_type_w7
 
 					if '{empty}' not in text_var and 'empty' not in text_var:
-						data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': get_module_metadata(item_name, share_modules), 
+						data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module_metadata(item_name, share_modules), 
 						'item_type':item_type, 'item_name':item_name, 
 						'item_value':None, 'text': re.sub(' +', ' ', text_var)}
 						df_questionnaire = df_questionnaire.append(data, ignore_index = True)
@@ -131,10 +143,12 @@ def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id,
 						texts = texts_aux
 
 		for i, text in enumerate(texts):
-			text, item_type = eliminate_showcardID_and_adjust_item_type(text, item_name)
+			text, item_type = eliminate_showcardID_and_adjust_item_type(text, item_name, w7_flag)
+			if w7_flag and item_type is None:
+				item_type = item_type_w7
 
 			if '{empty}' not in text and 'empty' not in text:
-				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': get_module_metadata(item_name, share_modules), 
+				data = {'survey_item_ID':survey_item_id, 'Study': study, 'module': get_module_metadata(item_name, share_modules), 
 				'item_type':item_type, 'item_name':item_name, 'item_value':None, 'text':re.sub(' +', ' ', text)}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 
@@ -245,12 +259,21 @@ def clean_text(text, country_language):
 	text = text.replace('</p>', '')
 	text = text.replace('<p>', '')
 	text = text.replace('[br]', '')
+	text = text.replace('(^FLDay)', '')
+	text = text.replace('(^FLMonth)', '')
+	text = text.replace('(^FLYear)', '')
+	text = text.replace('(^FLToday)', '')
 	text = re.sub('\^FLChildName', 'Tom/Maria', text)
 	text = text.replace('^FLMonthFill ^FLYearFill', '...')
+	text = text.replace('^FLMonthFill', '...')
+	text = text.replace('^FLYearFill', '...')
 	text = re.sub('^\s?\d+\.\s', '', text)
 	text = re.sub('\^FL_ADDRESS', '...', text)
 	text = re.sub('\^FL_TEL', '', text)
 	text = re.sub('\^FL_XT622_5L', 'Tom/Maria', text)
+	text = re.sub('\^RP004_prtname', 'Tom/Maria', text)
+	text = re.sub('\^RA003_acyrest', 'Tom/Maria', text)
+	
 	text = re.sub('\^FL_XT625_1', 'Tom/Maria', text)
 	text = re.sub('\+FL_year\+', '2017', text)
 	text = re.sub('\^CHILDNAME', 'Tom/Maria', text)
@@ -259,6 +282,7 @@ def clean_text(text, country_language):
 	text = re.sub('\^img_infinity_correct_copy', '', text)
 	text = re.sub('\^img_infinity_incorrect_copy', '', text)
 	text = re.sub('\^CH004_FirstNameOfChild', 'Tommy/Mary', text)
+	text = re.sub('\^FL_CHILD_NAME', 'Tommy/Mary', text)
 	text = re.sub('\^FLLastInterviewMonthYear', '2017', text)
 	text = re.sub('\^FLTwoYearsBackMonth', '2016', text)
 	text = re.sub('\^FLLastYearMonth', '2017', text)
@@ -282,6 +306,8 @@ def clean_text(text, country_language):
 	text = re.sub('\^EP129_PeriodToMonth', '', text)
 	text = re.sub('\^piRelation', '', text)
 	text = re.sub('\^TempRelationshipString', '', text)
+	text = re.sub('\^AffordExpenseAmount', 'X', text)
+
 
 	if 'ENG' not in country_language:
 		text = text.replace('else', ' ')
@@ -374,13 +400,11 @@ def extract_categories(subnode, df_answers, name, country_language):
 			for text_node in text_nodes:
 				text = None
 				if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
-					print(text_node.text)
 					if fl_child.match(text_node.text) is None and fl_job.match(text_node.text) is None and fl_movies.match(text_node.text) is None and fl_default.match(text_node.text) is None:
 						item_value, text = split_answer_text_item_value_from_categories(text_node.text)
 						text = clean_answer_text(text, country_language)
 
 				if text is not None and '{empty}' not in text and 'empty' not in text:
-					print(text)
 					data = {'item_name': name, 'item_value':item_value, 'text': text}
 					df_answers = df_answers.append(data, ignore_index = True)
 
@@ -473,7 +497,7 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 	return df_questions, df_procedures
 
 
-def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, parent_map, name, splitter, country_language):
+def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, parent_map, name, tmt_id, splitter, country_language):
 	for child in subnode.getiterator():
 		if child.tag == 'question_element' and 'type_name' in child.attrib:
 			if child.attrib['type_name'] == 'QText' or child.attrib['type_name'] == 'QInstruction':
@@ -495,8 +519,9 @@ def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, pa
 							name = last_row['item_name']
 						sentences = splitter.tokenize(text)
 						for sentence in sentences:
-							data = {'item_name': name, 'item_type':item_type, 'text': sentence}
-							df_questions = df_questions.append(data, ignore_index = True)	
+							if '^Children_table' not in sentence and '^Press' not in sentence:
+								data = {'item_name': name, 'item_type':item_type, 'tmt_id': tmt_id, 'text': sentence}
+								df_questions = df_questions.append(data, ignore_index = True)	
 		elif child.tag == 'procedure':
 			proc_name = child.attrib['name']
 			fills = child.find('fills')
@@ -594,7 +619,7 @@ def build_questionnaire_structure(df_questions, df_answers,df_procedures, df_que
 			fills = fill_extraction(text)
 
 			if fills is None:
-				text, item_type = eliminate_showcardID_and_adjust_item_type(text, row['item_name'])
+				text, item_type = eliminate_showcardID_and_adjust_item_type(text, row['item_name'], False)
 					
 				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R08_2019', 'module': get_module_metadata(row['item_name'], share_modules), 
 				'item_type':item_type, 'item_name':row['item_name'], 
@@ -602,7 +627,7 @@ def build_questionnaire_structure(df_questions, df_answers,df_procedures, df_que
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 			else:
 				for fill in fills:
-					df_questionnaire = fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id, row['item_name'], share_modules)
+					df_questionnaire = fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id, row['item_name'], share_modules, False, None)
 
 		if df_answers_by_item_name.empty:
 			last_row = df_questionnaire.iloc[-1]
@@ -640,6 +665,130 @@ def build_questionnaire_structure(df_questions, df_answers,df_procedures, df_que
 
 	return df_questionnaire
 
+def build_questionnaire_structure_w7(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories):
+	"""
+	First filter the question and answer dataframes by the tmt_ids
+	"""
+	unique_question_tmt_ids = df_questions.tmt_id.unique()
+	for unique_tmt_id in unique_question_tmt_ids:
+		df_questions_tmt_id = df_questions[df_questions['tmt_id'].str.lower()==unique_tmt_id.lower()]
+		df_answers_tmt_id = df_answers[df_answers['item_name'].str.lower()==unique_tmt_id.lower()]
+
+		for i, row in df_questions_tmt_id.iterrows():
+			if df_questionnaire.empty:
+				survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+			else:
+				survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
+
+			text = row['text']
+			fills = fill_extraction(text)
+
+			if fills is None:
+				text, item_type = eliminate_showcardID_and_adjust_item_type(text, row['item_name'], True)
+
+				if item_type is None:
+					item_type = row['item_type']
+					
+				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R07_2017', 'module': get_module_metadata(row['item_name'], share_modules), 
+				'item_type':item_type, 'item_name':row['item_name'], 
+				'item_value':None, 'text':re.sub(' +', ' ', text)}
+				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+			else:
+				for fill in fills:
+					df_questionnaire = fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id, row['item_name'], share_modules, True, item_type)
+
+			last_item_name = row['item_name']
+			last_row = df_questionnaire.iloc[-1]
+			last_module = last_row['module']
+
+		
+		if last_row['item_type'] != 'INTRODUCTION':
+			for i, row in df_answers_tmt_id.iterrows():
+					
+				survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
+				text = replace_fill_in_answer(row['text'])
+
+				fills = fill_extraction(row['text'])
+				if fills:
+					texts = fill_substitution_in_answer(row['text'], fills, df_procedures)
+
+					if texts:
+						for text in texts:
+							data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R07_2017', 'module': last_module, 
+							'item_type':'RESPONSE', 'item_name':last_item_name, 
+							'item_value':row['item_value'], 'text':re.sub(' +', ' ', text)}
+							df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+				else:
+					data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R07_2017', 'module': last_module, 
+					'item_type':'RESPONSE', 'item_name':last_item_name, 
+					'item_value':row['item_value'], 'text':re.sub(' +', ' ', text)}
+					df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+	return df_questionnaire
+
+def replace_untranslated_instructions(filename, splitter, survey_item_prefix, df_questionnaire):
+	df_questionnaire_improved = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 'text'])
+	ut.reset_initial_sufix()
+
+	if 'CAT_ES' in filename:
+		share_w7_instructions = SHAREW7InstructionsCAT()
+
+	for i, row in df_questionnaire.iterrows():
+		if '^CodeAll' in row['text']:
+			text = row['text'].replace('^CodeAll', share_w7_instructions.code_all)
+			sentences = splitter.tokenize(text)
+			for sentence in sentences:
+				if df_questionnaire_improved.empty:
+					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+				else:
+					survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
+
+				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R07_2017', 'module': row['module'], 
+					'item_type': row['item_type'], 'item_name': row['module'], 
+					'item_value':row['item_value'], 'text': sentence}
+				df_questionnaire_improved = df_questionnaire_improved.append(data, ignore_index = True)
+		if '^ReadOut' in row['text']:
+			text = row['text'].replace('^ReadOut', share_w7_instructions.read_out)
+			sentences = splitter.tokenize(text)
+			for sentence in sentences:
+				if df_questionnaire_improved.empty:
+					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+				else:
+					survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
+
+				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R07_2017', 'module': row['module'], 
+					'item_type': row['item_type'], 'item_name': row['module'], 
+					'item_value':row['item_value'], 'text': sentence}
+				df_questionnaire_improved = df_questionnaire_improved.append(data, ignore_index = True)
+		if '^Especifiqui' in row['text']:
+			text = row['text'].replace('^Especifiqui', 'Especifiqui')
+			sentences = splitter.tokenize(text)
+			for sentence in sentences:
+				if df_questionnaire_improved.empty:
+					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+				else:
+					survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
+
+				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R07_2017', 'module': row['module'], 
+					'item_type': row['item_type'], 'item_name': row['module'], 
+					'item_value':row['item_value'], 'text': sentence}
+				df_questionnaire_improved = df_questionnaire_improved.append(data, ignore_index = True)
+		else:
+			print(row['text'])
+			if df_questionnaire_improved.empty:
+				survey_item_id = ut.get_survey_item_id(survey_item_prefix)
+			else:
+				survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
+
+			data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R07_2017', 'module': row['module'], 
+				'item_type': row['item_type'], 'item_name': row['module'], 
+				'item_value':row['item_value'], 'text': row['text']}
+			df_questionnaire_improved = df_questionnaire_improved.append(data, ignore_index = True)
+
+	return df_questionnaire_improved
+
+
+
 def main(filename):
 	output_source_questionnaire_flag = '0'
 
@@ -668,7 +817,7 @@ def main(filename):
 	df_answers = pd.DataFrame(columns=['item_name', 'item_value', 'text'])
 	df_procedures = pd.DataFrame(columns=['item_name', 'fill_name', 'order', 'text'])
 	if 'SHA_R07' in filename:
-		df_questions = pd.DataFrame(columns=['item_name', 'item_type', 'text'])
+		df_questions = pd.DataFrame(columns=['item_name', 'item_type', 'tmt_id', 'text'])
 	elif 'SHA_R08' in filename:
 		df_questions = pd.DataFrame(columns=['item_name', 'text'])
 
@@ -711,7 +860,8 @@ def main(filename):
 			for subnode in node.getiterator():
 				if subnode.tag == 'question':
 					name = subnode.attrib['name']
-					df_questions, df_procedures = extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, parent_map, name, splitter, country_language)
+					tmt_id = subnode.attrib['tmt_id']
+					df_questions, df_procedures = extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, parent_map, name, tmt_id, splitter, country_language)
 
 		for node in categories:
 			for subnode in node.getiterator():
@@ -727,12 +877,10 @@ def main(filename):
 					df_answers = extract_qenums(subnode, df_answers, question_id, country_language)
 
 
-		df_questionnaire = build_questionnaire_structure(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories)
+		df_questionnaire = build_questionnaire_structure_w7(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories)
+		
+		df_questionnaire = replace_untranslated_instructions(filename, splitter, survey_item_prefix, df_questionnaire)
 		df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8', index=False)
-
-		df_questions.to_csv('df_questions.csv', encoding='utf-8', index=False)
-		df_answers.to_csv('df_answers.csv', encoding='utf-8', index=False)
-		df_procedures.to_csv('df_procedures.csv', encoding='utf-8', index=False)
 
 
 

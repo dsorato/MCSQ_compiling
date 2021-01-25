@@ -34,7 +34,7 @@ class ESSSModulesR04:
 	"""
 	modules = {'D':'D - Welfare includes attitudes towards welfare provision, size of claimant groups, views on taxation, attitudes towards service delivery and likely future dependence on welfare',
 	'E': 'E - Ageism covers attitudes towards and experiences of ageism, age related status, stereotypes, experience of discrimination and contact with people in other age groups',
-	'G': 'SUPP_G - Human values scale','H': 'SUPP_H - Test questions','I': 'SUPP_I - Interviewer self-completion questions'}
+	'G': 'SUPP_G - Human values scale','H': 'SUPP_H - Test questions','I': 'SUPP_I - Interviewer self-completion questions', 'N': 'SUPP_N - National Module (Germany)'}
 
 class ESSSModulesR05:
 	"""
