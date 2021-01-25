@@ -234,6 +234,7 @@ def clean_answer_text(text, country_language):
 	return text
 
 def clean_text(text, country_language):
+	text = text.replace('^MN015_ELIGIBLES', '')
 	text = text.replace('etc.', '')
 	text = text.replace('e.g.', 'eg')
 	text = text.replace('(Ex.', '(Ex:')
@@ -267,13 +268,17 @@ def clean_text(text, country_language):
 	text = text.replace('^FLMonthFill ^FLYearFill', '...')
 	text = text.replace('^FLMonthFill', '...')
 	text = text.replace('^FLYearFill', '...')
+	text = text.replace('^FL_MONTH', '...')
+	text = text.replace('^FL_YEAR', '...')
+	text = text.replace('^FL_NAME / ^FL_LASTNAME', 'Tom/Maria')
 	text = re.sub('^\s?\d+\.\s', '', text)
 	text = re.sub('\^FL_ADDRESS', '...', text)
 	text = re.sub('\^FL_TEL', '', text)
 	text = re.sub('\^FL_XT622_5L', 'Tom/Maria', text)
 	text = re.sub('\^RP004_prtname', 'Tom/Maria', text)
-	text = re.sub('\^RA003_acyrest', 'Tom/Maria', text)
-	
+	text = re.sub('\^RespRelation', 'Tom/Maria', text)
+	text = re.sub('\^RA003_acyrest', '1980', text)
+	text = text.replace('[--CodeAll--]', '')
 	text = re.sub('\^FL_XT625_1', 'Tom/Maria', text)
 	text = re.sub('\+FL_year\+', '2017', text)
 	text = re.sub('\^CHILDNAME', 'Tom/Maria', text)
@@ -295,7 +300,10 @@ def clean_text(text, country_language):
 	text = re.sub('\^FLRosterName', 'Tom/Maria', text)
 	text = re.sub('\^FLChildName', 'Tom/Maria', text)
 	text = re.sub('\^FLChildname', 'Tom/Maria', text)
+	text = re.sub('\^\s?FL_XT622_5', 'Tom/Maria', text)
+	text = re.sub('\^\s?FL_XT625_1', 'Tom/Maria', text)
 	text = re.sub('\+piNameChild\+', 'Tom/Maria', text)
+	text = re.sub('\^FL_NAME', 'Tom/Maria', text)
 	text = re.sub('\^piName', 'Tom/Maria', text)
 	text = re.sub('\^FLRespondentName', 'Tom/Maria', text)
 	text = re.sub('\^localRelationText', '', text)
@@ -307,7 +315,7 @@ def clean_text(text, country_language):
 	text = re.sub('\^piRelation', '', text)
 	text = re.sub('\^TempRelationshipString', '', text)
 	text = re.sub('\^AffordExpenseAmount', 'X', text)
-
+	text = re.sub('\^XT102_DecMonthBirth', '', text)
 
 	if 'ENG' not in country_language:
 		text = text.replace('else', ' ')
@@ -496,11 +504,33 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 
 	return df_questions, df_procedures
 
+def replace_untranslated_instructions(country_language, text):
+	if 'CAT_ES' in country_language:
+		share_w7_instructions = SHAREW7InstructionsCAT()
+
+	text = re.sub('\^CodeAll', share_w7_instructions.code_all, text)
+	text = re.sub('\^ReadOut', share_w7_instructions.read_out, text)
+	text = re.sub('\^Especifiqui', 'Especifiqui', text)
+	text = re.sub('\^Especifiqueu', 'Especifiqueu', text)
+	text = re.sub('\^FL_RE012a', share_w7_instructions.job_position, text)
+	text = re.sub('\^FL_RE012b', share_w7_instructions.job_position, text)
+	text = re.sub('\^RE012_jobtitle', share_w7_instructions.job_position, text)
+	text = re.sub('\^FL_HIS_HER', share_w7_instructions.he_she, text)
+
+	
+
+	return text
+
 
 def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, parent_map, name, tmt_id, splitter, country_language):
 	for child in subnode.getiterator():
 		if child.tag == 'question_element' and 'type_name' in child.attrib:
 			if child.attrib['type_name'] == 'QText' or child.attrib['type_name'] == 'QInstruction':
+
+				if child.attrib['type_name'] == 'QText':
+					item_type = 'REQUEST'
+				else:
+					item_type = 'INSTRUCTION'
 				
 				text_nodes = child.findall('text')
 				for text_node in text_nodes:
@@ -509,14 +539,11 @@ def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, pa
 						text = clean_text(text_node.text, country_language)
 
 					if text is not None:
-						if child.attrib['type_name'] == 'QText':
-							item_type = 'REQUEST'
-						else:
-							item_type = 'INSTRUCTION'
-
 						if name == 'THIS_INTERVIEW':
 							last_row = df_questions.iloc[-1]
 							name = last_row['item_name']
+
+						text = replace_untranslated_instructions(country_language, text)
 						sentences = splitter.tokenize(text)
 						for sentence in sentences:
 							if '^Children_table' not in sentence and '^Press' not in sentence:
@@ -726,66 +753,6 @@ def build_questionnaire_structure_w7(df_questions, df_answers,df_procedures, df_
 
 	return df_questionnaire
 
-def replace_untranslated_instructions(filename, splitter, survey_item_prefix, df_questionnaire):
-	df_questionnaire_improved = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 'text'])
-	ut.reset_initial_sufix()
-
-	if 'CAT_ES' in filename:
-		share_w7_instructions = SHAREW7InstructionsCAT()
-
-	for i, row in df_questionnaire.iterrows():
-		if '^CodeAll' in row['text']:
-			text = row['text'].replace('^CodeAll', share_w7_instructions.code_all)
-			sentences = splitter.tokenize(text)
-			for sentence in sentences:
-				if df_questionnaire_improved.empty:
-					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
-				else:
-					survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
-
-				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R07_2017', 'module': row['module'], 
-					'item_type': row['item_type'], 'item_name': row['module'], 
-					'item_value':row['item_value'], 'text': sentence}
-				df_questionnaire_improved = df_questionnaire_improved.append(data, ignore_index = True)
-		if '^ReadOut' in row['text']:
-			text = row['text'].replace('^ReadOut', share_w7_instructions.read_out)
-			sentences = splitter.tokenize(text)
-			for sentence in sentences:
-				if df_questionnaire_improved.empty:
-					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
-				else:
-					survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
-
-				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R07_2017', 'module': row['module'], 
-					'item_type': row['item_type'], 'item_name': row['module'], 
-					'item_value':row['item_value'], 'text': sentence}
-				df_questionnaire_improved = df_questionnaire_improved.append(data, ignore_index = True)
-		if '^Especifiqui' in row['text']:
-			text = row['text'].replace('^Especifiqui', 'Especifiqui')
-			sentences = splitter.tokenize(text)
-			for sentence in sentences:
-				if df_questionnaire_improved.empty:
-					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
-				else:
-					survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
-
-				data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R07_2017', 'module': row['module'], 
-					'item_type': row['item_type'], 'item_name': row['module'], 
-					'item_value':row['item_value'], 'text': sentence}
-				df_questionnaire_improved = df_questionnaire_improved.append(data, ignore_index = True)
-		else:
-			print(row['text'])
-			if df_questionnaire_improved.empty:
-				survey_item_id = ut.get_survey_item_id(survey_item_prefix)
-			else:
-				survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
-
-			data = {'survey_item_ID':survey_item_id, 'Study':'SHA_R07_2017', 'module': row['module'], 
-				'item_type': row['item_type'], 'item_name': row['module'], 
-				'item_value':row['item_value'], 'text': row['text']}
-			df_questionnaire_improved = df_questionnaire_improved.append(data, ignore_index = True)
-
-	return df_questionnaire_improved
 
 
 
@@ -878,8 +845,6 @@ def main(filename):
 
 
 		df_questionnaire = build_questionnaire_structure_w7(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories)
-		
-		df_questionnaire = replace_untranslated_instructions(filename, splitter, survey_item_prefix, df_questionnaire)
 		df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8', index=False)
 
 
