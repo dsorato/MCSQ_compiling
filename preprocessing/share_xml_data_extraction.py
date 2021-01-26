@@ -195,6 +195,9 @@ def replace_fill_in_answer(text):
 	text = re.sub('\^FLRosterName', 'Tom/Maria', text)
 	text = re.sub('\+piNameChild\+', 'Tom/Maria', text)
 	text = re.sub('\^piName', 'Tom/Maria', text)
+	text = re.sub('\^FL_MEMBER', 'Tom/Maria', text)
+	text = text.replace('\^FL_PARTNER', 'Tom/Maria')
+	text = text.replace('^FL_PARTNER', 'Tom/Maria')
 
 
 	return text
@@ -233,7 +236,7 @@ def clean_answer_text(text, country_language):
 
 	return text
 
-def clean_text(text, country_language):
+def clean_text(text, country_language, w7flag):
 	text = text.replace('^MN015_ELIGIBLES', '')
 	text = text.replace('etc.', '')
 	text = text.replace('e.g.', 'eg')
@@ -264,13 +267,33 @@ def clean_text(text, country_language):
 	text = text.replace('(^FLMonth)', '')
 	text = text.replace('(^FLYear)', '')
 	text = text.replace('(^FLToday)', '')
-	text = re.sub('\^FLChildName', 'Tom/Maria', text)
+	text = text.replace('[--CodeAll--]', '')
 	text = text.replace('^FLMonthFill ^FLYearFill', '...')
 	text = text.replace('^FLMonthFill', '...')
 	text = text.replace('^FLYearFill', '...')
 	text = text.replace('^FL_MONTH', '...')
 	text = text.replace('^FL_YEAR', '...')
+	text = text.replace('(^FL_MEMBERS)', '')
 	text = text.replace('^FL_NAME / ^FL_LASTNAME', 'Tom/Maria')
+	text = text.replace("'+FLNumber+", '')
+	
+	if w7flag:
+		text = text.replace('[FLLastInterviewMonthYear]', '2014')
+		text = re.sub('\^FLLastInterviewMonthYear', '2014', text)
+		text = re.sub('\^FLTwoYearsBackMonth', '2013', text)
+		text = re.sub('\^FLLastYearMonth', '2015', text)
+		text = re.sub('\^FLLastYear', '2015', text)
+		text = re.sub('\+FL_year\+', '2016', text)
+	else:
+		text = text.replace('[FLLastInterviewMonthYear]', '2017')
+		text = re.sub('\^FLLastInterviewMonthYear', '2017', text)
+		text = re.sub('\^FLTwoYearsBackMonth', '2016', text)
+		text = re.sub('\^FLLastYearMonth', '2017', text)
+		text = re.sub('\^FLLastYear', '2017', text)
+		text = re.sub('\+FL_year\+', '2017', text)
+	
+	text = re.sub('\^FL_MEMBER', 'Tom/Maria', text)
+	text = re.sub('\^FLChildName', 'Tom/Maria', text)
 	text = re.sub('^\s?\d+\.\s', '', text)
 	text = re.sub('\^FL_ADDRESS', '...', text)
 	text = re.sub('\^FL_TEL', '', text)
@@ -278,9 +301,7 @@ def clean_text(text, country_language):
 	text = re.sub('\^RP004_prtname', 'Tom/Maria', text)
 	text = re.sub('\^RespRelation', 'Tom/Maria', text)
 	text = re.sub('\^RA003_acyrest', '1980', text)
-	text = text.replace('[--CodeAll--]', '')
 	text = re.sub('\^FL_XT625_1', 'Tom/Maria', text)
-	text = re.sub('\+FL_year\+', '2017', text)
 	text = re.sub('\^CHILDNAME', 'Tom/Maria', text)
 	text = re.sub('\^DN002_MoBirth', '', text)
 	text = re.sub('\^FLCurr', 'euros', text)
@@ -288,10 +309,6 @@ def clean_text(text, country_language):
 	text = re.sub('\^img_infinity_incorrect_copy', '', text)
 	text = re.sub('\^CH004_FirstNameOfChild', 'Tommy/Mary', text)
 	text = re.sub('\^FL_CHILD_NAME', 'Tommy/Mary', text)
-	text = re.sub('\^FLLastInterviewMonthYear', '2017', text)
-	text = re.sub('\^FLTwoYearsBackMonth', '2016', text)
-	text = re.sub('\^FLLastYearMonth', '2017', text)
-	text = re.sub('\^FLLastYear', '2017', text)
 	text = re.sub('\^XT008_MonthDied', '', text)
 	text = re.sub('\^FLMedia', '', text)
 	text = re.sub('\^FLMedia2', '', text)
@@ -349,10 +366,10 @@ def extract_answers(subnode, df_answers, name, country_language, output_source_q
 				text = None
 				if output_source_questionnaire_flag == '0':
 					if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
-						text = clean_text(text_node.text, country_language)
+						text = clean_text(text_node.text, country_language, False)
 				else:
 					if text_node.attrib['translation_id'] == '1' and text_node.text is not None:
-						text = clean_text(text_node.text, country_language)
+						text = clean_text(text_node.text, country_language, False)
 
 				if text is not None and '{empty}' not in text and 'empty' not in text:
 					if re.compile('\^PreloadChild').match(text) is None and re.compile('\^FLChild').match(text) is None and re.compile('\^FLSNmember').match(text) is None:
@@ -443,7 +460,7 @@ def extract_qenums(subnode, df_answers, name, country_language):
 				text = None
 				if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
 					if fl_child.match(text_node.text) is None and fl_job.match(text_node.text) is None and fl_movies.match(text_node.text) is None and fl_default.match(text_node.text) is None:
-						text = clean_text(text_node.text, country_language)
+						text = clean_text(text_node.text, country_language, True)
 
 				if text is not None and '{empty}' not in text and 'empty' not in text:
 					data = {'item_name': name, 'item_value':item_value, 'text': text}
@@ -463,10 +480,10 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 					text = None
 					if output_source_questionnaire_flag == '0':
 						if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
-							text = clean_text(text_node.text, country_language)
+							text = clean_text(text_node.text, country_language, False)
 					else:
 						if text_node.attrib['translation_id'] == '1' and text_node.text is not None:
-							text = clean_text(text_node.text, country_language)
+							text = clean_text(text_node.text, country_language, False)
 
 					if text is not None and '^LblOnlyTesting' not in text and '^LblSucInstalled' not in text:
 						if name == 'THIS_INTERVIEW':
@@ -491,10 +508,10 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 						text = None
 						if output_source_questionnaire_flag == '0':
 							if text_node.attrib['translation_id'] != '1' and text_node.text is not None and text_node.text != '{}':
-								text = clean_text(text_node.text, country_language)
+								text = clean_text(text_node.text, country_language, False)
 						else:
 							if text_node.attrib['translation_id'] == '1' and text_node.text is not None and text_node.text != '{}':
-								text = clean_text(text_node.text, country_language)
+								text = clean_text(text_node.text, country_language, False)
 
 						if text is not None and '+piHO004_OthPer+' not in text and '{empty}' not in text and 'empty' not in text:
 							order = parent_map[text_node].attrib['order']
@@ -536,7 +553,7 @@ def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, pa
 				for text_node in text_nodes:
 					text = None
 					if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
-						text = clean_text(text_node.text, country_language)
+						text = clean_text(text_node.text, country_language, True)
 
 					if text is not None:
 						if name == 'THIS_INTERVIEW':
@@ -562,7 +579,7 @@ def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, pa
 					for text_node in text_nodes:
 						text = None
 						if text_node.attrib['translation_id'] != '1' and text_node.text is not None and text_node.text != '{}':
-							text = clean_text(text_node.text, country_language)
+							text = clean_text(text_node.text, country_language, True)
 
 						if text is not None and '{empty}' not in text and 'empty' not in text:
 							order = parent_map[text_node].attrib['order']
