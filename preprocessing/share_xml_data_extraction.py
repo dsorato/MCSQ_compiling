@@ -109,7 +109,7 @@ def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id,
 
 				if last_text is None or text_var != last_text:
 					text_var, item_type = eliminate_showcardID_and_adjust_item_type(text_var, item_name, w7_flag)
-					if w7_flag and item_type is None:
+					if w7_flag==True and item_type is None:
 						item_type = item_type_w7
 
 					if '{empty}' not in text_var and 'empty' not in text_var:
@@ -187,6 +187,7 @@ def fill_extraction(text):
 
 def replace_fill_in_answer(text):
 	text = re.sub('\^FLCurr', 'euros', text)
+	text = re.sub('\^FLCURR', 'euros', text)
 	text = re.sub('\^img_infinity_correct_copy', '', text)
 	text = re.sub('\^img_infinity_incorrect_copy', '', text)
 	text = re.sub('\^CH004_FirstNameOfChild', 'Tom/Maria', text)
@@ -238,6 +239,7 @@ def clean_answer_text(text, country_language):
 
 def clean_text(text, country_language, w7flag):
 	text = text.replace('^MN015_ELIGIBLES', '')
+	text = text.replace('^MN015_Eligibles', '')
 	text = text.replace('etc.', '')
 	text = text.replace('e.g.', 'eg')
 	text = text.replace('(Ex.', '(Ex:')
@@ -266,7 +268,11 @@ def clean_text(text, country_language, w7flag):
 	text = text.replace('(^FLDay)', '')
 	text = text.replace('(^FLMonth)', '')
 	text = text.replace('(^FLYear)', '')
+	text = text.replace('(^FLYEAR)', '')
 	text = text.replace('(^FLToday)', '')
+	text = text.replace('(^FLDAY)', '')
+	text = text.replace('(^FLMONTH)', '')
+	text = text.replace('(^FLTODAY)', '')
 	text = text.replace('[--CodeAll--]', '')
 	text = text.replace('^FLMonthFill ^FLYearFill', '...')
 	text = text.replace('^FLMonthFill', '...')
@@ -276,6 +282,9 @@ def clean_text(text, country_language, w7flag):
 	text = text.replace('(^FL_MEMBERS)', '')
 	text = text.replace('^FL_NAME / ^FL_LASTNAME', 'Tom/Maria')
 	text = text.replace("'+FLNumber+", '')
+	text = text.replace("^FL_MOVED_IN_Y", '')
+	text = text.replace('^FL_LASTNAME', '')
+
 	
 	if w7flag:
 		text = text.replace('[FLLastInterviewMonthYear]', '2014')
@@ -293,6 +302,8 @@ def clean_text(text, country_language, w7flag):
 		text = re.sub('\+FL_year\+', '2017', text)
 	
 	text = re.sub('\^FL_MEMBER', 'Tom/Maria', text)
+	text = re.sub("\s?RA026_acwhere,?\s?", '', text)
+	text = re.sub("'\s?\+\s?FL_livingin\s?\+\s?'", '', text)
 	text = re.sub('\^FLChildName', 'Tom/Maria', text)
 	text = re.sub('^\s?\d+\.\s', '', text)
 	text = re.sub('\^FL_ADDRESS', '...', text)
@@ -305,6 +316,7 @@ def clean_text(text, country_language, w7flag):
 	text = re.sub('\^CHILDNAME', 'Tom/Maria', text)
 	text = re.sub('\^DN002_MoBirth', '', text)
 	text = re.sub('\^FLCurr', 'euros', text)
+	text = re.sub('\^FLCURR', 'euros', text)
 	text = re.sub('\^img_infinity_correct_copy', '', text)
 	text = re.sub('\^img_infinity_incorrect_copy', '', text)
 	text = re.sub('\^CH004_FirstNameOfChild', 'Tommy/Mary', text)
@@ -333,6 +345,7 @@ def clean_text(text, country_language, w7flag):
 	text = re.sub('\^TempRelationshipString', '', text)
 	text = re.sub('\^AffordExpenseAmount', 'X', text)
 	text = re.sub('\^XT102_DecMonthBirth', '', text)
+	text = re.sub('\^RespondentID', 'X', text)
 
 	if 'ENG' not in country_language:
 		text = text.replace('else', ' ')
@@ -524,6 +537,44 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 def replace_untranslated_instructions(country_language, text):
 	if 'CAT_ES' in country_language:
 		share_w7_instructions = SHAREW7InstructionsCAT()
+	if 'CZE_CZ' in country_language:
+		share_w7_instructions =SHAREW7InstructionsCZE()
+	if 'ENG' in country_language:
+		share_w7_instructions =SHAREW7InstructionsENG()
+	if 'FRE' in country_language:
+		share_w7_instructions =SHAREW7InstructionsFRE()
+	if 'SPA' in country_language:
+		share_w7_instructions =SHAREW7InstructionsSPA()
+	if 'POR' in country_language:
+		share_w7_instructions =SHAREW7InstructionsPOR()
+	if 'GER' in country_language:
+		share_w7_instructions =SHAREW7InstructionsGER()
+
+
+	if 'CZE_CZ' in country_language:
+		text = re.sub('\^Specify', 'Upřesněte', text)
+		text = re.sub('\^FL_HISHER', 'jeho její', text)
+		text = re.sub('\^FL_VERB', 'byl narozen', text)
+	if 'ENG' in country_language:
+		text = re.sub('\^Specify', 'Specify', text)
+		text = re.sub('\^FL_HISHER', 'his/her', text)
+		text = re.sub('\^FL_VERB', 'was born', text)
+	if 'FRE' in country_language:
+		text = re.sub('\^Specify', 'Spécifier', text)
+		text = re.sub('\^FL_HISHER', 'son/sa', text)
+		text = re.sub('\^FL_VERB', 'est né(e)', text)
+	if 'SPA' in country_language:
+		text = re.sub('\^Specify', 'Especificar', text)
+		text = re.sub('\^FL_HISHER', 'su/suya', text)
+		text = re.sub('\^FL_VERB', 'nació', text)
+	if 'POR' in country_language:
+		text = re.sub('\^Specify', 'Especificar', text)
+		text = re.sub('\^FL_HISHER', 'seu/sua', text)
+		text = re.sub('\^FL_VERB', 'nasceu', text)
+	if 'GER' in country_language:
+		text = re.sub('\^Specify', 'Angeben', text)
+		text = re.sub('\^FL_HISHER', 'sein/ihr', text)
+		text = re.sub('\^FL_VERB', 'wurde geboren', text)
 
 	text = re.sub('\^CodeAll', share_w7_instructions.code_all, text)
 	text = re.sub('\^ReadOut', share_w7_instructions.read_out, text)
@@ -533,8 +584,10 @@ def replace_untranslated_instructions(country_language, text):
 	text = re.sub('\^FL_RE012b', share_w7_instructions.job_position, text)
 	text = re.sub('\^RE012_jobtitle', share_w7_instructions.job_position, text)
 	text = re.sub('\^FL_HIS_HER', share_w7_instructions.he_she, text)
+	text = re.sub('\^FL_GENDER', share_w7_instructions.gender, text)
+	text = re.sub('\^FL_MOVED_IN_M', share_w7_instructions.moved_in_month, text)
 
-	
+
 
 	return text
 
@@ -563,7 +616,7 @@ def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, pa
 						text = replace_untranslated_instructions(country_language, text)
 						sentences = splitter.tokenize(text)
 						for sentence in sentences:
-							if '^Children_table' not in sentence and '^Press' not in sentence:
+							if '^Children_table' not in sentence and '^Press' not in sentence and '^FLDefault[84] ^Amount' not in sentence:
 								data = {'item_name': name, 'item_type':item_type, 'tmt_id': tmt_id, 'text': sentence}
 								df_questions = df_questions.append(data, ignore_index = True)	
 		elif child.tag == 'procedure':
@@ -739,7 +792,7 @@ def build_questionnaire_structure_w7(df_questions, df_answers,df_procedures, df_
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
 			else:
 				for fill in fills:
-					df_questionnaire = fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id, row['item_name'], share_modules, True, item_type)
+					df_questionnaire = fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id, row['item_name'], share_modules, True, row['item_type'])
 
 			last_item_name = row['item_name']
 			last_row = df_questionnaire.iloc[-1]
