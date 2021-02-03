@@ -30,14 +30,14 @@ class SHAREW7InstructionsFRE:
 	gender = 'Homme/Femme'
 	moved_in_month = 'Janvier'
 
-
+##UPDATE SPA FILE
 class SHAREW7InstructionsSPA:
 	read_out = 'Leer.'
 	code_all = "Codificar todo lo que aplique"
 	job_position = '[profesión]'
 	he_she = 'Él/Ella'
 	gender = 'Hombre/Mujer'
-	moved_in_month = 'Janero'
+	moved_in_month = 'Enero'
 
 
 class SHAREW7InstructionsPOR:
@@ -58,9 +58,9 @@ class SHAREW7InstructionsGER:
 	moved_in_month = 'Januar'
 
 class SHAREW7InstructionsRUS:
-	read_out = 'Vorlesen.'
-	code_all = "Bitte alle zutreffenden Antworten kodieren"
-	job_position = '[Berufsbezeichnung]'
-	he_she = 'Er/Sie'
-	gender = 'Mann/Frau'
-	moved_in_month = 'Januar'
+	read_out = 'ЗАЧИТАЙТЕ.'
+	code_all = "ОТМЕТЬТЕ ВСЕ НАЗВАННЫЕ ОТВЕТЫ"
+	job_position = '[работа]'
+	he_she = 'он/она'
+	gender = 'мужчина/женщина'
+	moved_in_month = 'январь'

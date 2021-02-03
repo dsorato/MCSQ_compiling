@@ -47,6 +47,14 @@ class ESSCountrySpecificR06():
 	item_names = [x.lower() for x in item_names]
 
 
+class ESSCountrySpecificR07():
+	"""
+	Item names of country specific questions in ESS round 7.
+	"""
+	item_names = ['B10','B18b', 'C10', 'C12', 'F15', 'F44', 'F52','F56', 'F61']
+	item_names = [x.lower() for x in item_names]
+
+
 class EVSCountrySpecificR03():
 	"""
 	Item names of country specific questions in EVS round 3.

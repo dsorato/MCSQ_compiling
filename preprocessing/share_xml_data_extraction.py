@@ -14,6 +14,15 @@ from share_w7_instructions import *
 
 
 def get_module_metadata(item_name, share_modules):
+	"""
+	Gets the module to which a survey item pertains, based on the survey item name.
+	Args:
+		param1 item_name (string): item_name metadata, extracted direcly from the input xml file.
+		param2 share_modules (dictionary): a dictionary of module names (taken from SHARE website), encapsulated in the SHAREModules object.
+
+	Returns:
+		module (string) the module name.
+	"""
 	module = None
 	for k, v in list(share_modules.items()):
 		if item_name[:2] == k:
@@ -22,6 +31,17 @@ def get_module_metadata(item_name, share_modules):
 	return module
 
 def fill_substitution_in_answer(text, fills, df_procedures):
+	"""
+	Substitutes the fills in the answer text segments. The fill is substituted only if it was found in the procedure nodes (this can
+	be checked by filtering the df_procedures dataframe by the fill present in the answer segment).
+	Args:
+		param1 text (string): the answer text segment.
+		param2 fills (list): the list of fills that are present in the text segment. Effectivelly, for answers the fill list has just one element.
+		param3 df_procedures (pandas dataframe): a dataframe that stores the contents of the procedures nodes, where the fill definitions are.
+
+	Returns:
+		module (string) the module name.
+	"""
 	texts = []
 	df_procedure_filtered = df_procedures[df_procedures['fill_name'].str.lower()==fills[0].lower()]
 	if df_procedure_filtered.empty == False:
@@ -77,13 +97,13 @@ def eliminate_showcardID_and_adjust_item_type(text, item_name, w7_flag):
 		item_type = 'INSTRUCTION'
 	elif '^SHOWCARD_ID' in text:
 		text = re.sub('\^SHOWCARD_ID', str(ut.update_showcard_id()), text)
-		item_type = 'REQUEST'
+		item_type = 'INSTRUCTION'
 	elif 'SHOWCARD_ID.' in text:
 		text = re.sub('SHOWCARD_ID', str(ut.update_showcard_id()), text)
 		item_type = 'INSTRUCTION'
 	elif 'SHOWCARD_ID' in text:
 		text = re.sub('SHOWCARD_ID', str(ut.update_showcard_id()), text)
-		item_type = 'REQUEST'
+		item_type = 'INSTRUCTION'
 	else:
 		if w7_flag == True:
 			item_type = None
@@ -549,6 +569,8 @@ def replace_untranslated_instructions(country_language, text):
 		share_w7_instructions =SHAREW7InstructionsPOR()
 	if 'GER' in country_language:
 		share_w7_instructions =SHAREW7InstructionsGER()
+	if 'RUS' in country_language:
+		share_w7_instructions =SHAREW7InstructionsRUS()
 
 
 	if 'CZE_CZ' in country_language:
@@ -556,6 +578,7 @@ def replace_untranslated_instructions(country_language, text):
 		text = re.sub('\^FL_HISHER', 'jeho její', text)
 		text = re.sub('\^FL_VERB', 'byl narozen', text)
 	if 'ENG' in country_language:
+		text = re.sub('\^ReadOutNeed', 'Read out if necessary.', text)
 		text = re.sub('\^Specify', 'Specify', text)
 		text = re.sub('\^FL_HISHER', 'his/her', text)
 		text = re.sub('\^FL_VERB', 'was born', text)
@@ -575,6 +598,11 @@ def replace_untranslated_instructions(country_language, text):
 		text = re.sub('\^Specify', 'Angeben', text)
 		text = re.sub('\^FL_HISHER', 'sein/ihr', text)
 		text = re.sub('\^FL_VERB', 'wurde geboren', text)
+	if 'RUS' in country_language:
+		text = re.sub('\^ReadOutNeed', 'При необходимости зачитайте.', text)
+		text = re.sub('\^Specify', 'Уточнить', text)
+		text = re.sub('\^FL_HISHER', 'его/ее', text)
+		text = re.sub('\^FL_VERB', 'родился', text)
 
 	text = re.sub('\^CodeAll', share_w7_instructions.code_all, text)
 	text = re.sub('\^ReadOut', share_w7_instructions.read_out, text)
@@ -616,6 +644,7 @@ def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, pa
 						text = replace_untranslated_instructions(country_language, text)
 						sentences = splitter.tokenize(text)
 						for sentence in sentences:
+							# if '^Children_table' not in sentence and '^Press' not in sentence and '^FLDefault[84] ^Amount' not in sentence and name != 'JobCode' and name != 'CountryCode':
 							if '^Children_table' not in sentence and '^Press' not in sentence and '^FLDefault[84] ^Amount' not in sentence:
 								data = {'item_name': name, 'item_type':item_type, 'tmt_id': tmt_id, 'text': sentence}
 								df_questions = df_questions.append(data, ignore_index = True)	
