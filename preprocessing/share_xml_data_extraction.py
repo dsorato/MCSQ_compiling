@@ -56,6 +56,19 @@ def fill_substitution_in_answer(text, fills, df_procedures):
 	return texts
 
 def eliminate_showcardID_and_adjust_item_type(text, item_name, w7_flag):
+	"""
+	Substitutes the SHOWCARD_ID strings with a card number (the card IDs are not available in the input XML files).
+	This method is more relevant in SHARE w8 because in these files the text segments don't have clear indications of
+	instruction item_type. The SHARE w7 files have QInstruction subnodes that indicate if a segment is an instruction.
+	Args:
+		param1 text (string): the text segment being analyzed (either request or instruction).
+		param2 item_name (string): item_name metadata, extracted direcly from the input xml file. If 'intro' is in the item_name, the segment receives 
+		the introduction item_type.
+		param3 w7_flag (boolean): a boolean flag that indicates if the segment comes from a input xml file in SHARE w7.
+
+	Returns:
+		text (string) and item_type (string). The SHOWCARD_ID strings are removed from the text segment.
+	"""
 	if 'intro' in item_name.lower():
 		item_type = 'INTRODUCTION'
 		if '^SHOWCARD_ID, si us plau.' in text:
@@ -206,6 +219,14 @@ def fill_extraction(text):
 		return fill_list
 
 def replace_fill_in_answer(text):
+	"""
+	Substitutes certain fills in the answer text segments with fixed values.
+	Args:
+		param1 text (string): the answer text segment.
+
+	Returns:
+		the answer text (string) where the fills were replaced (if present in original string).
+	"""
 	text = re.sub('\^FLCurr', 'euros', text)
 	text = re.sub('\^FLCURR', 'euros', text)
 	text = re.sub('\^img_infinity_correct_copy', '', text)
@@ -225,6 +246,14 @@ def replace_fill_in_answer(text):
 
 
 def clean_answer_text(text, country_language):
+	"""
+	Substitutes HTML markups in the answer text segments with fixed values
+	Args:
+		param1 text (string): the answer text segment.
+
+	Returns:
+		the answer text (string) where the markups were replaced (if present in original string).
+	"""
 	text = text.replace('etc.', '')
 	text = text.replace('e.g.', 'eg')
 	text = text.replace('(Ex.', '(Ex:')
@@ -258,6 +287,16 @@ def clean_answer_text(text, country_language):
 	return text
 
 def clean_text(text, country_language, w7flag):
+	"""
+	Substitutes HTML markups and certain fills in the text segments with fixed values.
+	Args:
+		param1 text (string): the answer text segment.
+		param2 country_language (string): country_language metadata, embedded in file name.
+		param3 w7_flag (boolean): a boolean flag that indicates if the segment comes from a input xml file in SHARE w7.
+
+	Returns:
+		the text (string) where the markups and fills were replaced (if present in original string).
+	"""
 	text = text.replace('^MN015_ELIGIBLES', '')
 	text = text.replace('^MN015_Eligibles', '')
 	text = text.replace('etc.', '')
@@ -382,15 +421,21 @@ def clean_text(text, country_language, w7flag):
 
 	return text
 
-"""
-Extract answers text from XML node
 
-:param name: name of the answer structure inside XML file
-:param subnode: child node being analyzed in outer loop
-:param df_answers: pandas dataframe containing answers extracted from XML file
-:returns: answers dataframe, with new answer category retrieved (when appliable)
-"""
 def extract_answers(subnode, df_answers, name, country_language, output_source_questionnaire_flag):
+	"""
+	Extract answers text from XML nodes of SHARE w8 files.
+	
+	param1 subnode: child node being analyzed in outer loop.
+	param2 df_answers: pandas dataframe containing answers extracted from XML file
+	param3 name (string): name of the answer structure inside XML file
+	param4 country_language (string): country_language metadata, embedded in file name.
+	param5 output_source_questionnaire_flag (string): a flag that indicates if the data being extracted is the source or target language.
+		if it is the source then translation_id == 1, otherwise it is translation_id != 1.
+
+
+	Returns: retrieved answer segments in df_answers (pandas dataframe). 
+	"""
 	for child in subnode.getiterator():
 		if child.tag == 'answer_element':
 			item_value = child.attrib['labelvalue']
@@ -444,7 +489,7 @@ def extract_categories(subnode, df_answers, name, country_language):
 		param3 country_language (string): country and language metadata, contained in the filename
 
 	Returns: 
-		retrieved answer segments. 
+		retrieved answer segments in df_answers (pandas dataframe). 
 	"""
 	fl_child = re.compile('(\^FLChild\[.+\]|{llista amb el nom dels fills})')
 	fl_job =  re.compile('\^(Sec_RE\.)?FJobTitle\[.+\]')
