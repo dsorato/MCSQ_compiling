@@ -13,6 +13,7 @@ import utils as ut
 from preprocessing_ess_utils import *
 
 
+ignore = re.compile(r'F[1-3]\_[0-1][2-9](\_.*)?')
 
 def clean_answer_category(text):
 	"""
@@ -228,7 +229,7 @@ def adjust_item_name(item_name):
 		adjusted item_name and item_type metadata.
 	"""
 	
-	if re.compile(r'F([2-4]|N)_0[2-9]').match(item_name) or item_name == 'Labels_in_F1_F4':
+	if re.compile(r'F([2-3]|N)_0[2-9]').match(item_name) or item_name == 'Labels_in_F1_F4':
 		item_name = 'REJECT QUESTION'
 		item_type = None
 	else:
@@ -268,8 +269,6 @@ def adjust_item_name(item_name):
 			item_name = item_name.split('.')
 			item_name = item_name[0]+item_name[1].lower()
 
-		print(item_name)
-
 	return item_name, item_type
 
 
@@ -297,10 +296,13 @@ def process_question_instruction_node(ess_questions_instructions, df_question_in
 			if extract_source == 1:
 				if node.tag == 'text' and 'translation_id' in node.attrib and node.attrib['translation_id'] == '1':
 					if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QText':
-						text = node.text
-						item_type = 'REQUEST'
-						df_question_instruction = segment_question_instruction(df_question_instruction, parent_map, node, item_name, item_type, splitter,
-						 country_language)
+						if 'F' in item_name:
+							print(item_name, ignore.match(item_name))
+						if ignore.match(item_name) is None:
+							text = node.text
+							item_type = 'REQUEST'
+							df_question_instruction = segment_question_instruction(df_question_instruction, parent_map, node, item_name, item_type, splitter,
+							 country_language)
 
 					if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QInstruction':
 						text = node.text

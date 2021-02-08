@@ -1025,6 +1025,17 @@ def instruction_recognition_german(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<round>)Runden\b"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<estimation>)(Schätzung)\s?(?P<accept>)akzeptieren\b"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+		
+
 	regex= r"^(?P<again>)(Immer noch|Weiterhin|Weiter|Und noch die|Noch einmal)?\s?(?P<card>)(karte\s(\d+|[a-z]+)|liste\s(\d+|[a-z]+))"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
