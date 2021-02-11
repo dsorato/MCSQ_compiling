@@ -2037,7 +2037,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<interviewer>)entrevistador"
+	regex= r"^(?P<interviewer>)(entrevistador|ENTREVISTADOR/A)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True

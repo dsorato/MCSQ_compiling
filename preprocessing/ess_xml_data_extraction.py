@@ -15,6 +15,8 @@ from preprocessing_ess_utils import *
 
 ignore = re.compile(r'F[1-3]\_[0-1][2-9](\_.*)?')
 
+ignore_f3_dk_rf = re.compile(r'F3\_01(\_.*)?')
+
 def clean_answer_category(text):
 	"""
 	Cleans the answer segment, by standardizing the text and removing undesired elements.
@@ -62,6 +64,7 @@ def clean_answer_category(text):
 		text = re.sub('&lt', " ",text)
 		text = re.sub('&gt', " ",text)
 		text = re.sub('&nbsp', " ",text)
+		text = re.sub('_*', "",text)
 		text = re.sub(';', "",text)
 		text = text.replace('------->','')
 		text = text.replace('__________','')
@@ -113,6 +116,7 @@ def clean(text):
 		text = re.sub('</p>', "",text)
 		text = re.sub('<p>', "",text)
 		text = re.sub('~', " ",text)
+		text = re.sub('_*', "",text)
 		text = re.sub('<b><b>', " ",text)
 		text = re.sub('</b></b>', " ",text)
 		text = re.sub('<b>', " ",text)
@@ -130,6 +134,10 @@ def clean(text):
 		text = re.sub('&lt', " ",text)
 		text = re.sub('&gt', " ",text)
 		text = re.sub('&nbsp', " ",text)
+		text = re.sub('&hellip;', " ",text)
+		text = re.sub('&hellip', " ",text)
+		text = re.sub('&rsquo', "'",text)
+		text = re.sub('\[\d+\]', "",text)
 		text = re.sub(';', "",text)
 		text = text.replace('einfg.','einfügen')
 		text = text.replace('[^footnote]','')
@@ -138,6 +146,7 @@ def clean(text):
 		text = text.replace('<P STYLE="text-align: right">','')
 		text = text.replace('>','')
 		text = text.replace('<','')
+		text = text.replace('i.e.','ie')
 
 		
 		text = text.rstrip()
@@ -166,6 +175,9 @@ def identify_showcard_instruction(text, country_language):
 
 	if 'RUS' in country_language:
 		showcard = 'КАРТОЧКУ'
+
+	if 'RUS_LV' in country_language:
+		showcard = 'КАРТОЧКА'
 
 	if 'ENG' in country_language:
 		showcard = 'CARD'
@@ -229,11 +241,20 @@ def adjust_item_name(item_name):
 		adjusted item_name and item_type metadata.
 	"""
 	
-	if re.compile(r'F([2-3]|N)_0[2-9]').match(item_name) or item_name == 'Labels_in_F1_F4':
+	if re.compile(r'F([2-3]|N)_0[2-9]').match(item_name) or item_name == 'Labels_in_F1_F4' or item_name == 'Instruction' or item_name == 'I' or item_name == 'I_below_C33_C35':
 		item_name = 'REJECT QUESTION'
 		item_type = None
 	else:
 		item_type = None
+		
+		if 'Intro_to_C33_35' in item_name:
+			item_type = 'INTRODUCTION'
+			item_name = 'C33'
+			return item_name, item_type
+		if 'I_after_D30_32' in item_name:
+			item_type = 'INSTRUCTION'
+			item_name = 'D32'
+			return item_name, item_type
 		if 'in' in item_name and 'minutes' not in item_name:
 			item_name = item_name.split('in')
 			item_name = item_name[1]
@@ -296,9 +317,7 @@ def process_question_instruction_node(ess_questions_instructions, df_question_in
 			if extract_source == 1:
 				if node.tag == 'text' and 'translation_id' in node.attrib and node.attrib['translation_id'] == '1':
 					if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QText':
-						if 'F' in item_name:
-							print(item_name, ignore.match(item_name))
-						if ignore.match(item_name) is None:
+						if ignore.match(item_name) is None and ignore_f3_dk_rf.match(item_name) is None:
 							text = node.text
 							item_type = 'REQUEST'
 							df_question_instruction = segment_question_instruction(df_question_instruction, parent_map, node, item_name, item_type, splitter,
@@ -311,11 +330,12 @@ def process_question_instruction_node(ess_questions_instructions, df_question_in
 						 country_language)
 			else:
 				if node.tag == 'text' and 'translation_id' in node.attrib and node.attrib['translation_id'] != '1':
-					if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QText':
-						text = node.text
-						item_type = 'REQUEST'
-						df_question_instruction = segment_question_instruction(df_question_instruction, parent_map, node, item_name, item_type, splitter,
-						 country_language)
+					if ignore.match(item_name) is None and ignore_f3_dk_rf.match(item_name) is None:
+						if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QText':
+							text = node.text
+							item_type = 'REQUEST'
+							df_question_instruction = segment_question_instruction(df_question_instruction, parent_map, node, item_name, item_type, splitter,
+							 country_language)
 
 					if 'type_name' in parent_map[node].attrib and parent_map[node].attrib['type_name'] == 'QInstruction':
 						text = node.text
@@ -392,10 +412,12 @@ def process_answer_node(ess_answers, df_answers, parent_map, ess_special_answer_
 						parent_of_parent = parent_map[parent]
 						answer_id = parent_map[parent_of_parent].attrib['tmt_id']
 
-						if 'labelvalue' in parent_map[node].attrib:
-							item_value = parent_map[node].attrib['labelvalue']
-						else:
-							item_value = parent_map[node].attrib['order']
+						# if 'labelvalue' in parent_map[node].attrib:
+						# 	item_value = parent_map[node].attrib['labelvalue']
+						# else:
+						# 	item_value = parent_map[node].attrib['order']
+
+						item_value = parent_map[node].attrib['order']
 						
 						text = clean_answer_category(text)
 
@@ -477,7 +499,7 @@ def set_initial_structures(filename, extract_source):
 
 
 def main(filename):
-	extract_source = 1
+	extract_source = 0
 
 	"""
 	Parse the input XML file by filename
@@ -537,8 +559,7 @@ def main(filename):
 			if item_name =='Instruction' or item_name == 'Intro':
 				item_name = last_item_name
 				
-			if 'Row ' not in item_name and item_name != 'CI' and item_name != 'outro':
-
+			if 'Row ' not in item_name and item_name != 'CI' and item_name != 'outro' and 'istration Note' not in item_name and item_name != 'box': 
 				if df_questionnaire.empty:
 					survey_item_id = ut.get_survey_item_id(survey_item_prefix)
 				else:
@@ -560,7 +581,7 @@ def main(filename):
 			
 	# df_question_instruction.to_csv('questions.csv', encoding='utf-8-sig', index=False)
 	# df_answers.to_csv('answers.csv', encoding='utf-8-sig', index=False)
-	df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8-sig', sep='\t', index=False)
+	df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8-sig', index=False)
 	
 
 

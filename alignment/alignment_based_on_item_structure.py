@@ -4,11 +4,8 @@ import sys
 import os
 import re
 from countryspecificrequest import *
+from alignment_utils import *
 
-
-def check(n, l):
-    subs = [l[i:i+n] for i in range(len(l)) if len(l[i:i+n]) == n]
-    return any([(sorted(sub) in range(min(l), max(l)+1)) for sub in subs])
 
 
 def identify_showc_segment(list_source, list_target, item_type):
@@ -1021,40 +1018,6 @@ def get_target_language_country_metadata(filename):
 	
 	return target_language_country
 
-
-def instantiate_country_specific_request_object(study):
-	"""
-	Instantiates the appropriate set of country-specific requests according to the study.
-	Country-specific requests are deleted from alignment by design because the answer categories
-	frequently change from country to country.
-
-	Args:
-		param1 study (string): study metadata, embedded in filenames.
-
-	Returns:
-		country_specific_requests (Python object). Instance of python object that encapsulates the item names of 
-		the country specific questions.
-	"""
-	if 'ESS_R01' in study:
-		country_specific_requests = ESSCountrySpecificR01()
-	elif 'ESS_R02' in study:
-		country_specific_requests = ESSCountrySpecificR02()
-	elif 'ESS_R03' in study:
-		country_specific_requests = ESSCountrySpecificR03()
-	elif 'ESS_R04' in study:
-		country_specific_requests = ESSCountrySpecificR04()
-	elif 'ESS_R05' in study:
-		country_specific_requests = ESSCountrySpecificR05()
-	elif 'ESS_R06' in study:
-		country_specific_requests = ESSCountrySpecificR06()
-	elif 'EVS_R03' in study:
-		country_specific_requests = EVSCountrySpecificR03()
-	elif 'EVS_R04' in study:
-		country_specific_requests = EVSCountrySpecificR04()
-	elif 'EVS_R05' in study:
-		country_specific_requests = EVSCountrySpecificR05()
-
-	return country_specific_requests
 
 
 
