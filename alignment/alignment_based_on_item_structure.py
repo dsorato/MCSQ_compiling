@@ -3,8 +3,10 @@ import nltk
 import sys
 import os
 import re
-from countryspecificrequest import *
+import string
 from alignment_utils import *
+from countryspecificrequest import *
+from string import punctuation
 
 
 
@@ -40,13 +42,37 @@ def identify_showc_segment(list_source, list_target, item_type):
 	else:
 		return 'No showc segment identified'
 
+def preprocessing_alignment_candidates(text, stopwords):
+	"""
+	Preprocesses the text segment by tokenizing it, removing stopwords and punctuation.
 
-def find_best_match(list_source, list_target, item_type):
+	Args:
+		param1 text (string): the text segment to be preprocessed.
+		param2 stopwords (list): a language specific stopwords list.
+	Returns:
+		The preprocessed tokens (a list of strings). 
+
+	"""
+	tokens = nltk.word_tokenize(text)
+	preprocessed_tokens = []
+
+	for token in tokens:
+		token = token.lower()
+		if token not in string.punctuation and token not in stopwords:
+			preprocessed_tokens.append(token)
+
+
+	return preprocessed_tokens
+
+
+
+def find_best_match(list_source, list_target, item_type, en_stopwords, target_stopwords):
 	"""
 	Finds the best match for source and target segments (same item_type) based on the lenght of the segments.
 	Args:
 		param1 list_source (list): list of source segments (contains segments of same item_name and item_type)
 		param2 list_target (list): list of target segments (contains segments of same item_name and item_type)
+		param3 item_type (string): the item type of the segments. Can be introduction, instruction or request.
 
 	Returns:
 		alignment (list). Alignment pair represented by the index of target and source segments being aligned 
@@ -62,10 +88,12 @@ def find_best_match(list_source, list_target, item_type):
 
 
 	for i, item in enumerate(list_source):
-		dict_source[i] = len(item[-1])
+		print(item[-1])
+		print(len(preprocessing_alignment_candidates(item[-1], en_stopwords)))
+		dict_source[i] = len(preprocessing_alignment_candidates(item[-1], en_stopwords))
 
 	for i, item in enumerate(list_target):
-		dict_target[i] = len(item[-1])
+		dict_target[i] = len(preprocessing_alignment_candidates(item[-1], target_stopwords)) 
 
 	for target_k, target_v in list(dict_target.items()):
 		for source_k, source_v in list(dict_source.items()):
@@ -629,7 +657,7 @@ def align_more_segments_in_source(list_source, list_target, sorted_aligments, so
 	return df
 
 
-def prepare_alignment_with_more_segments_in_source(df, list_source, list_target, item_type):
+def prepare_alignment_with_more_segments_in_source(df, list_source, list_target, item_type, en_stopwords, target_stopwords):
 	"""
 	Calls the appropriate method for alignment with more segments in source dataframe, concerning the number
 	of pairless segments
@@ -648,7 +676,7 @@ def prepare_alignment_with_more_segments_in_source(df, list_source, list_target,
 	index 0 = target
 	index 1 = source
 	"""
-	first_alignment = find_best_match(list_source, list_target, item_type)
+	first_alignment = find_best_match(list_source, list_target, item_type, en_stopwords, target_stopwords)
 	target_segment_index = first_alignment[0]
 	source_segment_index = first_alignment[1]
 
@@ -669,7 +697,7 @@ def prepare_alignment_with_more_segments_in_source(df, list_source, list_target,
 		alignments = [[source_segment_index, target_segment_index]]
 		source_segments_paired = [source_segment_index]
 		while aux_target:
-			alignment = find_best_match(aux_source, aux_target, item_type)
+			alignment = find_best_match(aux_source, aux_target, item_type, en_stopwords, target_stopwords)
 			target_segment_index = alignment[0]
 			source_segment_index = alignment[1]
 
@@ -693,7 +721,7 @@ def prepare_alignment_with_more_segments_in_source(df, list_source, list_target,
 
 
 
-def prepare_alignment_with_more_segments_in_target(df, list_source, list_target, item_type):
+def prepare_alignment_with_more_segments_in_target(df, list_source, list_target, item_type, en_stopwords, target_stopwords):
 	"""
 	Calls the appropriate method for alignment with more segments in target dataframe, concerning the number
 	of pairless segments
@@ -712,7 +740,7 @@ def prepare_alignment_with_more_segments_in_target(df, list_source, list_target,
 	index 0 = target
 	index 1 = source
 	"""
-	first_alignment = find_best_match(list_source, list_target, item_type)
+	first_alignment = find_best_match(list_source, list_target, item_type, en_stopwords, target_stopwords)
 	target_segment_index = first_alignment[0]
 	source_segment_index = first_alignment[1]
 
@@ -734,7 +762,7 @@ def prepare_alignment_with_more_segments_in_target(df, list_source, list_target,
 		alignments = [[target_segment_index, source_segment_index]]
 		target_segments_paired = [target_segment_index]
 		while aux_source:
-			alignment = find_best_match(aux_source, aux_target, item_type)
+			alignment = find_best_match(aux_source, aux_target, item_type, en_stopwords, target_stopwords)
 			target_segment_index = alignment[0]
 			source_segment_index = alignment[1]
 
@@ -835,7 +863,7 @@ def different_source_target_index_card_instructions(source_index, target_index, 
 
 
 
-def align_introduction_instruction_request(df, df_source, df_target, item_type):
+def align_introduction_instruction_request(df, df_source, df_target, item_type, en_stopwords, target_stopwords):
 	"""
 	Aligns introduction, instruction and requests segments. Differently from response segments, these other item types can't be
 	merged. There are five distinct cases to consider: 1) only source segments (df_target is empty), 2) only target segments (df_source is empty),
@@ -874,11 +902,11 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 		list_source = df_source.values.tolist()
 
 		if len(list_source) > len(df_target):
-			df = prepare_alignment_with_more_segments_in_source(df, list_source, list_target, item_type)
+			df = prepare_alignment_with_more_segments_in_source(df, list_source, list_target, item_type, en_stopwords, target_stopwords)
 			return df
 
 		elif len(list_target) > len(list_source):
-			df = prepare_alignment_with_more_segments_in_target(df, list_source, list_target, item_type)
+			df = prepare_alignment_with_more_segments_in_target(df, list_source, list_target, item_type, en_stopwords, target_stopwords)
 			return df
 
 		elif len(list_target) == len(list_source):
@@ -942,7 +970,7 @@ def align_responses(df, df_source, df_target):
 	return df
 
 
-def align_on_metadata(df, df_source, df_target, process_responses):
+def align_on_metadata(df, df_source, df_target, process_responses, en_stopwords, target_stopwords):
 	"""
 	Calls the appropriate method for alignment based on metadata.
 	Responses are aligned separately of other item types because answers are merged using the item value.
@@ -955,9 +983,9 @@ def align_on_metadata(df, df_source, df_target, process_responses):
 	Returns:
 		df (pandas dataframe) with newly aligned survey items.
 	"""
-	df = align_introduction_instruction_request(df, df_source, df_target, 'INTRODUCTION')
-	df = align_introduction_instruction_request(df, df_source, df_target, 'INSTRUCTION')
-	df = align_introduction_instruction_request(df, df_source, df_target, 'REQUEST')
+	df = align_introduction_instruction_request(df, df_source, df_target, 'INTRODUCTION', en_stopwords, target_stopwords)
+	df = align_introduction_instruction_request(df, df_source, df_target, 'INSTRUCTION', en_stopwords, target_stopwords)
+	df = align_introduction_instruction_request(df, df_source, df_target, 'REQUEST', en_stopwords, target_stopwords)
 	if process_responses:
 		df = align_responses(df, df_source, df_target)
 	
@@ -1040,6 +1068,9 @@ def main(folder_path, filename_source, filename_target):
 	if 'EVS' in study or 'ESS' in study:
 		country_specific_requests = instantiate_country_specific_request_object(study)
 
+	en_stopwords = instantiate_language_stopwords_set('ENG')
+	target_stopwords = instantiate_language_stopwords_set(target_language_country)
+
 	"""
 	Computes the intersection between the modules of source and target questionnaires.
 	We are only interested in aligning modules that are present in both files.
@@ -1064,7 +1095,7 @@ def main(folder_path, filename_source, filename_target):
 			df_target_by_item_name = df_target_filtered[df_target_filtered['item_name'].str.lower()==unique_item_name.lower()]
 			
 			if df_target_by_item_name.empty == False and df_source_by_item_name.empty == False:
-				df = align_on_metadata(df, df_source_by_item_name, df_target_by_item_name, process_responses)
+				df = align_on_metadata(df, df_source_by_item_name, df_target_by_item_name, process_responses, en_stopwords, target_stopwords)
 				
 	
 	df.to_csv(source_language_country+'_'+target_language_country+'_'+study+'.csv', encoding='utf-8', index=False)

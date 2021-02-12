@@ -305,9 +305,6 @@ def determine_sentence_tokenizer(filename):
 	Returns: 
 		a sentence splitter suffix (string) according to the target language.
 	"""
-	#there is no sentence segmentation for bulgarian in NLTK.. 
-	if 'BUL_' in filename:
-		sentence_splitter_suffix = 'turkish.pickle'
 	if 'CZE_' in filename:
 		sentence_splitter_suffix = 'czech.pickle'
 	if 'DAN_' in filename:
@@ -326,43 +323,15 @@ def determine_sentence_tokenizer(filename):
 		sentence_splitter_suffix = 'german.pickle'
 	if 'GRE_' in filename:
 		sentence_splitter_suffix = 'greek.pickle'
-	
-	
-	if 'ITA_' in filename:
-		sentence_splitter_suffix = 'italian.pickle'
-	
 	if 'NOR_' in filename:
 		sentence_splitter_suffix = 'norwegian.pickle'
-	if 'POL_' in filename:
-		sentence_splitter_suffix = 'polish.pickle'
 	if 'POR_' in filename:
 		sentence_splitter_suffix = 'portuguese.pickle'
 	if 'RUS_' in filename:
 		sentence_splitter_suffix = 'russian.pickle'
-
 	if 'SPA_' in filename or 'CAT_' in filename:
 		sentence_splitter_suffix = 'spanish.pickle'
-	
-	if 'SLV_' in filename:
-		sentence_splitter_suffix = 'slovene.pickle'
-	
-	if 'SWE_' in filename:
-		sentence_splitter_suffix = 'swedish.pickle'
-	if 'TUR_' in filename:
-		sentence_splitter_suffix = 'turkish.pickle'
 
-	#there is no sentence segmentation for louxemburgish in NLTK.. 
-	if 'UKR_' in filename:
-		sentence_splitter_suffix = 'russian.pickle'
-	#there is no sentence segmentation for louxemburgish in NLTK.. 
-	if 'LTZ_' in filename:
-		sentence_splitter_suffix = 'german.pickle'
-	#there is no sentence segmentation for maltese in NLTK.. 
-	if 'MLT_' in filename:
-		sentence_splitter_suffix = 'turkish.pickle'
-	#there is no sentence segmentation for croatian in NLTK.. 
-	if 'HRV_' in filename:
-		sentence_splitter_suffix = 'turkish.pickle'
 	
 
 	return sentence_splitter_suffix

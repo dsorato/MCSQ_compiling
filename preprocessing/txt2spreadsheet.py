@@ -321,10 +321,10 @@ def main(folder_path, has_supplementary):
 					# supplementary.at[i,'item_value'] = str(row['item_value']) 
 
 				df_all = df_questionnaire.append(supplementary, ignore_index=True)
-				df_all.to_csv(str(csv_name)+'.csv', encoding='utf-8-sig', index=False)
+				df_all.to_csv(str(csv_name)+'.csv', sep='\t', encoding='utf-8-sig', index=False)
 
 			else:	
-				df_questionnaire.to_csv(str(csv_name)+'.csv', encoding='utf-8-sig', index=False)
+				df_questionnaire.to_csv(str(csv_name)+'.csv', sep='\t', encoding='utf-8-sig', index=False)
 
 	
 
