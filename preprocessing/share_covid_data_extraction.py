@@ -268,7 +268,7 @@ def main(folder_path):
 					elif row['item_type'] == 'QInstruction':
 						df_questionnaire = preprocess_instruction_segment(row, df_questionnaire, survey_item_prefix, splitter)
 
-				df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8-sig', index=False)
+				df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8-sig', sep='\t', index=False)
 
 
 

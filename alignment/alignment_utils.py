@@ -104,6 +104,8 @@ def instantiate_language_stopwords_set(language):
 		"va","vais","valor","vamos","van","varias","varios","vaya","veces","ver","verdad","verdadera","verdadero","vez","vosotras",
 		"vosotros","voy","vuestra","vuestras","vuestro","vuestros","y","ya","yo","él","éramos","ésa","ésas","ése","ésos","ésta",
 		"éstas","éste","éstos","última","últimas","último","últimos"]
+
+		return spanish_stopwords
 		
 	elif 'ENG' in language:
 
@@ -321,7 +323,8 @@ def instantiate_language_stopwords_set(language):
 
 		return catalan_stopwords
 
-	elif 'CZE_CZ' in 'language':
+	elif 'CZE_CZ' in language:
+
 		czech_stopwords= ["a","aby","ahoj","aj","ale","anebo","ani","aniž","ano","asi","aspoň","atd","atp","az","ačkoli","až",
 		"bez","beze","blízko","bohužel","brzo","bude","budem","budeme","budes","budete","budeš","budou",
 		"budu","by","byl","byla","byli","bylo","byly","bys","byt","být","během","chce","chceme","chcete",

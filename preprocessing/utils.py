@@ -323,6 +323,8 @@ def determine_sentence_tokenizer(filename):
 		sentence_splitter_suffix = 'german.pickle'
 	if 'GRE_' in filename:
 		sentence_splitter_suffix = 'greek.pickle'
+	if 'ITA' in filename:
+		sentence_splitter_suffix = 'italian.pickle'
 	if 'NOR_' in filename:
 		sentence_splitter_suffix = 'norwegian.pickle'
 	if 'POR_' in filename:

@@ -280,13 +280,15 @@ def clean_answer_text(text, country_language):
 	text = text.replace('[br]', '')
 
 	text = text.rstrip()
+	text = text.lstrip()
 
 	if text == '':
 		text = None
 
+
 	return text
 
-def clean_text(text, country_language, w7flag):
+def clean_text_share(text, country_language, w7flag):
 	"""
 	Substitutes HTML markups and certain fills in the text segments with fixed values.
 	Args:
@@ -408,6 +410,7 @@ def clean_text(text, country_language, w7flag):
 
 	if 'ENG' not in country_language:
 		text = text.replace('else', ' ')
+		text = text.replace(' R ', 'respondent')
 
 	if 'SPA' in country_language:
 		text = text.replace('Ud.', 'usted')
@@ -415,6 +418,8 @@ def clean_text(text, country_language, w7flag):
 
 	
 	text = text.rstrip()
+	text = text.lstrip()
+	
 
 	if text == '':
 		text = None
@@ -444,10 +449,10 @@ def extract_answers(subnode, df_answers, name, country_language, output_source_q
 				text = None
 				if output_source_questionnaire_flag == '0':
 					if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
-						text = clean_text(text_node.text, country_language, False)
+						text = clean_text_share(text_node.text, country_language, False)
 				else:
 					if text_node.attrib['translation_id'] == '1' and text_node.text is not None:
-						text = clean_text(text_node.text, country_language, False)
+						text = clean_text_share(text_node.text, country_language, False)
 
 				if text is not None and '{empty}' not in text and 'empty' not in text:
 					if re.compile('\^PreloadChild').match(text) is None and re.compile('\^FLChild').match(text) is None and re.compile('\^FLSNmember').match(text) is None:
@@ -538,7 +543,7 @@ def extract_qenums(subnode, df_answers, name, country_language):
 				text = None
 				if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
 					if fl_child.match(text_node.text) is None and fl_job.match(text_node.text) is None and fl_movies.match(text_node.text) is None and fl_default.match(text_node.text) is None:
-						text = clean_text(text_node.text, country_language, True)
+						text = clean_text_share(text_node.text, country_language, True)
 
 				if text is not None and '{empty}' not in text and 'empty' not in text:
 					data = {'item_name': name, 'item_value':item_value, 'text': text}
@@ -558,10 +563,10 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 					text = None
 					if output_source_questionnaire_flag == '0':
 						if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
-							text = clean_text(text_node.text, country_language, False)
+							text = clean_text_share(text_node.text, country_language, False)
 					else:
 						if text_node.attrib['translation_id'] == '1' and text_node.text is not None:
-							text = clean_text(text_node.text, country_language, False)
+							text = clean_text_share(text_node.text, country_language, False)
 
 					if text is not None and '^LblOnlyTesting' not in text and '^LblSucInstalled' not in text:
 						if name == 'THIS_INTERVIEW':
@@ -586,10 +591,10 @@ def extract_questions_and_procedures(subnode, df_questions, df_procedures, paren
 						text = None
 						if output_source_questionnaire_flag == '0':
 							if text_node.attrib['translation_id'] != '1' and text_node.text is not None and text_node.text != '{}':
-								text = clean_text(text_node.text, country_language, False)
+								text = clean_text_share(text_node.text, country_language, False)
 						else:
 							if text_node.attrib['translation_id'] == '1' and text_node.text is not None and text_node.text != '{}':
-								text = clean_text(text_node.text, country_language, False)
+								text = clean_text_share(text_node.text, country_language, False)
 
 						if text is not None and '+piHO004_OthPer+' not in text and '{empty}' not in text and 'empty' not in text:
 							order = parent_map[text_node].attrib['order']
@@ -679,7 +684,7 @@ def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, pa
 				for text_node in text_nodes:
 					text = None
 					if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
-						text = clean_text(text_node.text, country_language, True)
+						text = clean_text_share(text_node.text, country_language, True)
 
 					if text is not None:
 						if name == 'THIS_INTERVIEW':
@@ -689,8 +694,7 @@ def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, pa
 						text = replace_untranslated_instructions(country_language, text)
 						sentences = splitter.tokenize(text)
 						for sentence in sentences:
-							# if '^Children_table' not in sentence and '^Press' not in sentence and '^FLDefault[84] ^Amount' not in sentence and name != 'JobCode' and name != 'CountryCode':
-							if '^Children_table' not in sentence and '^Press' not in sentence and '^FLDefault[84] ^Amount' not in sentence:
+							if '^Children_table' not in sentence and '^Press' not in sentence and '^FLDefault[84] ^Amount' not in sentence and name != 'JobCode' and name != 'CountryCode':
 								data = {'item_name': name, 'item_type':item_type, 'tmt_id': tmt_id, 'text': sentence}
 								df_questions = df_questions.append(data, ignore_index = True)	
 		elif child.tag == 'procedure':
@@ -706,7 +710,7 @@ def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, pa
 					for text_node in text_nodes:
 						text = None
 						if text_node.attrib['translation_id'] != '1' and text_node.text is not None and text_node.text != '{}':
-							text = clean_text(text_node.text, country_language, True)
+							text = clean_text_share(text_node.text, country_language, True)
 
 						if text is not None and '{empty}' not in text and 'empty' not in text:
 							order = parent_map[text_node].attrib['order']
@@ -989,14 +993,11 @@ def main(filename):
 
 
 		df_questionnaire = build_questionnaire_structure_w7(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories)
-		df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8', index=False)
+		df_questionnaire.to_csv(survey_item_prefix[:-1]+'.csv', encoding='utf-8', sep='\t', index=False)
 
 
 
 
-"""
-main method is executed for each file inside the given directory.
-"""
 if __name__ == "__main__":
 	filename = str(sys.argv[1])
 	print("Executing data extraction script for SHARE wave 8 (xml files)")
