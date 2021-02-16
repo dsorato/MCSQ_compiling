@@ -87,6 +87,7 @@ def find_best_match(list_source, list_target, item_type):
 
 
 	for i, item in enumerate(list_source):
+		print(item[-1])
 		dict_source[i] = len(preprocessing_alignment_candidates(item[-1]))
 
 	for i, item in enumerate(list_target):

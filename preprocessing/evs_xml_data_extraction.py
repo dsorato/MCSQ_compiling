@@ -452,7 +452,7 @@ def main(filename):
 			
 
 	csv_name = filename.replace('.xml', '')
-	df_questionnaire.to_csv(str(csv_name)+'.csv', encoding='utf-8-sig', index=False)
+	df_questionnaire.to_csv(str(csv_name)+'.csv', encoding='utf-8-sig', sep='\t', index=False)
 
 
 

@@ -61,8 +61,7 @@ def eliminate_showcardID_and_adjust_item_type(text, item_name):
 
 	Args:
 		param1 text (string): the text segment being analyzed (either request or instruction).
-		param2 item_name (string): item_name metadata, extracted direcly from the input xml file. If 'intro' is in the item_name, the segment receives 
-		the introduction item_type.
+		param2 item_name (string): item_name metadata, extracted direcly from the input xml file. If 'intro' is in the item_name, the segment receives the introduction item_type.
 
 	Returns:
 		text (string) and item_type (string). The SHOWCARD_ID strings are removed from the text segment.
@@ -225,6 +224,7 @@ def clean_answer_text(text, country_language):
 	Substitutes HTML markups in the answer text segments with fixed values
 	Args:
 		param1 text (string): the answer text segment.
+		param2 country_language (string): country_language metadata, embedded in file name.
 
 	Returns:
 		the answer text (string) where the markups were replaced (if present in original string).
@@ -421,8 +421,8 @@ def extract_answers(subnode, df_answers, name, country_language, output_source_q
 	param2 df_answers: pandas dataframe containing answers extracted from XML file
 	param3 name (string): name of the answer structure inside XML file
 	param4 country_language (string): country_language metadata, embedded in file name.
-	param5 output_source_questionnaire_flag (string): a flag that indicates if the data being extracted is the source or target language.
-		if it is the source then translation_id == 1, otherwise it is translation_id != 1.
+	param5 output_source_questionnaire_flag (string): a flag that indicates if the data being extracted is the source or target language. 
+	if it is the source then translation_id == 1, otherwise it is translation_id != 1.
 
 
 	Returns: retrieved answer segments in df_answers (pandas dataframe). 
@@ -574,9 +574,11 @@ def replace_untranslated_instructions(country_language, text):
 		share_instructions =SHAREInstructionsRUS()
 
 	if 'CAT_ES' in country_language:
+		text = re.sub('\^ReadOutNeed', 'Llegeixi, si cal. ', text)
 		text = re.sub('\^Especifiqui', 'Especifiqui. ', text)
 		text = re.sub('\^Especifiqueu', 'Especifiqueu. ', text)
 	elif 'CZE_CZ' in country_language:
+		text = re.sub('\^ReadOutNeed', 'Prečtěte pokud nutno. ', text)
 		text = re.sub('\^Specify', 'Upřesněte. ', text)
 		text = re.sub('\^FL_HISHER', ' jeho její ', text)
 		text = re.sub('\^FL_VERB', ' byl narozen ', text)
@@ -586,23 +588,37 @@ def replace_untranslated_instructions(country_language, text):
 		text = re.sub('\^FL_HISHER', ' his/her ', text)
 		text = re.sub('\^FL_VERB', ' was born ', text)
 	elif 'FRE' in country_language:
+		text = re.sub('\^ReadOutNeed', 'Lire à haute voix si nécessaire. ', text)
 		text = re.sub('\^Specify', 'Spécifier. ', text)
 		text = re.sub('\^FL_HISHER', ' son/sa ', text)
 		text = re.sub('\^FL_VERB', ' est né(e) ', text)
 	elif 'SPA' in country_language:
+		text = re.sub('\^ReadOutNeed', 'Lea en voz alta si es necesario. ', text)
 		text = re.sub('\^Specify', 'Especificar. ', text)
 		text = re.sub('\^FL_HISHER', ' su/suya ', text)
 		text = re.sub('\^FL_VERB', ' nació ', text)
 	elif 'POR' in country_language:
+		text = re.sub('\^ReadOutNeed', 'Leia em voz alta, se necessário. ', text)
 		text = re.sub('\^Specify', 'Especificar. ', text)
 		text = re.sub('\^FL_HISHER', ' seu/sua ', text)
 		text = re.sub('\^FL_VERB', ' nasceu ', text)
 	elif 'GER' in country_language:
+		if 'LU' in country_language:
+			text = re.sub('\^ReadOutNeed', 'Auslesen, falls erforderlich. ', text)
+		elif 'DE' in country_language or 'CH' in country_language:
+			text = re.sub('\^ReadOutNeed', 'Vorlesen, falls nötig. ', text)
+		elif 'AT':
+			text = re.sub('\^ReadOutNeed', 'Falls nötig vorlesen. ', text)	
 		text = re.sub('\^Specify', 'Angeben. ', text)
 		text = re.sub('\^FL_HISHER', ' sein/ihr ', text)
 		text = re.sub('\^FL_VERB', ' wurde geboren ', text)
 	elif 'RUS' in country_language:
-		text = re.sub('\^ReadOutNeed', 'При необходимости зачитайте. ', text)
+		if 'LV' in country_language or 'LT' in country_language:
+			text = re.sub('\^ReadOutNeed', 'Прочитайте, если это необходимо. ', text)
+		elif 'EE' in country_language:
+			text = re.sub('\^ReadOutNeed', 'Зачитайте, если необходимо. ', text)
+		elif 'IL' in country_language:
+			text = re.sub('\^ReadOutNeed', 'При необходимости зачитайте. ', text)
 		text = re.sub('\^Specify', 'Уточнить. ', text)
 		text = re.sub('\^FL_HISHER', ' его/ее ', text)
 		text = re.sub('\^FL_VERB', ' родился ', text)
@@ -659,8 +675,9 @@ def extract_questions_and_procedures_w8(subnode, df_questions, df_procedures, pa
 								item_type = 'REQUEST'
 							if item_type is None:
 								item_type = item_type_aux
-							data = {'item_name': name, 'item_type':item_type, 'text': sentence}
-							df_questions = df_questions.append(data, ignore_index = True)	
+							if sentence != '.':
+								data = {'item_name': name, 'item_type':item_type, 'text': sentence}
+								df_questions = df_questions.append(data, ignore_index = True)	
 
 		elif child.tag == 'procedure':
 			proc_name = child.attrib['name']
@@ -723,7 +740,7 @@ def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, pa
 								item_type = 'REQUEST'
 							if item_type is None:
 								item_type = item_type_aux
-							if '^Children_table' not in sentence and '^Press' not in sentence and '^FLDefault[84] ^Amount' not in sentence and name != 'JobCode' and name != 'CountryCode':
+							if '^Children_table' not in sentence and '^Press' not in sentence and '^FLDefault[84] ^Amount' not in sentence and name != 'JobCode' and name != 'CountryCode' and sentence != '.':
 								data = {'item_name': name, 'item_type':item_type, 'tmt_id': tmt_id, 'text': sentence}
 								df_questions = df_questions.append(data, ignore_index = True)	
 
@@ -782,11 +799,11 @@ def set_initial_structures(filename, output_source_questionnaire_flag):
 	Instantiate a NLTK sentence splitter based on file input language. 
 	"""
 	if output_source_questionnaire_flag == '1' and 'SHA_R08' in filename:
-		survey_item_prefix = 'SHA_R08_2019_ENG_SOURCE'
+		survey_item_prefix = 'SHA_R08_2019_ENG_SOURCE_'
 		study, country_language = get_country_language_and_study_info('SHA_R08_2019_ENG_SOURCE')
 		splitter = ut.get_sentence_splitter('SHA_R08_2019_ENG_SOURCE')
 	elif output_source_questionnaire_flag == '1' and 'SHA_R07' in filename:
-		survey_item_prefix = 'SHA_R07_2017_ENG_SOURCE'
+		survey_item_prefix = 'SHA_R07_2017_ENG_SOURCE_'
 		study, country_language = get_country_language_and_study_info('SHA_R07_2017_ENG_SOURCE')
 		splitter = ut.get_sentence_splitter('SHA_R07_2017_ENG_SOURCE')
 	else:
@@ -867,7 +884,10 @@ def filter_items_to_build_questionnaire_structure_w8(df_questions, df_answers,df
 
 def filter_items_to_build_questionnaire_structure_w7(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories, study):
 	"""
-	First filter the question and answer dataframes by the tmt_ids
+	First filter the question and answer dataframes by the tmt_ids.
+	Only segments with the same tmt_id are considered as alignment candidates.
+
+
 	"""
 	unique_question_tmt_ids = df_questions.tmt_id.unique()
 	for unique_tmt_id in unique_question_tmt_ids:
@@ -880,6 +900,9 @@ def filter_items_to_build_questionnaire_structure_w7(df_questions, df_answers,df
 
 
 def main(filename):
+	"""
+	Flag that indicates if the data to be extracted is from the source or the target questionnaire.
+	"""
 	output_source_questionnaire_flag = '0'
 
 	"""

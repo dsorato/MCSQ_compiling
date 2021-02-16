@@ -771,7 +771,7 @@ def main(folder_path):
 			df_with_intro = fix_item_name_inconsistencies(df_questionnaire)
 			# df_with_intro.to_csv(csv_name+'intro.csv', encoding='utf-8-sig', index=False)
 			df_post = questionnaire_post_processing(df_with_intro, survey_item_prefix)
-			df_post.to_csv(csv_name+'.csv', encoding='utf-8-sig', index=False)
+			df_post.to_csv(csv_name+'.csv', encoding='utf-8-sig', sep='\t', index=False)
 
 
 
