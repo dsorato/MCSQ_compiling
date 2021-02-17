@@ -6,3 +6,5 @@ Data preprocessing and transformation methods for ESS/EVS data (XML to spreadshe
    :members:
 .. automodule:: preprocessing.ess_xml_data_extraction
    :members:
+.. automodule:: preprocessing.share_xml_data_extraction
+   :members:

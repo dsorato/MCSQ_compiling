@@ -1,5 +1,5 @@
 """
-Python3 script (work in progress) to extract data from XML SHARE input files
+Python3 script to extract data from XML SHARE input files
 Author: Danielly Sorato 
 Author contact: danielly.sorato@gmail.com
 """ 
@@ -112,6 +112,22 @@ def eliminate_showcardID_and_adjust_item_type(text, item_name):
 
 
 def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id, item_name, share_modules, study, item_type):
+	"""
+	Replaces all dynamic fills found in a given text segment by their string definitions in the df_procedures dataframe.
+
+	Args:
+		param1 text (string): the text segment that contains at least one dynamic fill.
+		param2 fills (list): the list of dynamic fills found in the text segment passed as parameter.
+		param3 df_procedures (pandas dataframe): the dataframe that holds the procedures for fills substitution, extracted from the XML nodes in previous steps.
+		param4 df_questionnaire (pandas dataframe): a dataframe to hold the final questionnaire.
+		param5 item_name (string): the item name metadata, extracted in previous steps.
+		param6 share_modules (dictionary): a dictionary (round dependent) with the full name of all SHARE modules.
+		param7 study (string): the study metadata, embedded in the input filename or hard-coded in the case of ENG_SOUCE data extraction.
+		param8 item_type (string): the item type metadata, extracted in previous steps.
+
+	Returns: 
+		The updated df_questionnaire (pandas dataframe). The dynamic fill(s) in the text segment was properly replaced.
+	"""
 	if len(fills) == 1:
 		df_procedure_filtered = df_procedures[df_procedures['fill_name'].str.lower()==fills[0].lower()]
 		last_text = None
@@ -421,8 +437,7 @@ def extract_answers(subnode, df_answers, name, country_language, output_source_q
 	param2 df_answers: pandas dataframe containing answers extracted from XML file
 	param3 name (string): name of the answer structure inside XML file
 	param4 country_language (string): country_language metadata, embedded in file name.
-	param5 output_source_questionnaire_flag (string): a flag that indicates if the data being extracted is the source or target language. 
-	if it is the source then translation_id == 1, otherwise it is translation_id != 1.
+	param5 output_source_questionnaire_flag (string): a flag that indicates if the data being extracted is the source or target language. if it is the source then translation_id == 1, otherwise it is translation_id != 1.
 
 
 	Returns: retrieved answer segments in df_answers (pandas dataframe). 
@@ -825,6 +840,22 @@ def set_initial_structures(filename, output_source_questionnaire_flag):
 	return df_questionnaire, survey_item_prefix, study, country_language,splitter
 
 def build_questionnaire_structure(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories, study):
+	"""
+	Build the final questionnaire from df_questions, df_answers and df_procedures.
+	Calls the fill_extraction() and fill_unrolling() methods to replace the dynamic fills in the texts for the appropriate string definitions found in df_procedures.
+	Args:
+		param1 df_questions (pandas dataframe): the dataframe that holds the question segments extracted from the XML nodes in previous steps.
+		param2 df_answers (pandas dataframe): the dataframe that holds the answer segments extracted from the XML nodes in previous steps.
+		param3 df_procedures (pandas dataframe): the dataframe that holds the procedures for fills substitution, extracted from the XML nodes in previous steps.
+		param4 df_questionnaire (pandas dataframe): a dataframe to hold the final questionnaire.
+		param5 survey_item_prefix (string): the prefix of survey item IDS, either embedded in the filename or hard-coded in the case of ENG_SOUCE data extraction.
+		param6 share_modules (dictionary): a dictionary (round dependent) with the full name of all SHARE modules.
+		param7 special_answer_categories (Python object): a language-specific instantiated object that contains string definitions of special answer categories (Don't know, Refuse, etc)
+		param8 study (string): the study metadata, embedded in the input filename or hard-coded in the case of ENG_SOUCE data extraction.
+
+	Returns: 
+		The final SHARE questionnaire, stored in df_questionnaire (pandas dataframe).
+	"""
 	for i, row in df_questions.iterrows():
 		if df_questionnaire.empty:
 			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
@@ -873,6 +904,23 @@ def build_questionnaire_structure(df_questions, df_answers,df_procedures, df_que
 	return df_questionnaire
 
 def filter_items_to_build_questionnaire_structure_w8(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories, study):
+	"""
+	Filters the question and answer dataframes by the item name.
+	Only segments with the same item name are considered as alignment candidates.
+	Calls the build_questionnaire_structure() function to build the final questionnaire from df_questions, df_answers and df_procedures.
+	Args:
+		param1 df_questions (pandas dataframe): the dataframe that holds the question segments extracted from the XML nodes in previous steps.
+		param2 df_answers (pandas dataframe): the dataframe that holds the answer segments extracted from the XML nodes in previous steps.
+		param3 df_procedures (pandas dataframe): the dataframe that holds the procedures for fills substitution, extracted from the XML nodes in previous steps.
+		param4 df_questionnaire (pandas dataframe): a dataframe to hold the final questionnaire.
+		param5 survey_item_prefix (string): the prefix of survey item IDS, either embedded in the filename or hard-coded in the case of ENG_SOUCE data extraction.
+		param6 share_modules (dictionary): a dictionary (round dependent) with the full name of all SHARE modules.
+		param7 special_answer_categories (Python object): a language-specific instantiated object that contains string definitions of special answer categories (Don't know, Refuse, etc)
+		param8 study (string): the study metadata, embedded in the input filename or hard-coded in the case of ENG_SOUCE data extraction.
+
+	Returns: 
+		The final SHARE wave 8 questionnaire, stored in df_questionnaire (pandas dataframe), after passing through the build_questionnaire_structure() function. 
+	"""
 	unique_question_item_names = df_questions.item_name.unique()
 	for unique_item_name in unique_question_item_names:
 		df_questions_by_item_name = df_questions[df_questions['item_name'].str.lower()==unique_item_name.lower()]
@@ -884,10 +932,21 @@ def filter_items_to_build_questionnaire_structure_w8(df_questions, df_answers,df
 
 def filter_items_to_build_questionnaire_structure_w7(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories, study):
 	"""
-	First filter the question and answer dataframes by the tmt_ids.
+	Filters the question and answer dataframes by the tmt_ids.
 	Only segments with the same tmt_id are considered as alignment candidates.
+	Calls the build_questionnaire_structure() function to build the final questionnaire from df_questions, df_answers and df_procedures.
+	Args:
+		param1 df_questions (pandas dataframe): the dataframe that holds the question segments extracted from the XML nodes in previous steps.
+		param2 df_answers (pandas dataframe): the dataframe that holds the answer segments extracted from the XML nodes in previous steps.
+		param3 df_procedures (pandas dataframe): the dataframe that holds the procedures for fills substitution, extracted from the XML nodes in previous steps.
+		param4 df_questionnaire (pandas dataframe): a dataframe to hold the final questionnaire.
+		param5 survey_item_prefix (string): the prefix of survey item IDS, either embedded in the filename or hard-coded in the case of ENG_SOUCE data extraction.
+		param6 share_modules (dictionary): a dictionary (round dependent) with the full name of all SHARE modules.
+		param7 special_answer_categories (Python object): a language-specific instantiated object that contains string definitions of special answer categories (Don't know, Refuse, etc)
+		param8 study (string): the study metadata, embedded in the input filename or hard-coded in the case of ENG_SOUCE data extraction.
 
-
+	Returns: 
+		The final SHARE wave 7 questionnaire, stored in df_questionnaire (pandas dataframe), after passing through the build_questionnaire_structure() function. 
 	"""
 	unique_question_tmt_ids = df_questions.tmt_id.unique()
 	for unique_tmt_id in unique_question_tmt_ids:

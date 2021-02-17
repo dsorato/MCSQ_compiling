@@ -50,7 +50,7 @@ def clean_text(text):
 	the method returns '', so the entry is ignored in the data extraction loop.
 
 	Args:
-		param1 text (string expected): text to be cleaned.
+		param1 text (string): text segment to be cleaned.
 
 	Returns: 
 		cleaned text (string).
