@@ -592,8 +592,31 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<ask>)СПРОСИТЕ\s(?P<again>)ЕЩЕ\sРАЗ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 
- 
+	regex= r"^(?P<ask>)СПРOСИТЬ\s(?P<ifdoesnotlivewithspouse>)ЕСЛИ\sНЕ\sЖИВЕТ\sС\sСУПРУГОМ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<after>)ПОСЛЕ\sТОГО\s(?P<therespondent>)КАК\sРЕСПОНДЕНТ\s(?P<answers>)ДАСТ\sОТВЕТ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<possible>)ВОЗМОЖЕН\s(?P<justone>)ТОЛЬКО\sОДИН\s(?P<answer>)ОТВЕТ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<checkall>)ОТМЕТЬТЕ\sВСЕ\s(?P<thatapplies>)ЧТО\sПОДХОДИТ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 	regex= r"^(?P<name>)НАЗЫВАЙТЕ\s(?P<groups>)ГРУППЫ\s(?P<peopleororganization>)ЛЮДЕЙ ИЛИ ОРГАНИЗАЦИИ "
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -1026,10 +1049,11 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<if>)ЕСЛИ\s(?P<not>)НЕ\s(?P<born>)РОДИЛСЯ"
+	regex= r"^(?P<if>)ЕСЛИ\s(?P<not>)НЕ\s(?P<born>)(РОДИЛСЯ|РОДИЛАСЬ)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
 
 	regex= r"^(?P<choose>)Выберите\s(?P<youranswer>)свой ответ\s(?P<fromcard>)на карте"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -1052,11 +1076,27 @@ def instruction_recognition_russian(text,country_language):
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'поместили себя' not in text_aux:
 		return True
 
-
-	regex= r"(?P<nmeans>)\d+\s(-\s?)?\s?означает\s(?P<anything>).*\s(?P<andnmeans>)(а|и)\s\d+\s(-\s?)?\s?означает"
+	regex= r"(?P<wherenmeans>)(если|где)?\s?\d\sзначит\s(?P<anything>).*\s(?P<andnmeans>)(а|и)\s\d+\s(значит)?"
 	matches = re.findall(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'поместили себя' not in text_aux:
 		return True
+
+
+	regex= r"(?P<nmeans>)\d+\s(-\s?)?\s?означает\s(?P<anything>).*\s(?P<andnmeans>)(а|и)?\s?\d+\s(-\s?)?\s?означает"
+	matches = re.findall(regex, text, re.IGNORECASE)
+	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'поместили себя' not in text_aux:
+		return True
+
+	regex= r"(?P<probe>)РАССЛЕДОВАТE"
+	matches = re.findall(regex, text)
+	if matches:
+		return True
+
+	regex= r"(?P<insertnomorethannlanguages>)УКАЗАТЬ\sНЕ\sБОЛЕЕ\s\d\sЯЗЫКОВ"
+	matches = re.findall(regex, text)
+	if matches:
+		return True
+
 
 	regex= r"(?P<acceptestimations>)РЕСПОНДЕНТ МОЖЕТ УКАЗАТЬ ПРИБЛИЗИТЕЛЬНО"
 	matches = re.findall(regex, text, re.IGNORECASE)
