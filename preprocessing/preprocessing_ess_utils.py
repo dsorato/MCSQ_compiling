@@ -1087,6 +1087,12 @@ def instruction_recognition_russian(text,country_language):
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'поместили себя' not in text_aux:
 		return True
 
+	regex= r"(?P<anynumber>)любую\sцифру\s(?P<fromnton>)от\s\d\sдо\s\d+(?P<whichbetterreflectsyouropinion>)образом\sотражает\sВаше\sмнение"
+	matches = re.findall(regex, text, re.IGNORECASE)
+	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'поместили себя' not in text_aux:
+		return True
+
+
 	regex= r"(?P<probe>)РАССЛЕДОВАТE"
 	matches = re.findall(regex, text)
 	if matches:
@@ -1654,7 +1660,7 @@ def instruction_recognition_french(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<please>)(S'il vous plaît|Veuillez|Veuillez s'il vous plaît)?(,)?\s?(?P<continue>)(Continuez)?\s?(?P<use>)utiliser\s(?P<this>)cette\s(?P<card>)carte"
+	regex= r"^(?P<please>)(S'il vous plaît|Veuillez|Veuillez s'il vous plaît)?(,)?\s?(?P<continue>)(Continuez)?\s?(à|a)?\s?(?P<use>)utiliser\s(?P<this>)cette\s(?P<card>)carte"
 	matches = re.search(regex, text_aux, re.IGNORECASE)
 	if matches:
 		return True
@@ -1680,7 +1686,7 @@ def instruction_recognition_french(text,country_language):
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'dites-moi' not in text_aux and 'affirmations' not in text_aux:
 		return True
 
-	regex= r"^(?P<please>)(S'il vous plaît|Veuillez)(,)?\s(?P<answer>)répondre\s(?P<using>)en utilisant"
+	regex= r"^(?P<please>)(S'il vous plaît|Veuillez)(,)?\s(?P<answer>)répondre\s(?P<using>)(en utilisant|A L'AIDE)"
 	matches = re.search(regex, text_aux, re.IGNORECASE)
 	if matches:
 		return True
@@ -1781,10 +1787,16 @@ def instruction_recognition_french(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<insist>)RELANCE(R|Z)"
+	regex= r"^(?P<insist>)RELANCE(R|Z)?"
 	matches = re.search(regex, text)
 	if matches:
 		return True
+
+	regex= r"^(?P<insist>)RELANCE(R|Z)\s(?P<interviewer>)(enquetêur|enqueteur|enquêteur)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 
 	regex= r"(?P<scalefrom>)échelle\sde\s(?P<nton>)\d\s?à\s?\d+\s(?P<wherenmeans>)où\s\d\ssignifie\sque"
 	matches = re.findall(regex, text_aux, re.IGNORECASE)
@@ -1846,6 +1858,16 @@ def instruction_recognition_english(text,country_language):
 		return True
 
 	regex= r"^(?P<interviewer>)Interviewer"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<computercode>)COMPUTER\sCODE"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
+	regex= r"^(?P<probeifnecessary>)probe\sif\snecessary"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -2439,11 +2461,20 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		return True
 
 	if 'CAT' in country_language:
-		regex= r"^(?P<continue>)(continuï|continueu)?\s?(?P<show>)mostr(ar|eu|ant)\s(?P<card>)targeta"
+		regex= r"^(?P<continue>)(continuï|continueu|continuar)?\s?(?P<show>)mostr(ar|eu|ant)\s(?P<card>)targeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
 
+		regex= r"^(?P<spontaneousanswer>)RESPOSTA\sESPONTÀNIA\s(?P<dontread>)NO\sLLEGIR"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<multipleanswer>)RESPOSTA\sMÚLTIPLE"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
 
 		regex= r"^(?P<card>)targeta\s(\d+|\w+)"
 		matches = re.search(regex, text, re.IGNORECASE)
@@ -2511,13 +2542,28 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
 			return True
 
-		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)Triï\s(?P<the>)(la)?\s?(?P<your>)(seva)?\s?(?P<answer>)resposta\s(?P<fromthis>)d'aquesta\s(?P<card>)targeta"
+		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)(esculli|elegeixi|Triï)\s(?P<the>)(la)?\s?(?P<your>)(seva)?\s?(?P<answer>)resposta\s(?P<fromthis>)d'aquesta\s(?P<card>)targeta"
 		matches = re.search(regex, text_aux, re.IGNORECASE)
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
 			return True
 
-		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)esculli\s(?P<your>)(la seva)?\s?(?P<one>)(una|la)?\s?(?P<ofthe>)(de les)?\s?(?P<answer>)(resposta|respostes)\s(?P<thatappearin>)(que apareixen en)?\s?(?P<fromthis>)(aquesta|d'aquesta)\s(?P<card>)targeta"
+		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)(esculli|elegeixi|Triï)\s(?P<your>)(la seva)?\s?(?P<one>)(una|la)?\s?(?P<ofthe>)(de les)?\s?(?P<answer>)(resposta|respostes)\s(?P<thatappearin>)(que apareixen en)?\s?(?P<fromthis>)(aquesta|d'aquesta)\s(?P<card>)targeta"
 		matches = re.search(regex, text_aux, re.IGNORECASE)
+		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
+			return True
+
+		regex= r"^(?P<please>)(si us plau)?(,)?\s?(?P<choose>)(esculli|elegeixi|Triï)\s(?P<only>)només\s(?P<one>)una\s(?P<fromthis>)d'aquestes"
+		matches = re.search(regex, text_aux, re.IGNORECASE)
+		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
+			return True
+
+		regex= r"^(?P<please>)(si us plau)?\s?(?P<use>)Utilitzi\s(?P<thiscard>)aquesta\s(tarjeta|targeta)\s(?P<toguide>)com\sa\sguia\sper\sa\s(?P<youranswer>)la\sseva\sresposta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
+			return True
+
+		regex= r"^(?P<please>)(si us plau)?\s?(?P<note>)anotar\s(?P<only>)només\s(?P<one>)una\s(?P<answer>)resposta"
+		matches = re.search(regex, text, re.IGNORECASE)
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 			return True
 
@@ -2525,6 +2571,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		matches = re.search(regex, text_aux, re.IGNORECASE)
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
 			return True
+
 
 
 		regex= r"^(?P<dont>)(no)?\s?(?P<read>)llegi(r|u)\s?(?P<out>)(alta)?"
@@ -2547,7 +2594,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<markorcode>)(marqueu|codificar)\s(?P<all>)tot(s|es)\s(?P<thepeople>)(les persones)?\s?(?P<that>)que\s(?P<apply>)(corresponguin|calgui)"
+		regex= r"(?P<markorcode>)(marqueu|marcar|codificar)\s(?P<all>)tot(s|es)\s(?P<thepeople>)(les persones)?\s?(?P<theanswers>)(les respostes)?\s?(?P<that>)(el|els)?\s?que\s(?P<apply>)(corresponguin|calgui)"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
