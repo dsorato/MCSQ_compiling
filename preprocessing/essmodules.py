@@ -59,7 +59,8 @@ class ESSSModulesR07:
 	"""
 	modules = {'D':'D - Immigration, including: attitudes, perceptions and policy preferences',
 	'E': 'E - Health, including health conditions, fruit, vegetable and alcohol consumption and smoking behaviour',
-	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions'}
+	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions',
+	'X': 'SUPP_X - Catalan/Spanish National Module'}
 
 class ESSSModulesR08:
 	"""

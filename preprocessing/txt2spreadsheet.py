@@ -20,7 +20,7 @@ def retrieve_raw_items_from_file(file):
 	Returns: 
 		retrieved raw items (list of strings). 
 	"""
-	item_name_question_pattern = re.compile("(?:[A-R][A-Z]?[1-9]{1,3}[a-z]?)+")
+	item_name_question_pattern = re.compile("(?:[A-X][A-Z]?[1-9]{1,3}[a-z]?)+")
 	# item_name_question_pattern = re.compile("(?:[A-K][A-Z]?\s?[1-9]{1,3}[a-z]?)+")
 	
 	lines = file.readlines()

@@ -559,11 +559,11 @@ def check_if_segment_is_instruction(sentence, country_language):
 
 def instruction_recognition_russian(text,country_language):
 	"""
-	Recognizes an instruction segment for texts written in German,
+	Recognizes an instruction segment for texts written in Russian,
 	based on regex named groups patterns.
 
 	Args:
-		param1 text (string): text (in German) currently being analyzed.
+		param1 text (string): text (in Russian) currently being analyzed.
 		param2 country_language (string): country_language metadata embedded in file name.
 
 	Returns: 
@@ -1162,6 +1162,11 @@ def instruction_recognition_german(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<round>)ANM:"
+	matches = re.search(regex, text_aux)
+	if matches:
+		return True
+
 	regex= r"^(?P<estimation>)(Schätzung|SCHÄTZWERTE)\s?(?P<accept>)akzeptieren\b"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -1178,8 +1183,17 @@ def instruction_recognition_german(text,country_language):
 	if matches:
 		return True
 
-
 	regex= r"^(?P<insist>)NACHFRAGEN"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<probe>)Zusatzfrage"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<readoutstatements>)JEDES\sSTATEMENT\sVORLESEN\s(?P<andcode>)UND\sKODIEREN"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -1194,7 +1208,13 @@ def instruction_recognition_german(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<please>)(bitte)?\s?(?P<use>)(Verwenden|benutzen)\sSie\s(?P<also>)(auch)?\s?(?P<to>)(dazu)?\s?(?P<forthis>)(dafür)?\s?(?P<the>)(die)?\s?(?P<this>)(diese)?\s?(?P<card>)(Karte|liste)"
+	regex= r"^(?P<askall>)Alle\sfragen"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+	regex= r"^(?P<please>)(bitte)?\s?(?P<use>)(Verwenden|benutzen|nutzen)\sSie\s(?P<also>)(auch)?\s?(?P<to>)(dazu)?\s?(?P<forthis>)(dafür)?\s?(?P<the>)(die)?\s?(?P<this>)(diese)?\s?(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'ablehnen' not in text_aux and 'sagen Sie mir' not in text_aux:
 		return True
@@ -1209,12 +1229,12 @@ def instruction_recognition_german(text,country_language):
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux:
 		return True
    
-	regex= r"^(?P<please>)(bitte)?\s?(?P<use>)(Verwenden|benutzen)\sSie\s(?P<again>)dazu wieder\s(?P<the>)(die)?\s?(?P<card>)(Karte|liste)"
+	regex= r"^(?P<please>)(bitte)?\s?(?P<use>)(Verwenden|benutzen|nutzen)\sSie\s(?P<again>)dazu wieder\s(?P<the>)(die)?\s?(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'ablehnen' not in text_aux and 'sagen Sie mir' not in text_aux:
 		return True
 
-	regex= r"^(?P<use>)(Verwenden|benutzen)\sSie\s(?P<again>)dazu\s(?P<please>)(bitte)?\s?(?P<the>)(die)?\s?(?P<card>)(Karte|liste)"
+	regex= r"^(?P<use>)(Verwenden|benutzen|nutzen)\sSie\s(?P<again>)dazu\s(?P<please>)(bitte)?\s?(?P<the>)(die)?\s?(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'ablehnen' not in text_aux and 'sagen Sie mir' not in text_aux:
 		return True
@@ -1224,18 +1244,18 @@ def instruction_recognition_german(text,country_language):
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux:
 		return True
 
-	regex= r"^(?P<use>)(Verwenden|benutzen|Benützen)\sSie\s(?P<now>)(jetzt|nun)?\s?(?P<please>)(bitte)?\s?(?P<the>)(die|diese)?\s?(?P<card>)(Karte|liste)"
+	regex= r"^(?P<use>)(Verwenden|benutzen|Benützen|nutzen)\sSie\s(?P<now>)(jetzt|nun)?\s?(?P<please>)(bitte)?\s?(?P<the>)(die|diese)?\s?(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'ablehnen' not in text_aux and 'sagen Sie mir' not in text_aux:
 		return True
 
-	regex= r"^(?P<please>)(bitte)?\s?(?P<use>)(Verwenden|benutzen)\s(Sie|Die)\s(?P<onceagain>)noch einmal\s(?P<this>)(diese)?\s?(?P<card>)(Karte|liste)"
+	regex= r"^(?P<please>)(bitte)?\s?(?P<use>)(Verwenden|benutzen|nutzen)\s(Sie|Die)\s(?P<onceagain>)noch einmal\s(?P<this>)(diese)?\s?(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'ablehnen' not in text_aux and 'sagen Sie mir' not in text_aux:
 		return True
 
 
-	regex= r"^(?P<note>)Hinweis\s(?P<for>)für\s(?P<the>)den\s(?P<interviewer>)(Interviewer|Befrager)"
+	regex= r"^(?P<note>)Hinweis\s(?P<for>)für\s(?P<the>)(den)?\s?(?P<interviewer>)(Interviewer|Befrager)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -1250,17 +1270,17 @@ def instruction_recognition_german(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen)\s(?P<this>)Sie\s(diese|die)?\s?(?P<same>)(selbe)?\s?(?P<card>)(Karte|liste)"
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen|nutzen)\s(?P<this>)Sie\s(diese|die)?\s?(?P<same>)(selbe)?\s?(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'ablehnen' not in text_aux and 'sagen Sie mir' not in text_aux:
 		return True
 
-	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen)\s(?P<this>)Sie dafür diese\s(?P<card>)(Karte|liste)"
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen|nutzen)\s(?P<this>)Sie dafür diese\s(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'ablehnen' not in text_aux and 'sagen Sie mir' not in text_aux:
 		return True
 
-	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen)\s(?P<again>)Sie nochmals\s(?P<card>)(Karte|liste)"
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen|nutzen)\s(?P<again>)Sie nochmals\s(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'ablehnen' not in text_aux and 'sagen Sie mir' not in text_aux:
 		return True
@@ -1276,17 +1296,17 @@ def instruction_recognition_german(text,country_language):
 		return True
 
 
-	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)benutzen\s(?P<this>)Sie\s(?P<again>)(wieder|wieder diese)\s(?P<card>)(Karte|liste)"
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen|nutzen)\s(?P<this>)Sie\s(?P<again>)(wieder|wieder diese)\s(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'ablehnen' not in text_aux and 'sagen Sie mir' not in text_aux:
 		return True
 
-	regex= r"^(?P<use>)(Verwenden|benutzen)\s(?P<please>)Sie bitte\s(?P<again>)(wieder|wieder diese)\s(?P<card>)(Karte|liste)"
+	regex= r"^(?P<use>)(Verwenden|benutzen|nutzen)\s(?P<please>)Sie bitte\s(?P<again>)(wieder|wieder diese)\s(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'ablehnen' not in text_aux and 'sagen Sie mir' not in text_aux:
 		return True
 
-	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen)\s(?P<toanswer>)Sie für Ihre Antwort\s(?P<again>)(wieder|die gleiche|nochmals)?\s?(?P<the>)(die|diese|der|von)?\s?(?P<card>)(Karte|liste)"
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen|nutzen)\s(?P<toanswer>)Sie für Ihre Antwort\s(?P<again>)(wieder|die gleiche|nochmals)?\s?(?P<the>)(die|diese|der|von)?\s?(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'ablehnen' not in text_aux and 'sagen Sie mir' not in text_aux:
 		return True
@@ -1332,7 +1352,7 @@ def instruction_recognition_german(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(benutzen|verwenden)\s(?P<this>)Sie\s(diese|die)\s(?P<same>)(gleiche)?\s?(?P<card>)(Karte|liste)"
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen|nutzen)\s(?P<this>)Sie\s(diese|die)\s(?P<same>)(gleiche)?\s?(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'ablehnen' not in text_aux and 'sagen Sie mir' not in text_aux:
 		return True
@@ -1354,7 +1374,7 @@ def instruction_recognition_german(text,country_language):
 		return True
 		
 
-	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(benutzen|verwenden)\s(?P<continue>)Sie\s(weiterhin|wieder|wiederum)?\s?(?P<now>)(jetzt)?\s?(?P<this>)(diese|dieselbe)?\s?(?P<card>)(Karte|liste)"
+	regex= r"^(?P<please>)(Bitte)?\s?(?P<use>)(Verwenden|benutzen|nutzen)\s(?P<continue>)Sie\s(weiterhin|wieder|wiederum)?\s?(?P<now>)(jetzt)?\s?(?P<this>)(diese|dieselbe)?\s?(?P<card>)(Karte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'ablehnen' not in text_aux and 'sagen Sie mir' not in text_aux:
 		return True
@@ -2407,12 +2427,12 @@ def instruction_recognition_portuguese(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<code>)codificar\s(?P<all>)todas\s(?P<the>)(as)?\s?(?P<that>)que se\s(?P<apply>)aplicam"
+	regex= r"^(?P<code>)(codificar|assinalar|registrar)\s(?P<all>)(todas|todos)\s(?P<the>)(as)?\s?(?P<that>)que se\s(?P<apply>)aplicam"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<codeormark>)(codificar|assinalar)\s(?P<only>)(só|apenas)?\s?(?P<one>)uma\s(?P<answer>)resposta"
+	regex= r"^(?P<codeormark>)(codificar|assinalar|registrar)\s(?P<only>)(só|apenas)?\s?(?P<one>)uma\s(?P<answer>)resposta"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -2632,15 +2652,32 @@ def instruction_recognition_catalan_spanish(text,country_language):
 			return True
 
 
+		regex= r"^(?P<show>)preguntar:"
+		matches = re.search(regex, text_aux, re.IGNORECASE)
+		if matches:
+			return True
+
+
 		regex= r"^(?P<show>)mostrar\s(?P<card>)tarjeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
 
-		regex= r"^(?P<answer>)RESPUESTA\s(?P<multiple>)MÚLTIPLE"
+		regex= r"^(?P<answer>)RESPUESTA\s(?P<multiple>)MÚLTIPLE"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
+
+		regex= r"^(?P<answer>)RESPUESTA\s(?P<spontaneous>)ESPONTÁNEA"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<askall>)A\sTODAS\sLAS\sPERSONAS\sENTREVISTADAS"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
 
 		regex= r"^(?P<if>)si\s(?P<the>)el\s(?P<respondent>)(encuestado|entrevistado)"
 		matches = re.search(regex, text, re.IGNORECASE)
