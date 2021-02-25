@@ -9,8 +9,8 @@ import numpy as np
 import sys
 import os
 import re
-# from populate_tables import *
-# from retrieve_from_tables import *
+from populate_tables import *
+from retrieve_from_tables import *
 
 
 def get_metadata_from_survey_item_id(survey_item_id):
@@ -107,9 +107,10 @@ def populate_introduction_table(df):
 
 	dictionary_introductions = dict()
 	for i, row in df_introduction.iterrows(): 
-		write_introduction_table(row['text'])
-		introduction_id = get_introduction_id(row['text'])
-		dictionary_introductions[row['text']] = introduction_id
+		if isinstance(row['text'], str): 
+			write_introduction_table(row['text'])
+			introduction_id = get_introduction_id(row['text'])
+			dictionary_introductions[row['text']] = introduction_id
 
 	return dictionary_introductions
 
@@ -129,9 +130,10 @@ def populate_instruction_table(df):
 
 	dictionary_instructions = dict()
 	for i, row in df_instructions.iterrows(): 
-		write_instruction_table(row['text'])
-		instruction_id = get_instruction_id(row['text'])
-		dictionary_instructions[row['text']] = instruction_id
+		if isinstance(row['text'], str): 
+			write_instruction_table(row['text'])
+			instruction_id = get_instruction_id(row['text'])
+			dictionary_instructions[row['text']] = instruction_id
 
 	return dictionary_instructions
 
@@ -151,9 +153,10 @@ def populate_request_table(df):
 
 	dictionary_requests = dict()
 	for i, row in df_request.iterrows(): 
-		write_request_table(row['text'])
-		request_id = get_request_id(row['text'])
-		dictionary_requests[row['text']] = request_id
+		if isinstance(row['text'], str): 
+			write_request_table(row['text'])
+			request_id = get_request_id(row['text'])
+			dictionary_requests[row['text']] = request_id
 
 	return dictionary_requests
 
@@ -182,13 +185,15 @@ def populate_response_table(df):
 			if str(item_value)[-2:] == '.0':
 				item_value = item_value[:-2]
 
-			write_response_table(text, item_value)
-			response_id = get_response_id(text, item_value)
-			dictionary_responses[text+item_value] = response_id
+			if isinstance(text, str): 
+				write_response_table(text, item_value)
+				response_id = get_response_id(text, item_value)
+				dictionary_responses[text+item_value] = response_id
 		else:
-			write_response_table(text, None)
-			response_id = get_response_id(text, None)
-			dictionary_responses[text+'None'] = response_id
+			if isinstance(text, str): 
+				write_response_table(text, None)
+				response_id = get_response_id(text, None)
+				dictionary_responses[text+'None'] = response_id
 
 	return dictionary_responses
 
@@ -229,7 +234,7 @@ def populate_survey_table(df):
 
 	for study in unique_studies:
 		for i, row in df.iterrows():
-			if re.compile(study+'.*_0').match(row['survey_item_ID']):
+			if re.compile(study+'.*_1').match(row['survey_item_ID']):
 				first_survey_item_id.append(row['survey_item_ID'])
 
 	surveys = []
@@ -286,6 +291,7 @@ def prepare_dataset(folder_path):
 		metainfo = directory.split('/')[-1]
 		files = os.listdir(directory)
 		os.chdir(directory)
+		print(directory)
 		concatenate_files(files, metainfo, folder_path)
 		os.chdir(folder_path)
 

@@ -958,11 +958,20 @@ def filter_items_to_build_questionnaire_structure_w7(df_questions, df_answers,df
 	return df_questionnaire
 
 
+def ensure_sequential_survey_item_id(df, survey_item_prefix):
+	ut.reset_initial_sufix()
+
+	for i, row in df.iterrows():
+		df.at[i,'survey_item_ID'] = ut.update_survey_item_id(survey_item_prefix)
+
+	return df
+
+
 def main(filename):
 	"""
 	Flag that indicates if the data to be extracted is from the source or the target questionnaire.
 	"""
-	output_source_questionnaire_flag = '0'
+	output_source_questionnaire_flag = '1'
 
 	"""
 	Parse tree of input XML file.
@@ -1019,7 +1028,9 @@ def main(filename):
 
 		
 		df_questionnaire = filter_items_to_build_questionnaire_structure_w8(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories, study)
-				
+		df_questionnaire =  ensure_sequential_survey_item_id(df_questionnaire, survey_item_prefix)
+
+
 		if output_source_questionnaire_flag == '1':
 			df_questionnaire.to_csv('SHA_R08_2019_ENG_SOURCE.csv', encoding='utf-8', sep='\t', index=False)
 		else:
@@ -1051,6 +1062,7 @@ def main(filename):
 
 
 		df_questionnaire = filter_items_to_build_questionnaire_structure_w7(df_questions, df_answers,df_procedures, df_questionnaire, survey_item_prefix, share_modules, special_answer_categories, study)
+		df_questionnaire =  ensure_sequential_survey_item_id(df_questionnaire, survey_item_prefix)
 
 		if output_source_questionnaire_flag == '1':
 			df_questionnaire.to_csv('SHA_R07_2017_ENG_SOURCE.csv', encoding='utf-8', sep='\t', index=False)
