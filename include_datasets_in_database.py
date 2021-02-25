@@ -9,8 +9,8 @@ import numpy as np
 import sys
 import os
 import re
-from populate_tables import *
-from retrieve_from_tables import *
+# from populate_tables import *
+# from retrieve_from_tables import *
 
 
 def get_metadata_from_survey_item_id(survey_item_id):
@@ -261,13 +261,14 @@ def concatenate_files(files, metainfo, folder_path):
 	"""	
 	file_list = list()
 	for index, file in enumerate(files):
-		df = pd.read_csv(file)
+		df = pd.read_csv(file, dtype=str, sep='\t')
 		column_names = df.columns
 		text = column_names[-1]
 		file_list.append(df)
 
 	all_files = pd.concat(file_list, axis=0, ignore_index=True)
-	all_files.to_csv(folder_path+'/'+metainfo+".csv", index=False)
+	all_files.dropna()
+	all_files.to_csv(folder_path+'/'+metainfo+".csv", sep='\t', index=False)
 
 
 def get_directory_list(folder_path):

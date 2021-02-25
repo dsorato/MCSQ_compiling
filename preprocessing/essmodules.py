@@ -17,7 +17,7 @@ class ESSSModulesR02:
 	'E': 'E - Economic morality Trust and interactions between producers and consumers',
 	'G': 'SUPP_G - Family Work and Wellbeing work-life balance', 'H': 'SUPP_H - Human values scale', 
 	'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions', 'K': 'SUPP_K - National Module',
-	'N': 'SUPP_N - National Module (Germany)'} 
+	'N': 'SUPP_N - National Module (Germany)', 'R': 'SUPP_R - National Module (Ukraine)', 'T': 'SUPP_T - National Module (Ukraine)'} 
 
 class ESSSModulesR03:
 	"""
@@ -51,7 +51,8 @@ class ESSSModulesR06:
 	"""
 	modules = {'D':'D - Personal and social wellbeing, helping others, feelings in the last week, life satisfaction, physical activity',
 	'E': 'E - Understandings and evaluation of different elements of democracy',
-	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions'}
+	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions', 
+	'N': 'SUPP_N - National Module (Germany)'}
 
 class ESSSModulesR07:
 	"""
@@ -60,7 +61,7 @@ class ESSSModulesR07:
 	modules = {'D':'D - Immigration, including: attitudes, perceptions and policy preferences',
 	'E': 'E - Health, including health conditions, fruit, vegetable and alcohol consumption and smoking behaviour',
 	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions',
-	'X': 'SUPP_X - Catalan/Spanish National Module'}
+	'X': 'SUPP_X - Catalan/Spanish National Module', 'N': 'SUPP_N - Austria National Module'}
 
 class ESSSModulesR08:
 	"""
