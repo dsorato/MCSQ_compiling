@@ -1469,6 +1469,16 @@ def instruction_recognition_norwegian(text,country_language):
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
+	regex= r"^(?P<toall>)alle"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<probe>)OPPFØLGING"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
 		 
 
 	regex= r"^(?P<read>)LES\s(?P<aloud>)HØYT"
@@ -1476,13 +1486,70 @@ def instruction_recognition_norwegian(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<consideradoptions>)Regn også med adopsjon"
+	regex= r"^(?P<codeall>)REGISTRER\sALT\s(?P<thatapplies>)SOM"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
+	regex= r"^(?P<codeall>)REGISTRER\s(?P<maximum>)MAKSIMALT"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+	regex= r"^(?P<givetime>)GI\sIO\sTID\sTIL\s(?P<tolookcard>)Å\sSTUDERE\sSVARKORTET"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+	regex= r"(?P<tobeincluded>)FOR\sÅ\sREGNES\sMED"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
+	regex= r"(?P<tobefilled>)FYLLES\sUT"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+		 
+
+	regex= r"(?P<donotinclude>)IKKE\sTA\sMED\s"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
+	regex= r"(?P<tickfor>)KRYSS\sAV\sFOR\s"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
+	regex= r"^(?P<includealso>)REGN\sOGSÅ\sMED"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<frozenfruit>)FROSSEN\sFRUKT\s(?P<mustbeincluded>)SKAL\sREGNES\sMED"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"(?P<forinstance>)FOR\sEKSEMPEL\s(?P<wheninterview>)HVI(S)?\sINTERVJUET"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
+
+	regex= r"(?P<referto>)VIS\sTIL\s(?P<samemonth>)SAMME\sMÅNED\s(?P<asinterview>)SOM\sINTERVJUET"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
+   
+       
+ 
 		
-	regex= r"^(?P<lookat>)Se på\s(?P<this>)(dette)?\s?(?P<card>)kortet"
+	regex= r"^(?P<lookat>)Se\spå\s(?P<this>)(dette)?\s?(?P<card>)kortet"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'påstand' not in text_aux and 'si' not in text_aux and 'fortell meg' not in text_aux and 'plasser deg selv' not in text_aux  and 'fortelle' not in text_aux:
 		return True
@@ -1510,7 +1577,7 @@ def instruction_recognition_norwegian(text,country_language):
 	if matches:
 		return True
    
-	regex= r"^(?P<choose>)Velg\s(?P<an>)(et tall|et|ett av)\s(?P<option>)(alternativene|svaralternativ|svaralternativene|alternativ)?\s?(?P<from>)(fra|på)\s(?P<this>)(dette)?\s?(?P<card>)kortet"
+	regex= r"^(?P<choose>)Velg\s(?P<an>)(et tall|et|ett av|et av)\s(?P<option>)(alternativene|svaralternativ|svaralternativene|alternativ|svar)?\s?(?P<from>)(fra|på)\s(?P<this>)(dette)?\s?(?P<card>)kortet"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -1520,9 +1587,20 @@ def instruction_recognition_norwegian(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<again>)(vis|Forsatt|FORTSATT)?\s?(?P<card>)kort\s(?P<number>)\d+([a-z])*"
-	matches = re.search(regex, text, re.IGNORECASE)
+	regex= r"^(?P<ifrespondent>)HVIS\sIO\s"
+	matches = re.search(regex, text)
 	if matches:
+		return True
+
+	regex= r"^(?P<allkinds>)ALL\sSLAGS\s(?P<ofcontact>)KONTAKT\s(?P<mustbeincluded>)SKAL\sREGNES\sMED"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
+
+	regex= r"^(?P<again>)(vis|Forsatt|FORTSATT)?\s?(?P<card>)kort"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'påstand' not in text_aux and 'si' not in text_aux and 'fortell meg' not in text_aux and 'plasser deg selv' not in text_aux  and 'fortelle' not in text_aux:
 		return True
 
 	regex= r"^(?P<note>)notat\s(?P<for>)til\s(?P<interviewer>)intervjueren"
