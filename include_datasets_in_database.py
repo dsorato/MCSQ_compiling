@@ -50,46 +50,48 @@ def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructio
 
 	"""
 	for i, row in df.iterrows():
-		surveyid, study, wave_round, year, country_language = get_metadata_from_survey_item_id(row['survey_item_ID'])
+		if isinstance(row['text'], str): 
+			surveyid, study, wave_round, year, country_language = get_metadata_from_survey_item_id(row['survey_item_ID'])
 
-		survey_id = d_surveys[surveyid]
-		module_id = d_modules[row['module']]
+			survey_id = d_surveys[surveyid]
+			module_id = d_modules[row['module']]
 
-		request_id = None
-		response_id = None
-		instruction_id = None
-		introduction_id = None
+			request_id = None
+			response_id = None
+			instruction_id = None
+			introduction_id = None
 
-		item_value = row['item_value']
+			item_value = row['item_value']
 
-		if row['item_type'] == 'INTRODUCTION':
-			introduction_id = d_introductions[row['text']]
-			item_value = None
+			if row['item_type'] == 'INTRODUCTION':
+				introduction_id = d_introductions[row['text']]
+				item_value = None
 
-		elif row['item_type'] == 'INSTRUCTION':
-			instruction_id = d_instructions[row['text']]
-			item_value = None
+			elif row['item_type'] == 'INSTRUCTION':
+				instruction_id = d_instructions[row['text']]
+				item_value = None
 
-		elif row['item_type'] == 'REQUEST':
-			request_id = d_requests[row['text']]
-			item_value = None
-			
-		elif row['item_type'] == 'RESPONSE':
-			if isinstance(row['item_value'], str):
-				if str(row['item_value'])[-2:] == '.0':
-					item_value = row['item_value'][:-2]					
+			elif row['item_type'] == 'REQUEST':
+				request_id = d_requests[row['text']]
+				item_value = None
+				
+			elif row['item_type'] == 'RESPONSE':
+				if isinstance(row['item_value'], str):
+					if str(row['item_value'])[-2:] == '.0':
+						item_value = row['item_value'][:-2]					
 
-				response_id = d_responses[row['text']+item_value]
+					response_id = d_responses[row['text']+item_value]
+				else:
+					response_id = d_responses[row['text']+'None']
+
+			if country_language == 'ENG_SOURCE':
+				item_is_source = True
 			else:
-				response_id = d_responses[row['text']+'None']
+				item_is_source = False
 
-		if country_language == 'ENG_SOURCE':
-			item_is_source = True
-		else:
-			item_is_source = False
-
-		write_survey_item_table(row['survey_item_ID'], surveyid, row['text'], item_value, module_id, request_id, response_id, 
-			instruction_id, introduction_id, country_language, item_is_source, row['item_name'], row['item_type'])
+			
+			write_survey_item_table(row['survey_item_ID'], surveyid, row['text'], item_value, module_id, request_id, response_id, 
+				instruction_id, introduction_id, country_language, item_is_source, row['item_name'], row['item_type'])
 
 
 
