@@ -1,4 +1,5 @@
 # Multilingual Corpus of Survey Questionnaires (MCSQ) Compiling
+https://zenodo.org/badge/DOI/10.5281/zenodo.4572930.svg
 
 The Multilingual Corpus of Survey Questionnaires (MCSQ) is a multilingual corpus of survey items from different studies. 
 It comprises datasets from ESS<sup>[1](#ess)</sup> (rounds 1 to 9), EVS<sup>[2](#evs)</sup> (waves 3, 4 and 5) and SHARE<sup>[3](#share)</sup> (waves 7, 8 and COVID questionnaires) in the English source language and their translations into Catalan, Czech, French (France, Switzerland, Belgium and Luxembourg), German (Austria, Germany, Switzerland and Luxembourg), Norwegian, Portuguese (Portugal and Luxembourg), Spanish (Spain) and Russian (Azerbaijan, Belarus, Israel, Latvia, Lithuania, Russian Federation, Ukraine, Estonia, Moldavia and Georgia).
