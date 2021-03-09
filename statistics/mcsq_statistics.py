@@ -5,6 +5,7 @@ import string
 import nltk
 from nltk.tokenize import WhitespaceTokenizer 
 
+
 all_tokenized_sentences = []
 all_intro = []
 all_instruction = []
@@ -165,6 +166,7 @@ def summary_statistics(all_tokenized_sentences, all_intro, all_instruction, all_
 
 	return df_statistics
 		
+
 
 def main(folder_path):
 	path = os.chdir(folder_path)
