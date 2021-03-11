@@ -18,6 +18,21 @@ import pandas as pd
 from sqlalchemy.sql import select
 
 
+def get_response_text_and_id_per_language(language):
+	session = session_factory()
+
+	result = session.execute("select r.responseid, r.text from response r, survey_item s where s.country_language ilike '"+language+"%' and r.responseid =  s.responseid")
+	
+	session.close()
+
+	result_dictionary = dict()
+	for i in result:
+		responseid = i[0] 
+		text = i[1]  
+		result_dictionary[responseid] = text
+
+	return result_dictionary
+
 def get_introduction_id(text):
 	session = session_factory()
 	if "'" in text:
