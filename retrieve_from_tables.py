@@ -18,20 +18,39 @@ import pandas as pd
 from sqlalchemy.sql import select
 
 
-def get_response_text_and_id_per_language(language):
+def build_id_dicts_per_language(language):
 	session = session_factory()
 
-	result = session.execute("select r.responseid, r.text from response r, survey_item s where s.country_language ilike '"+language+"%' and r.responseid =  s.responseid")
+	result = session.execute("select survey_itemid, requestid, responseid, instructionid, introductionid, text from survey_item where country_language ilike '"+language+"%'")
 	
 	session.close()
 
-	result_dictionary = dict()
-	for i in result:
-		responseid = i[0] 
-		text = i[1]  
-		result_dictionary[responseid] = text
+	survey_item = dict()
+	request = dict()
+	response = dict()
+	instruction = dict()
+	introduction = dict()
 
-	return result_dictionary
+	for i in result:
+		survey_itemid = i[0] 
+		requestid = i[1]  
+		responseid = i[2] 
+		instructionid = i[3] 
+		introductionid = i[4] 
+		text = i[5] 
+
+		survey_item[survey_itemid] = text
+
+		if requestid is not None:
+			request[requestid] = text
+		elif responseid is not None:
+			request[requestid] = text
+		elif instructionid is not None:
+			instruction[instructionid] = text
+		elif introductionid is not None:
+			introduction[introductionid] = text
+
+	return survey_item, request, response, instruction, introduction
 
 def get_introduction_id(text):
 	session = session_factory()
