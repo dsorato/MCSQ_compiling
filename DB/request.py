@@ -15,7 +15,9 @@ class Request(Base):
     # emits CREATE SEQUENCE + INTEGER
     requestid = Column(Integer, Sequence('request_id_seq'), primary_key=True)
     text = Column(String)
-
+    pos_tagged_text = Column(String)
+   
 
     def __init__(self, text):
         self.text = text
+        self.pos_tagged_text = pos_tagged_text

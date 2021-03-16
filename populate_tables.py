@@ -14,6 +14,24 @@ from DB.instruction import *
 from DB.response import *
 from DB.request import *
 
+
+def tag_table_text(tagged_text, table_name, table_id_name, table_id, survey_item_flag):
+	session = session_factory()
+	if "'" in tagged_text:
+		tagged_text = tagged_text.replace("'", "''")
+
+	if survey_item_flag == 1:
+		result = session.execute("update "+table_name+" set pos_tagged_text = '"+tagged_text+"' where "+table_id_name+" ilike '"+table_id+"';")
+	else:
+		result = session.execute("update "+table_name+" set pos_tagged_text = '"+tagged_text+"' where "+table_id_name+"="+table_id+";")
+
+	session.commit()
+	print(result)
+	
+
+	session.close()
+
+
 def write_module_table(modules):
 	session = session_factory()
 	for module in modules:

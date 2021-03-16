@@ -16,8 +16,9 @@ class Response(Base):
     responseid = Column(Integer, Sequence('response_id_seq'), primary_key=True)
     text = Column(String)
     item_value = Column(String)
-
-
-    def __init__(self, text, item_value):
+    pos_tagged_text = Column(String)
+   
+    def __init__(self, text, item_value, pos_tagged_text):
     	self.text = text
     	self.item_value = item_value
+    	self.pos_tagged_text = pos_tagged_text
