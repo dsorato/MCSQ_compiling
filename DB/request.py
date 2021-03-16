@@ -18,6 +18,6 @@ class Request(Base):
     pos_tagged_text = Column(String)
    
 
-    def __init__(self, text):
+    def __init__(self, text, pos_tagged_text):
         self.text = text
         self.pos_tagged_text = pos_tagged_text

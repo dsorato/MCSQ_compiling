@@ -20,18 +20,14 @@ def get_pos_model(language):
 		return SequenceTagger.load('pos-multi') 
 
 def tag_text_in_table(tagger, dictionary_name, dictionary):
-	if dictionary_name == 'survey_item':
-		table_name = 'survey_item'
-		table_id_name = 'survey_itemid'
-		survey_item_flag = 1
-	elif dictionary_name == 'request':
+	if dictionary_name == 'request':
 		table_name = 'request'
 		table_id_name = 'requestid'
-		survey_item_flag = 0
+	
 	elif dictionary_name == 'response':
 		table_name = 'response'
 		table_id_name = 'responseid'
-		survey_item_flag = 0
+
 	elif dictionary_name == 'instruction':
 		table_name = 'instruction'
 		table_id_name = 'instructionid'
@@ -45,7 +41,8 @@ def tag_text_in_table(tagger, dictionary_name, dictionary):
 		sentence = Sentence(v)
 		tagger.predict(sentence)
 		tagged_sentence = sentence.to_tagged_string()
-		tag_table_text(tagged_sentence, table_name, table_id_name, k, survey_item_flag)
+		tag_item_type_table_text(tagged_sentence, table_name, table_id_name, k)
+		tag_survey_item_text(tagged_sentence, table_id_name, k)
 
 
 def main():
@@ -55,8 +52,9 @@ def main():
 	
 	for l in languages:
 		tagger = get_pos_model(l)
-		survey_item, request, response, instruction, introduction = build_id_dicts_per_language(l)
-		dicts = {'survey_item': survey_item, 'request': request, 'response': response, 'instruction': instruction, 'introduction': introduction}
+		request, response, instruction, introduction = build_id_dicts_per_language(l)
+		dicts = {'request': request, 'response': response, 'instruction': instruction, 'introduction': introduction}
+		print(request)
 		for k, v in list(dicts.items()):
 			tag_text_in_table(tagger, k, v)
 

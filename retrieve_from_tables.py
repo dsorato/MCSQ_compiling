@@ -21,36 +21,32 @@ from sqlalchemy.sql import select
 def build_id_dicts_per_language(language):
 	session = session_factory()
 
-	result = session.execute("select survey_itemid, requestid, responseid, instructionid, introductionid, text from survey_item where country_language ilike '"+language+"%'")
+	result = session.execute("select requestid, responseid, instructionid, introductionid, text from survey_item where country_language ilike '"+language+"%'")
 	
 	session.close()
-
-	survey_item = dict()
 	request = dict()
 	response = dict()
 	instruction = dict()
 	introduction = dict()
 
 	for i in result:
-		survey_itemid = i[0] 
-		requestid = i[1]  
-		responseid = i[2] 
-		instructionid = i[3] 
-		introductionid = i[4] 
-		text = i[5] 
+		requestid = i[0]  
+		responseid = i[1] 
+		instructionid = i[2] 
+		introductionid = i[3] 
+		text = i[4] 
 
-		survey_item[survey_itemid] = text
 
-		if requestid is not None:
+		if requestid is not None and isinstance(requestid, int):
 			request[requestid] = text
-		elif responseid is not None:
-			request[requestid] = text
-		elif instructionid is not None:
+		elif responseid is not None and isinstance(responseid, int):
+			response[responseid] = text
+		elif instructionid is not None and isinstance(instructionid, int):
 			instruction[instructionid] = text
-		elif introductionid is not None:
+		elif introductionid is not None and isinstance(introductionid, int):
 			introduction[introductionid] = text
 
-	return survey_item, request, response, instruction, introduction
+	return request, response, instruction, introduction
 
 def get_introduction_id(text):
 	session = session_factory()

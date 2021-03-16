@@ -7,9 +7,9 @@ from flair.data import Sentence
 
 def main():
 
-	tagger = SequenceTagger.load('/home/danielly/workspace/trained_pos_models/rus_150ep.pt') 
+	tagger = SequenceTagger.load('upos') 
 
-	df = pd.read_csv('/home/danielly/workspace/pcsq_data/ESS/R01_2002/spreadsheets/ESS_R01_2002_RUS_IL.csv', sep='\t')
+	df = pd.read_csv('/home/danielly/workspace/pcsq_data/ESS/R03_2006/spreadsheets/ESS_R03_2006_ENG_SOURCE.csv', sep='\t')
 
 	for i, row in df.iterrows():
 		sentence = row['text']
