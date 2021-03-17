@@ -14,28 +14,31 @@ from DB.instruction import *
 from DB.response import *
 from DB.request import *
 
-
-def tag_item_type_table_text(tagged_text, table_name, table_id_name, table_id):
+def tag_item_type_table(dictionary, table_name, table_id_name):
 	session = session_factory()
-	if "'" in tagged_text:
-		tagged_text = tagged_text.replace("'", "''")
 
+	for k, v in list(dictionary.items()):
 
-	result = session.execute("update "+table_name+" set pos_tagged_text = '"+tagged_text+"' where "+table_id_name+"="+str(table_id)+";")
+		if "'" in v:
+			v = v.replace("'", "''")
 
-	session.commit()	
+		result = session.execute("update "+table_name+" set pos_tagged_text = '"+v+"' where "+table_id_name+"="+str(k)+";")
+		session.commit()	
+
 	session.close()
 
-def tag_survey_item_text(tagged_text, table_id_name, table_id):
+def tag_survey_item(dictionary, table_id_name):
 	session = session_factory()
-	if "'" in tagged_text:
-		tagged_text = tagged_text.replace("'", "''")
+	for k, v in list(dictionary.items()):
 
+		if "'" in v:
+			v = v.replace("'", "''")
 
-	result = session.execute("update survey_item set pos_tagged_text = '"+tagged_text+"' where "+table_id_name+"="+str(table_id)+";")
+		result = session.execute("update survey_item set pos_tagged_text = '"+v+"' where "+table_id_name+"="+str(k)+";")
+		session.commit()
 
-	session.commit()
 	session.close()
+
 
 
 def write_module_table(modules):

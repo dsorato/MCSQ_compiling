@@ -11,6 +11,7 @@ Contents
 
    preprocessing.rst
    alignment.rst
+   annotation.rst
 
 
 
