@@ -15,16 +15,18 @@ from DB.response import *
 from DB.request import *
 
 
-def tag_alignment_table(dictionary, column_name, source_or_target_id):
+def tag_alignment_table(dictionary, id_list, column_name, source_or_target_id):
 	session = session_factory()
 
-	for k, v in list(dictionary.items()):
+	for item in id_list:
 
-		if "'" in v:
-			v = v.replace("'", "''")
+		pos_tagged_text = dictionary[item]
 
-		print(v)
-		result = session.execute("update alignment set "+column_name+" = '"+v+"' where "+source_or_target_id+" ilike '"+k+"';")
+		if "'" in pos_tagged_text:
+			pos_tagged_text = pos_tagged_text.replace("'", "''")
+
+		print(pos_tagged_text)
+		result = session.execute("update alignment set "+column_name+" = '"+pos_tagged_text+"' where "+source_or_target_id+" ilike '"+item+"';")
 		session.commit()	
 
 	session.close()

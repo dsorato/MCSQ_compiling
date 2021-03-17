@@ -18,16 +18,16 @@ import pandas as pd
 from sqlalchemy.sql import select
 
 
-def get_tagged_text_from_survey_item_table(list_ids):
+def get_tagged_text_from_survey_item_table():
 	session = session_factory()
 
 	tagged_text_dict = dict()
-	for item in list_ids:
-		result = session.execute("select pos_tagged_text from survey_item where survey_itemid ilike '"+item+"';")
+	result = session.execute("select survey_itemid, pos_tagged_text from survey_item;")
 
-		for i in result:
-			if i[0] is not None:
-				tagged_text_dict[item] = i[0]
+	for i in result:
+		if i[0] is not None:
+			survey_itemid = i[0]
+			tagged_text_dict[survey_itemid] = i[1]
 
 
 	session.close()
