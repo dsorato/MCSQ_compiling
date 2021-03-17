@@ -182,6 +182,15 @@ def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id,
 
 
 def fill_extraction(text):
+	"""
+	Retrieves all dynamic fills (if there is any) from a given SHARE text segment, 
+	so later on these fills can be replaces by their natural language text definition.
+	Args:
+		param1 text (string): the text segment.
+
+	Returns:
+		either a list of fills (list of strings), or null if there are no matching fills in the text segment.
+	"""
 	match = re.compile('\^FL.*_\d').findall(text)
 	fill_list = []
 	if match:
@@ -432,15 +441,15 @@ def clean_text_share(text, country_language, w7flag):
 def extract_answers(subnode, df_answers, name, country_language, output_source_questionnaire_flag):
 	"""
 	Extract answers text from XML nodes of SHARE w8 files.
-	
-	param1 subnode: child node being analyzed in outer loop.
-	param2 df_answers: pandas dataframe containing answers extracted from XML file
-	param3 name (string): name of the answer structure inside XML file
-	param4 country_language (string): country_language metadata, embedded in file name.
-	param5 output_source_questionnaire_flag (string): a flag that indicates if the data being extracted is the source or target language. if it is the source then translation_id == 1, otherwise it is translation_id != 1.
-
-
-	Returns: retrieved answer segments in df_answers (pandas dataframe). 
+	Args:
+		param1 subnode: child node being analyzed in outer loop.
+		param2 df_answers: pandas dataframe containing answers extracted from XML file
+		param3 name (string): name of the answer structure inside XML file
+		param4 country_language (string): country_language metadata, embedded in file name.
+		param5 output_source_questionnaire_flag (string): indicates if the data to be extracted in the source (1) or the target language (any other value)
+		
+	Returns: 
+		df_answers (pandas dataframe) filled with retrieved answer segments extracted from answer_element nodes. 
 	"""
 	for child in subnode.getiterator():
 		if child.tag == 'answer_element':
@@ -493,9 +502,10 @@ def extract_categories(subnode, df_answers, name, country_language, output_sourc
 		param1 subnode: subnode of categories node.
 		param2 df_answers (pandas dataframe): a dataframe to store answer text and its attributes
 		param3 country_language (string): country and language metadata, contained in the filename
+		param4 output_source_questionnaire_flag (string): indicates if the data to be extracted in the source (1) or the target language (any other value)
 
 	Returns: 
-		retrieved answer segments in df_answers (pandas dataframe). 
+		df_answers (pandas dataframe) filled with retrieved answer segments extracted from category_element nodes. 
 	"""
 	fl_child = re.compile('(\^FLChild\[.+\]|{llista amb el nom dels fills})')
 	fl_job =  re.compile('\^(Sec_RE\.)?FJobTitle\[.+\]')
@@ -532,9 +542,10 @@ def extract_qenums(subnode, df_answers, name, country_language, output_source_qu
 		param1 subnode: subnode of categories node.
 		param2 df_answers (pandas dataframe): a dataframe to store answer text and its attributes
 		param3 country_language (string): country and language metadata, contained in the filename
+		param4 output_source_questionnaire_flag (string): indicates if the data to be extracted in the source (1) or the target language (any other value)
 
 	Returns: 
-		retrieved answer segments. 
+		df_answers (pandas dataframe) filled with retrieved answer segments extracted from qenum_element nodes. 
 	"""
 	fl_child = re.compile(r'(\^FLChild\[.+\]|{llista amb el nom dels fills})')
 	fl_job =  re.compile(r'\^(Sec_RE\.)?FJobTitle\[.+\]')
@@ -571,6 +582,15 @@ def extract_qenums(subnode, df_answers, name, country_language, output_source_qu
 
 
 def replace_untranslated_instructions(country_language, text):
+	"""
+	Replaces certain dynamic fills that are not defined in the input file by language-dependent fixed values.
+	Args:
+		param1 country_language (string): country and language metadata, contained in the filename.
+		param2 text (string): the text segment.
+
+	Returns: 
+		The text segment (string) without certain dynamic fills (if there were any).
+	"""
 	if 'CAT_ES' in country_language:
 		share_instructions = SHAREInstructionsCAT()
 	elif 'CZE_CZ' in country_language:
@@ -657,6 +677,21 @@ def replace_untranslated_instructions(country_language, text):
 
 
 def extract_questions_and_procedures_w8(subnode, df_questions, df_procedures, parent_map, name, splitter, country_language, output_source_questionnaire_flag):
+	"""
+	Extracts the questions and procedures text segments from SHARE wave 8 XML files.
+
+	Args:
+		param1 df_questions (pandas dataframe): the dataframe that holds the question segments extracted from the XML nodes in previous steps.
+		param2 df_procedures (pandas dataframe): the dataframe that holds the procedures for fills substitution, extracted from the XML nodes in previous steps.
+		param3 parent_map (dictionary): a dictionary that maps each child to its parent in the XML tree.
+		param4 name (string): name node attribute inside XML file
+		param5 splitter (NLTK object): Sentence segmenter object from NLTK
+		param6 country_language (string): country and language metadata, contained in the filename
+		param7 output_source_questionnaire_flag (string): indicates if the data to be extracted in the source (1) or the target language (any other value)
+
+	Returns: 
+		df_questions (pandas dataframe) and df_procedures (pandas dataframe) datafarmes filled with the extracted text segments from questions and procedures nodes.
+	"""
 	for child in subnode.getiterator():
 		if child.tag == 'question_element' and 'type_name' in child.attrib:
 			if child.attrib['type_name'] == 'QText' or child.attrib['type_name'] == 'QInstruction':
@@ -723,6 +758,23 @@ def extract_questions_and_procedures_w8(subnode, df_questions, df_procedures, pa
 	return df_questions, df_procedures
 
 def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, parent_map, name, tmt_id, splitter, country_language, output_source_questionnaire_flag):
+	"""
+	Extracts the questions and procedures text segments from SHARE wave 7 XML files.
+
+	Args:
+		param1 df_questions (pandas dataframe): the dataframe that holds the question segments extracted from the XML nodes in previous steps.
+		param2 df_procedures (pandas dataframe): the dataframe that holds the procedures for fills substitution, extracted from the XML nodes in previous steps.
+		param3 parent_map (dictionary): a dictionary that maps each child to its parent in the XML tree.
+		param4 name (string): name node attribute inside XML file
+		param5 tmt_id (string): tmt_id node attribute inside XML file
+		param6 splitter (NLTK object): Sentence segmenter object from NLTK
+		param7 country_language (string): country and language metadata, contained in the filename
+		param8 output_source_questionnaire_flag (string): indicates if the data to be extracted in the source (1) or the target language (any other value)
+
+	Returns: 
+		df_questions (pandas dataframe) and df_procedures (pandas dataframe) datafarmes filled with the extracted text segments from questions and procedures nodes.
+	"""
+
 	for child in subnode.getiterator():
 		if child.tag == 'question_element' and 'type_name' in child.attrib:
 			if child.attrib['type_name'] == 'QText' or child.attrib['type_name'] == 'QInstruction':

@@ -18,6 +18,38 @@ import pandas as pd
 from sqlalchemy.sql import select
 
 
+def get_tagged_text_from_survey_item_table(list_ids):
+	session = session_factory()
+
+	tagged_text_dict = dict()
+	for item in list_ids:
+		result = session.execute("select pos_tagged_text from survey_item where survey_itemid ilike '"+item+"';")
+
+		for i in result:
+			if i[0] is not None:
+				tagged_text_dict[item] = i[0]
+
+
+	session.close()
+
+	return tagged_text_dict
+
+def get_ids_from_alignment_table(survey_itemid):
+	session = session_factory()
+	
+	result = session.execute("select "+survey_itemid+" from alignment")
+	
+	session.close()
+
+	survey_itemid_list = []
+	for i in result:
+		if i[0] is not None:
+			survey_itemid_list.append(i[0])
+
+	return survey_itemid_list
+
+
+
 def build_id_dicts_per_language(language):
 	session = session_factory()
 

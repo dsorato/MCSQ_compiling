@@ -14,6 +14,49 @@ from DB.instruction import *
 from DB.response import *
 from DB.request import *
 
+
+def tag_alignment_table(dictionary, column_name, source_or_target_id):
+	session = session_factory()
+
+	for k, v in list(dictionary.items()):
+
+		if "'" in v:
+			v = v.replace("'", "''")
+
+		print(v)
+		result = session.execute("update alignment set "+column_name+" = '"+v+"' where "+source_or_target_id+" ilike '"+k+"';")
+		session.commit()	
+
+	session.close()
+
+
+def tag_item_type_table(dictionary, table_name, table_id_name):
+	session = session_factory()
+
+	for k, v in list(dictionary.items()):
+
+		if "'" in v:
+			v = v.replace("'", "''")
+
+		result = session.execute("update "+table_name+" set pos_tagged_text = '"+v+"' where "+table_id_name+"="+str(k)+";")
+		session.commit()	
+
+	session.close()
+
+
+def tag_item_type_table(dictionary, table_name, table_id_name):
+	session = session_factory()
+
+	for k, v in list(dictionary.items()):
+
+		if "'" in v:
+			v = v.replace("'", "''")
+
+		result = session.execute("update "+table_name+" set pos_tagged_text = '"+v+"' where "+table_id_name+"="+str(k)+";")
+		session.commit()	
+
+	session.close()
+
 def tag_item_type_table(dictionary, table_name, table_id_name):
 	session = session_factory()
 

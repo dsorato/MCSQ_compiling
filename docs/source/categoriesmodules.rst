@@ -7,3 +7,5 @@ Special Answer Categories and Modules
    :members:
 .. automodule:: preprocessing.essmodules
    :members:
+.. automodule:: preprocessing.sharemodules
+   :members:

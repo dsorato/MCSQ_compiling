@@ -8,5 +8,5 @@ Data preprocessing methods (EVS, ESS and SHARE)
    preprocessing_utils.rst
    txt2spreadsheet.rst
    xml2spreadsheet.rst
-   preprocessing_share.rst
+   preprocessing_share_covid.rst
    categoriesmodules.rst
