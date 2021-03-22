@@ -14,6 +14,18 @@ from DB.instruction import *
 from DB.response import *
 from DB.request import *
 
+def tag_target_alignment_table(dictionary):
+	session = session_factory()
+
+	for k, v in list(dictionary.items()):
+		if "'" in v:
+			v = v.replace("'", "''")
+
+		result = session.execute("update alignment set target_pos_tagged_text = '"+v+"' where target_survey_itemid ilike '"+k+"';")
+		print(v)
+		session.commit()	
+
+	session.close()
 
 def tag_alignment_table(dictionary, id_list, column_name, source_or_target_id):
 	session = session_factory()

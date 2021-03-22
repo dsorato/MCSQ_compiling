@@ -34,6 +34,22 @@ def get_tagged_text_from_survey_item_table():
 
 	return tagged_text_dict
 
+def create_tagged_text_dict(id_list):
+	session = session_factory()
+
+	tagged_text_dict = dict()
+	result = session.execute("select survey_itemid, pos_tagged_text from survey_item;")
+
+	for i in result:
+		if i[0] is not None and i[0] in id_list:
+			survey_itemid = i[0]
+			tagged_text_dict[survey_itemid] = i[1]
+
+
+	session.close()
+
+	return tagged_text_dict
+
 def get_ids_from_alignment_table(survey_itemid):
 	session = session_factory()
 	
@@ -44,7 +60,23 @@ def get_ids_from_alignment_table(survey_itemid):
 	survey_itemid_list = []
 	for i in result:
 		if i[0] is not None:
-			survey_itemid_list.append(i[0])
+			if i[0] not in survey_itemid_list:
+				survey_itemid_list.append(i[0])
+
+	return survey_itemid_list
+
+def get_ids_from_alignment_table_per_language(language):
+	session = session_factory()
+	
+	result = session.execute("select target_survey_itemid from alignment where target_survey_itemid ilike '%"+language+"%' and target_pos_tagged_text is null")
+	
+	session.close()
+
+	survey_itemid_list = []
+	for i in result:
+		if i[0] is not None:
+			if i[0] not in survey_itemid_list:
+				survey_itemid_list.append(i[0])
 
 	return survey_itemid_list
 
