@@ -23,7 +23,7 @@ Zavala-Rojas, D., Sorato, D., Hareide, L., & Hofland, K. (forthcoming 2021). [MC
 * MCSQ interface prototype http://easy.mcsq.upf.edu/
 * For more implementation details, see code documentation in: https://mcsq-compiling.readthedocs.io/en/latest/
 
-The MCSQ was developed in the Social Sciences and Humanities Open Cloud (SSHOC)<sup>[1](#sshoc)</sup> project. SSHOC has received funding from the European Union's Horizon 2020 project call H2020-INFRAEOSC-04-2018, grant agreement #823782.
+The MCSQ was developed in the Social Sciences and Humanities Open Cloud (SSHOC)<sup>[4](#sshoc)</sup> project. SSHOC has received funding from the European Union's Horizon 2020 project call H2020-INFRAEOSC-04-2018, grant agreement #823782.
 
 <a name="ess">1</a>: https://www.europeansocialsurvey.org/
 <a name="evs">2</a>: https://europeanvaluesstudy.eu/
