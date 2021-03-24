@@ -14,6 +14,7 @@ def retrieve_raw_items_from_file(file):
 	"""
 	Extracts the raw items from ESS plain text file, based on an item name regex pattern.
 	Also excludes blank lines and non relevant scale items.
+	
 	Args:
 		param1 file (Python module): input ESS plain text file.
 

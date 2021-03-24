@@ -101,6 +101,7 @@ def populate_introduction_table(df):
 
 	Args:
 		param1 df (pandas dataframe): input csv file.
+
 	Returns: 
 		dictionary_introductions (dictionary). A dictionary containing unique introduction texts and their IDs in MCSQ.
 	"""	
@@ -124,6 +125,7 @@ def populate_instruction_table(df):
 
 	Args:
 		param1 df (pandas dataframe): input csv file.
+
 	Returns: 
 		dictionary_instructions (dictionary). A dictionary containing unique instruction texts and their IDs in MCSQ.
 	"""	
@@ -147,6 +149,7 @@ def populate_request_table(df):
 
 	Args:
 		param1 df (pandas dataframe): input csv file.
+
 	Returns: 
 		dictionary_requests (dictionary). A dictionary containing unique request texts and their IDs in MCSQ.
 	"""	
@@ -169,6 +172,7 @@ def populate_response_table(df):
 
 	Args:
 		param1 df (pandas dataframe): input csv file.
+
 	Returns: 
 		dictionary_responses (dictionary). A dictionary containing unique response texts, their item values and their IDs in MCSQ.
 	"""	
@@ -206,6 +210,7 @@ def populate_module_table(df):
 
 	Args:
 		param1 df (pandas dataframe): input csv file.
+
 	Returns: 
 		dictionary_modules (dictionary). A dictionary containing unique module names and their IDs in MCSQ.
 	"""	
@@ -228,6 +233,7 @@ def populate_survey_table(df):
 
 	Args:
 		param1 df (pandas dataframe): input csv file.
+		
 	Returns: 
 		dictionary_surveys (dictionary). A dictionary containing unique surveyids strings and their IDs in MCSQ.
 	"""	
@@ -263,6 +269,7 @@ def concatenate_files(files, metainfo, folder_path):
 		param1 files (list): all files (same language) in directory.
 		param2 metainfo (string): name of output csv file, e.g. CAT.csv
 		param3 folder_path (string): path of directory.
+
 	Returns: 
 		csv file containing all data for a given language.
 	"""	

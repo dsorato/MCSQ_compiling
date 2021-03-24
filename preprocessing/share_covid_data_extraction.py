@@ -10,6 +10,7 @@ def get_language_country_iso_codes(language_country):
 	"""
 	Returns the ISO codes for language and country based on the values retrieved from input file.
 	Only for target languages of MCSQ.
+
 	Args:
 		param1 language_country (string): language and country information retrieved from input file.
 	Returns:
@@ -127,6 +128,7 @@ def set_initial_structures(language_country):
 def replace_abbreviations_and_fills(sentence):
 	"""
 	Replaces abbreviations and fills text from the text of input file.
+	
 	Args:
 		param1 sentence (string): text segment from input file.
 	Returns:

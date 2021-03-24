@@ -7,8 +7,8 @@ from essmodules import *
 
 def remove_spaces_from_item_name(item_name):
 	"""
-	Removes spaces in item names such as A 1, because the MCSQ standard
-	are item names without spaces (A1).
+	Removes spaces in item names such as A 1, because the MCSQ standard are item names without spaces (A1).
+
 	Args:
 		param1 item_name (string): item_name retrieved from the input file.
 	Returns:
@@ -100,6 +100,7 @@ def retrieve_supplementary_module(essmodules,item_name):
 	Matches the item_name against the dictionary stored in the ESSModulesRRR objects.
 	Rotating/supplementary modules are defined by round because they may change from
 	round to round.
+
 	Args:
 		param1 essmodules (Python object): ESSModulesRRR object, instantiated according to the round.
 		param2 item_name (string): name of survey item, retrieved in previous steps.
@@ -532,6 +533,7 @@ def clean_answer(text, ess_special_answer_categories):
 def check_if_segment_is_instruction(sentence, country_language):
 	"""
 	Calls the appropriate instruction recognition method, according to the language.
+	
 	Args:
 		param1 sentence (string): sentence being analyzed in outer loop of data extraction.
 		param2 country_language (string): country_language metadata, embedded in file name.

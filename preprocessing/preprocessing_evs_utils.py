@@ -30,6 +30,7 @@ def standardize_special_response_category_value(filename, catValu, text):
 def get_country_language_and_study_info(filename):
 	"""
 	Retrieves the country/language and study metadata based on the input filename.
+
 	Args:
 		param filename (string): name of the input file.
 
@@ -48,6 +49,7 @@ def get_country_language_and_study_info(filename):
 def standardize_item_name(item_name):
 	"""
 	Standartizes a given item_name, if it is not in the standard
+
 	Args:
 		param1 item_name (string): item name extracted from the input file.
 
@@ -78,6 +80,7 @@ def standardize_item_name(item_name):
 def clean_instruction(text):
 	"""
 	Removes undesired characters from instruction text. 
+
 	Args:
 		param1 text (string): instruction text extracted from the input file.
 
@@ -108,6 +111,7 @@ def clean_instruction(text):
 def clean_text(text, filename):
 	"""
 	Removes undesired characters from request/response text. 
+
 	Args:
 		param text (string): request/response text extracted from the input file.
 		param filename (string): name of the input file.
@@ -142,6 +146,7 @@ def clean_text(text, filename):
 def clean_answer_text_evs(text, filename):
 	"""
 	Removes undesired characters from request/response text. 
+	
 	Args:
 		param text (string): request/response text extracted from the input file.
 		param filename (string): name of the input file.

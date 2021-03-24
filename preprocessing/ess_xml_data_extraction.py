@@ -161,6 +161,7 @@ def clean(text):
 def identify_showcard_instruction(text, country_language):
 	"""
 	Language specific definitions of the word 'card' used in the ESS files. If the text matches the word, then it is a showcard instruction.
+
 	Args:
 		param1 text (string): text segment being analyzed.
 		param2 country_language (string): country and language metadata, embedded in the name of the input file.
@@ -201,6 +202,7 @@ def identify_showcard_instruction(text, country_language):
 def get_answer_id(node, parent_map):
 	"""
 	Gets the answer id from node attributes, if it exists
+
 	Args:
 		param1 node: current xml tree node being analyzed in outer loop.
 		param2 parent_map (dictionary): a dictionary containing information about parent-child relationships in XML tree.
@@ -222,6 +224,7 @@ def segment_question_instruction(df_question_instruction, parent_map, node, item
 	"""
 	Extracts the question/instruction text segments from a node, if the node text exists.
 	 nodes to extract questions and instructions (introduction is not present in metadata)
+
 	Args:
 		param1 df_question_instruction (pandas dataframe): a dataframe to store processed question and instruction segments
 		param2 parent_map (dictionary): a dictionary containing information about parent-child relationships in XML tree.
@@ -260,6 +263,7 @@ def segment_question_instruction(df_question_instruction, parent_map, node, item
 def adjust_item_name(item_name):
 	"""
 	Adjust item_name inconsistencies (and item_type in some cases) present in source XML file.
+
 	Args:
 		param1 item_name (string): item_name metadata, extracted from input file.
 
@@ -326,6 +330,7 @@ def adjust_item_name(item_name):
 def process_question_instruction_node(ess_questions_instructions, df_question_instruction, parent_map, splitter, country_language, extract_source):
 	"""
 	Iterates through question nodes to extract questions and instructions (introduction is not present in metadata)
+	
 	Args:
 		param1 ess_questions_instructions: question and instruction nodes.
 		param2 df_question_instruction (pandas dataframe): a dataframe to store processed question and instruction segments

@@ -21,6 +21,7 @@ def dk_nr_standard(item_value):
 	Refusal 777
 	Don't know 888
 	Does not apply 999
+	
 	Args:
 		param1 item_value (string): item value metadata extarcted from QuestionElementNr in the input file.
 	Returns: 

@@ -16,6 +16,7 @@ from share_instructions import *
 def get_module_metadata(item_name, share_modules):
 	"""
 	Gets the module to which a given survey item pertains. based on the survey item name.
+
 	Args:
 		param1 item_name (string): item_name metadata, extracted direcly from the input xml file.
 		param2 share_modules (dictionary): a dictionary of module names (taken from SHARE website), encapsulated in the SHAREModules object.
@@ -34,6 +35,7 @@ def fill_substitution_in_answer(text, fills, df_procedures):
 	"""
 	Substitutes the fills in the answer text segments. The fill is substituted only if it was found in the procedure nodes (this can
 	be checked by filtering the df_procedures dataframe by the fill present in the answer segment).
+
 	Args:
 		param1 text (string): the answer text segment.
 		param2 fills (list): the list of fills that are present in the text segment. Effectivelly, for answers the fill list has just one element.
@@ -185,6 +187,7 @@ def fill_extraction(text):
 	"""
 	Retrieves all dynamic fills (if there is any) from a given SHARE text segment, 
 	so later on these fills can be replaces by their natural language text definition.
+
 	Args:
 		param1 text (string): the text segment.
 
@@ -220,6 +223,7 @@ def fill_extraction(text):
 def replace_fill_in_answer(text):
 	"""
 	Substitutes certain fills in the answer text segments with fixed values.
+
 	Args:
 		param1 text (string): the answer text segment.
 
@@ -247,6 +251,7 @@ def replace_fill_in_answer(text):
 def clean_answer_text(text, country_language):
 	"""
 	Substitutes HTML markups in the answer text segments with fixed values
+
 	Args:
 		param1 text (string): the answer text segment.
 		param2 country_language (string): country_language metadata, embedded in file name.
@@ -294,6 +299,7 @@ def clean_answer_text(text, country_language):
 def clean_text_share(text, country_language, w7flag):
 	"""
 	Substitutes HTML markups and certain fills in the text segments with fixed values.
+
 	Args:
 		param1 text (string): the answer text segment.
 		param2 country_language (string): country_language metadata, embedded in file name.
@@ -441,6 +447,7 @@ def clean_text_share(text, country_language, w7flag):
 def extract_answers(subnode, df_answers, name, country_language, output_source_questionnaire_flag):
 	"""
 	Extract answers text from XML nodes of SHARE w8 files.
+
 	Args:
 		param1 subnode: child node being analyzed in outer loop.
 		param2 df_answers: pandas dataframe containing answers extracted from XML file
@@ -474,6 +481,7 @@ def extract_answers(subnode, df_answers, name, country_language, output_source_q
 def split_answer_text_item_value_from_categories(text):
 	"""
 	Splits the answer text and its item value in the category node
+
 	Args:
 		param1 text (string): text from category node, containing item value and answer text segment
 
@@ -498,6 +506,7 @@ def split_answer_text_item_value_from_categories(text):
 def extract_categories(subnode, df_answers, name, country_language, output_source_questionnaire_flag):
 	"""
 	Extracts the categories (i.e., answers) from SHARE W07 XML files.
+
 	Args:
 		param1 subnode: subnode of categories node.
 		param2 df_answers (pandas dataframe): a dataframe to store answer text and its attributes
@@ -538,6 +547,7 @@ def extract_categories(subnode, df_answers, name, country_language, output_sourc
 def extract_qenums(subnode, df_answers, name, country_language, output_source_questionnaire_flag):
 	"""
 	Extracts the qenums (i.e., answers) from SHARE W07 XML files.
+
 	Args:
 		param1 subnode: subnode of categories node.
 		param2 df_answers (pandas dataframe): a dataframe to store answer text and its attributes
@@ -584,6 +594,7 @@ def extract_qenums(subnode, df_answers, name, country_language, output_source_qu
 def replace_untranslated_instructions(country_language, text):
 	"""
 	Replaces certain dynamic fills that are not defined in the input file by language-dependent fixed values.
+
 	Args:
 		param1 country_language (string): country and language metadata, contained in the filename.
 		param2 text (string): the text segment.
@@ -895,6 +906,7 @@ def build_questionnaire_structure(df_questions, df_answers,df_procedures, df_que
 	"""
 	Build the final questionnaire from df_questions, df_answers and df_procedures.
 	Calls the fill_extraction() and fill_unrolling() methods to replace the dynamic fills in the texts for the appropriate string definitions found in df_procedures.
+
 	Args:
 		param1 df_questions (pandas dataframe): the dataframe that holds the question segments extracted from the XML nodes in previous steps.
 		param2 df_answers (pandas dataframe): the dataframe that holds the answer segments extracted from the XML nodes in previous steps.
@@ -960,6 +972,7 @@ def filter_items_to_build_questionnaire_structure_w8(df_questions, df_answers,df
 	Filters the question and answer dataframes by the item name.
 	Only segments with the same item name are considered as alignment candidates.
 	Calls the build_questionnaire_structure() function to build the final questionnaire from df_questions, df_answers and df_procedures.
+
 	Args:
 		param1 df_questions (pandas dataframe): the dataframe that holds the question segments extracted from the XML nodes in previous steps.
 		param2 df_answers (pandas dataframe): the dataframe that holds the answer segments extracted from the XML nodes in previous steps.
@@ -987,6 +1000,7 @@ def filter_items_to_build_questionnaire_structure_w7(df_questions, df_answers,df
 	Filters the question and answer dataframes by the tmt_ids.
 	Only segments with the same tmt_id are considered as alignment candidates.
 	Calls the build_questionnaire_structure() function to build the final questionnaire from df_questions, df_answers and df_procedures.
+	
 	Args:
 		param1 df_questions (pandas dataframe): the dataframe that holds the question segments extracted from the XML nodes in previous steps.
 		param2 df_answers (pandas dataframe): the dataframe that holds the answer segments extracted from the XML nodes in previous steps.

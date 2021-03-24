@@ -14,10 +14,12 @@ def identify_showc_segment(list_source, list_target, item_type):
 	"""
 	Searches in list_source, list_target if there are intructions that seem to be show card segments that should be aligned together.
 	This method was implemented as an additional strategy to align correctly instruction segments.
+
 	Args:
 		param1 list_source (list): list of source segments (contains segments of same item_name and item_type)
 		param2 list_target (list): list of target segments (contains segments of same item_name and item_type)
 		param3 item_type (string): item_type metadata being analyzed. In this method we want to consider only instruction segments.
+
 	Returns:
 		str indicating if instructions that follow the show card segments were found.
 	"""
@@ -48,6 +50,7 @@ def preprocessing_alignment_candidates(text):
 
 	Args:
 		param1 text (string): the text segment to be preprocessed.
+
 	Returns:
 		The preprocessed tokens (a list of strings). 
 
@@ -68,6 +71,7 @@ def preprocessing_alignment_candidates(text):
 def find_best_match(list_source, list_target, item_type):
 	"""
 	Finds the best match for source and target segments (same item_type) based on the lenght of the segments.
+
 	Args:
 		param1 list_source (list): list of source segments (contains segments of same item_name and item_type)
 		param2 list_target (list): list of target segments (contains segments of same item_name and item_type)
@@ -108,6 +112,7 @@ def get_original_index(list_source, list_target, source_segment_index, target_se
 	"""
 	Gets the original index of aligned segments, as the auxiliary lists are being modified and the indexes
 	does not correspond to the original ones.
+
 	Args:
 		param1 list_source (list): list of source segments (contains segments of same item_name and item_type).
 		param2 list_target (list): list of target segments (contains segments of same item_name and item_type).
@@ -135,6 +140,7 @@ def only_one_segment_in_source_align(alignment, source_segment, target_segment, 
 	This method is called when the dataframe contains one source segment to two or more target segments.
 	The alignment pair is defined in the find_best_match() method and the remaining target segments
 	are included in this method, respecting the structure order.
+
 	Args:
 		param1 alignment (list): Alignment pair represented by the index of target and source segments being aligned 
 		(index 0 = target,index 1 = source), selected with lenght of the segments strategy.
@@ -201,6 +207,7 @@ def only_one_segment_in_target_align(alignment, source_segment, target_segment, 
 	This method is called when the dataframe contains one target segment to two or more source segments.
 	The alignment pair is defined in the find_best_match() method and the remaining source segments
 	are included in this method, respecting the structure order.
+
 	Args:
 		param1 alignment (list): Alignment pair represented by the index of target and source segments being aligned 
 		(index 0 = target,index 1 = source), selected with lenght of the segments strategy.
@@ -263,6 +270,7 @@ def only_one_segment_in_target_align(alignment, source_segment, target_segment, 
 def treat_a_single_pairless_target(list_source, list_target, sorted_aligments, target_segments_without_pair, df):
 	"""
 	Align source and target segments, in case where there is only one target segment without a pair.
+
 	Args:
 		param1 list_source (list): list of source segments (contains segments of same item_name and item_type)
 		param2 list_target (list): list of target segments (contains segments of same item_name and item_type)
@@ -345,6 +353,7 @@ def treat_a_single_pairless_target(list_source, list_target, sorted_aligments, t
 def treat_a_single_pairless_source(list_source, list_target, sorted_aligments, source_segments_without_pair, df):
 	"""
 	Align source and target segments, in case where there is only one source segment without a pair.
+
 	Args:
 		param1 list_source (list): list of source segments (contains segments of same item_name and item_type)
 		param2 list_target (list): list of target segments (contains segments of same item_name and item_type)
@@ -428,6 +437,7 @@ def treat_a_single_pairless_source(list_source, list_target, sorted_aligments, s
 def treat_multiple_pairless_source_segments(list_source, list_target, sorted_aligments, source_segments_without_pair, df):
 	"""
 	Align source and target segments, in case where there are multiple source segments without a pair.
+
 	Args:
 		param1 list_source (list): list of source segments (contains segments of same item_name and item_type)
 		param2 list_target (list): list of target segments (contains segments of same item_name and item_type)
@@ -517,6 +527,7 @@ def treat_multiple_pairless_source_segments(list_source, list_target, sorted_ali
 def treat_multiple_pairless_target_segments(list_source, list_target, sorted_aligments, target_segments_without_pair, df):
 	"""
 	Align source and target segments, in case where there are multiple target segments without a pair.
+
 	Args:
 		param1 list_source (list): list of source segments (contains segments of same item_name and item_type)
 		param2 list_target (list): list of target segments (contains segments of same item_name and item_type)
@@ -970,6 +981,7 @@ def align_on_metadata(df, df_source, df_target, process_responses):
 	"""
 	Calls the appropriate method for alignment based on metadata.
 	Responses are aligned separately of other item types because answers are merged using the item value.
+	
 	Args:
 		param1 df (pandas dataframe): dataframe to store the questionnaire alignment
 		param2 df_source (pandas dataframe): dataframe containing the data of the source questionnaire (always English).
