@@ -4,6 +4,8 @@
    contain the root `toctree` directive.
 
 Welcome to MCSQ compiling's documentation!
+
+The MCSQ was developed in the Social Sciences and Humanities Open Cloud (SSHOC) project. SSHOC has received funding from the European Union's Horizon 2020 project call H2020-INFRAEOSC-04-2018, grant agreement #823782.
 ==========================================
 
 .. toctree::
