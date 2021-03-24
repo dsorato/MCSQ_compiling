@@ -19,12 +19,13 @@ If you use part of the code, datasets, and/or findings to inspire your own scien
 Zavala-Rojas, D., Sorato, D., Hareide, L., & Hofland, K. (forthcoming 2021). [MCSQ] Multilingual Corpus of Survey Questionnaires. Meta: Journal Des Traducteurs.
 @article{Zavala-Rojas,author = {Zavala-Rojas, Diana and Sorato, Danielly and Hareide, Lidun and Hofland, Knut},journal = {Meta: Journal des traducteurs},title = {{[MCSQ] Multilingual Corpus of Survey Questionnaires}}}
 
+* Visit the MCSQ official website https://www.upf.edu/web/mcsq/
+* MCSQ interface prototype http://easy.mcsq.upf.edu/
+* For more implementation details, see code documentation in: https://mcsq-compiling.readthedocs.io/en/latest/
+
+The MCSQ was developed in the Social Sciences and Humanities Open Cloud (SSHOC)<sup>[1](#sshoc)</sup> project. SSHOC has received funding from the European Union's Horizon 2020 project call H2020-INFRAEOSC-04-2018, grant agreement #823782.
 
 <a name="ess">1</a>: https://www.europeansocialsurvey.org/
 <a name="evs">2</a>: https://europeanvaluesstudy.eu/
 <a name="share">3</a>: http://www.share-project.org/home0.html
-
-
-* Visit the MCSQ official website https://www.upf.edu/web/mcsq/
-* MCSQ interface prototype http://easy.mcsq.upf.edu/
-* For more implementation details, see code documentation in: https://mcsq-compiling.readthedocs.io/en/latest/
+<a name="sshoc">4</a>: https://sshopencloud.eu/
