@@ -62,7 +62,7 @@ def build_sentences_per_item_type_dictionary(tokens_in_intro, tokens_in_instruct
 
 	return sentences_per_item_type
 
-def summary_statistics_per_language(filename, df, df_statistics_per_language, tokenizer):
+def summary_statistics_per_language(filename, df, df_statistics_per_language, tokenizer, language_variety):
 	unique_tokens = []
 	n_tokens = []
 	n_sentences = []
@@ -118,9 +118,13 @@ def summary_statistics_per_language(filename, df, df_statistics_per_language, to
 	sentences_per_item_type = build_sentences_per_item_type_dictionary(tokens_in_intro, tokens_in_instruction, tokens_in_request, tokens_in_response)
 	stats_by_item_type = get_number_of_sentences_and_length_by_item_type(sentences_per_item_type)
 
+	if language_variety is not None:
+		l =  language_variety
+	else:
+		l = language_iso_code
 
 	avg_sentence_length = get_average_sentence_length(tokenized_sentences)
-	data = {'language_iso_code': language_iso_code, 'number_of_sentences': len(n_sentences), 'average_sentence_length': avg_sentence_length,
+	data = {'language_iso_code': l, 'number_of_sentences': len(n_sentences), 'average_sentence_length': avg_sentence_length,
 	'number_of_introduction_segments': stats_by_item_type['intro'][0], 'average_introduction_segment_length':stats_by_item_type['intro'][1],
 	'number_of_instruction_segments': stats_by_item_type['instruction'][0], 'average_instruction_segment_length': stats_by_item_type['instruction'][1],
 	'number_of_request_segments': stats_by_item_type['request'][0],  'average_request_segment_length': stats_by_item_type['request'][1],
@@ -167,8 +171,25 @@ def summary_statistics(all_tokenized_sentences, all_intro, all_instruction, all_
 	return df_statistics
 		
 
+def get_language_varieties_in_file(df):
+	language_varieties = []
 
-def main(folder_path):
+	filtered = df[df['survey_item_ID'].str.contains("_.*_1")]
+
+	for i, row in filtered.iterrows():
+		split = row['survey_item_ID'].split('_')
+		language_variety = split[3] + '_' + split[4]
+		if language_variety not in language_varieties:
+			language_varieties.append(language_variety)
+
+
+	return language_varieties
+
+
+
+			
+
+def main(folder_path, results_by_language_variety):
 	path = os.chdir(folder_path)
 	files = os.listdir(path)
 
@@ -189,14 +210,25 @@ def main(folder_path):
 		if file.endswith(".csv"):
 			print('Getting statistics from file:', file)
 			df = pd.read_csv(file, dtype=str, delimiter='\t')
-			all_tokenized_sentences, all_intro, all_instruction, all_request, all_response,  all_tokens, all_unique_tokens, df_statistics_per_language = summary_statistics_per_language(file, df, df_statistics_per_language, tokenizer)
+			language_variety = None
+			if results_by_language_variety == 1:
+				language_varieties = get_language_varieties_in_file(df)
+				for language_variety in language_varieties:
+					filtered = df[df['survey_item_ID'].str.contains(language_variety)]
+					all_tokenized_sentences, all_intro, all_instruction, all_request, all_response,  all_tokens, all_unique_tokens, df_statistics_per_language = summary_statistics_per_language(file, filtered, df_statistics_per_language, tokenizer, language_variety)
+			else:
+				all_tokenized_sentences, all_intro, all_instruction, all_request, all_response,  all_tokens, all_unique_tokens, df_statistics_per_language = summary_statistics_per_language(file, df, df_statistics_per_language, tokenizer, language_variety)
 
+	if results_by_language_variety == 1:
+		df_statistics_per_language.to_csv('df_statistics_per_language_variety.tsv', encoding='utf-8-sig', sep='\t', index=False) 
+	else:
+		df_statistics_per_language.to_csv('df_statistics_per_language.tsv', encoding='utf-8-sig', sep='\t', index=False) 
 
-	df_statistics_per_language.to_csv('df_statistics_per_language.tsv', encoding='utf-8-sig', sep='\t', index=False) 
-	df_statistics =  summary_statistics(all_tokenized_sentences, all_intro, all_instruction, all_request, all_response, all_tokens, all_unique_tokens, df_statistics_per_language)
+	# df_statistics =  summary_statistics(all_tokenized_sentences, all_intro, all_instruction, all_request, all_response, all_tokens, all_unique_tokens, df_statistics_per_language)
 
-	df_statistics.to_csv('df_statistics.tsv', encoding='utf-8-sig', sep='\t', index=False) 
+	# df_statistics.to_csv('df_statistics.tsv', encoding='utf-8-sig', sep='\t', index=False) 
 
 if __name__ == "__main__":
 	folder_path = str(sys.argv[1])
-	main(folder_path)
+	results_by_language_variety = int(sys.argv[2])
+	main(folder_path, results_by_language_variety)
