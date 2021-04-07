@@ -1,0 +1,718 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>preprocessing.ess_xml_data_extraction &#8212; MCSQ compiling 2 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">preprocessing.ess_xml_data_extraction</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for preprocessing.ess_xml_data_extraction</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Python3 script to transform XML ESS data into spreadsheet format used as input for MCSQ</span>
+<span class="sd">Author: Danielly Sorato </span>
+<span class="sd">Author contact: danielly.sorato@gmail.com</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">import</span> <span class="nn">nltk.data</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">utils</span> <span class="k">as</span> <span class="nn">ut</span>
+<span class="kn">from</span> <span class="nn">preprocessing_ess_utils</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="n">ignore</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;F[1-3]\_[0-1][2-9](\_.*)?&#39;</span><span class="p">)</span>
+
+<span class="n">ignore_f3_dk_rf</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;F3\_01(\_.*)?&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="clean_answer_category"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.ess_xml_data_extraction.clean_answer_category">[docs]</a><span class="k">def</span> <span class="nf">clean_answer_category</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Cleans the answer segment, by standardizing the text and removing undesired elements.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 text (string): answer segment currently being analyzed.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		standardized answer text (string).</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;br&gt;\s?\s?\d+$&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;br /&gt;\s?\s?\d+$&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;br&gt;\s?\s?\+\d+$&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;br /&gt;\s?\s?\-\d+$&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;br&gt;\s?\s?\-\d+$&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;…&quot;</span><span class="p">,</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;’&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; :&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;(\s0\s?$)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;(\s10\s?$)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;(\s\+\d\s?$)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;(\s\-\d\s?$)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;\s+\?&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[.]{4,}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[!]{2,}&quot;</span><span class="p">,</span> <span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/strong&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;strong&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/p&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/em&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;em&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/br&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;br /&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;b&gt;&lt;b&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/b&gt;&lt;/b&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;b&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/b&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/u&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;u&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;lt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;lt&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;gt&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;nbsp&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;_*&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-------&gt;&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;__________&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;________________________&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;i&gt;&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;/i&gt;&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;^footnote&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+
+		
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+	<span class="k">return</span> <span class="n">text</span></div>
+
+<div class="viewcode-block" id="clean"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.ess_xml_data_extraction.clean">[docs]</a><span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Cleans the question or instruction segment, by standardizing the text and removing undesired elements.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 text (string): question or instruction segment currently being analyzed.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		standardized question or instruction text (string).</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; ?&#39;</span><span class="p">,</span><span class="s1">&#39;?&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;‐&#39;</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;»&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;^\s?\.\s?&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;«&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;…&quot;</span><span class="p">,</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;’&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; :&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;Enq.:&quot;</span><span class="p">,</span> <span class="s2">&quot;Enquêteur:&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;INT.:&quot;</span><span class="p">,</span> <span class="s2">&quot;INTERVIEWER:&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[.]{4,}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[!]{2,}&quot;</span><span class="p">,</span> <span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/strong&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;strong&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/p&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;_*&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;b&gt;&lt;b&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/b&gt;&lt;/b&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;b&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/b&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/em&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;em&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/br&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;br /&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;/u&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;u&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;lt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;lt&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;gt&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;nbsp&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;hellip;&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;hellip&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&amp;rsquo&#39;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\[\d+\]&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;einfg.&#39;</span><span class="p">,</span><span class="s1">&#39;einfügen&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[^footnote]&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;e.g&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;P STYLE=&quot;text-align: left&quot;&gt;&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;P STYLE=&quot;text-align: right&quot;&gt;&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;i.e.&#39;</span><span class="p">,</span><span class="s1">&#39;ie&#39;</span><span class="p">)</span>
+
+		
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+
+	<span class="k">return</span> <span class="n">text</span></div>
+
+<div class="viewcode-block" id="identify_showcard_instruction"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.ess_xml_data_extraction.identify_showcard_instruction">[docs]</a><span class="k">def</span> <span class="nf">identify_showcard_instruction</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">country_language</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Language specific definitions of the word &#39;card&#39; used in the ESS files. If the text matches the word, then it is a showcard instruction.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 text (string): text segment being analyzed.</span>
+<span class="sd">		param2 country_language (string): country and language metadata, embedded in the name of the input file.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		item_type (string). Either request or instruction in the case that it is a showcard instruction.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;REQUEST&#39;</span>
+	<span class="k">if</span> <span class="s1">&#39;FRE&#39;</span> <span class="ow">in</span> <span class="n">country_language</span><span class="p">:</span>
+		<span class="k">if</span> <span class="s1">&#39;CH&#39;</span> <span class="ow">in</span> <span class="n">country_language</span> <span class="ow">or</span> <span class="s1">&#39;BE&#39;</span> <span class="ow">in</span> <span class="n">country_language</span><span class="p">:</span>
+			<span class="n">showcard</span> <span class="o">=</span> <span class="s1">&#39;CARTE&#39;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">showcard</span> <span class="o">=</span> <span class="s1">&#39;LISTE&#39;</span>
+	<span class="k">if</span> <span class="s1">&#39;GER&#39;</span> <span class="ow">in</span> <span class="n">country_language</span><span class="p">:</span>
+		<span class="k">if</span> <span class="s1">&#39;CH&#39;</span> <span class="ow">in</span> <span class="n">country_language</span> <span class="ow">or</span> <span class="s1">&#39;AT&#39;</span> <span class="ow">in</span> <span class="n">country_language</span><span class="p">:</span>
+			<span class="n">showcard</span> <span class="o">=</span> <span class="s1">&#39;KARTE&#39;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">showcard</span> <span class="o">=</span> <span class="s1">&#39;LISTE&#39;</span>
+
+	<span class="k">if</span> <span class="s1">&#39;NOR&#39;</span> <span class="ow">in</span> <span class="n">country_language</span><span class="p">:</span>
+		<span class="n">showcard</span> <span class="o">=</span> <span class="s1">&#39;KORT&#39;</span>
+
+	<span class="k">if</span> <span class="s1">&#39;RUS&#39;</span> <span class="ow">in</span> <span class="n">country_language</span><span class="p">:</span>
+		<span class="n">showcard</span> <span class="o">=</span> <span class="s1">&#39;КАРТОЧКУ&#39;</span>
+
+	<span class="k">if</span> <span class="s1">&#39;RUS_LV&#39;</span> <span class="ow">in</span> <span class="n">country_language</span><span class="p">:</span>
+		<span class="n">showcard</span> <span class="o">=</span> <span class="s1">&#39;КАРТОЧКА&#39;</span>
+
+	<span class="k">if</span> <span class="s1">&#39;ENG&#39;</span> <span class="ow">in</span> <span class="n">country_language</span><span class="p">:</span>
+		<span class="n">showcard</span> <span class="o">=</span> <span class="s1">&#39;CARD&#39;</span>
+
+	<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">showcard</span><span class="p">)</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+		<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INSTRUCTION&#39;</span>
+
+	<span class="k">return</span> <span class="n">item_type</span></div>
+
+<div class="viewcode-block" id="get_answer_id"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.ess_xml_data_extraction.get_answer_id">[docs]</a><span class="k">def</span> <span class="nf">get_answer_id</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Gets the answer id from node attributes, if it exists</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 node: current xml tree node being analyzed in outer loop.</span>
+<span class="sd">		param2 parent_map (dictionary): a dictionary containing information about parent-child relationships in XML tree.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		answer_id (string) if it exists, otherwise None.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">parent</span> <span class="o">=</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+	<span class="n">parent_of_parent</span> <span class="o">=</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span>
+	<span class="k">if</span> <span class="s1">&#39;answer_id&#39;</span> <span class="ow">in</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">parent_of_parent</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+		<span class="n">answer_id</span> <span class="o">=</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">parent_of_parent</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;answer_id&#39;</span><span class="p">]</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">answer_id</span> <span class="o">=</span> <span class="kc">None</span>
+
+	<span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">answer_id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="segment_question_instruction"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.ess_xml_data_extraction.segment_question_instruction">[docs]</a><span class="k">def</span> <span class="nf">segment_question_instruction</span><span class="p">(</span><span class="n">df_question_instruction</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span><span class="p">,</span> <span class="n">splitter</span><span class="p">,</span> <span class="n">country_language</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Extracts the question/instruction text segments from a node, if the node text exists.</span>
+<span class="sd">	 nodes to extract questions and instructions (introduction is not present in metadata)</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 df_question_instruction (pandas dataframe): a dataframe to store processed question and instruction segments</span>
+<span class="sd">		param2 parent_map (dictionary): a dictionary containing information about parent-child relationships in XML tree.</span>
+<span class="sd">		param3 node (tree object): XML node being analyzed.</span>
+<span class="sd">		param4 item_name (string): item name metadata extracted from node.attrib[&#39;name&#39;]</span>
+<span class="sd">		param5 item_type (string): item type metadata inferred from parent_map[node].attrib[&#39;type_name&#39;]</span>
+<span class="sd">		param6 splitter (NLTK object): Sentence segmenter object from NLTK</span>
+<span class="sd">		param7 country_language (string): country and language metadata, extracted from the input file name.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		Updated df_question_instruction dataframe, with new question and instruction segments.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span>  <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+		<span class="n">sentences</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">clean</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+		<span class="n">item_name</span><span class="p">,</span> <span class="n">modified_item_type</span> <span class="o">=</span> <span class="n">adjust_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">item_name</span> <span class="o">!=</span> <span class="s1">&#39;REJECT QUESTION&#39;</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">modified_item_type</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="n">item_type</span> <span class="o">=</span> <span class="n">modified_item_type</span>
+
+			<span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">item_type</span> <span class="o">==</span> <span class="s1">&#39;REQUEST&#39;</span><span class="p">:</span>
+					<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;answer_id&#39;</span><span class="p">:</span> <span class="n">get_answer_id</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">),</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span><span class="n">item_name</span><span class="p">,</span>
+					<span class="s1">&#39;item_type&#39;</span><span class="p">:</span><span class="n">identify_showcard_instruction</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">country_language</span><span class="p">),</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span><span class="n">sentence</span><span class="p">}</span>
+					<span class="n">df_question_instruction</span> <span class="o">=</span> <span class="n">df_question_instruction</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;answer_id&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span><span class="n">item_name</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span><span class="n">item_type</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span><span class="n">sentence</span><span class="p">}</span>
+					<span class="n">df_question_instruction</span> <span class="o">=</span> <span class="n">df_question_instruction</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">df_question_instruction</span>
+
+	<span class="k">return</span> <span class="n">df_question_instruction</span></div>
+
+	
+
+<div class="viewcode-block" id="adjust_item_name"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.ess_xml_data_extraction.adjust_item_name">[docs]</a><span class="k">def</span> <span class="nf">adjust_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Adjust item_name inconsistencies (and item_type in some cases) present in source XML file.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 item_name (string): item_name metadata, extracted from input file.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		adjusted item_name and item_type metadata.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+	<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;F([2-3]|N)_0[2-9]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">item_name</span> <span class="o">==</span> <span class="s1">&#39;Labels_in_F1_F4&#39;</span> <span class="ow">or</span> <span class="n">item_name</span> <span class="o">==</span> <span class="s1">&#39;Instruction&#39;</span> <span class="ow">or</span> <span class="n">item_name</span> <span class="o">==</span> <span class="s1">&#39;I&#39;</span> <span class="ow">or</span> <span class="n">item_name</span> <span class="o">==</span> <span class="s1">&#39;I_below_C33_C35&#39;</span><span class="p">:</span>
+		<span class="n">item_name</span> <span class="o">=</span> <span class="s1">&#39;REJECT QUESTION&#39;</span>
+		<span class="n">item_type</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">item_type</span> <span class="o">=</span> <span class="kc">None</span>
+		
+		<span class="k">if</span> <span class="s1">&#39;INTRO_G_2&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+			<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INTRODUCTION&#39;</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="s1">&#39;G8a&#39;</span>
+			<span class="k">return</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span>
+		<span class="k">if</span> <span class="s1">&#39;Intro_to_C33_35&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+			<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INTRODUCTION&#39;</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="s1">&#39;C33&#39;</span>
+			<span class="k">return</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span>
+		<span class="k">if</span> <span class="s1">&#39;I_after_D30_32&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+			<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INSTRUCTION&#39;</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="s1">&#39;D32&#39;</span>
+			<span class="k">return</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span>
+		<span class="k">if</span> <span class="s1">&#39;in&#39;</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">and</span> <span class="s1">&#39;minutes&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;in&#39;</span><span class="p">)</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">if</span> <span class="s1">&#39;above&#39;</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">and</span> <span class="s1">&#39;_&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+			<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INTRODUCTION&#39;</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+			<span class="k">return</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span>
+		<span class="k">if</span> <span class="s1">&#39;after&#39;</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">and</span> <span class="s1">&#39;_&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+			<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INTRODUCTION&#39;</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+			<span class="k">return</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span>
+		<span class="k">if</span> <span class="s1">&#39;above&#39;</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">and</span> <span class="s1">&#39;_&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+			<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INTRODUCTION&#39;</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+			<span class="k">return</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span>
+		<span class="k">if</span> <span class="s1">&#39;after&#39;</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">and</span> <span class="s1">&#39;_&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+			<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INTRODUCTION&#39;</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+			<span class="k">return</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span>
+		<span class="k">if</span> <span class="s1">&#39; below &#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+			<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INTRODUCTION&#39;</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; below &#39;</span><span class="p">)</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+			<span class="k">return</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span>
+		<span class="k">if</span> <span class="s1">&#39;_&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">item_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+	<span class="k">return</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span></div>
+
+
+<div class="viewcode-block" id="process_question_instruction_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.ess_xml_data_extraction.process_question_instruction_node">[docs]</a><span class="k">def</span> <span class="nf">process_question_instruction_node</span><span class="p">(</span><span class="n">ess_questions_instructions</span><span class="p">,</span> <span class="n">df_question_instruction</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">,</span> <span class="n">splitter</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">extract_source</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Iterates through question nodes to extract questions and instructions (introduction is not present in metadata)</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 ess_questions_instructions: question and instruction nodes.</span>
+<span class="sd">		param2 df_question_instruction (pandas dataframe): a dataframe to store processed question and instruction segments</span>
+<span class="sd">		param3 parent_map (dictionary): a dictionary containing information about parent-child relationships in XML tree.</span>
+<span class="sd">		param4 splitter (NLTK object): sentence segmentation from NLTK library.</span>
+<span class="sd">		param5 country_language (string): country and language metadata, extracted from the input file name.</span>
+<span class="sd">		param6 extract_source (int): flag that indicates if the script should extract the ENG_SOURCE data or the target language.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		Updated df_question_instruction dataframe, with new question and instruction segments.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">question</span> <span class="ow">in</span> <span class="n">ess_questions_instructions</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">question</span><span class="o">.</span><span class="n">getiterator</span><span class="p">():</span>
+			<span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;question&#39;</span> <span class="ow">and</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="s1">&#39;tmt_id&#39;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+				<span class="n">item_name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+
+			<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			translation_id == 1 is the english version</span>
+<span class="sd">			&quot;&quot;&quot;</span>
+			<span class="k">if</span> <span class="n">extract_source</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;text&#39;</span> <span class="ow">and</span> <span class="s1">&#39;translation_id&#39;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;translation_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+					<span class="k">if</span> <span class="s1">&#39;type_name&#39;</span> <span class="ow">in</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;type_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;QText&#39;</span><span class="p">:</span>
+						<span class="k">if</span> <span class="n">ignore</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ignore_f3_dk_rf</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+							<span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span>
+							<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;REQUEST&#39;</span>
+							<span class="n">df_question_instruction</span> <span class="o">=</span> <span class="n">segment_question_instruction</span><span class="p">(</span><span class="n">df_question_instruction</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span><span class="p">,</span> <span class="n">splitter</span><span class="p">,</span>
+							 <span class="n">country_language</span><span class="p">)</span>
+
+					<span class="k">if</span> <span class="s1">&#39;type_name&#39;</span> <span class="ow">in</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;type_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;QInstruction&#39;</span><span class="p">:</span>
+						<span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span>
+						<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INSTRUCTION&#39;</span>
+						<span class="n">df_question_instruction</span> <span class="o">=</span> <span class="n">segment_question_instruction</span><span class="p">(</span><span class="n">df_question_instruction</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span><span class="p">,</span> <span class="n">splitter</span><span class="p">,</span> 
+						 <span class="n">country_language</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;text&#39;</span> <span class="ow">and</span> <span class="s1">&#39;translation_id&#39;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;translation_id&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+					<span class="k">if</span> <span class="n">ignore</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ignore_f3_dk_rf</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+						<span class="k">if</span> <span class="s1">&#39;type_name&#39;</span> <span class="ow">in</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;type_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;QText&#39;</span><span class="p">:</span>
+							<span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span>
+							<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;REQUEST&#39;</span>
+							<span class="n">df_question_instruction</span> <span class="o">=</span> <span class="n">segment_question_instruction</span><span class="p">(</span><span class="n">df_question_instruction</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span><span class="p">,</span> <span class="n">splitter</span><span class="p">,</span>
+							 <span class="n">country_language</span><span class="p">)</span>
+
+					<span class="k">if</span> <span class="s1">&#39;type_name&#39;</span> <span class="ow">in</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;type_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;QInstruction&#39;</span><span class="p">:</span>
+						<span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span>
+						<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INSTRUCTION&#39;</span>
+						<span class="n">df_question_instruction</span> <span class="o">=</span> <span class="n">segment_question_instruction</span><span class="p">(</span><span class="n">df_question_instruction</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span><span class="p">,</span> <span class="n">splitter</span><span class="p">,</span> 
+						 <span class="n">country_language</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df_question_instruction</span></div>
+
+
+<div class="viewcode-block" id="process_answer_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.ess_xml_data_extraction.process_answer_node">[docs]</a><span class="k">def</span> <span class="nf">process_answer_node</span><span class="p">(</span><span class="n">ess_answers</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">,</span> <span class="n">ess_special_answer_categories</span><span class="p">,</span> <span class="n">extract_source</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Iterates through answer nodes to extract answer segments.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 ess_answers: answer nodes.</span>
+<span class="sd">		param2 df_answers (pandas dataframe): a dataframe to store processed answer segments</span>
+<span class="sd">		param3 parent_map (dictionary): a dictionary containing information about parent-child relationships in XML tree.</span>
+<span class="sd">		param4 ess_special_answer_categories (Python object): instance of SpecialAnswerCategories object, in accordance to the country_language.</span>
+<span class="sd">		param5 extract_source (int): flag that indicates if the script should extract the ENG_SOURCE data or the target language.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		Updated df_answers dataframe, with new answer segments.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">answer</span> <span class="ow">in</span> <span class="n">ess_answers</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">answer</span><span class="o">.</span><span class="n">getiterator</span><span class="p">():</span>
+			<span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;answer&#39;</span> <span class="ow">and</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="s1">&#39;tmt_id&#39;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+				<span class="n">item_name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+				<span class="k">if</span> <span class="s1">&#39;_&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+					<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+					<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+			<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			translation_id == 1 is the english version</span>
+<span class="sd">			&quot;&quot;&quot;</span>
+			<span class="k">if</span> <span class="n">extract_source</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;text&#39;</span> <span class="ow">and</span> <span class="s1">&#39;translation_id&#39;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;translation_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+					<span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span>
+					<span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span>  <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;does not exist in&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+						<span class="n">parent</span> <span class="o">=</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+						<span class="n">parent_of_parent</span> <span class="o">=</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span>
+						<span class="n">answer_id</span> <span class="o">=</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">parent_of_parent</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;tmt_id&#39;</span><span class="p">]</span>
+
+						<span class="k">if</span> <span class="s1">&#39;labelvalue&#39;</span> <span class="ow">in</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+							<span class="n">item_value</span> <span class="o">=</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;labelvalue&#39;</span><span class="p">]</span>
+						<span class="k">else</span><span class="p">:</span>
+							<span class="n">item_value</span> <span class="o">=</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;order&#39;</span><span class="p">]</span>
+						
+						<span class="n">text</span> <span class="o">=</span> <span class="n">clean_answer_category</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+						<span class="k">if</span> <span class="n">df_answers</span><span class="o">.</span><span class="n">empty</span> <span class="o">==</span><span class="kc">False</span><span class="p">:</span>
+							<span class="n">last_row</span> <span class="o">=</span> <span class="n">df_answers</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+							<span class="k">if</span> <span class="n">text</span> <span class="o">!=</span> <span class="n">last_row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]:</span>
+								<span class="n">text</span><span class="p">,</span> <span class="n">item_value</span> <span class="o">=</span> <span class="n">check_if_answer_is_special_category</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">item_value</span><span class="p">,</span> <span class="n">ess_special_answer_categories</span><span class="p">)</span>
+								<span class="k">if</span> <span class="s1">&#39;labelvalue&#39;</span> <span class="ow">in</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;labelvalue&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+									<span class="k">pass</span>
+								<span class="k">else</span><span class="p">:</span>				
+									<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;answer_id&#39;</span><span class="p">:</span> <span class="n">answer_id</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">item_name</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span><span class="s1">&#39;RESPONSE&#39;</span><span class="p">,</span> 
+									<span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">item_value</span><span class="p">)}</span>
+									<span class="n">df_answers</span> <span class="o">=</span> <span class="n">df_answers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+						<span class="k">else</span><span class="p">:</span>
+							<span class="n">text</span><span class="p">,</span> <span class="n">item_value</span> <span class="o">=</span> <span class="n">check_if_answer_is_special_category</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">item_value</span><span class="p">,</span> <span class="n">ess_special_answer_categories</span><span class="p">)</span>
+							<span class="k">if</span> <span class="s1">&#39;labelvalue&#39;</span> <span class="ow">in</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;labelvalue&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+								<span class="k">pass</span>
+							<span class="k">else</span><span class="p">:</span>				
+								<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;answer_id&#39;</span><span class="p">:</span> <span class="n">answer_id</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">item_name</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span><span class="s1">&#39;RESPONSE&#39;</span><span class="p">,</span> 
+								<span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">item_value</span><span class="p">)}</span>
+								<span class="n">df_answers</span> <span class="o">=</span> <span class="n">df_answers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;text&#39;</span> <span class="ow">and</span> <span class="s1">&#39;translation_id&#39;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;translation_id&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+					<span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span>
+					<span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span>  <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;does not exist in&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+						<span class="n">parent</span> <span class="o">=</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+						<span class="n">parent_of_parent</span> <span class="o">=</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span>
+						<span class="n">answer_id</span> <span class="o">=</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">parent_of_parent</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;tmt_id&#39;</span><span class="p">]</span>
+
+						<span class="k">if</span> <span class="s1">&#39;labelvalue&#39;</span> <span class="ow">in</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+							<span class="n">item_value</span> <span class="o">=</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;labelvalue&#39;</span><span class="p">]</span>
+						<span class="k">else</span><span class="p">:</span>
+							<span class="n">item_value</span> <span class="o">=</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;order&#39;</span><span class="p">]</span>
+						
+						<span class="n">text</span> <span class="o">=</span> <span class="n">clean_answer_category</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+						<span class="k">if</span> <span class="n">df_answers</span><span class="o">.</span><span class="n">empty</span> <span class="o">==</span><span class="kc">False</span><span class="p">:</span>
+							<span class="n">last_row</span> <span class="o">=</span> <span class="n">df_answers</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+							<span class="k">if</span> <span class="n">text</span> <span class="o">!=</span> <span class="n">last_row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]:</span>
+								<span class="n">text</span><span class="p">,</span> <span class="n">item_value</span> <span class="o">=</span> <span class="n">check_if_answer_is_special_category</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">item_value</span><span class="p">,</span> <span class="n">ess_special_answer_categories</span><span class="p">)</span>
+								<span class="k">if</span> <span class="s1">&#39;labelvalue&#39;</span> <span class="ow">in</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;labelvalue&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+									<span class="k">pass</span>
+								<span class="k">else</span><span class="p">:</span>				
+									<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;answer_id&#39;</span><span class="p">:</span> <span class="n">answer_id</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">item_name</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span><span class="s1">&#39;RESPONSE&#39;</span><span class="p">,</span> 
+									<span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">item_value</span><span class="p">)}</span>
+									<span class="n">df_answers</span> <span class="o">=</span> <span class="n">df_answers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+						<span class="k">else</span><span class="p">:</span>
+							<span class="n">text</span><span class="p">,</span> <span class="n">item_value</span> <span class="o">=</span> <span class="n">check_if_answer_is_special_category</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">item_value</span><span class="p">,</span> <span class="n">ess_special_answer_categories</span><span class="p">)</span>
+							<span class="k">if</span> <span class="s1">&#39;labelvalue&#39;</span> <span class="ow">in</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;labelvalue&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+								<span class="k">pass</span>
+							<span class="k">else</span><span class="p">:</span>				
+								<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;answer_id&#39;</span><span class="p">:</span> <span class="n">answer_id</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">item_name</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span><span class="s1">&#39;RESPONSE&#39;</span><span class="p">,</span> 
+								<span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">item_value</span><span class="p">)}</span>
+								<span class="n">df_answers</span> <span class="o">=</span> <span class="n">df_answers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df_answers</span></div>
+
+<div class="viewcode-block" id="set_initial_structures"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.ess_xml_data_extraction.set_initial_structures">[docs]</a><span class="k">def</span> <span class="nf">set_initial_structures</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">extract_source</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Set initial structures that are necessary for the extraction of each questionnaire.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 filename (string): name of the input file.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		df_questionnaire to store questionnaire data (pandas dataframe),</span>
+<span class="sd">		survey_item_prefix, which is the prefix of survey_item_ID (string), </span>
+<span class="sd">		study/country_language, which are metadata parameters embedded in the file name (string and string)</span>
+<span class="sd">		and sentence splitter to segment request/instruction segments when necessary (NLTK object). </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A pandas dataframe to store questionnaire data.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">])</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	The prefix of a EVS survey item is study+&#39;_&#39;+language+&#39;_&#39;+country+&#39;_&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="n">extract_source</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s1">&#39;ESS_R09&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">survey_item_prefix</span> <span class="o">=</span> <span class="s1">&#39;ESS_R09_2018_ENG_SOURCE_&#39;</span>
+	<span class="k">elif</span> <span class="n">extract_source</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s1">&#39;ESS_R08&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">survey_item_prefix</span> <span class="o">=</span> <span class="s1">&#39;ESS_R08_2016_ENG_SOURCE_&#39;</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">survey_item_prefix</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_&#39;</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Reset the initial survey_id sufix, because main is called iterativelly for every file in folder.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">ut</span><span class="o">.</span><span class="n">reset_initial_sufix</span><span class="p">()</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Retrieve study and country_language information from the name of the input file. </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="n">extract_source</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s1">&#39;ESS_R09&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">study</span><span class="p">,</span> <span class="n">country_language</span> <span class="o">=</span> <span class="n">get_country_language_and_study_info</span><span class="p">(</span><span class="s1">&#39;ESS_R09_2018_ENG_SOURCE&#39;</span><span class="p">)</span>
+	<span class="k">elif</span> <span class="n">extract_source</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s1">&#39;ESS_R08&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">study</span><span class="p">,</span> <span class="n">country_language</span> <span class="o">=</span> <span class="n">get_country_language_and_study_info</span><span class="p">(</span><span class="s1">&#39;ESS_R08_2016_ENG_SOURCE&#39;</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">study</span><span class="p">,</span> <span class="n">country_language</span> <span class="o">=</span> <span class="n">get_country_language_and_study_info</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Instantiate a NLTK sentence splitter based on file input language. </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="n">extract_source</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+		<span class="n">splitter</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_sentence_splitter</span><span class="p">(</span><span class="s1">&#39;ESS_R09_2018_ENG_SOURCE&#39;</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>	
+		<span class="n">splitter</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_sentence_splitter</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span><span class="n">splitter</span></div>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+	<span class="n">extract_source</span> <span class="o">=</span> <span class="mi">0</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Parse the input XML file by filename</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+	<span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+	<span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Create a dictionary containing parent-child relations of the parsed tree</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">parent_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">getiterator</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">p</span><span class="p">)</span>
+	<span class="n">ess_questions_instructions</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;.//questionnaire/questions&#39;</span><span class="p">)</span>
+	<span class="n">ess_answers</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;.//questionnaire/answers&#39;</span><span class="p">)</span>
+	<span class="n">ess_showcards</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;.//questionnaire/showcards&#39;</span><span class="p">)</span>
+
+	<span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span><span class="n">splitter</span> <span class="o">=</span> <span class="n">set_initial_structures</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">extract_source</span><span class="p">)</span>
+	<span class="n">ess_special_answer_categories</span> <span class="o">=</span> <span class="n">instantiate_special_answer_category_object</span><span class="p">(</span><span class="n">country_language</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="s1">&#39;GER_AT&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">ess_special_answer_categories</span><span class="o">.</span><span class="n">refuse</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Verweigert&#39;</span>
+		<span class="n">ess_special_answer_categories</span><span class="o">.</span><span class="n">dont_know</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Weiß nicht&#39;</span>
+
+	<span class="k">if</span> <span class="s1">&#39;GER_CH&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">ess_special_answer_categories</span><span class="o">.</span><span class="n">refuse</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Antwort verweigert&#39;</span>
+		<span class="n">ess_special_answer_categories</span><span class="o">.</span><span class="n">dont_know</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Weiss nicht&#39;</span>
+
+	<span class="k">if</span> <span class="s1">&#39;GER_DE&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">ess_special_answer_categories</span><span class="o">.</span><span class="n">refuse</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Antwort verweigert&#39;</span>
+
+	<span class="k">if</span> <span class="s1">&#39;NOR_NO&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">ess_special_answer_categories</span><span class="o">.</span><span class="n">refuse</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Nekter&#39;</span>
+
+
+
+	<span class="n">df_question_instruction</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;answer_id&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">])</span> 
+	<span class="n">df_answers</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;answer_id&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">])</span> 
+	<span class="n">item_value</span> <span class="o">=</span> <span class="kc">None</span>
+
+	<span class="n">df_question_instruction</span> <span class="o">=</span> <span class="n">process_question_instruction_node</span><span class="p">(</span><span class="n">ess_questions_instructions</span><span class="p">,</span> <span class="n">df_question_instruction</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">,</span> 
+		<span class="n">splitter</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">extract_source</span><span class="p">)</span>
+	<span class="n">df_answers</span> <span class="o">=</span> <span class="n">process_answer_node</span><span class="p">(</span><span class="n">ess_answers</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">,</span> <span class="n">ess_special_answer_categories</span><span class="p">,</span> <span class="n">extract_source</span><span class="p">)</span>
+
+	
+	<span class="n">unique_item_names_question_instruction</span> <span class="o">=</span> <span class="n">df_question_instruction</span><span class="o">.</span><span class="n">item_name</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>	
+	
+	<span class="k">for</span> <span class="n">unique_item_name</span> <span class="ow">in</span> <span class="n">unique_item_names_question_instruction</span><span class="p">:</span>
+
+		<span class="n">df_question_instruction_by_item_name</span> <span class="o">=</span> <span class="n">df_question_instruction</span><span class="p">[</span><span class="n">df_question_instruction</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">==</span><span class="n">unique_item_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+		<span class="n">df_answers_by_item_name</span> <span class="o">=</span> <span class="n">df_answers</span><span class="p">[</span><span class="n">df_answers</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">==</span><span class="n">unique_item_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+		<span class="n">module</span> <span class="o">=</span> <span class="n">retrieve_item_module</span><span class="p">(</span><span class="n">unique_item_name</span><span class="p">,</span> <span class="n">study</span><span class="p">)</span>
+
+		<span class="n">last_item_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_question_instruction_by_item_name</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">]</span>
+
+			<span class="k">if</span> <span class="n">item_name</span> <span class="o">==</span><span class="s1">&#39;Instruction&#39;</span> <span class="ow">or</span> <span class="n">item_name</span> <span class="o">==</span> <span class="s1">&#39;Intro&#39;</span><span class="p">:</span>
+				<span class="n">item_name</span> <span class="o">=</span> <span class="n">last_item_name</span>
+				
+			<span class="k">if</span> <span class="s1">&#39;Row &#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">and</span> <span class="n">item_name</span> <span class="o">!=</span> <span class="s1">&#39;CI&#39;</span> <span class="ow">and</span> <span class="n">item_name</span> <span class="o">!=</span> <span class="s1">&#39;outro&#39;</span> <span class="ow">and</span> <span class="s1">&#39;istration Note&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">and</span> <span class="n">item_name</span> <span class="o">!=</span> <span class="s1">&#39;box&#39;</span><span class="p">:</span> 
+				<span class="k">if</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+					<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+
+				<span class="k">if</span> <span class="n">check_if_segment_is_instruction</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">country_language</span><span class="p">):</span>
+					<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INSTRUCTION&#39;</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">item_type</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">]</span>
+
+				<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">:</span> <span class="n">survey_item_id</span><span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">study</span><span class="p">,</span>
+				<span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> 
+				<span class="s1">&#39;item_name&#39;</span><span class="p">:</span>  <span class="n">item_name</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]}</span>
+				<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+				<span class="n">last_item_name</span> <span class="o">=</span> <span class="n">item_name</span>
+
+		<span class="k">if</span> <span class="n">df_answers_by_item_name</span><span class="o">.</span><span class="n">empty</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_answers_by_item_name</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+				<span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_value&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+					<span class="n">item_value</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">item_value</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_value&#39;</span><span class="p">]</span>
+
+				<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">:</span><span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">),</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">study</span><span class="p">,</span>
+				<span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span><span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">],</span> 
+				<span class="s1">&#39;item_name&#39;</span><span class="p">:</span>  <span class="n">item_name</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span><span class="n">item_value</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]}</span>
+				<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+			
+	<span class="c1"># df_question_instruction.to_csv(&#39;questions.csv&#39;, encoding=&#39;utf-8-sig&#39;, index=False)</span>
+	<span class="c1"># df_answers.to_csv(&#39;answers.csv&#39;, encoding=&#39;utf-8-sig&#39;, index=False)</span>
+	<span class="n">df_questionnaire</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+	
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Executing data cleaning/extraction script for ESS (xml files)&quot;</span><span class="p">)</span>
+	<span class="n">main</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">preprocessing.ess_xml_data_extraction</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

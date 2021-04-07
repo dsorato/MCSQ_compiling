@@ -49,6 +49,7 @@ autodoc_mock_imports = ["ess_special_answer_categories", 'essmodules',
 'preprocessing_ess_utils','utils','evs_xml_data_extraction', 'preprocessing_evs_utils',
 'evsmodules', 'ess_xml_data_extraction', 'share_xml_data_extraction', 'countryspecificrequest',
 'alignment_based_on_item_structure', 'pos_tagging', 'share_covid_data_extraction',
+'sharemodules', 'sqlalchemy', 'share_instructions',
 'pandas', 'nltk']
 
 # -- Options for HTML output -------------------------------------------------

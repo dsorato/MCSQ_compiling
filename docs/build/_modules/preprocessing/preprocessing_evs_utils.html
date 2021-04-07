@@ -1,0 +1,385 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>preprocessing.preprocessing_evs_utils &#8212; MCSQ compiling 2 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">preprocessing.preprocessing_evs_utils</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for preprocessing.preprocessing_evs_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">utils</span> <span class="k">as</span> <span class="nn">ut</span>
+
+
+<div class="viewcode-block" id="standardize_special_response_category_value"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.standardize_special_response_category_value">[docs]</a><span class="k">def</span> <span class="nf">standardize_special_response_category_value</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">catValu</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Standartizes a response category value, if it is a special response category.</span>
+<span class="sd">	Standard:</span>
+<span class="sd">	Refusal=777</span>
+<span class="sd">	Don&#39;t know=888</span>
+<span class="sd">	Does not apply=999</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 filename (string): name of the input file.</span>
+<span class="sd">		param2 catValu (string): response category value, extracted from input file.</span>
+<span class="sd">		param3 text (string): text of response category, to test against special response category patterns.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		standardized response category value (string). </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="n">ut</span><span class="o">.</span><span class="n">recognize_standard_response_scales</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;refusal&#39;</span><span class="p">:</span>
+		<span class="n">catValu</span> <span class="o">=</span> <span class="s1">&#39;777&#39;</span>
+	<span class="k">elif</span> <span class="n">ut</span><span class="o">.</span><span class="n">recognize_standard_response_scales</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;dk&#39;</span><span class="p">:</span>
+		<span class="n">catValu</span> <span class="o">=</span> <span class="s1">&#39;888&#39;</span>
+	<span class="k">elif</span> <span class="n">ut</span><span class="o">.</span><span class="n">recognize_standard_response_scales</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;dontapply&#39;</span><span class="p">:</span>
+		<span class="n">catValu</span> <span class="o">=</span> <span class="s1">&#39;999&#39;</span>
+
+	<span class="k">return</span> <span class="n">catValu</span></div>
+
+<div class="viewcode-block" id="get_country_language_and_study_info"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.get_country_language_and_study_info">[docs]</a><span class="k">def</span> <span class="nf">get_country_language_and_study_info</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Retrieves the country/language and study metadata based on the input filename.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param filename (string): name of the input file.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		country/language (string) and study (string) metadata.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">filename_without_extension</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+	<span class="n">filename_split</span> <span class="o">=</span> <span class="n">filename_without_extension</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+
+	<span class="n">study</span> <span class="o">=</span> <span class="n">filename_split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">filename_split</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">filename_split</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+	<span class="n">country_language</span> <span class="o">=</span> <span class="n">filename_split</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">filename_split</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+
+	<span class="k">return</span> <span class="n">study</span><span class="p">,</span> <span class="n">country_language</span></div>
+
+
+<div class="viewcode-block" id="standardize_item_name"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.standardize_item_name">[docs]</a><span class="k">def</span> <span class="nf">standardize_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Standartizes a given item_name, if it is not in the standard</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 item_name (string): item name extracted from the input file.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		standardized item_name (string). </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+	<span class="n">item_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;^q&quot;</span><span class="p">,</span> <span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="n">item_name</span><span class="p">)</span>
+	<span class="n">item_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;^f&quot;</span><span class="p">,</span> <span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="n">item_name</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="s1">&#39;.&#39;</span>  <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
+		<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+		<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">item_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+	<span class="k">if</span> <span class="s1">&#39;_&#39;</span> <span class="ow">in</span> <span class="n">item_name</span> <span class="ow">and</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^Q&quot;</span><span class="p">,</span> <span class="n">item_name</span><span class="p">):</span>
+		<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+		<span class="n">item_name</span> <span class="o">=</span> <span class="n">item_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">item_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+	<span class="k">if</span> <span class="n">item_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+		<span class="n">item_name</span> <span class="o">=</span> <span class="s1">&#39;Q&#39;</span><span class="o">+</span><span class="n">item_name</span>
+
+	<span class="nb">print</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">item_name</span></div>
+
+
+
+<div class="viewcode-block" id="clean_instruction"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.clean_instruction">[docs]</a><span class="k">def</span> <span class="nf">clean_instruction</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Removes undesired characters from instruction text. </span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 text (string): instruction text extracted from the input file.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		clean instruction text (string) or &#39;&#39; when text is not an instance of a string. </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;…&quot;</span><span class="p">,</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;’&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[.]{4,}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;Q[0-9]*\.&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\[&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\]&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+
+	<span class="k">return</span> <span class="n">text</span></div>
+
+
+
+<div class="viewcode-block" id="clean_text"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.clean_text">[docs]</a><span class="k">def</span> <span class="nf">clean_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Removes undesired characters from request/response text. </span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param text (string): request/response text extracted from the input file.</span>
+<span class="sd">		param filename (string): name of the input file.</span>
+<span class="sd">	Returns: </span>
+<span class="sd">		clean request/response text (string). </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s([?.!&quot;](?:\s|$))&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;…&quot;</span><span class="p">,</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; :&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;’&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[.]{4,}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[_]{2,}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;Q[0-9]*\.&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\[&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\]&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;e\.g\.&#39;</span><span class="p">,</span> <span class="s2">&quot;e.g.,&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">standardize_special_response_category</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+
+
+	<span class="k">return</span> <span class="n">text</span></div>
+
+
+<div class="viewcode-block" id="clean_answer_text_evs"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.clean_answer_text_evs">[docs]</a><span class="k">def</span> <span class="nf">clean_answer_text_evs</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Removes undesired characters from request/response text. </span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param text (string): request/response text extracted from the input file.</span>
+<span class="sd">		param filename (string): name of the input file.</span>
+<span class="sd">	Returns: </span>
+<span class="sd">		clean request/response text (string). </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s([?.!&quot;](?:\s|$))&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;…&quot;</span><span class="p">,</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; :&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;’&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[.]{4,}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[_]{2,}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;Q[0-9]*\.&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\[&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\]&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;e\.g\.&#39;</span><span class="p">,</span> <span class="s2">&quot;e.g.,&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^[A-Z]\s&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">standardize_special_response_category</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+
+
+	<span class="k">return</span> <span class="n">text</span></div>
+
+
+
+
+<div class="viewcode-block" id="standardize_special_response_category"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.standardize_special_response_category">[docs]</a><span class="k">def</span> <span class="nf">standardize_special_response_category</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Standartizes text of special response categories (don&#39;t know, no answer, not applicable),</span>
+<span class="sd">	according to the language (informed in the the filename).</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 filename (string): name of the input file.</span>
+<span class="sd">		param2 text (string): response text.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		standardized response category text (string).</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="s1">&#39;CZE&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; Nehodí se&#39;</span><span class="p">,</span> <span class="s2">&quot;NEHODÍ SE&quot;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;Nehodí se&#39;</span><span class="p">,</span> <span class="s2">&quot;NEHODÍ SE&quot;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;nehodí se&#39;</span><span class="p">,</span> <span class="s2">&quot;NEHODÍ SE&quot;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; Neví&#39;</span><span class="p">,</span> <span class="s2">&quot;NEVÍ&quot;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; Bez odpovìdi&#39;</span><span class="p">,</span> <span class="s2">&quot;BEZ ODPOVĚDI&quot;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;Bez odpovìdi&#39;</span><span class="p">,</span> <span class="s2">&quot;BEZ ODPOVĚDI&quot;</span><span class="p">)</span>
+
+	<span class="c1">#Currently DUT files are not included in MCSQ</span>
+	<span class="k">if</span> <span class="s1">&#39;DUT&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^nap&#39;</span><span class="p">,</span> <span class="s2">&quot;niet van toepassing&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="s1">&#39;ENG&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NAP$&#39;</span><span class="p">,</span> <span class="s2">&quot;Not applicable&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^DK$&#39;</span><span class="p">,</span> <span class="s2">&quot;Don&#39;t know&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^dk$&#39;</span><span class="p">,</span> <span class="s2">&quot;Don&#39;t know&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^na$&#39;</span><span class="p">,</span> <span class="s2">&quot;No answer&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NA$&#39;</span><span class="p">,</span> <span class="s2">&quot;No answer&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^nap$&#39;</span><span class="p">,</span> <span class="s2">&quot;Not applicable&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^N/A$&#39;</span><span class="p">,</span> <span class="s2">&quot;Not applicable&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+
+	<span class="c1">#Currently FIN files are not included in MCSQ</span>
+	<span class="k">if</span> <span class="s1">&#39;FIN&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^EOS&#39;</span><span class="p">,</span> <span class="s2">&quot;Ei osaa sanoa&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	
+	<span class="k">if</span> <span class="s1">&#39;FRE&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NSP (Spontané)&#39;</span><span class="p">,</span> <span class="s2">&quot;Ne sait pas (Spontané)&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^SR (Spontané)&#39;</span><span class="p">,</span> <span class="s2">&quot;Pas de réponse (Spontané)&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NSP (Spontané, ne rien suggérer)&#39;</span><span class="p">,</span> <span class="s2">&quot;Ne sait pas (Spontané, ne rien suggérer)&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^SR (Spontané, ne rien suggérer)&#39;</span><span class="p">,</span> <span class="s2">&quot;Pas de réponse (Spontané, ne rien suggérer)&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NAP&#39;</span><span class="p">,</span> <span class="s2">&quot;Non applicable&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NSP&#39;</span><span class="p">,</span> <span class="s2">&quot;Ne sait pas&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NS</span><span class="se">\b</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s2">&quot;Ne sait pas&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^S\.R\.&#39;</span><span class="p">,</span> <span class="s2">&quot;Pas de réponse&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^S\.R&#39;</span><span class="p">,</span> <span class="s2">&quot;Pas de réponse&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^SR\.&#39;</span><span class="p">,</span> <span class="s2">&quot;Pas de réponse&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^s\.r&#39;</span><span class="p">,</span> <span class="s2">&quot;Pas de réponse&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^s\.r\.&#39;</span><span class="p">,</span> <span class="s2">&quot;Pas de réponse&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^S\.r&#39;</span><span class="p">,</span> <span class="s2">&quot;Pas de réponse&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^SR&#39;</span><span class="p">,</span> <span class="s2">&quot;Pas de réponse&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;77777 - Non applicable&#39;</span><span class="p">,</span> <span class="s1">&#39;Non applicable&#39;</span><span class="p">)</span>
+	
+	<span class="k">if</span> <span class="s1">&#39;GER&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^TNZ&#39;</span><span class="p">,</span> <span class="s2">&quot;Trifft nicht zu&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^WN&#39;</span><span class="p">,</span> <span class="s2">&quot;weiß nicht&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^KA&#39;</span><span class="p">,</span> <span class="s2">&quot;keine antwort&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^k\.\sA\.&#39;</span><span class="p">,</span> <span class="s2">&quot;keine antwort&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NZT&#39;</span><span class="p">,</span> <span class="s2">&quot;nicht zutreffend&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="s1">&#39;ITA&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NS&#39;</span><span class="p">,</span> <span class="s2">&quot;Non so&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NR&#39;</span><span class="p">,</span> <span class="s2">&quot;Non risponde&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NP&#39;</span><span class="p">,</span> <span class="s2">&quot;Non pertinente&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+
+	<span class="c1">#Currently LTZ files are not included in MCSQ</span>
+	<span class="k">if</span> <span class="s1">&#39;LTZ&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NSP&#39;</span><span class="p">,</span> <span class="s2">&quot;Ne sait pas&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^SR&#39;</span><span class="p">,</span> <span class="s2">&quot;Pas de réponse&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^S\.R\.&#39;</span><span class="p">,</span> <span class="s2">&quot;Pas de réponse&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="s1">&#39;POR&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;NS (não sabe)&#39;</span><span class="p">,</span> <span class="s2">&quot;Não sabe&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;NR (não responde)&#39;</span><span class="p">,</span> <span class="s2">&quot;Não responde&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^Na</span><span class="se">\b</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s2">&quot;Não se aplica&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NAP&#39;</span><span class="p">,</span> <span class="s2">&quot;Não se aplica&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^Ns&#39;</span><span class="p">,</span> <span class="s2">&quot;Não sabe&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NS&#39;</span><span class="p">,</span> <span class="s2">&quot;Não sabe&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^Nr&#39;</span><span class="p">,</span> <span class="s2">&quot;Não responde&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NR&#39;</span><span class="p">,</span> <span class="s2">&quot;Não responde&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;Não se aplica (não se aplica)&#39;</span><span class="p">,</span> <span class="s2">&quot;Não se aplica&quot;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;Não sabe (não sabe)&#39;</span><span class="p">,</span> <span class="s2">&quot;Não sabe&quot;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;Não responde (não responde)&#39;</span><span class="p">,</span> <span class="s2">&quot;Não responde&quot;</span><span class="p">)</span>
+		
+
+	<span class="k">if</span> <span class="s1">&#39;RUS_EE&#39;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">or</span> <span class="s1">&#39;RUS_AZ&#39;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">or</span> <span class="s1">&#39;RUS_GE&#39;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">or</span> <span class="s1">&#39;RUS_MD&#39;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">or</span> <span class="s1">&#39;RUS_LV&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^Н.О.&#39;</span><span class="p">,</span> <span class="s2">&quot;Нет ответа&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^З.О.&#39;</span><span class="p">,</span> <span class="s2">&quot;Затрудняюсь ответить&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^ЗO&#39;</span><span class="p">,</span> <span class="s2">&quot;Затрудняюсь ответить&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^Н.П.&#39;</span><span class="p">,</span> <span class="s2">&quot;Не подходит&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^Н.О&#39;</span><span class="p">,</span> <span class="s2">&quot;Нет ответа&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^З.О&#39;</span><span class="p">,</span> <span class="s2">&quot;Затрудняюсь ответить&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^Н.П&#39;</span><span class="p">,</span> <span class="s2">&quot;Не подходит&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^ЗО&#39;</span><span class="p">,</span> <span class="s2">&quot;Затрудняюсь ответить&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;Н о&#39;</span><span class="p">,</span> <span class="s2">&quot;Нет ответа&quot;</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="s1">&#39;RUS_BY&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^НО&#39;</span><span class="p">,</span> <span class="s2">&quot;Нет ответа&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^НЗ&#39;</span><span class="p">,</span> <span class="s2">&quot;НЕ ЗНАЮ&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="s1">&#39;RUS_UA&#39;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">or</span> <span class="s1">&#39;RUS_RU&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^ЗО&#39;</span><span class="p">,</span> <span class="s2">&quot;затрудняюсь ответить&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^ООО&#39;</span><span class="p">,</span> <span class="s2">&quot;отказ от ответа&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^НП&#39;</span><span class="p">,</span> <span class="s2">&quot;Не применимо&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="s1">&#39;SPA&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NS&#39;</span><span class="p">,</span> <span class="s2">&quot;No sabe&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^NC&#39;</span><span class="p">,</span> <span class="s2">&quot;No contesta&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+
+	<span class="c1">#Currently TUR files are not included in MCSQ</span>
+	<span class="k">if</span> <span class="s1">&#39;TUR&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^FY&#39;</span><span class="p">,</span> <span class="s2">&quot;BİLMİYOR-FİKRİ YOK&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^CY&#39;</span><span class="p">,</span> <span class="s2">&quot;CEVAP VERMİYOR&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^SS&#39;</span><span class="p">,</span> <span class="s2">&quot;Soru Sorulmadı&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+
+
+	<span class="k">return</span> <span class="n">text</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">preprocessing.preprocessing_evs_utils</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
