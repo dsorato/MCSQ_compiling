@@ -81,8 +81,10 @@ def from_tagged_dict_to_table(dicts):
 def load_dict(path):
 	"""
 	Loads a dictionary stored as a picke object.
+
 	Args:
 		param1 path (string): the path to the dictionary
+		
 	Returns:
 		the loaded dictionary.
 	"""
@@ -94,6 +96,7 @@ def load_dict(path):
 def save_dictionaries(path, dicts):
 	"""
 	Saves a dictionary as a picke object.
+
 	Args:
 		param1 path (string): the path to the dictionary
 		param2 dicts (a dictionary of dictionaries): the dictionary name corresponds to the table name (key), 
@@ -106,9 +109,11 @@ def save_dictionaries(path, dicts):
 def tag_dictionary(tagger, dictionary):
 	"""
 	Tags each sentence of the untagged dictionary and updates its value to the tagged sentence.
+
 	Args:
 		param1 part-of-speech tagging model (Pytorch object): language specific (or multilingual) pos tagging model
 		param2 dictionary (dictionary): has the IDs and the untagged text. 
+
 	Returns:
 		A dictionary with the text segment IDs and the tagged text.
 	"""

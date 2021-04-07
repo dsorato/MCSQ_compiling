@@ -15,6 +15,13 @@ from DB.response import *
 from DB.request import *
 
 def tag_target_alignment_table(dictionary):
+	"""
+	Inserts the POS alignment annotation on the target text column.
+	
+	Args:
+		param1 dictionary (dictionary): a dictionary where the keys are the target_survey_itemids and the values are the pos tagged text segments.
+
+	"""	
 	session = session_factory()
 
 	for k, v in list(dictionary.items()):
@@ -28,6 +35,17 @@ def tag_target_alignment_table(dictionary):
 	session.close()
 
 def tag_alignment_table(dictionary, id_list, column_name, source_or_target_id):
+	"""
+	Inserts the POS alignment annotation either on the target or the source text column.
+	
+	Args:
+
+		param1 dictionary (dictionary): a dictionary where the keys are the survey_itemids and the values are the pos tagged text segments.
+		param2 id_list (list of strings): list of the IDs that refers to the text to be annotated. 
+		param3 column_name (string): defines if the column to be tagged is the source or the target
+		param4 source_or_target_id (string): name of the ID (either target_survey_itemid or source_survey_itemid)
+
+	"""	
 	session = session_factory()
 
 	for item in id_list:
@@ -45,6 +63,16 @@ def tag_alignment_table(dictionary, id_list, column_name, source_or_target_id):
 
 
 def tag_item_type_table(dictionary, table_name, table_id_name):
+	"""
+	Inserts the POS alignment annotation in item type specific table.
+	
+	Args:
+
+		param1 dictionary (dictionary): a dictionary where the keys are the survey_itemids and the values are the pos tagged text segments.
+		param2 table_name (string): name of the table to be tagged (introduction, instruction, request or response).
+		param3 table_id_name (string): name of the ID of the table.
+
+	"""	
 	session = session_factory()
 
 	for k, v in list(dictionary.items()):
@@ -57,34 +85,17 @@ def tag_item_type_table(dictionary, table_name, table_id_name):
 
 	session.close()
 
-
-def tag_item_type_table(dictionary, table_name, table_id_name):
-	session = session_factory()
-
-	for k, v in list(dictionary.items()):
-
-		if "'" in v:
-			v = v.replace("'", "''")
-
-		result = session.execute("update "+table_name+" set pos_tagged_text = '"+v+"' where "+table_id_name+"="+str(k)+";")
-		session.commit()	
-
-	session.close()
-
-def tag_item_type_table(dictionary, table_name, table_id_name):
-	session = session_factory()
-
-	for k, v in list(dictionary.items()):
-
-		if "'" in v:
-			v = v.replace("'", "''")
-
-		result = session.execute("update "+table_name+" set pos_tagged_text = '"+v+"' where "+table_id_name+"="+str(k)+";")
-		session.commit()	
-
-	session.close()
 
 def tag_survey_item(dictionary, table_id_name):
+	"""
+	Inserts the POS alignment annotation in survey_item table.
+	
+	Args:
+
+		param1 dictionary (dictionary): an item type specific dictionary where the keys are the IDs and the values are the pos tagged text segments.
+		param2 table_id_name (string): name of the ID of item type specific the table.
+
+	"""	
 	session = session_factory()
 	for k, v in list(dictionary.items()):
 

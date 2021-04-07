@@ -19,6 +19,12 @@ from sqlalchemy.sql import select
 
 
 def get_tagged_text_from_survey_item_table():
+	"""
+	Gets the survey_itemid and the POS tagged text from the survey_item table and creates a dictionary.
+
+	Returns: 
+		A dictionary with survey_itemids as keys and POS tagged text as values.
+	"""	
 	session = session_factory()
 
 	tagged_text_dict = dict()
@@ -35,6 +41,15 @@ def get_tagged_text_from_survey_item_table():
 	return tagged_text_dict
 
 def create_tagged_text_dict(id_list):
+	"""
+	Gets the survey_itemid and the POS tagged text from the survey_item table and creates a dictionary.
+	
+	Args:
+		param1 id_list (list of strings): a language specific list of the target segment IDs in the alignment table. 
+
+	Returns: 
+		A dictionary with target survey_itemids as keys and POS tagged text as values.
+	"""	
 	session = session_factory()
 
 	tagged_text_dict = dict()
@@ -51,6 +66,15 @@ def create_tagged_text_dict(id_list):
 	return tagged_text_dict
 
 def get_ids_from_alignment_table(survey_itemid):
+	"""
+	Gets all IDs (either source or target) from the alignment table.
+	
+	Args:
+		param1 survey_itemid (string): name of the column indicating if the desired IDs to be retrived are from source or from target.
+		
+	Returns: 
+		A list of survey_itemids.
+	"""	
 	session = session_factory()
 	
 	result = session.execute("select "+survey_itemid+" from alignment")
@@ -66,6 +90,15 @@ def get_ids_from_alignment_table(survey_itemid):
 	return survey_itemid_list
 
 def get_ids_from_alignment_table_per_language(language):
+	"""
+	Gets all target IDs from the alignment table based on the language.
+	
+	Args:
+		param1 language (string): target language.
+		
+	Returns: 
+		A list of all target_survey_itemids in the alignment table.
+	"""	
 	session = session_factory()
 	
 	result = session.execute("select target_survey_itemid from alignment where target_survey_itemid ilike '%"+language+"%' and target_pos_tagged_text is null")
@@ -83,6 +116,15 @@ def get_ids_from_alignment_table_per_language(language):
 
 
 def build_id_dicts_per_language(language):
+	"""
+	Gets all text segments and their IDs and builds a dictionary by item type.
+	
+	Args:
+		param1 language (string): target language.
+		
+	Returns: 
+		Four different dictionaries (one for each item type). The IDs are the keys and the text segments are the values.
+	"""	
 	session = session_factory()
 
 	result = session.execute("select requestid, responseid, instructionid, introductionid, text from survey_item where country_language ilike '"+language+"%'")
@@ -113,6 +155,15 @@ def build_id_dicts_per_language(language):
 	return request, response, instruction, introduction
 
 def get_introduction_id(text):
+	"""
+	Gets an introduction segment ID based on its text.
+	
+	Args:
+		param1 text (string): the introduction segment text.
+		
+	Returns: 
+		introduction segment ID (int).
+	"""	
 	session = session_factory()
 	if "'" in text:
 		text = text.replace("'", "''")
@@ -125,6 +176,15 @@ def get_introduction_id(text):
 		return i[0]
 
 def get_instruction_id(text):
+	"""
+	Gets an instruction segment ID based on its text.
+	
+	Args:
+		param1 text (string): the instruction segment text.
+		
+	Returns: 
+		instruction segment ID (int).
+	"""	
 	session = session_factory()
 	if "'" in text:
 		text = text.replace("'", "''")
@@ -138,6 +198,15 @@ def get_instruction_id(text):
 
 
 def get_request_id(text):
+	"""
+	Gets an request segment ID based on its text.
+	
+	Args:
+		param1 text (string): the request segment text.
+		
+	Returns: 
+		request segment ID (int).
+	"""	
 	session = session_factory()
 	if "'" in text:
 		text = text.replace("'", "''")
@@ -150,6 +219,15 @@ def get_request_id(text):
 		return i[0]
 
 def get_response_id(text, item_value):
+	"""
+	Gets an response segment ID based on its text.
+	
+	Args:
+		param1 text (string): the response segment text.
+		
+	Returns: 
+		response segment ID (int).
+	"""	
 	session = session_factory()
 	if "'" in text:
 		text = text.replace("'", "''")
@@ -165,6 +243,15 @@ def get_response_id(text, item_value):
 		return i[0]
 
 def get_module_id(module_name):
+	"""
+	Gets an module ID based on its name.
+	
+	Args:
+		param1 module_name (string): the name of the module.
+		
+	Returns: 
+		response module ID (int).
+	"""	
 	session = session_factory()
 	if "'" in module_name:
 		module_name = module_name.replace("'", "''")
