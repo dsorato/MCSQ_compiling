@@ -19,11 +19,11 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'MCSQ compiling'
-copyright = '2020, Danielly Sorato'
+copyright = '2021, Danielly Sorato'
 author = 'Danielly Sorato'
 
 # The full version, including alpha/beta/rc tags
-release = '1.1'
+release = '2'
 
 
 # -- General configuration ---------------------------------------------------
@@ -48,6 +48,7 @@ exclude_patterns = []
 autodoc_mock_imports = ["ess_special_answer_categories", 'essmodules', 
 'preprocessing_ess_utils','utils','evs_xml_data_extraction', 'preprocessing_evs_utils',
 'evsmodules', 'ess_xml_data_extraction', 'share_xml_data_extraction', 'countryspecificrequest',
+'alignment_based_on_item_structure', 'pos_tagging', 'share_covid_data_extraction',
 'pandas', 'nltk']
 
 # -- Options for HTML output -------------------------------------------------
