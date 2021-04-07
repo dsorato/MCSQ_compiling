@@ -1,4 +1,4 @@
-Data annotation methods (EVS, ESS and SHARE)
+Data alignment and annotation methods (EVS, ESS and SHARE)
 ==========================================
 
 
@@ -6,3 +6,4 @@ Data annotation methods (EVS, ESS and SHARE)
    :maxdepth: 2
 
    pos_tagging.rst
+   alignment.rst
