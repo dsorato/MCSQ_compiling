@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>annotation.pos_tagging &#8212; MCSQ compiling 2 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">annotation.pos_tagging</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for annotation.pos_tagging</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">flair.models</span> <span class="kn">import</span> <span class="n">SequenceTagger</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">flair.data</span> <span class="kn">import</span> <span class="n">Sentence</span>
+<span class="kn">import</span> <span class="nn">flair.datasets</span>
+<span class="kn">from</span> <span class="nn">populate_tables</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">retrieve_from_tables</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+
+
+<div class="viewcode-block" id="select_pos_model"><a class="viewcode-back" href="../../tagging.html#annotation.pos_tagging.select_pos_model">[docs]</a><span class="k">def</span> <span class="nf">select_pos_model</span><span class="p">(</span><span class="n">language</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Selects the appropriate pos tagging model based on the language.</span>
+<span class="sd">	ENG language uses a pretrained model provided by Flair.</span>
+<span class="sd">	NOR, SPA, GER, CZE, and FRE languages use multilingual pretrained model provided by Flair.</span>
+<span class="sd">	CAT, RUS and POR languages use models trained by me.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 language (string): 3-digit language ISO code.</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		part-of-speech tagging model (Pytorch object).  </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="s1">&#39;ENG&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;upos&#39;</span><span class="p">)</span> 
+	<span class="k">elif</span> <span class="s1">&#39;CAT&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/home/danielly/workspace/trained_models/cat_150ep.pt&#39;</span><span class="p">)</span> 
+	<span class="k">elif</span> <span class="s1">&#39;RUS&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/home/danielly/workspace/trained_models/rus_150ep.pt&#39;</span><span class="p">)</span> 
+	<span class="k">elif</span> <span class="s1">&#39;POR&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/home/danielly/workspace/trained_models/por_150ep.pt&#39;</span><span class="p">)</span> 
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;pos-multi&#39;</span><span class="p">)</span> </div>
+
+
+<div class="viewcode-block" id="output_language_specific_dictionaries"><a class="viewcode-back" href="../../tagging.html#annotation.pos_tagging.output_language_specific_dictionaries">[docs]</a><span class="k">def</span> <span class="nf">output_language_specific_dictionaries</span><span class="p">(</span><span class="n">languages</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Gets each text segment and its ID from the database, building 4 dictionaries (request, response, instruction, introduction).</span>
+<span class="sd">	After, saves the dictionaries as a pickle dump.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 languages (list of strings): list of 3-digit language ISO codes.</span>
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">languages</span><span class="p">:</span>
+		<span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">introduction</span> <span class="o">=</span> <span class="n">build_id_dicts_per_language</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+		<span class="n">dicts</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;request&#39;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span> <span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="n">response</span><span class="p">,</span> <span class="s1">&#39;instruction&#39;</span><span class="p">:</span> <span class="n">instruction</span><span class="p">,</span> <span class="s1">&#39;introduction&#39;</span><span class="p">:</span> <span class="n">introduction</span><span class="p">}</span>
+		<span class="n">save_dictionaries</span><span class="p">(</span><span class="s1">&#39;/home/danielly/workspace/trained_models/&#39;</span><span class="o">+</span><span class="n">l</span><span class="o">+</span><span class="s1">&#39;_dicts.pickle&#39;</span><span class="p">,</span> <span class="n">dicts</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="from_tagged_dict_to_table"><a class="viewcode-back" href="../../tagging.html#annotation.pos_tagging.from_tagged_dict_to_table">[docs]</a><span class="k">def</span> <span class="nf">from_tagged_dict_to_table</span><span class="p">(</span><span class="n">dicts</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Uses the tagged dictionaries containing the tagged data from each table to </span>
+<span class="sd">	update the respective pos_tagged_text columns in the database.</span>
+<span class="sd">	The survey_item table is also updated using the same IDs</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 dicts (a dictionary of dictionaries): the dictionary name corresponds to the table name (key), </span>
+<span class="sd">		and the dictionary (value) has the IDs and the tagged text. </span>
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dicts</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+		<span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;request&#39;</span><span class="p">:</span>
+			<span class="n">table_name</span> <span class="o">=</span> <span class="s1">&#39;request&#39;</span>
+			<span class="n">table_id_name</span> <span class="o">=</span> <span class="s1">&#39;requestid&#39;</span>
+	
+		<span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;response&#39;</span><span class="p">:</span>
+			<span class="n">table_name</span> <span class="o">=</span> <span class="s1">&#39;response&#39;</span>
+			<span class="n">table_id_name</span> <span class="o">=</span> <span class="s1">&#39;responseid&#39;</span>
+
+		<span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;instruction&#39;</span><span class="p">:</span>
+			<span class="n">table_name</span> <span class="o">=</span> <span class="s1">&#39;instruction&#39;</span>
+			<span class="n">table_id_name</span> <span class="o">=</span> <span class="s1">&#39;instructionid&#39;</span>
+		
+		<span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;introduction&#39;</span><span class="p">:</span>
+			<span class="n">table_name</span> <span class="o">=</span> <span class="s1">&#39;introduction&#39;</span>
+			<span class="n">table_id_name</span> <span class="o">=</span> <span class="s1">&#39;introductionid&#39;</span>
+
+		<span class="n">tag_item_type_table</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">table_id_name</span><span class="p">)</span>
+		<span class="n">tag_survey_item</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">table_id_name</span><span class="p">)</span></div>
+
+	
+<div class="viewcode-block" id="load_dict"><a class="viewcode-back" href="../../tagging.html#annotation.pos_tagging.load_dict">[docs]</a><span class="k">def</span> <span class="nf">load_dict</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Loads a dictionary stored as a picke object.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 path (string): the path to the dictionary</span>
+<span class="sd">		</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		the loaded dictionary.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+		<span class="n">dicts</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">dicts</span></div>
+
+<div class="viewcode-block" id="save_dictionaries"><a class="viewcode-back" href="../../tagging.html#annotation.pos_tagging.save_dictionaries">[docs]</a><span class="k">def</span> <span class="nf">save_dictionaries</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dicts</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Saves a dictionary as a picke object.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 path (string): the path to the dictionary</span>
+<span class="sd">		param2 dicts (a dictionary of dictionaries): the dictionary name corresponds to the table name (key), </span>
+<span class="sd">		and the dictionary (value) has the IDs and the tagged text. </span>
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+		<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dicts</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">pickle</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="tag_dictionary"><a class="viewcode-back" href="../../tagging.html#annotation.pos_tagging.tag_dictionary">[docs]</a><span class="k">def</span> <span class="nf">tag_dictionary</span><span class="p">(</span><span class="n">tagger</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Tags each sentence of the untagged dictionary and updates its value to the tagged sentence.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 part-of-speech tagging model (Pytorch object): language specific (or multilingual) pos tagging model</span>
+<span class="sd">		param2 dictionary (dictionary): has the IDs and the untagged text. </span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		A dictionary with the text segment IDs and the tagged text.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+		<span class="n">sentence</span> <span class="o">=</span> <span class="n">Sentence</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+		<span class="n">tagger</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+		<span class="n">tagged_sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">to_tagged_string</span><span class="p">()</span>
+		<span class="n">dictionary</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">tagged_sentence</span>
+
+	<span class="k">return</span> <span class="n">dictionary</span></div>
+		
+
+<div class="viewcode-block" id="save_tagged_dictionary"><a class="viewcode-back" href="../../tagging.html#annotation.pos_tagging.save_tagged_dictionary">[docs]</a><span class="k">def</span> <span class="nf">save_tagged_dictionary</span><span class="p">(</span><span class="n">tagger</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Loads a given untagged dictionary, calls the tagging method and saves the tagged dictionary.</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 part-of-speech tagging model (Pytorch object): language specific (or multilingual) pos tagging model</span>
+<span class="sd">		param2 language (string): 3-digit language ISO code.</span>
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dicts</span> <span class="o">=</span> <span class="n">load_dict</span><span class="p">(</span><span class="s1">&#39;/home/danielly/workspace/trained_models/&#39;</span><span class="o">+</span><span class="n">language</span><span class="o">+</span><span class="s1">&#39;_dicts.pickle&#39;</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dicts</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+		<span class="n">dicts</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag_dictionary</span><span class="p">(</span><span class="n">tagger</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+	<span class="n">save_dictionaries</span><span class="p">(</span><span class="s1">&#39;/home/danielly/workspace/trained_models/&#39;</span><span class="o">+</span><span class="n">language</span><span class="o">+</span><span class="s1">&#39;_dicts_tagged.pickle&#39;</span><span class="p">,</span> <span class="n">dicts</span><span class="p">)</span></div>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>	
+	<span class="n">languages</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POR&#39;</span><span class="p">,</span> <span class="s1">&#39;NOR&#39;</span><span class="p">,</span> <span class="s1">&#39;SPA&#39;</span><span class="p">,</span> <span class="s1">&#39;CAT&#39;</span><span class="p">,</span> <span class="s1">&#39;GER&#39;</span><span class="p">,</span> <span class="s1">&#39;CZE&#39;</span><span class="p">,</span> <span class="s1">&#39;FRE&#39;</span><span class="p">,</span> <span class="s1">&#39;ENG&#39;</span><span class="p">,</span> <span class="s1">&#39;RUS&#39;</span><span class="p">]</span>
+
+	<span class="n">output_language_specific_dictionaries</span><span class="p">(</span><span class="n">languages</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">languages</span><span class="p">:</span>
+		<span class="n">tagger</span> <span class="o">=</span> <span class="n">select_pos_model</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+		<span class="n">save_tagged_dictionary</span><span class="p">(</span><span class="n">tagger</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
+		<span class="n">dicts</span> <span class="o">=</span> <span class="n">load_dict</span><span class="p">(</span><span class="s1">&#39;/home/danielly/workspace/trained_models/&#39;</span><span class="o">+</span><span class="n">l</span><span class="o">+</span><span class="s1">&#39;_dicts_tagged.pickle&#39;</span><span class="p">)</span>
+		<span class="n">from_tagged_dict_to_table</span><span class="p">(</span><span class="n">dicts</span><span class="p">)</span>
+
+
+
+
+	
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">annotation.pos_tagging</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>populate_tables &#8212; MCSQ compiling 2 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">populate_tables</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for populate_tables</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Python3 script for ESS dataset inclusion in the MCSQ database</span>
+<span class="sd">Before running the script, install requirements: pandas, numpy, SQLAlchemy, psycopg2</span>
+<span class="sd">Author: Danielly Sorato </span>
+<span class="sd">Author contact: danielly.sorato@gmail.com</span>
+<span class="sd">&quot;&quot;&quot;</span> 
+<span class="kn">from</span> <span class="nn">DB.alignment</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.base</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.survey</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.survey_item</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.module</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.introduction</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.instruction</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.response</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.request</span> <span class="kn">import</span> <span class="o">*</span>
+
+<div class="viewcode-block" id="tag_target_alignment_table"><a class="viewcode-back" href="../db.html#populate_tables.tag_target_alignment_table">[docs]</a><span class="k">def</span> <span class="nf">tag_target_alignment_table</span><span class="p">(</span><span class="n">dictionary</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Inserts the POS alignment annotation on the target text column.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 dictionary (dictionary): a dictionary where the keys are the target_survey_itemids and the values are the pos tagged text segments.</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+
+	<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+		<span class="k">if</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+			<span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&#39;&quot;</span><span class="p">)</span>
+
+		<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;update alignment set target_pos_tagged_text = &#39;&quot;</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="s2">&quot;&#39; where target_survey_itemid ilike &#39;&quot;</span><span class="o">+</span><span class="n">k</span><span class="o">+</span><span class="s2">&quot;&#39;;&quot;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+		<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>	
+
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="tag_alignment_table"><a class="viewcode-back" href="../db.html#populate_tables.tag_alignment_table">[docs]</a><span class="k">def</span> <span class="nf">tag_alignment_table</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">id_list</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">source_or_target_id</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Inserts the POS alignment annotation either on the target or the source text column.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+
+<span class="sd">		param1 dictionary (dictionary): a dictionary where the keys are the survey_itemids and the values are the pos tagged text segments.</span>
+<span class="sd">		param2 id_list (list of strings): list of the IDs that refers to the text to be annotated. </span>
+<span class="sd">		param3 column_name (string): defines if the column to be tagged is the source or the target</span>
+<span class="sd">		param4 source_or_target_id (string): name of the ID (either target_survey_itemid or source_survey_itemid)</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+
+	<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">id_list</span><span class="p">:</span>
+
+		<span class="n">pos_tagged_text</span> <span class="o">=</span> <span class="n">dictionary</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+
+		<span class="k">if</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">pos_tagged_text</span><span class="p">:</span>
+			<span class="n">pos_tagged_text</span> <span class="o">=</span> <span class="n">pos_tagged_text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&#39;&quot;</span><span class="p">)</span>
+
+		<span class="nb">print</span><span class="p">(</span><span class="n">pos_tagged_text</span><span class="p">)</span>
+		<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;update alignment set &quot;</span><span class="o">+</span><span class="n">column_name</span><span class="o">+</span><span class="s2">&quot; = &#39;&quot;</span><span class="o">+</span><span class="n">pos_tagged_text</span><span class="o">+</span><span class="s2">&quot;&#39; where &quot;</span><span class="o">+</span><span class="n">source_or_target_id</span><span class="o">+</span><span class="s2">&quot; ilike &#39;&quot;</span><span class="o">+</span><span class="n">item</span><span class="o">+</span><span class="s2">&quot;&#39;;&quot;</span><span class="p">)</span>
+		<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>	
+
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="tag_item_type_table"><a class="viewcode-back" href="../db.html#populate_tables.tag_item_type_table">[docs]</a><span class="k">def</span> <span class="nf">tag_item_type_table</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">table_id_name</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Inserts the POS alignment annotation in item type specific table.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+
+<span class="sd">		param1 dictionary (dictionary): a dictionary where the keys are the survey_itemids and the values are the pos tagged text segments.</span>
+<span class="sd">		param2 table_name (string): name of the table to be tagged (introduction, instruction, request or response).</span>
+<span class="sd">		param3 table_id_name (string): name of the ID of the table.</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+
+	<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+
+		<span class="k">if</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+			<span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&#39;&quot;</span><span class="p">)</span>
+
+		<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;update &quot;</span><span class="o">+</span><span class="n">table_name</span><span class="o">+</span><span class="s2">&quot; set pos_tagged_text = &#39;&quot;</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="s2">&quot;&#39; where &quot;</span><span class="o">+</span><span class="n">table_id_name</span><span class="o">+</span><span class="s2">&quot;=&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+		<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>	
+
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="tag_survey_item"><a class="viewcode-back" href="../db.html#populate_tables.tag_survey_item">[docs]</a><span class="k">def</span> <span class="nf">tag_survey_item</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">table_id_name</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Inserts the POS alignment annotation in survey_item table.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+
+<span class="sd">		param1 dictionary (dictionary): an item type specific dictionary where the keys are the IDs and the values are the pos tagged text segments.</span>
+<span class="sd">		param2 table_id_name (string): name of the ID of item type specific the table.</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+
+		<span class="k">if</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+			<span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&#39;&quot;</span><span class="p">)</span>
+
+		<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;update survey_item set pos_tagged_text = &#39;&quot;</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="s2">&quot;&#39; where &quot;</span><span class="o">+</span><span class="n">table_id_name</span><span class="o">+</span><span class="s2">&quot;=&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+		<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">write_module_table</span><span class="p">(</span><span class="n">modules</span><span class="p">):</span>
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+		<span class="n">exists</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Module</span><span class="o">.</span><span class="n">module_name</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">module_name</span><span class="o">=</span><span class="n">module</span><span class="p">)</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+		<span class="k">if</span> <span class="n">exists</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+			<span class="n">item</span> <span class="o">=</span> <span class="n">Module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+			<span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+			<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">write_survey_table</span><span class="p">(</span><span class="n">surveys</span><span class="p">):</span>
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">survey</span> <span class="ow">in</span> <span class="n">surveys</span><span class="p">:</span>
+		<span class="n">surveyid</span> <span class="o">=</span> <span class="n">survey</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">study</span>  <span class="o">=</span> <span class="n">survey</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">wave_round</span>  <span class="o">=</span> <span class="n">survey</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+		<span class="n">year</span>  <span class="o">=</span> <span class="n">survey</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+		<span class="n">country_language</span>  <span class="o">=</span> <span class="n">survey</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+		<span class="n">exists</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Survey</span><span class="o">.</span><span class="n">surveyid</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">surveyid</span><span class="o">=</span><span class="n">surveyid</span><span class="p">)</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+		<span class="k">if</span> <span class="n">exists</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+			<span class="n">item</span> <span class="o">=</span> <span class="n">Survey</span><span class="p">(</span><span class="n">surveyid</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">wave_round</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">country_language</span><span class="p">)</span>
+			<span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+			<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+			<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">write_introduction_table</span><span class="p">(</span><span class="n">introduction</span><span class="p">):</span>
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="n">item</span> <span class="o">=</span> <span class="n">Introduction</span><span class="p">(</span><span class="n">introduction</span><span class="p">)</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">write_instruction_table</span><span class="p">(</span><span class="n">instruction</span><span class="p">):</span>
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="n">item</span> <span class="o">=</span> <span class="n">Instruction</span><span class="p">(</span><span class="n">instruction</span><span class="p">)</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">write_request_table</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="n">item</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">write_response_table</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">item_value</span><span class="p">):</span>
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="n">item</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">item_value</span><span class="p">)</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+
+<span class="k">def</span> <span class="nf">write_alignment_table</span><span class="p">(</span><span class="n">source_text</span><span class="p">,</span> <span class="n">target_text</span><span class="p">,</span> <span class="n">source_survey_itemid</span><span class="p">,</span><span class="n">target_survey_itemid</span><span class="p">):</span>
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="n">item</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">(</span><span class="n">source_text</span><span class="p">,</span> <span class="n">target_text</span><span class="p">,</span> <span class="n">source_survey_itemid</span><span class="p">,</span><span class="n">target_survey_itemid</span><span class="p">)</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">write_survey_item_table</span><span class="p">(</span><span class="n">survey_itemid</span><span class="p">,</span> <span class="n">surveyid</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">item_value</span><span class="p">,</span> <span class="n">moduleid</span><span class="p">,</span> <span class="n">requestid</span><span class="p">,</span> <span class="n">responseid</span><span class="p">,</span> <span class="n">instructionid</span><span class="p">,</span> <span class="n">introductionid</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">item_is_source</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="n">item</span> <span class="o">=</span> <span class="n">Survey_item</span><span class="p">(</span><span class="n">survey_itemid</span><span class="p">,</span> <span class="n">surveyid</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">item_value</span><span class="p">,</span> <span class="n">moduleid</span><span class="p">,</span> <span class="n">requestid</span><span class="p">,</span> <span class="n">responseid</span><span class="p">,</span> <span class="n">instructionid</span><span class="p">,</span> <span class="n">introductionid</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">item_is_source</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">item_type</span><span class="p">)</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">populate_tables</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

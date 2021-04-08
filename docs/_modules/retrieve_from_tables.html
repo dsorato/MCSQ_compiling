@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>retrieve_from_tables &#8212; MCSQ compiling 2 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">retrieve_from_tables</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for retrieve_from_tables</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Python3 script for retrieving data from MCSQ database</span>
+<span class="sd">Before running the script, install requirements: pandas, numpy, SQLAlchemy, psycopg2</span>
+<span class="sd">Author: Danielly Sorato </span>
+<span class="sd">Author contact: danielly.sorato@gmail.com</span>
+<span class="sd">&quot;&quot;&quot;</span> 
+
+<span class="kn">from</span> <span class="nn">DB.base</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.survey</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.survey_item</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.module</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.introduction</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.instruction</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.response</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DB.request</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.sql</span> <span class="kn">import</span> <span class="n">select</span>
+
+
+<div class="viewcode-block" id="get_tagged_text_from_survey_item_table"><a class="viewcode-back" href="../db.html#retrieve_from_tables.get_tagged_text_from_survey_item_table">[docs]</a><span class="k">def</span> <span class="nf">get_tagged_text_from_survey_item_table</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Gets the survey_itemid and the POS tagged text from the survey_item table and creates a dictionary.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		A dictionary with survey_itemids as keys and POS tagged text as values.</span>
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+
+	<span class="n">tagged_text_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+	<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select survey_itemid, pos_tagged_text from survey_item;&quot;</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">survey_itemid</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="n">tagged_text_dict</span><span class="p">[</span><span class="n">survey_itemid</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+	<span class="k">return</span> <span class="n">tagged_text_dict</span></div>
+
+<div class="viewcode-block" id="create_tagged_text_dict"><a class="viewcode-back" href="../db.html#retrieve_from_tables.create_tagged_text_dict">[docs]</a><span class="k">def</span> <span class="nf">create_tagged_text_dict</span><span class="p">(</span><span class="n">id_list</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Gets the survey_itemid and the POS tagged text from the survey_item table and creates a dictionary.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 id_list (list of strings): a language specific list of the target segment IDs in the alignment table. </span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		A dictionary with target survey_itemids as keys and POS tagged text as values.</span>
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+
+	<span class="n">tagged_text_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+	<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select survey_itemid, pos_tagged_text from survey_item;&quot;</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">id_list</span><span class="p">:</span>
+			<span class="n">survey_itemid</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="n">tagged_text_dict</span><span class="p">[</span><span class="n">survey_itemid</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+	<span class="k">return</span> <span class="n">tagged_text_dict</span></div>
+
+<div class="viewcode-block" id="get_ids_from_alignment_table"><a class="viewcode-back" href="../db.html#retrieve_from_tables.get_ids_from_alignment_table">[docs]</a><span class="k">def</span> <span class="nf">get_ids_from_alignment_table</span><span class="p">(</span><span class="n">survey_itemid</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Gets all IDs (either source or target) from the alignment table.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 survey_itemid (string): name of the column indicating if the desired IDs to be retrived are from source or from target.</span>
+<span class="sd">		</span>
+<span class="sd">	Returns: </span>
+<span class="sd">		A list of survey_itemids.</span>
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	
+	<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select &quot;</span><span class="o">+</span><span class="n">survey_itemid</span><span class="o">+</span><span class="s2">&quot; from alignment&quot;</span><span class="p">)</span>
+	
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+	<span class="n">survey_itemid_list</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">survey_itemid_list</span><span class="p">:</span>
+				<span class="n">survey_itemid_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+	<span class="k">return</span> <span class="n">survey_itemid_list</span></div>
+
+<div class="viewcode-block" id="get_ids_from_alignment_table_per_language"><a class="viewcode-back" href="../db.html#retrieve_from_tables.get_ids_from_alignment_table_per_language">[docs]</a><span class="k">def</span> <span class="nf">get_ids_from_alignment_table_per_language</span><span class="p">(</span><span class="n">language</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Gets all target IDs from the alignment table based on the language.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 language (string): target language.</span>
+<span class="sd">		</span>
+<span class="sd">	Returns: </span>
+<span class="sd">		A list of all target_survey_itemids in the alignment table.</span>
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	
+	<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select target_survey_itemid from alignment where target_survey_itemid ilike &#39;%&quot;</span><span class="o">+</span><span class="n">language</span><span class="o">+</span><span class="s2">&quot;%&#39; and target_pos_tagged_text is null&quot;</span><span class="p">)</span>
+	
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+	<span class="n">survey_itemid_list</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">survey_itemid_list</span><span class="p">:</span>
+				<span class="n">survey_itemid_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+	<span class="k">return</span> <span class="n">survey_itemid_list</span></div>
+
+
+
+<div class="viewcode-block" id="build_id_dicts_per_language"><a class="viewcode-back" href="../db.html#retrieve_from_tables.build_id_dicts_per_language">[docs]</a><span class="k">def</span> <span class="nf">build_id_dicts_per_language</span><span class="p">(</span><span class="n">language</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Gets all text segments and their IDs and builds a dictionary by item type.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 language (string): target language.</span>
+<span class="sd">		</span>
+<span class="sd">	Returns: </span>
+<span class="sd">		Four different dictionaries (one for each item type). The IDs are the keys and the text segments are the values.</span>
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+
+	<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select requestid, responseid, instructionid, introductionid, text from survey_item where country_language ilike &#39;&quot;</span><span class="o">+</span><span class="n">language</span><span class="o">+</span><span class="s2">&quot;%&#39;&quot;</span><span class="p">)</span>
+	
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="n">request</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+	<span class="n">response</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+	<span class="n">instruction</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+	<span class="n">introduction</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+		<span class="n">requestid</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  
+		<span class="n">responseid</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
+		<span class="n">instructionid</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> 
+		<span class="n">introductionid</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> 
+		<span class="n">text</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> 
+
+
+		<span class="k">if</span> <span class="n">requestid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">requestid</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+			<span class="n">request</span><span class="p">[</span><span class="n">requestid</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+		<span class="k">elif</span> <span class="n">responseid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">responseid</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+			<span class="n">response</span><span class="p">[</span><span class="n">responseid</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+		<span class="k">elif</span> <span class="n">instructionid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">instructionid</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+			<span class="n">instruction</span><span class="p">[</span><span class="n">instructionid</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+		<span class="k">elif</span> <span class="n">introductionid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">introductionid</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+			<span class="n">introduction</span><span class="p">[</span><span class="n">introductionid</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+
+	<span class="k">return</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">introduction</span></div>
+
+<div class="viewcode-block" id="get_introduction_id"><a class="viewcode-back" href="../db.html#retrieve_from_tables.get_introduction_id">[docs]</a><span class="k">def</span> <span class="nf">get_introduction_id</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Gets an introduction segment ID based on its text.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 text (string): the introduction segment text.</span>
+<span class="sd">		</span>
+<span class="sd">	Returns: </span>
+<span class="sd">		introduction segment ID (int).</span>
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="k">if</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&#39;&quot;</span><span class="p">)</span>
+
+	<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select introductionid from introduction where text=&#39;&quot;</span><span class="o">+</span><span class="n">text</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+	
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="get_instruction_id"><a class="viewcode-back" href="../db.html#retrieve_from_tables.get_instruction_id">[docs]</a><span class="k">def</span> <span class="nf">get_instruction_id</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Gets an instruction segment ID based on its text.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 text (string): the instruction segment text.</span>
+<span class="sd">		</span>
+<span class="sd">	Returns: </span>
+<span class="sd">		instruction segment ID (int).</span>
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="k">if</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&#39;&quot;</span><span class="p">)</span>
+
+	<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select instructionid from instruction where text=&#39;&quot;</span><span class="o">+</span><span class="n">text</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+	
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="get_request_id"><a class="viewcode-back" href="../db.html#retrieve_from_tables.get_request_id">[docs]</a><span class="k">def</span> <span class="nf">get_request_id</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Gets an request segment ID based on its text.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 text (string): the request segment text.</span>
+<span class="sd">		</span>
+<span class="sd">	Returns: </span>
+<span class="sd">		request segment ID (int).</span>
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="k">if</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&#39;&quot;</span><span class="p">)</span>
+
+	<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select requestid from request where text=&#39;&quot;</span><span class="o">+</span><span class="n">text</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+	
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="get_response_id"><a class="viewcode-back" href="../db.html#retrieve_from_tables.get_response_id">[docs]</a><span class="k">def</span> <span class="nf">get_response_id</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">item_value</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Gets an response segment ID based on its text.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 text (string): the response segment text.</span>
+<span class="sd">		</span>
+<span class="sd">	Returns: </span>
+<span class="sd">		response segment ID (int).</span>
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="k">if</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&#39;&quot;</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item_value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+		<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select responseid from response where text=&#39;&quot;</span><span class="o">+</span><span class="n">text</span><span class="o">+</span><span class="s2">&quot;&#39; and item_value=&#39;&quot;</span><span class="o">+</span><span class="n">item_value</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select responseid from response where text=&#39;&quot;</span><span class="o">+</span><span class="n">text</span><span class="o">+</span><span class="s2">&quot;&#39; and item_value is null&quot;</span><span class="p">)</span>
+	
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="get_module_id"><a class="viewcode-back" href="../db.html#retrieve_from_tables.get_module_id">[docs]</a><span class="k">def</span> <span class="nf">get_module_id</span><span class="p">(</span><span class="n">module_name</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Gets an module ID based on its name.</span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 module_name (string): the name of the module.</span>
+<span class="sd">		</span>
+<span class="sd">	Returns: </span>
+<span class="sd">		response module ID (int).</span>
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="k">if</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">module_name</span><span class="p">:</span>
+		<span class="n">module_name</span> <span class="o">=</span> <span class="n">module_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&#39;&quot;</span><span class="p">)</span>
+
+	<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select moduleid from module where module_name=&#39;&quot;</span><span class="o">+</span><span class="n">module_name</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+	
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<span class="k">def</span> <span class="nf">get_survey_id</span><span class="p">(</span><span class="n">surveyid</span><span class="p">):</span>
+	<span class="n">session</span> <span class="o">=</span> <span class="n">session_factory</span><span class="p">()</span>
+	<span class="k">if</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">surveyid</span><span class="p">:</span>
+		<span class="n">surveyid</span> <span class="o">=</span> <span class="n">surveyid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&#39;&quot;</span><span class="p">)</span>
+
+	<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select surveyid from survey where surveyid=&#39;&quot;</span><span class="o">+</span><span class="n">surveyid</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+	
+	<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">retrieve_from_tables</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

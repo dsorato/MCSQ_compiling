@@ -48,6 +48,107 @@
             
   <div class="section" id="part-of-speech-tagging-annotation-with-flair">
 <h1>Part-of-Speech tagging annotation with Flair<a class="headerlink" href="#part-of-speech-tagging-annotation-with-flair" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-annotation.pos_tagging"></span><dl class="py function">
+<dt id="annotation.pos_tagging.from_tagged_dict_to_table">
+<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">from_tagged_dict_to_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dicts</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#from_tagged_dict_to_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.from_tagged_dict_to_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the tagged dictionaries containing the tagged data from each table to
+update the respective pos_tagged_text columns in the database.
+The survey_item table is also updated using the same IDs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dicts</strong> (<em>param1</em>) – the dictionary name corresponds to the table name (key),</p></li>
+<li><p><strong>the dictionary</strong> (<em>and</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="annotation.pos_tagging.load_dict">
+<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">load_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#load_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.load_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a dictionary stored as a picke object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>param1</em>) – the path to the dictionary</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the loaded dictionary.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="annotation.pos_tagging.output_language_specific_dictionaries">
+<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">output_language_specific_dictionaries</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">languages</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#output_language_specific_dictionaries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.output_language_specific_dictionaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets each text segment and its ID from the database, building 4 dictionaries (request, response, instruction, introduction).
+After, saves the dictionaries as a pickle dump.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>languages</strong> (<em>param1</em>) – list of 3-digit language ISO codes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="annotation.pos_tagging.save_dictionaries">
+<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">save_dictionaries</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">dicts</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#save_dictionaries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.save_dictionaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves a dictionary as a picke object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>param1</em>) – the path to the dictionary</p></li>
+<li><p><strong>dicts</strong> (<em>param2</em>) – the dictionary name corresponds to the table name (key),</p></li>
+<li><p><strong>the dictionary</strong> (<em>and</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="annotation.pos_tagging.save_tagged_dictionary">
+<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">save_tagged_dictionary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tagger</span></em>, <em class="sig-param"><span class="n">language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#save_tagged_dictionary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.save_tagged_dictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a given untagged dictionary, calls the tagging method and saves the tagged dictionary.
+:param param1 part-of-speech tagging model: language specific (or multilingual) pos tagging model
+:type param1 part-of-speech tagging model: Pytorch object
+:param param2 language: 3-digit language ISO code.
+:type param2 language: string</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="annotation.pos_tagging.select_pos_model">
+<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">select_pos_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#select_pos_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.select_pos_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects the appropriate pos tagging model based on the language.
+ENG language uses a pretrained model provided by Flair.
+NOR, SPA, GER, CZE, and FRE languages use multilingual pretrained model provided by Flair.
+CAT, RUS and POR languages use models trained by me.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>language</strong> (<em>param1</em>) – 3-digit language ISO code.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>part-of-speech tagging model (Pytorch object).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="annotation.pos_tagging.tag_dictionary">
+<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">tag_dictionary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tagger</span></em>, <em class="sig-param"><span class="n">dictionary</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#tag_dictionary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.tag_dictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tags each sentence of the untagged dictionary and updates its value to the tagged sentence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>part-of-speech tagging model</strong> (<em>param1</em>) – language specific (or multilingual) pos tagging model</p></li>
+<li><p><strong>dictionary</strong> (<em>param2</em>) – has the IDs and the untagged text.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary with the text segment IDs and the tagged text.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 

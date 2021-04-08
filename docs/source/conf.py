@@ -15,8 +15,10 @@ import sys
 import sphinx
 sys.path.insert(0, os.path.abspath('../..'))
 sys.path.insert(0, os.path.abspath('../../preprocessing/'))
-sys.path.insert(0, os.path.abspath('../../alignment/'))
 sys.path.insert(0, os.path.abspath('../../annotation/'))
+sys.path.insert(0, os.path.abspath('../../DB/'))
+sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../../alignment'))
 
 
 # -- Project information -----------------------------------------------------
@@ -48,7 +50,7 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
-autodoc_mock_imports = ['sqlalchemy', 'base','pandas', 'nltk', 'flair', 'utils']
+autodoc_mock_imports = ['sqlalchemy', 'base','pandas', 'nltk', 'flair', 'pickle']
 
 # -- Options for HTML output -------------------------------------------------
 
