@@ -1,8 +1,7 @@
-Preprocessing Utils
+Data extraction, preprocessing and treatment methods commons
 ==========================================
-.. automodule:: preprocessing.preprocessing_ess_utils
-   :members:
+
 .. automodule:: preprocessing.utils
    :members:
-.. automodule:: preprocessing.preprocessing_evs_utils
+.. automodule:: preprocessing.main_xml_files
    :members:

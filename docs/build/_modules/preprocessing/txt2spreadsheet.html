@@ -51,7 +51,7 @@
 <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span> <span class="s1">&#39;6&#39;</span><span class="p">,</span> <span class="s1">&#39;7&#39;</span><span class="p">,</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span> <span class="s1">&#39;9&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="retrieve_raw_items_from_file"><a class="viewcode-back" href="../../txt2spreadsheet.html#preprocessing.txt2spreadsheet.retrieve_raw_items_from_file">[docs]</a><span class="k">def</span> <span class="nf">retrieve_raw_items_from_file</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+<div class="viewcode-block" id="retrieve_raw_items_from_file"><a class="viewcode-back" href="../../ESS.html#preprocessing.txt2spreadsheet.retrieve_raw_items_from_file">[docs]</a><span class="k">def</span> <span class="nf">retrieve_raw_items_from_file</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts the raw items from ESS plain text file, based on an item name regex pattern.</span>
 <span class="sd">	Also excludes blank lines and non relevant scale items.</span>
@@ -93,7 +93,7 @@
 
 
 
-<div class="viewcode-block" id="process_question_segment"><a class="viewcode-back" href="../../txt2spreadsheet.html#preprocessing.txt2spreadsheet.process_question_segment">[docs]</a><span class="k">def</span> <span class="nf">process_question_segment</span><span class="p">(</span><span class="n">raw_item</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">splitter</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="process_question_segment"><a class="viewcode-back" href="../../ESS.html#preprocessing.txt2spreadsheet.process_question_segment">[docs]</a><span class="k">def</span> <span class="nf">process_question_segment</span><span class="p">(</span><span class="n">raw_item</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">splitter</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts and processes the question segments from a raw item.</span>
 <span class="sd">	The question segments are always between the {QUESTION} and {ANSWERS} tags, </span>
@@ -155,7 +155,7 @@
 
 
 
-<div class="viewcode-block" id="process_intro_segment"><a class="viewcode-back" href="../../txt2spreadsheet.html#preprocessing.txt2spreadsheet.process_intro_segment">[docs]</a><span class="k">def</span> <span class="nf">process_intro_segment</span><span class="p">(</span><span class="n">raw_item</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">splitter</span><span class="p">):</span>
+<div class="viewcode-block" id="process_intro_segment"><a class="viewcode-back" href="../../ESS.html#preprocessing.txt2spreadsheet.process_intro_segment">[docs]</a><span class="k">def</span> <span class="nf">process_intro_segment</span><span class="p">(</span><span class="n">raw_item</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">splitter</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts and processes the introduction segments from a raw item.</span>
 <span class="sd">	The introduction segments are always between the item name and {QUESTION} tag, </span>
@@ -210,7 +210,7 @@
 
 
 
-<div class="viewcode-block" id="process_answer_segment"><a class="viewcode-back" href="../../txt2spreadsheet.html#preprocessing.txt2spreadsheet.process_answer_segment">[docs]</a><span class="k">def</span> <span class="nf">process_answer_segment</span><span class="p">(</span><span class="n">raw_item</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="process_answer_segment"><a class="viewcode-back" href="../../ESS.html#preprocessing.txt2spreadsheet.process_answer_segment">[docs]</a><span class="k">def</span> <span class="nf">process_answer_segment</span><span class="p">(</span><span class="n">raw_item</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts and processes the answer segments from a raw item.</span>
 <span class="sd">	The answer segments are always after the {ANSWERS} tag.</span>
@@ -281,7 +281,7 @@
 
 
 
-<div class="viewcode-block" id="set_initial_structures"><a class="viewcode-back" href="../../txt2spreadsheet.html#preprocessing.txt2spreadsheet.set_initial_structures">[docs]</a><span class="k">def</span> <span class="nf">set_initial_structures</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="set_initial_structures"><a class="viewcode-back" href="../../ESS.html#preprocessing.txt2spreadsheet.set_initial_structures">[docs]</a><span class="k">def</span> <span class="nf">set_initial_structures</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Set initial structures that are necessary for the extraction of each questionnaire.</span>
 
@@ -324,7 +324,7 @@
 	<span class="k">return</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span><span class="n">splitter</span></div>
 
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../txt2spreadsheet.html#preprocessing.txt2spreadsheet.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">has_supplementary</span><span class="p">):</span>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../ESS.html#preprocessing.txt2spreadsheet.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">has_supplementary</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Main method of the ESS plain text to spreadsheet data transformation algorithm.</span>
 <span class="sd">	The data is extracted from the plain text file (that obeys an internal specification</span>

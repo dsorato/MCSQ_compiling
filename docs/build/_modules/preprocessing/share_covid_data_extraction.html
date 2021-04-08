@@ -47,7 +47,7 @@
 <span class="kn">import</span> <span class="nn">re</span>
 
 
-<div class="viewcode-block" id="get_language_country_iso_codes"><a class="viewcode-back" href="../../preprocessing_share_covid.html#preprocessing.share_covid_data_extraction.get_language_country_iso_codes">[docs]</a><span class="k">def</span> <span class="nf">get_language_country_iso_codes</span><span class="p">(</span><span class="n">language_country</span><span class="p">):</span>
+<div class="viewcode-block" id="get_language_country_iso_codes"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_covid_data_extraction.get_language_country_iso_codes">[docs]</a><span class="k">def</span> <span class="nf">get_language_country_iso_codes</span><span class="p">(</span><span class="n">language_country</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Returns the ISO codes for language and country based on the values retrieved from input file.</span>
 <span class="sd">	Only for target languages of MCSQ.</span>
@@ -100,7 +100,7 @@
 
 
 
-<div class="viewcode-block" id="retrieve_module_from_item_name"><a class="viewcode-back" href="../../preprocessing_share_covid.html#preprocessing.share_covid_data_extraction.retrieve_module_from_item_name">[docs]</a><span class="k">def</span> <span class="nf">retrieve_module_from_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">):</span>
+<div class="viewcode-block" id="retrieve_module_from_item_name"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_covid_data_extraction.retrieve_module_from_item_name">[docs]</a><span class="k">def</span> <span class="nf">retrieve_module_from_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Returns the module of the question based on the item_name variable.</span>
 <span class="sd">	This information comes from http://www.share-project.org/special-data-sets/share-covid-19-questionnaire.html</span>
@@ -127,7 +127,7 @@
 	<span class="k">elif</span> <span class="s1">&#39;CAF&#39;</span> <span class="ow">in</span> <span class="n">item_name</span><span class="p">:</span>
 		<span class="k">return</span> <span class="s1">&#39;F - Finale&#39;</span></div>
 
-<div class="viewcode-block" id="set_initial_structures"><a class="viewcode-back" href="../../preprocessing_share_covid.html#preprocessing.share_covid_data_extraction.set_initial_structures">[docs]</a><span class="k">def</span> <span class="nf">set_initial_structures</span><span class="p">(</span><span class="n">language_country</span><span class="p">):</span>
+<div class="viewcode-block" id="set_initial_structures"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_covid_data_extraction.set_initial_structures">[docs]</a><span class="k">def</span> <span class="nf">set_initial_structures</span><span class="p">(</span><span class="n">language_country</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Set initial structures that are necessary for the extraction of each questionnaire.</span>
 
@@ -166,7 +166,7 @@
 
   
 
-<div class="viewcode-block" id="replace_abbreviations_and_fills"><a class="viewcode-back" href="../../preprocessing_share_covid.html#preprocessing.share_covid_data_extraction.replace_abbreviations_and_fills">[docs]</a><span class="k">def</span> <span class="nf">replace_abbreviations_and_fills</span><span class="p">(</span><span class="n">sentence</span><span class="p">):</span>
+<div class="viewcode-block" id="replace_abbreviations_and_fills"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_covid_data_extraction.replace_abbreviations_and_fills">[docs]</a><span class="k">def</span> <span class="nf">replace_abbreviations_and_fills</span><span class="p">(</span><span class="n">sentence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Replaces abbreviations and fills text from the text of input file.</span>
 <span class="sd">	</span>
@@ -206,7 +206,7 @@
 
 
 
-<div class="viewcode-block" id="preprocess_answer_segment"><a class="viewcode-back" href="../../preprocessing_share_covid.html#preprocessing.share_covid_data_extraction.preprocess_answer_segment">[docs]</a><span class="k">def</span> <span class="nf">preprocess_answer_segment</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span><span class="p">):</span>
+<div class="viewcode-block" id="preprocess_answer_segment"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_covid_data_extraction.preprocess_answer_segment">[docs]</a><span class="k">def</span> <span class="nf">preprocess_answer_segment</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts and processes the answer segments from the input file.</span>
 
@@ -233,7 +233,7 @@
 	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
 
 
-<div class="viewcode-block" id="preprocess_question_segment"><a class="viewcode-back" href="../../preprocessing_share_covid.html#preprocessing.share_covid_data_extraction.preprocess_question_segment">[docs]</a><span class="k">def</span> <span class="nf">preprocess_question_segment</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span><span class="p">):</span>
+<div class="viewcode-block" id="preprocess_question_segment"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_covid_data_extraction.preprocess_question_segment">[docs]</a><span class="k">def</span> <span class="nf">preprocess_question_segment</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts and processes the question segments from the input file.</span>
 
@@ -260,7 +260,7 @@
 
 	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
 
-<div class="viewcode-block" id="preprocess_instruction_segment"><a class="viewcode-back" href="../../preprocessing_share_covid.html#preprocessing.share_covid_data_extraction.preprocess_instruction_segment">[docs]</a><span class="k">def</span> <span class="nf">preprocess_instruction_segment</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span><span class="p">):</span>
+<div class="viewcode-block" id="preprocess_instruction_segment"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_covid_data_extraction.preprocess_instruction_segment">[docs]</a><span class="k">def</span> <span class="nf">preprocess_instruction_segment</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">splitter</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts and processes the instruction segments from the input file.</span>
 

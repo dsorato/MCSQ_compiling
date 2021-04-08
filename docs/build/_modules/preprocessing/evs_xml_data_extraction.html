@@ -50,7 +50,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">var_names_to_ignore</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;cntry_y&#39;</span><span class="p">,</span> <span class="s1">&#39;cntry1_y&#39;</span><span class="p">,</span> <span class="s1">&#39;country&#39;</span><span class="p">,</span> <span class="s1">&#39;country1&#39;</span><span class="p">,</span> <span class="s1">&#39;split_1&#39;</span><span class="p">,</span> <span class="s1">&#39;split_2&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="retrieve_item_module"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.retrieve_item_module">[docs]</a><span class="k">def</span> <span class="nf">retrieve_item_module</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="retrieve_item_module"><a class="viewcode-back" href="../../EVS.html#preprocessing.evs_xml_data_extraction.retrieve_item_module">[docs]</a><span class="k">def</span> <span class="nf">retrieve_item_module</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Retrieves the module of the survey_item, based on information from the EVSModulesYYYY objects.</span>
 <span class="sd">	This information comes from the EVS_modules_reference.xlsx file, sent by Evelyn.</span>
@@ -116,7 +116,7 @@
 			<span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="process_preqtxt_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_preqtxt_node">[docs]</a><span class="k">def</span> <span class="nf">process_preqtxt_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">preQTxt</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
+<div class="viewcode-block" id="process_preqtxt_node"><a class="viewcode-back" href="../../EVS.html#preprocessing.evs_xml_data_extraction.process_preqtxt_node">[docs]</a><span class="k">def</span> <span class="nf">process_preqtxt_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">preQTxt</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts information from preQTxt node (requests and introductions). The text is split into </span>
 <span class="sd">	sentences and appropriate metadata is attributed to it. </span>
@@ -158,7 +158,7 @@
 	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
 
 
-<div class="viewcode-block" id="process_ivuinstr_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_ivuinstr_node">[docs]</a><span class="k">def</span> <span class="nf">process_ivuinstr_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">ivuInstr</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
+<div class="viewcode-block" id="process_ivuinstr_node"><a class="viewcode-back" href="../../EVS.html#preprocessing.evs_xml_data_extraction.process_ivuinstr_node">[docs]</a><span class="k">def</span> <span class="nf">process_ivuinstr_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">ivuInstr</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts information from ivuInstr node (instructions). The text is split into sentences and appropriate </span>
 <span class="sd">	metadata is attributed to it. </span>
@@ -196,7 +196,7 @@
 	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
 
 
-<div class="viewcode-block" id="process_qstnLit_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_qstnLit_node">[docs]</a><span class="k">def</span> <span class="nf">process_qstnLit_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">qstnLit</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
+<div class="viewcode-block" id="process_qstnLit_node"><a class="viewcode-back" href="../../EVS.html#preprocessing.evs_xml_data_extraction.process_qstnLit_node">[docs]</a><span class="k">def</span> <span class="nf">process_qstnLit_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">qstnLit</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts information from qstnLit node (requests). The text is split into sentences and appropriate </span>
 <span class="sd">	metadata is attributed to it. </span>
@@ -234,7 +234,7 @@
 	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
 
 
-<div class="viewcode-block" id="process_txt_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_txt_node">[docs]</a><span class="k">def</span> <span class="nf">process_txt_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
+<div class="viewcode-block" id="process_txt_node"><a class="viewcode-back" href="../../EVS.html#preprocessing.evs_xml_data_extraction.process_txt_node">[docs]</a><span class="k">def</span> <span class="nf">process_txt_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts information from txt node (requests). The text is split into sentences and appropriate </span>
 <span class="sd">	metadata is attributed to it. </span>
@@ -272,7 +272,7 @@
 	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
 
 
-<div class="viewcode-block" id="process_valid_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_valid_node">[docs]</a><span class="k">def</span> <span class="nf">process_valid_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
+<div class="viewcode-block" id="process_valid_node"><a class="viewcode-back" href="../../EVS.html#preprocessing.evs_xml_data_extraction.process_valid_node">[docs]</a><span class="k">def</span> <span class="nf">process_valid_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calls the appropriate method to extract information from node and its children, when the node is valid </span>
 <span class="sd">	(variable listed in EVSModulesYYYY classes), depending on node tag.</span>
@@ -325,7 +325,7 @@
 
 	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
 
-<div class="viewcode-block" id="process_response_with_id_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_response_with_id_node">[docs]</a><span class="k">def</span> <span class="nf">process_response_with_id_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">response_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="process_response_with_id_node"><a class="viewcode-back" href="../../EVS.html#preprocessing.evs_xml_data_extraction.process_response_with_id_node">[docs]</a><span class="k">def</span> <span class="nf">process_response_with_id_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">response_dict</span><span class="p">):</span>
 
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts information of a response node that contains the attribute ID.</span>
@@ -397,7 +397,7 @@
 	<span class="k">return</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">response_dict</span></div>
 
 
-<div class="viewcode-block" id="process_response_with_id_reference_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_response_with_id_reference_node">[docs]</a><span class="k">def</span> <span class="nf">process_response_with_id_reference_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">response_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="process_response_with_id_reference_node"><a class="viewcode-back" href="../../EVS.html#preprocessing.evs_xml_data_extraction.process_response_with_id_reference_node">[docs]</a><span class="k">def</span> <span class="nf">process_response_with_id_reference_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">response_dict</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts information of a response node that contains a reference to an ID (attribute sdatrefs).</span>
 <span class="sd">	The response text and category value are retrieved from the response_dict dictionary,</span>

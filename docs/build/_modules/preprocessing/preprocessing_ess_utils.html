@@ -46,7 +46,7 @@
 
 
 
-<div class="viewcode-block" id="remove_spaces_from_item_name"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.remove_spaces_from_item_name">[docs]</a><span class="k">def</span> <span class="nf">remove_spaces_from_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">):</span>
+<div class="viewcode-block" id="remove_spaces_from_item_name"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.remove_spaces_from_item_name">[docs]</a><span class="k">def</span> <span class="nf">remove_spaces_from_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Removes spaces in item names such as A 1, because the MCSQ standard are item names without spaces (A1).</span>
 
@@ -57,7 +57,7 @@
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">return</span> <span class="n">item_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="get_country_language_and_study_info"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.get_country_language_and_study_info">[docs]</a><span class="k">def</span> <span class="nf">get_country_language_and_study_info</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="get_country_language_and_study_info"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.get_country_language_and_study_info">[docs]</a><span class="k">def</span> <span class="nf">get_country_language_and_study_info</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Retrieves the country/language and study metadata based on the input filename,</span>
 <span class="sd">	or survey_item_ID prefix.</span>
@@ -87,7 +87,7 @@
 	<span class="k">return</span> <span class="n">study</span><span class="p">,</span> <span class="n">country_language</span></div>
 
 
-<div class="viewcode-block" id="standardize_study_metadata"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.standardize_study_metadata">[docs]</a><span class="k">def</span> <span class="nf">standardize_study_metadata</span><span class="p">(</span><span class="n">study</span><span class="p">):</span>
+<div class="viewcode-block" id="standardize_study_metadata"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.standardize_study_metadata">[docs]</a><span class="k">def</span> <span class="nf">standardize_study_metadata</span><span class="p">(</span><span class="n">study</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Transforms study metadata present in the input file to the standard</span>
 <span class="sd">	used in the MCSQ format.</span>
@@ -109,7 +109,7 @@
 
 
 
-<div class="viewcode-block" id="standardize_supplementary_item_name"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.standardize_supplementary_item_name">[docs]</a><span class="k">def</span> <span class="nf">standardize_supplementary_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">):</span>
+<div class="viewcode-block" id="standardize_supplementary_item_name"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.standardize_supplementary_item_name">[docs]</a><span class="k">def</span> <span class="nf">standardize_supplementary_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Standardizes the item name metadata of supplementary modules G, H and I</span>
 
@@ -136,7 +136,7 @@
 
 
 
-<div class="viewcode-block" id="retrieve_supplementary_module"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.retrieve_supplementary_module">[docs]</a><span class="k">def</span> <span class="nf">retrieve_supplementary_module</span><span class="p">(</span><span class="n">essmodules</span><span class="p">,</span><span class="n">item_name</span><span class="p">):</span>
+<div class="viewcode-block" id="retrieve_supplementary_module"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.retrieve_supplementary_module">[docs]</a><span class="k">def</span> <span class="nf">retrieve_supplementary_module</span><span class="p">(</span><span class="n">essmodules</span><span class="p">,</span><span class="n">item_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Matches the item_name against the dictionary stored in the ESSModulesRRR objects.</span>
 <span class="sd">	Rotating/supplementary modules are defined by round because they may change from</span>
@@ -154,7 +154,7 @@
 			<span class="k">return</span> <span class="n">v</span></div>
 
 
-<div class="viewcode-block" id="retrieve_item_module"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.retrieve_item_module">[docs]</a><span class="k">def</span> <span class="nf">retrieve_item_module</span><span class="p">(</span><span class="n">item_name</span><span class="p">,</span> <span class="n">study</span><span class="p">):</span>
+<div class="viewcode-block" id="retrieve_item_module"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.retrieve_item_module">[docs]</a><span class="k">def</span> <span class="nf">retrieve_item_module</span><span class="p">(</span><span class="n">item_name</span><span class="p">,</span> <span class="n">study</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Retrieves the module of the survey_item, based on information from the ESSModulesRRR objects.</span>
 <span class="sd">	This information comes from the source questionnaires.</span>
@@ -221,7 +221,7 @@
 			<span class="k">return</span> <span class="n">v</span></div>
 
 
-<div class="viewcode-block" id="clean_text"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.clean_text">[docs]</a><span class="k">def</span> <span class="nf">clean_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="clean_text"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.clean_text">[docs]</a><span class="k">def</span> <span class="nf">clean_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Cleans Request, Introduction and Instruction text segments by removing</span>
 <span class="sd">	undesired characters and standardizing some character representations.</span>
@@ -310,7 +310,7 @@
 	<span class="k">return</span> <span class="n">text</span></div>
 
 
-<div class="viewcode-block" id="expand_interviewer_abbreviations"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.expand_interviewer_abbreviations">[docs]</a><span class="k">def</span> <span class="nf">expand_interviewer_abbreviations</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="expand_interviewer_abbreviations"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.expand_interviewer_abbreviations">[docs]</a><span class="k">def</span> <span class="nf">expand_interviewer_abbreviations</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Switches abbreviations of the word interviewer for the full form.</span>
 
@@ -338,7 +338,7 @@
 	<span class="k">return</span> <span class="n">text</span></div>
 
 
-<div class="viewcode-block" id="instantiate_special_answer_category_object"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.instantiate_special_answer_category_object">[docs]</a><span class="k">def</span> <span class="nf">instantiate_special_answer_category_object</span><span class="p">(</span><span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="instantiate_special_answer_category_object"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.instantiate_special_answer_category_object">[docs]</a><span class="k">def</span> <span class="nf">instantiate_special_answer_category_object</span><span class="p">(</span><span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Instantiates the SpecialAnswerCategories object that stores both the text</span>
 <span class="sd">	and category values of the special answers (don&#39;t know, refusal, not applicable </span>
@@ -381,7 +381,7 @@
 	<span class="k">return</span> <span class="n">ess_special_answer_categories</span></div>
 
 
-<div class="viewcode-block" id="check_if_answer_is_special_category"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.check_if_answer_is_special_category">[docs]</a><span class="k">def</span> <span class="nf">check_if_answer_is_special_category</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">answer_value</span><span class="p">,</span> <span class="n">ess_special_answer_categories</span><span class="p">):</span>
+<div class="viewcode-block" id="check_if_answer_is_special_category"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.check_if_answer_is_special_category">[docs]</a><span class="k">def</span> <span class="nf">check_if_answer_is_special_category</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">answer_value</span><span class="p">,</span> <span class="n">ess_special_answer_categories</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Verifies if a given answer segment is one of the special answer categories,</span>
 <span class="sd">	by testing the answer text against the attributes of SpecialAnswerCategories object.</span>
@@ -408,7 +408,7 @@
 	<span class="k">return</span> <span class="n">text</span><span class="p">,</span> <span class="n">answer_value</span></div>
 
 
-<div class="viewcode-block" id="clean_answer"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.clean_answer">[docs]</a><span class="k">def</span> <span class="nf">clean_answer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">ess_special_answer_categories</span><span class="p">):</span>
+<div class="viewcode-block" id="clean_answer"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.clean_answer">[docs]</a><span class="k">def</span> <span class="nf">clean_answer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">ess_special_answer_categories</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Cleans the answer segment, by standardizing the text (when it is a special answer category),</span>
 <span class="sd">	and attributing an category value to it. </span>
@@ -571,7 +571,7 @@
 
 
 
-<div class="viewcode-block" id="check_if_segment_is_instruction"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.check_if_segment_is_instruction">[docs]</a><span class="k">def</span> <span class="nf">check_if_segment_is_instruction</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="check_if_segment_is_instruction"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.check_if_segment_is_instruction">[docs]</a><span class="k">def</span> <span class="nf">check_if_segment_is_instruction</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calls the appropriate instruction recognition method, according to the language.</span>
 <span class="sd">	</span>
@@ -600,7 +600,7 @@
 		<span class="k">return</span> <span class="n">instruction_recognition_russian</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span><span class="n">country_language</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="instruction_recognition_russian"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.instruction_recognition_russian">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_russian</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="instruction_recognition_russian"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.instruction_recognition_russian">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_russian</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Recognizes an instruction segment for texts written in Russian,</span>
 <span class="sd">	based on regex named groups patterns.</span>
@@ -1180,7 +1180,7 @@
 
 
 
-<div class="viewcode-block" id="instruction_recognition_german"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.instruction_recognition_german">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_german</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="instruction_recognition_german"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.instruction_recognition_german">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_german</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Recognizes an instruction segment for texts written in German,</span>
 <span class="sd">	based on regex named groups patterns.</span>
@@ -1484,7 +1484,7 @@
 
 
 
-<div class="viewcode-block" id="instruction_recognition_norwegian"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.instruction_recognition_norwegian">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_norwegian</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="instruction_recognition_norwegian"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.instruction_recognition_norwegian">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_norwegian</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Recognizes an instruction segment for texts written in Norwegian,</span>
 <span class="sd">	based on regex named groups patterns.</span>
@@ -1730,7 +1730,7 @@
 
 
 
-<div class="viewcode-block" id="instruction_recognition_french"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.instruction_recognition_french">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_french</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="instruction_recognition_french"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.instruction_recognition_french">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_french</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Recognizes an instruction segment for texts written in French,</span>
 <span class="sd">	based on regex named groups patterns.</span>
@@ -1978,7 +1978,7 @@
 		<span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="instruction_recognition_english"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.instruction_recognition_english">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_english</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="instruction_recognition_english"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.instruction_recognition_english">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_english</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Recognizes an instruction segment for texts written in English,</span>
 <span class="sd">	based on regex named groups patterns.</span>
@@ -2167,7 +2167,7 @@
 	<span class="k">return</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="instruction_recognition_czech"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.instruction_recognition_czech">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_czech</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="instruction_recognition_czech"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.instruction_recognition_czech">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_czech</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Recognizes an instruction segment for texts written in Czech,</span>
 <span class="sd">	based on regex named groups patterns.</span>
@@ -2389,7 +2389,7 @@
 	<span class="k">return</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="instruction_recognition_portuguese"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.instruction_recognition_portuguese">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_portuguese</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="instruction_recognition_portuguese"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.instruction_recognition_portuguese">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_portuguese</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Recognizes an instruction segment for texts written in Portuguese,</span>
 <span class="sd">	based on regex named groups patterns.</span>
@@ -2576,7 +2576,7 @@
 	<span class="k">return</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="instruction_recognition_catalan_spanish"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_ess_utils.instruction_recognition_catalan_spanish">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_catalan_spanish</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="instruction_recognition_catalan_spanish"><a class="viewcode-back" href="../../ESS.html#preprocessing.preprocessing_ess_utils.instruction_recognition_catalan_spanish">[docs]</a><span class="k">def</span> <span class="nf">instruction_recognition_catalan_spanish</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Recognizes an instruction segment for texts written either in Spanish or Catalan,</span>
 <span class="sd">	based on regex named groups patterns.</span>
