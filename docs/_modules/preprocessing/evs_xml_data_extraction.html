@@ -1,0 +1,545 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>preprocessing.evs_xml_data_extraction &#8212; MCSQ compiling 2 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">preprocessing.evs_xml_data_extraction</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for preprocessing.evs_xml_data_extraction</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+<span class="kn">import</span> <span class="nn">utils</span> <span class="k">as</span> <span class="nn">ut</span>
+<span class="kn">from</span> <span class="nn">preprocessing_evs_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">evsmodules</span> <span class="kn">import</span> <span class="o">*</span> 
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Workaround to exclude country-specific definitions from ENG_SOURCE file.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">var_names_to_ignore</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;cntry_y&#39;</span><span class="p">,</span> <span class="s1">&#39;cntry1_y&#39;</span><span class="p">,</span> <span class="s1">&#39;country&#39;</span><span class="p">,</span> <span class="s1">&#39;country1&#39;</span><span class="p">,</span> <span class="s1">&#39;split_1&#39;</span><span class="p">,</span> <span class="s1">&#39;split_2&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="retrieve_item_module"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.retrieve_item_module">[docs]</a><span class="k">def</span> <span class="nf">retrieve_item_module</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Retrieves the module of the survey_item, based on information from the EVSModulesYYYY objects.</span>
+<span class="sd">	This information comes from the EVS_modules_reference.xlsx file, sent by Evelyn.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 study (string): study metadata, embedded in the file name.</span>
+<span class="sd">		param2 country_language (string): country_language metadata, embedded in the file name.</span>
+<span class="sd">		param3 name (string): attribute &#39;name&#39; of the analyzed node, which is an EVS variable. </span>
+<span class="sd">		The interest variables are listed in the EVSModulesYYYY objects.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		appropriate module of survey_item (string).</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Names such as PT26, PT11-PT12 will be attributed to a National Module.</span>
+<span class="sd">	Such variables are not referenced in the EVS_modules_reference.xlsx file.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">country</span> <span class="o">=</span> <span class="n">country_language</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+	<span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">country</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;Country-localized questions&#39;</span>
+
+	<span class="k">else</span><span class="p">:</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Instantiate either EVSModules2008 or EVSModules1999 class, depending on the study year.</span>
+<span class="sd">		The EVSModulesYYYY class holds information about EVS modules for the year YYYY. </span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		The modules &#39;Life Experiences&#39;, &quot;Respondent&#39;s parents&quot; and &quot;Respondent&#39;s partner&quot; </span>
+<span class="sd">		are not present in EVS 1999.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="s1">&#39;2008&#39;</span> <span class="ow">in</span> <span class="n">study</span><span class="p">:</span>
+			<span class="n">evsmodules</span> <span class="o">=</span> <span class="n">EVSModules2008</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">evsmodules</span><span class="o">.</span><span class="n">life_experiences</span><span class="p">:</span>
+				<span class="k">return</span> <span class="s1">&#39;Life Experiences&#39;</span>
+			<span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">evsmodules</span><span class="o">.</span><span class="n">respondent_parents</span><span class="p">:</span>
+				<span class="k">return</span> <span class="s2">&quot;Respondent&#39;s parents&quot;</span>
+			<span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">evsmodules</span><span class="o">.</span><span class="n">respondent_partner</span><span class="p">:</span>
+				<span class="k">return</span> <span class="s2">&quot;Respondent&#39;s partner&quot;</span>
+
+		<span class="k">elif</span> <span class="s1">&#39;1999&#39;</span> <span class="ow">in</span> <span class="n">study</span><span class="p">:</span>
+			<span class="n">evsmodules</span> <span class="o">=</span> <span class="n">EVSModules1999</span><span class="p">()</span>
+
+		<span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">evsmodules</span><span class="o">.</span><span class="n">perceptions_of_life</span><span class="p">:</span>
+				<span class="k">return</span> <span class="s1">&#39;Perceptions of Life&#39;</span>
+		<span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">evsmodules</span><span class="o">.</span><span class="n">politics_and_society</span><span class="p">:</span>
+				<span class="k">return</span> <span class="s1">&#39;Politics and Society&#39;</span>
+		<span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">evsmodules</span><span class="o">.</span><span class="n">environment</span><span class="p">:</span>
+				<span class="k">return</span> <span class="s1">&#39;Environment&#39;</span>
+		<span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">evsmodules</span><span class="o">.</span><span class="n">family</span><span class="p">:</span>
+				<span class="k">return</span> <span class="s1">&#39;Family&#39;</span>
+		<span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">evsmodules</span><span class="o">.</span><span class="n">work</span><span class="p">:</span>
+				<span class="k">return</span> <span class="s1">&#39;Work&#39;</span>
+		<span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">evsmodules</span><span class="o">.</span><span class="n">religion_and_morale</span><span class="p">:</span>
+				<span class="k">return</span> <span class="s1">&#39;Religion and Morale&#39;</span>
+		<span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">evsmodules</span><span class="o">.</span><span class="n">national_identity</span><span class="p">:</span>
+				<span class="k">return</span> <span class="s1">&#39;National Identity&#39;</span>
+		<span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">evsmodules</span><span class="o">.</span><span class="n">socio_demographics</span><span class="p">:</span>
+				<span class="k">return</span> <span class="s1">&#39;Socio Demographics and Interview Characteristics&#39;</span>
+		<span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">evsmodules</span><span class="o">.</span><span class="n">administrative</span><span class="p">:</span>
+				<span class="k">return</span> <span class="s1">&#39;Administrative/Protocol Variables&#39;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="process_preqtxt_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_preqtxt_node">[docs]</a><span class="k">def</span> <span class="nf">process_preqtxt_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">preQTxt</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Extracts information from preQTxt node (requests and introductions). The text is split into </span>
+<span class="sd">	sentences and appropriate metadata is attributed to it. </span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 filename (string): name of the input file. It will be used to instantiate the sentence splitter.</span>
+<span class="sd">		param2 preQTxt (ElementTree node object): valid node that is being analyzed.</span>
+<span class="sd">		param3 survey_item_prefix (string): prefix of the survey_item_ID metadata</span>
+<span class="sd">		param4 study (string): study metadata, retrieved from the filename.</span>
+<span class="sd">		param5 item_name (string): item_name metadata, retrieved from the process_valid_node() method.</span>
+<span class="sd">		param6 module (string): module of survey_item, extracted in previous steps of the loop.</span>
+<span class="sd">		param df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		updated df_questionnaire when new valid information extracted from the preQTxt node is included, </span>
+<span class="sd">		or df_questionnaire in the same state it was when no new valid segments are included.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">splitter</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_sentence_splitter</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="s1">&#39;?&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">preQTxt</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+		<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INTRODUCTION&#39;</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">clean_text</span><span class="p">(</span><span class="n">preQTxt</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">clean_text</span><span class="p">(</span><span class="n">preQTxt</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+		<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;REQUEST&#39;</span>
+
+	<span class="n">sentences</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+			<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+
+		<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;survey_item_ID&quot;</span><span class="p">:</span> <span class="n">survey_item_id</span><span class="p">,</span><span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">study</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span><span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> 
+		<span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">item_name</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">sentence</span><span class="p">}</span>
+		<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
+
+
+<div class="viewcode-block" id="process_ivuinstr_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_ivuinstr_node">[docs]</a><span class="k">def</span> <span class="nf">process_ivuinstr_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">ivuInstr</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Extracts information from ivuInstr node (instructions). The text is split into sentences and appropriate </span>
+<span class="sd">	metadata is attributed to it. </span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 filename (string): name of the input file. It will be used to instantiate the sentence splitter.</span>
+<span class="sd">		param2 ivuInstr (ElementTree node object): valid node that is being analyzed.</span>
+<span class="sd">		param3 survey_item_prefix (string): prefix of the survey_item_ID metadata</span>
+<span class="sd">		param4 study (string): study metadata, retrieved from the filename.</span>
+<span class="sd">		param5 item_name (string): item_name metadata, retrieved from the process_valid_node() method.</span>
+<span class="sd">		param6 module (string): module of survey_item, extracted in previous steps of the loop.</span>
+<span class="sd">		param7 df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		updated df_questionnaire when new valid information extracted from the ivuInstr node is included, </span>
+<span class="sd">		or df_questionnaire in the same state it was when no new valid segments are included.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">splitter</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_sentence_splitter</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+	<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;INSTRUCTION&#39;</span>
+	<span class="n">text</span> <span class="o">=</span> <span class="n">clean_instruction</span><span class="p">(</span><span class="n">ivuInstr</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+	
+	<span class="n">sentences</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+			<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+
+		<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;survey_item_ID&quot;</span><span class="p">:</span> <span class="n">survey_item_id</span><span class="p">,</span><span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">study</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span><span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> 
+		<span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">item_name</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">sentence</span><span class="p">}</span>
+		<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
+
+
+<div class="viewcode-block" id="process_qstnLit_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_qstnLit_node">[docs]</a><span class="k">def</span> <span class="nf">process_qstnLit_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">qstnLit</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Extracts information from qstnLit node (requests). The text is split into sentences and appropriate </span>
+<span class="sd">	metadata is attributed to it. </span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 filename (string): name of the input file. It will be used to instantiate the sentence splitter.</span>
+<span class="sd">		param2 qstnLit (ElementTree node object): valid node that is being analyzed.</span>
+<span class="sd">		param3 survey_item_prefix (string): prefix of the survey_item_ID metadata</span>
+<span class="sd">		param4 study (string): study metadata, retrieved from the filename.</span>
+<span class="sd">		param5 item_name (string): item_name metadata, retrieved from the process_valid_node() method.</span>
+<span class="sd">		param6 module (string): module of survey_item, extracted in previous steps of the loop.</span>
+<span class="sd">		param7 df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		updated df_questionnaire when new valid information extracted from the qstnLit node is included, </span>
+<span class="sd">		or df_questionnaire in the same state it was when no new valid segments are included.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">splitter</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_sentence_splitter</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+	<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;REQUEST&#39;</span>
+	<span class="n">text</span> <span class="o">=</span> <span class="n">clean_text</span><span class="p">(</span><span class="n">qstnLit</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+	
+	<span class="n">sentences</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+			<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+
+		<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;survey_item_ID&quot;</span><span class="p">:</span> <span class="n">survey_item_id</span><span class="p">,</span><span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">study</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span><span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> 
+		<span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">item_name</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">sentence</span><span class="p">}</span>
+		<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
+
+
+<div class="viewcode-block" id="process_txt_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_txt_node">[docs]</a><span class="k">def</span> <span class="nf">process_txt_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Extracts information from txt node (requests). The text is split into sentences and appropriate </span>
+<span class="sd">	metadata is attributed to it. </span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 filename (string): name of the input file. It will be used to instantiate the sentence splitter.</span>
+<span class="sd">		param2 txt (ElementTree node object): valid node that is being analyzed.</span>
+<span class="sd">		param3 survey_item_prefix (string): prefix of the survey_item_ID metadata</span>
+<span class="sd">		param4 study (string): study metadata, retrieved from the filename.</span>
+<span class="sd">		param5 item_name (string): item_name metadata, retrieved from the process_valid_node() method.</span>
+<span class="sd">		param6 module (string): module of survey_item, extracted in previous steps of the loop.</span>
+<span class="sd">		param7 df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		updated df_questionnaire when new valid information extracted from the txt node is included, </span>
+<span class="sd">		or df_questionnaire in the same state it was when no new valid segments are included.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">splitter</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_sentence_splitter</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+	<span class="n">item_type</span> <span class="o">=</span> <span class="s1">&#39;REQUEST&#39;</span>
+	<span class="n">text</span> <span class="o">=</span> <span class="n">clean_text</span><span class="p">(</span><span class="n">txt</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+	
+	<span class="n">sentences</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+			<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+
+		<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;survey_item_ID&quot;</span><span class="p">:</span> <span class="n">survey_item_id</span><span class="p">,</span><span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">study</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span><span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> 
+		<span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">item_name</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">sentence</span><span class="p">}</span>
+		<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
+
+
+<div class="viewcode-block" id="process_valid_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_valid_node">[docs]</a><span class="k">def</span> <span class="nf">process_valid_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Calls the appropriate method to extract information from node and its children, when the node is valid </span>
+<span class="sd">	(variable listed in EVSModulesYYYY classes), depending on node tag.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 filename (string): name of the input file. It will be used to instantiate the sentence splitter.</span>
+<span class="sd">		param2 node (ElementTree node object): valid node that is being analyzed.</span>
+<span class="sd">		param3 survey_item_prefix (string): prefix of the survey_item_ID metadata</span>
+<span class="sd">		param4 study (string): study metadata, retrieved from the filename.</span>
+<span class="sd">		param5 module (string): module of survey_item, extracted in previous steps of the loop.</span>
+<span class="sd">		param6 df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		updated df_questionnaire when new valid information extracted from node is included, </span>
+<span class="sd">		or df_questionnaire in the same state it was when no new valid segments are included.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A valid node can have qstn or txt (or both inside the same node) child nodes.</span>
+<span class="sd">	The attribute that stores the item_name depends on the type of the node (qstn or txt).</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">getiterator</span><span class="p">():</span>
+		<span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;qstn&#39;</span> <span class="ow">and</span> <span class="s1">&#39;seqNo&#39;</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;seqNo&#39;</span><span class="p">]</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">standardize_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span>
+
+			<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			qstn nodes can have preQTxt (requests or introductions), ivuInstr (instructions) or</span>
+<span class="sd">			qstnLit (requests) child nodes.</span>
+<span class="sd">			&quot;&quot;&quot;</span>	
+			<span class="k">for</span> <span class="n">grandchild</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">getiterator</span><span class="p">():</span>
+				<span class="k">if</span> <span class="n">grandchild</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;preQTxt&#39;</span><span class="p">:</span>
+					<span class="n">df_questionnaire</span><span class="o">=</span> <span class="n">process_preqtxt_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">grandchild</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">)</span>
+				
+				<span class="k">if</span> <span class="n">grandchild</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;ivuInstr&#39;</span><span class="p">:</span>
+					<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">process_ivuinstr_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">grandchild</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">)</span>
+				
+				<span class="k">if</span> <span class="n">grandchild</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;qstnLit&#39;</span><span class="p">:</span>
+					<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">process_qstnLit_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">grandchild</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">)</span>
+
+		<span class="k">elif</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;txt&#39;</span> <span class="ow">and</span> <span class="s1">&#39;level&#39;</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;level&#39;</span><span class="p">]</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">standardize_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span>
+
+			<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			txt nodes do not have children.</span>
+<span class="sd">			&quot;&quot;&quot;</span>
+			<span class="n">text</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">text</span>
+			<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">process_txt_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">child</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">)</span>
+
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
+
+<div class="viewcode-block" id="process_response_with_id_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_response_with_id_node">[docs]</a><span class="k">def</span> <span class="nf">process_response_with_id_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">response_dict</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Extracts information of a response node that contains the attribute ID.</span>
+<span class="sd">	If the node has the ID attribute, the translation text is in this node.</span>
+<span class="sd">	The text and category value will be stored in the response_dict dictionary,</span>
+<span class="sd">	to be used in response categories with references to the ID.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 filename (string): name of the input file.</span>
+<span class="sd">		param2 node (ElementTree node object): response category node that is being analyzed.</span>
+<span class="sd">		param3 survey_item_prefix (string): prefix of the survey_item_ID metadata</span>
+<span class="sd">		param4 study (string): study metadata, retrieved from the filename.</span>
+<span class="sd">		param5 df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.</span>
+<span class="sd">		param6 response_dict (dictionary): dictionary that stores response category text and value.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		df_questionnaire (pandas dataframe), with new information extracted from the response node and updated response_dict.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Determine the country using the information contained in the filename.</span>
+<span class="sd">	Information needed to exclude some unecessary segments of the EVS XML file.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">country</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">determine_country</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	The pattern is a workaround to exclude country-specific category </span>
+<span class="sd">	definitions from ENG_SOURCE file.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">category_value</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+	<span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;([A-Z][A-Z][0-9]*)&quot;</span><span class="p">)</span>
+
+	<span class="n">txt</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;txt&#39;</span><span class="p">)</span>
+	<span class="n">catValu</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;catValu&#39;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+		<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">txt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">txt</span><span class="o">.</span><span class="n">text</span> <span class="o">!=</span> <span class="n">country</span> <span class="ow">and</span> <span class="n">txt</span><span class="o">.</span><span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="n">last_row</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="n">module</span> <span class="o">=</span> <span class="n">last_row</span><span class="p">[</span><span class="s1">&#39;module&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+		<span class="n">module</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+		<span class="n">item_name</span> <span class="o">=</span> <span class="n">last_row</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+		<span class="n">item_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">clean_answer_text_evs</span><span class="p">(</span><span class="n">txt</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Workround added to treat cases such as</span>
+<span class="sd">		&lt;catgry ID=&quot;AV81549&quot; missing=&quot;N&quot;&gt;</span>
+<span class="sd">			&lt;catValu&gt;1,2&lt;/catValu&gt;</span>
+<span class="sd">			&lt;labl&gt;Rural Economies&lt;/labl&gt;</span>
+<span class="sd">			&lt;txt ID=&quot;SA81551&quot; sdatrefs=&quot;S1&quot;&gt;Rural Economies&lt;/txt&gt;</span>
+<span class="sd">		&lt;/catgry&gt;</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="s1">&#39;,&#39;</span> <span class="ow">in</span> <span class="n">catValu</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+			<span class="n">category_value</span> <span class="o">=</span> <span class="n">standardize_special_response_category_value</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">catValu</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">catValu</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="n">category_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">standardize_special_response_category_value</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">catValu</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
+		
+		<span class="k">if</span> <span class="n">category_value</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+			<span class="n">response_dict</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">text</span><span class="p">,</span> <span class="n">category_value</span>
+
+			<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;survey_item_ID&quot;</span><span class="p">:</span> <span class="n">survey_item_id</span><span class="p">,</span><span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">study</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span><span class="n">module</span><span class="p">,</span>
+			<span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="s1">&#39;RESPONSE&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">item_name</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="n">category_value</span><span class="p">,</span>  
+			<span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">text</span><span class="p">}</span>
+			<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">response_dict</span></div>
+
+
+<div class="viewcode-block" id="process_response_with_id_reference_node"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.evs_xml_data_extraction.process_response_with_id_reference_node">[docs]</a><span class="k">def</span> <span class="nf">process_response_with_id_reference_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">response_dict</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Extracts information of a response node that contains a reference to an ID (attribute sdatrefs).</span>
+<span class="sd">	The response text and category value are retrieved from the response_dict dictionary,</span>
+<span class="sd">	updated in the process_response_with_id_node method.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param node (ElementTree node object): response category node that is being analyzed.</span>
+<span class="sd">		param survey_item_prefix (string): prefix of the survey_item_ID metadata</span>
+<span class="sd">		param study (string): study metadata, retrieved from the filename.</span>
+<span class="sd">		param df_questionnaire (pandas dataframe): pandas dataframe where the questionnaire is being stored.</span>
+<span class="sd">		param response_dict (dictionary) dictionary that stores response category text and value.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		df_questionnaire (pandas dataframe), with new information extracted from the response node.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+		<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">survey_item_id</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix</span><span class="p">)</span>
+
+	<span class="n">last_row</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+	<span class="n">module</span> <span class="o">=</span> <span class="n">last_row</span><span class="p">[</span><span class="s1">&#39;module&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+	<span class="n">module</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+	<span class="n">item_name</span> <span class="o">=</span> <span class="n">last_row</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+	<span class="n">item_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span>
+	<span class="n">text</span> <span class="o">=</span> <span class="n">response_dict</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;sdatrefs&#39;</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">category_value</span> <span class="o">=</span> <span class="n">response_dict</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;sdatrefs&#39;</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
+
+	<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;survey_item_ID&quot;</span><span class="p">:</span> <span class="n">survey_item_id</span><span class="p">,</span><span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">study</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span><span class="n">module</span><span class="p">,</span>
+	<span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="s1">&#39;RESPONSE&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">item_name</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="n">category_value</span><span class="p">,</span>  
+	<span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">text</span><span class="p">}</span>
+	<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+	<span class="n">response_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	The prefix of a EVS survey item is study+&#39;_&#39;+language+&#39;_&#39;+country+&#39;_&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">survey_item_prefix</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_&#39;</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Reset the initial survey_id sufix, because main is called iterativelly for every XML file in folder.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">ut</span><span class="o">.</span><span class="n">reset_initial_sufix</span><span class="p">()</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Retrieve study and country_language information from the name of the input file. </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">study</span><span class="p">,</span> <span class="n">country_language</span> <span class="o">=</span> <span class="n">get_country_language_and_study_info</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+	
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A pandas dataframe to store the questionnaire data being extracted. </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">,</span><span class="s1">&#39;item_type&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">])</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Parse the input XML file by filename</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+	<span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+	<span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Create a dictionary containing parent-child relations of the parsed tree</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">parent_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">getiterator</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">p</span><span class="p">)</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Relevant information from the EVS input files can be found on var nodes.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">evs_vars</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;.//dataDscr/var&#39;</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">evs_vars</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">getiterator</span><span class="p">():</span>
+
+			<span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+				<span class="n">module</span> <span class="o">=</span> <span class="n">retrieve_item_module</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+				<span class="k">if</span> <span class="n">module</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+					<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">process_valid_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span><span class="o">==</span><span class="s1">&#39;catgry&#39;</span> <span class="ow">and</span> <span class="s1">&#39;ID&#39;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">var_names_to_ignore</span><span class="p">:</span>
+				<span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">response_dict</span> <span class="o">=</span> <span class="n">process_response_with_id_node</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">response_dict</span><span class="p">)</span>
+				
+
+			<span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span><span class="o">==</span><span class="s1">&#39;catgry&#39;</span> <span class="ow">and</span> <span class="s1">&#39;sdatrefs&#39;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">parent_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">var_names_to_ignore</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;sdatrefs&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">response_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+					<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">process_response_with_id_reference_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">response_dict</span><span class="p">)</span>
+					
+
+
+			
+
+	<span class="n">csv_name</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+	<span class="n">df_questionnaire</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">csv_name</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Executing data extraction script for EVS 1999/2008 (xml files)&quot;</span><span class="p">)</span>
+	<span class="n">main</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">preprocessing.evs_xml_data_extraction</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

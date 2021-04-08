@@ -10,7 +10,6 @@ Contents
    :maxdepth: 2
 
    preprocessing.rst
-   alignment.rst
    annotation.rst
    db.rst
 

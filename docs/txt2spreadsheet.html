@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data preprocessing and transformation methods for ESS data (plain text to spreadsheet) &#8212; MCSQ compiling 2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data preprocessing and transformation methods for ESS/EVS data (XML to spreadsheet)" href="xml2spreadsheet.html" />
+    <link rel="prev" title="Preprocessing Utils" href="preprocessing_utils.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="xml2spreadsheet.html" title="Data preprocessing and transformation methods for ESS/EVS data (XML to spreadsheet)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="preprocessing_utils.html" title="Preprocessing Utils"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="contents.html" >Contents</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="preprocessing.html" accesskey="U">Data preprocessing methods (EVS, ESS and SHARE)</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Data preprocessing and transformation methods for ESS data (plain text to spreadsheet)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="data-preprocessing-and-transformation-methods-for-ess-data-plain-text-to-spreadsheet">
+<h1>Data preprocessing and transformation methods for ESS data (plain text to spreadsheet)<a class="headerlink" href="#data-preprocessing-and-transformation-methods-for-ess-data-plain-text-to-spreadsheet" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-preprocessing.txt2spreadsheet"></span><dl class="py function">
+<dt id="preprocessing.txt2spreadsheet.main">
+<code class="sig-prename descclassname">preprocessing.txt2spreadsheet.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">folder_path</span></em>, <em class="sig-param"><span class="n">has_supplementary</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/txt2spreadsheet.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.txt2spreadsheet.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main method of the ESS plain text to spreadsheet data transformation algorithm.
+The data is extracted from the plain text file (that obeys an internal specification
+for the MCSQ project), preprocessed and receives appropriate metadata attribution.</p>
+<p>The algorithm outputs the csv representation of the df_questionnaire, used to store
+questionnaire data (pandas dataframe)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_path</strong> (<em>param1</em>) – path to the folder where the plain text files are.</p></li>
+<li><p><strong>has_supplementary</strong> (<em>param2</em>) – boolean variable that indicates if there is a supplementary spreadsheet to be appended.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.txt2spreadsheet.process_answer_segment">
+<code class="sig-prename descclassname">preprocessing.txt2spreadsheet.</code><code class="sig-name descname">process_answer_segment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_item</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">study</span></em>, <em class="sig-param"><span class="n">item_name</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/txt2spreadsheet.html#process_answer_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.txt2spreadsheet.process_answer_segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts and processes the answer segments from a raw item.
+The answer segments are always after the {ANSWERS} tag.
+If there are no answer segments, then the answer segment is the corresponding to
+‘write down’ for the target language.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw_item</strong> (<em>param1</em>) – raw survey item, retrieved in previous steps.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param2</em>) – prefix of survey_item_ID.</p></li>
+<li><p><strong>study</strong> (<em>param3</em>) – metadata parameter about study embedded in the file name.</p></li>
+<li><p><strong>item_name</strong> (<em>param4</em>) – item_name metadata parameter, retrieved in previous steps.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param5</em>) – pandas dataframe to store questionnaire data.</p></li>
+<li><p><strong>country_language</strong> (<em>param6</em>) – country_language metadata, embedded in file name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>updated df_questionnaire when new valid answer segments are included, or df_questionnaire in
+the same state it was when no new valid answer segments were included.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.txt2spreadsheet.process_intro_segment">
+<code class="sig-prename descclassname">preprocessing.txt2spreadsheet.</code><code class="sig-name descname">process_intro_segment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_item</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">study</span></em>, <em class="sig-param"><span class="n">item_name</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">splitter</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/txt2spreadsheet.html#process_intro_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.txt2spreadsheet.process_intro_segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts and processes the introduction segments from a raw item.
+The introduction segments are always between the item name and {QUESTION} tag,
+for instance:</p>
+<p>{INTRO}
+Ara m’agradaria fer-li algunes preguntes sobre política i el govern.</p>
+<p>B1
+{QUESTION}
+En quina mesura diria vostè que l’interessa la política?
+Vostè diria que l’interessa…</p>
+<p>{ANSWERS}
+Molt
+Bastant
+Poc
+Gens</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw_item</strong> (<em>param1</em>) – raw survey item, retrieved in previous steps.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param2</em>) – prefix of survey_item_ID.</p></li>
+<li><p><strong>study</strong> (<em>param3</em>) – metadata parameter about study embedded in the file name.</p></li>
+<li><p><strong>item_name</strong> (<em>param4</em>) – item_name metadata parameter, retrieved in previous steps.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param5</em>) – pandas dataframe to store questionnaire data.</p></li>
+<li><p><strong>splitter</strong> (<em>param6</em>) – sentence segmentation from NLTK library.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>updated df_questionnaire when new valid introduction segments are included, or df_questionnaire in
+the same state it was when no new valid introduction segments were included.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.txt2spreadsheet.process_question_segment">
+<code class="sig-prename descclassname">preprocessing.txt2spreadsheet.</code><code class="sig-name descname">process_question_segment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_item</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">study</span></em>, <em class="sig-param"><span class="n">item_name</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">splitter</span></em>, <em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/txt2spreadsheet.html#process_question_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.txt2spreadsheet.process_question_segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts and processes the question segments from a raw item.
+The question segments are always between the {QUESTION} and {ANSWERS} tags,
+for instance:</p>
+<p>G2
+{QUESTION}
+Per a ell és important ser ric.
+Vol tenir molts diners i coses cares.</p>
+<p>{ANSWERS}
+Se sembla molt a mi
+Se sembla a mi
+Se sembla una mica a mi
+Se sembla poc a mi
+No se sembla a mi
+No se sembla gens a mi</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw_item</strong> (<em>param1</em>) – raw survey item, retrieved in previous steps.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param2</em>) – prefix of survey_item_ID.</p></li>
+<li><p><strong>study</strong> (<em>param3</em>) – metadata parameter about study embedded in the file name.</p></li>
+<li><p><strong>item_name</strong> (<em>param4</em>) – item_name metadata parameter, retrieved in previous steps.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param5</em>) – pandas dataframe to store questionnaire data.</p></li>
+<li><p><strong>splitter</strong> (<em>param6</em>) – sentence segmentation from NLTK library.</p></li>
+<li><p><strong>country_language</strong> (<em>param7</em>) – country_language metadata, embedded in file name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>updated df_questionnaire when new valid question segments are included, or df_questionnaire in the same state it
+was when no new valid question segments were included.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.txt2spreadsheet.retrieve_raw_items_from_file">
+<code class="sig-prename descclassname">preprocessing.txt2spreadsheet.</code><code class="sig-name descname">retrieve_raw_items_from_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/txt2spreadsheet.html#retrieve_raw_items_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.txt2spreadsheet.retrieve_raw_items_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the raw items from ESS plain text file, based on an item name regex pattern.
+Also excludes blank lines and non relevant scale items.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>param1</em>) – input ESS plain text file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>retrieved raw items (list of strings).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.txt2spreadsheet.set_initial_structures">
+<code class="sig-prename descclassname">preprocessing.txt2spreadsheet.</code><code class="sig-name descname">set_initial_structures</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/txt2spreadsheet.html#set_initial_structures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.txt2spreadsheet.set_initial_structures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set initial structures that are necessary for the extraction of each questionnaire.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>param1</em>) – name of the input file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_questionnaire to store questionnaire data (pandas dataframe),
+survey_item_prefix, which is the prefix of survey_item_ID (string),
+study/country_language, which are metadata parameters embedded in the file name (string and string)
+and sentence splitter to segment request/introduction/instruction segments when necessary (NLTK object).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="preprocessing_utils.html"
+                        title="previous chapter">Preprocessing Utils</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="xml2spreadsheet.html"
+                        title="next chapter">Data preprocessing and transformation methods for ESS/EVS data (XML to spreadsheet)</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/txt2spreadsheet.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="xml2spreadsheet.html" title="Data preprocessing and transformation methods for ESS/EVS data (XML to spreadsheet)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="preprocessing_utils.html" title="Preprocessing Utils"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="contents.html" >Contents</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="preprocessing.html" >Data preprocessing methods (EVS, ESS and SHARE)</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Data preprocessing and transformation methods for ESS data (plain text to spreadsheet)</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

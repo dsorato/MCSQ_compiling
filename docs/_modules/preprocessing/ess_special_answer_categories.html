@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>preprocessing.ess_special_answer_categories &#8212; MCSQ compiling 2 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">preprocessing.ess_special_answer_categories</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for preprocessing.ess_special_answer_categories</h1><div class="highlight"><pre>
+<span></span>
+<div class="viewcode-block" id="SpecialAnswerCategoriesCAT"><a class="viewcode-back" href="../../categoriesmodules.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesCAT">[docs]</a><span class="k">class</span> <span class="nc">SpecialAnswerCategoriesCAT</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class encapsulating special answer categories for Catalan</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dont_know</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;No ho sap&#39;</span><span class="p">,</span> <span class="s1">&#39;888&#39;</span><span class="p">]</span>
+	<span class="n">refuse</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;No contesta&#39;</span><span class="p">,</span> <span class="s1">&#39;777&#39;</span><span class="p">]</span>
+	<span class="n">dontapply</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;No s&#39;aplica&quot;</span><span class="p">,</span> <span class="s1">&#39;999&#39;</span><span class="p">]</span>
+	<span class="n">write_down</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Anoteu&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecialAnswerCategoriesCZE"><a class="viewcode-back" href="../../categoriesmodules.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesCZE">[docs]</a><span class="k">class</span> <span class="nc">SpecialAnswerCategoriesCZE</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class encapsulating special answer categories for Czech</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dont_know</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Neví&#39;</span><span class="p">,</span> <span class="s1">&#39;888&#39;</span><span class="p">]</span>
+	<span class="n">refuse</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Odmítl&#39;</span><span class="p">,</span> <span class="s1">&#39;777&#39;</span><span class="p">]</span>
+	<span class="n">dontapply</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;Gjelder ikke&quot;</span><span class="p">,</span> <span class="s1">&#39;999&#39;</span><span class="p">]</span>
+	<span class="n">write_down</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vypište&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecialAnswerCategoriesENG"><a class="viewcode-back" href="../../categoriesmodules.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesENG">[docs]</a><span class="k">class</span> <span class="nc">SpecialAnswerCategoriesENG</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class encapsulating special answer categories for English</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dont_know</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Don&#39;t know&quot;</span><span class="p">,</span> <span class="s1">&#39;888&#39;</span><span class="p">]</span>
+	<span class="n">refuse</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Refusal&#39;</span><span class="p">,</span> <span class="s1">&#39;777&#39;</span><span class="p">]</span>
+	<span class="n">dontapply</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;Not applicable&quot;</span><span class="p">,</span> <span class="s1">&#39;999&#39;</span><span class="p">]</span>
+	<span class="n">write_down</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Write in&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecialAnswerCategoriesGER"><a class="viewcode-back" href="../../categoriesmodules.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesGER">[docs]</a><span class="k">class</span> <span class="nc">SpecialAnswerCategoriesGER</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class encapsulating special answer categories for German</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dont_know</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Weiß nicht&quot;</span><span class="p">,</span> <span class="s1">&#39;888&#39;</span><span class="p">]</span>
+	<span class="n">refuse</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;keine Antwort&#39;</span><span class="p">,</span> <span class="s1">&#39;777&#39;</span><span class="p">]</span>
+	<span class="n">dontapply</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;Trifft nicht zu&quot;</span><span class="p">,</span> <span class="s1">&#39;999&#39;</span><span class="p">]</span>
+	<span class="n">write_down</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Ausfüllen&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecialAnswerCategoriesFRE"><a class="viewcode-back" href="../../categoriesmodules.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesFRE">[docs]</a><span class="k">class</span> <span class="nc">SpecialAnswerCategoriesFRE</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class encapsulating special answer categories for French</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dont_know</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Ne sait pas&quot;</span><span class="p">,</span> <span class="s1">&#39;888&#39;</span><span class="p">]</span>
+	<span class="n">refuse</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Refus&#39;</span><span class="p">,</span> <span class="s1">&#39;777&#39;</span><span class="p">]</span>
+	<span class="n">dontapply</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;Ne s&#39;applique pas&quot;</span><span class="p">,</span> <span class="s1">&#39;999&#39;</span><span class="p">]</span>
+	<span class="n">write_down</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Notez&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecialAnswerCategoriesNOR"><a class="viewcode-back" href="../../categoriesmodules.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesNOR">[docs]</a><span class="k">class</span> <span class="nc">SpecialAnswerCategoriesNOR</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class encapsulating special answer categories for Norwegian</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dont_know</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Vet ikke&quot;</span><span class="p">,</span> <span class="s1">&#39;888&#39;</span><span class="p">]</span>
+	<span class="n">refuse</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Nekter å svare&#39;</span><span class="p">,</span> <span class="s1">&#39;777&#39;</span><span class="p">]</span>
+	<span class="n">dontapply</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;Gjelder ikke&quot;</span><span class="p">,</span> <span class="s1">&#39;999&#39;</span><span class="p">]</span>
+	<span class="n">write_down</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Skriv inn&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecialAnswerCategoriesPOR"><a class="viewcode-back" href="../../categoriesmodules.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesPOR">[docs]</a><span class="k">class</span> <span class="nc">SpecialAnswerCategoriesPOR</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class encapsulating special answer categories for Portuguese</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dont_know</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Não sabe&quot;</span><span class="p">,</span> <span class="s1">&#39;888&#39;</span><span class="p">]</span>
+	<span class="n">refuse</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Não responde&#39;</span><span class="p">,</span> <span class="s1">&#39;777&#39;</span><span class="p">]</span>
+	<span class="n">dontapply</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;Não aplicável&quot;</span><span class="p">,</span> <span class="s1">&#39;999&#39;</span><span class="p">]</span>
+	<span class="n">write_down</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Escreva&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecialAnswerCategoriesSPA"><a class="viewcode-back" href="../../categoriesmodules.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesSPA">[docs]</a><span class="k">class</span> <span class="nc">SpecialAnswerCategoriesSPA</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class encapsulating special answer categories for Spanish</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dont_know</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;No sabe&quot;</span><span class="p">,</span> <span class="s1">&#39;888&#39;</span><span class="p">]</span>
+	<span class="n">refuse</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;No contesta&#39;</span><span class="p">,</span> <span class="s1">&#39;777&#39;</span><span class="p">]</span>
+	<span class="n">dontapply</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;No se aplica&quot;</span><span class="p">,</span> <span class="s1">&#39;999&#39;</span><span class="p">]</span>
+	<span class="n">write_down</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Anotar&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecialAnswerCategoriesRUS_EE"><a class="viewcode-back" href="../../categoriesmodules.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesRUS_EE">[docs]</a><span class="k">class</span> <span class="nc">SpecialAnswerCategoriesRUS_EE</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class encapsulating special answer categories for Russian from Estonia</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dont_know</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Не знаю&quot;</span><span class="p">,</span> <span class="s1">&#39;888&#39;</span><span class="p">]</span>
+	<span class="n">refuse</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ОТКАЗАЛСЯ&#39;</span><span class="p">,</span> <span class="s1">&#39;777&#39;</span><span class="p">]</span>
+	<span class="n">dontapply</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;НЕ ОТВЕТИЛ(А)&quot;</span><span class="p">,</span> <span class="s1">&#39;999&#39;</span><span class="p">]</span>
+	<span class="n">write_down</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ВПИСАТЬ&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecialAnswerCategoriesRUS_IL"><a class="viewcode-back" href="../../categoriesmodules.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesRUS_IL">[docs]</a><span class="k">class</span> <span class="nc">SpecialAnswerCategoriesRUS_IL</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class encapsulating special answer categories for Russian from Israel</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dont_know</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;не знаю&quot;</span><span class="p">,</span> <span class="s1">&#39;888&#39;</span><span class="p">]</span>
+	<span class="n">refuse</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;отказываюсь отвечать&#39;</span><span class="p">,</span> <span class="s1">&#39;777&#39;</span><span class="p">]</span>
+	<span class="n">dontapply</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;нет ответа&quot;</span><span class="p">,</span> <span class="s1">&#39;999&#39;</span><span class="p">]</span>
+	<span class="n">write_down</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ЗАПИШИТЕ&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecialAnswerCategoriesRUS_LV"><a class="viewcode-back" href="../../categoriesmodules.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesRUS_LV">[docs]</a><span class="k">class</span> <span class="nc">SpecialAnswerCategoriesRUS_LV</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class encapsulating special answer categories for Russian from Latvia</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dont_know</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GP&quot;</span><span class="p">,</span> <span class="s1">&#39;888&#39;</span><span class="p">]</span>
+	<span class="n">refuse</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Отказ&#39;</span><span class="p">,</span> <span class="s1">&#39;777&#39;</span><span class="p">]</span>
+	<span class="n">dontapply</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;нет ответа&quot;</span><span class="p">,</span> <span class="s1">&#39;999&#39;</span><span class="p">]</span>
+	<span class="n">write_down</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ВПИШИТЕ&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecialAnswerCategoriesRUS_LT"><a class="viewcode-back" href="../../categoriesmodules.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesRUS_LT">[docs]</a><span class="k">class</span> <span class="nc">SpecialAnswerCategoriesRUS_LT</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class encapsulating special answer categories for Russian from Lithuania</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dont_know</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Затрудняюсь ответить&quot;</span><span class="p">,</span> <span class="s1">&#39;888&#39;</span><span class="p">]</span>
+	<span class="n">refuse</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Отказ&#39;</span><span class="p">,</span> <span class="s1">&#39;777&#39;</span><span class="p">]</span>
+	<span class="n">dontapply</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;нет ответа&quot;</span><span class="p">,</span> <span class="s1">&#39;999&#39;</span><span class="p">]</span>
+	<span class="n">write_down</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ВПИШИТЕ&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecialAnswerCategoriesRUS_RU_UA"><a class="viewcode-back" href="../../categoriesmodules.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesRUS_RU_UA">[docs]</a><span class="k">class</span> <span class="nc">SpecialAnswerCategoriesRUS_RU_UA</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class encapsulating special answer categories for Russian from Russian Federation and Ukraine</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dont_know</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;затрудняюсь ответить&quot;</span><span class="p">,</span> <span class="s1">&#39;888&#39;</span><span class="p">]</span>
+	<span class="n">refuse</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;отказ от ответа&#39;</span><span class="p">,</span> <span class="s1">&#39;777&#39;</span><span class="p">]</span>
+	<span class="n">dontapply</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;не применимо&quot;</span><span class="p">,</span> <span class="s1">&#39;999&#39;</span><span class="p">]</span>
+	<span class="n">write_down</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ЗАПИШИТЕ&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">preprocessing.ess_special_answer_categories</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
