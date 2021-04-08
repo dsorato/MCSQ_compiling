@@ -51,7 +51,7 @@
 
 
 
-<div class="viewcode-block" id="identify_showc_segment"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.identify_showc_segment">[docs]</a><span class="k">def</span> <span class="nf">identify_showc_segment</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
+<div class="viewcode-block" id="identify_showc_segment"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.identify_showc_segment">[docs]</a><span class="k">def</span> <span class="nf">identify_showc_segment</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Searches in list_source, list_target if there are intructions that seem to be show card segments that should be aligned together.</span>
 <span class="sd">	This method was implemented as an additional strategy to align correctly instruction segments.</span>
@@ -85,7 +85,7 @@
 	<span class="k">else</span><span class="p">:</span>
 		<span class="k">return</span> <span class="s1">&#39;No showc segment identified&#39;</span></div>
 
-<div class="viewcode-block" id="preprocessing_alignment_candidates"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.preprocessing_alignment_candidates">[docs]</a><span class="k">def</span> <span class="nf">preprocessing_alignment_candidates</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="preprocessing_alignment_candidates"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.preprocessing_alignment_candidates">[docs]</a><span class="k">def</span> <span class="nf">preprocessing_alignment_candidates</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Preprocesses the text segment by tokenizing it, removing punctuation.</span>
 
@@ -109,7 +109,7 @@
 
 
 
-<div class="viewcode-block" id="find_best_match"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.find_best_match">[docs]</a><span class="k">def</span> <span class="nf">find_best_match</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
+<div class="viewcode-block" id="find_best_match"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.find_best_match">[docs]</a><span class="k">def</span> <span class="nf">find_best_match</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Finds the best match for source and target segments (same item_type) based on the lenght of the segments.</span>
 
@@ -149,7 +149,7 @@
 			<span class="k">return</span> <span class="n">alignment</span></div>
 
 
-<div class="viewcode-block" id="get_original_index"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.get_original_index">[docs]</a><span class="k">def</span> <span class="nf">get_original_index</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">source_segment_index</span><span class="p">,</span> <span class="n">target_segment_index</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">):</span>
+<div class="viewcode-block" id="get_original_index"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.get_original_index">[docs]</a><span class="k">def</span> <span class="nf">get_original_index</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">source_segment_index</span><span class="p">,</span> <span class="n">target_segment_index</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Gets the original index of aligned segments, as the auxiliary lists are being modified and the indexes</span>
 <span class="sd">	does not correspond to the original ones.</span>
@@ -175,7 +175,7 @@
 
 
 
-<div class="viewcode-block" id="only_one_segment_in_source_align"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.only_one_segment_in_source_align">[docs]</a><span class="k">def</span> <span class="nf">only_one_segment_in_source_align</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span> <span class="n">source_segment</span><span class="p">,</span> <span class="n">target_segment</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+<div class="viewcode-block" id="only_one_segment_in_source_align"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.only_one_segment_in_source_align">[docs]</a><span class="k">def</span> <span class="nf">only_one_segment_in_source_align</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span> <span class="n">source_segment</span><span class="p">,</span> <span class="n">target_segment</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Fills the dataframe with remaining target segments that do not have source correspondencies.</span>
 <span class="sd">	This method is called when the dataframe contains one source segment to two or more target segments.</span>
@@ -242,7 +242,7 @@
 	<span class="k">return</span> <span class="n">df</span></div>
 
 
-<div class="viewcode-block" id="only_one_segment_in_target_align"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.only_one_segment_in_target_align">[docs]</a><span class="k">def</span> <span class="nf">only_one_segment_in_target_align</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span> <span class="n">source_segment</span><span class="p">,</span> <span class="n">target_segment</span><span class="p">,</span> <span class="n">list_source</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+<div class="viewcode-block" id="only_one_segment_in_target_align"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.only_one_segment_in_target_align">[docs]</a><span class="k">def</span> <span class="nf">only_one_segment_in_target_align</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span> <span class="n">source_segment</span><span class="p">,</span> <span class="n">target_segment</span><span class="p">,</span> <span class="n">list_source</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Fills the dataframe with remaining source segments that do not have target correspondencies.</span>
 <span class="sd">	This method is called when the dataframe contains one target segment to two or more source segments.</span>
@@ -308,7 +308,7 @@
 	<span class="k">return</span> <span class="n">df</span></div>
 
 
-<div class="viewcode-block" id="treat_a_single_pairless_target"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.treat_a_single_pairless_target">[docs]</a><span class="k">def</span> <span class="nf">treat_a_single_pairless_target</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">sorted_aligments</span><span class="p">,</span> <span class="n">target_segments_without_pair</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+<div class="viewcode-block" id="treat_a_single_pairless_target"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.treat_a_single_pairless_target">[docs]</a><span class="k">def</span> <span class="nf">treat_a_single_pairless_target</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">sorted_aligments</span><span class="p">,</span> <span class="n">target_segments_without_pair</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Align source and target segments, in case where there is only one target segment without a pair.</span>
 
@@ -391,7 +391,7 @@
 
 
 
-<div class="viewcode-block" id="treat_a_single_pairless_source"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.treat_a_single_pairless_source">[docs]</a><span class="k">def</span> <span class="nf">treat_a_single_pairless_source</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">sorted_aligments</span><span class="p">,</span> <span class="n">source_segments_without_pair</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+<div class="viewcode-block" id="treat_a_single_pairless_source"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.treat_a_single_pairless_source">[docs]</a><span class="k">def</span> <span class="nf">treat_a_single_pairless_source</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">sorted_aligments</span><span class="p">,</span> <span class="n">source_segments_without_pair</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Align source and target segments, in case where there is only one source segment without a pair.</span>
 
@@ -475,7 +475,7 @@
 	<span class="k">return</span> <span class="n">df</span></div>
 
 
-<div class="viewcode-block" id="treat_multiple_pairless_source_segments"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.treat_multiple_pairless_source_segments">[docs]</a><span class="k">def</span> <span class="nf">treat_multiple_pairless_source_segments</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">sorted_aligments</span><span class="p">,</span> <span class="n">source_segments_without_pair</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+<div class="viewcode-block" id="treat_multiple_pairless_source_segments"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.treat_multiple_pairless_source_segments">[docs]</a><span class="k">def</span> <span class="nf">treat_multiple_pairless_source_segments</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">sorted_aligments</span><span class="p">,</span> <span class="n">source_segments_without_pair</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Align source and target segments, in case where there are multiple source segments without a pair.</span>
 
@@ -565,7 +565,7 @@
 	<span class="k">return</span> <span class="n">df</span></div>
 
 
-<div class="viewcode-block" id="treat_multiple_pairless_target_segments"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.treat_multiple_pairless_target_segments">[docs]</a><span class="k">def</span> <span class="nf">treat_multiple_pairless_target_segments</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">sorted_aligments</span><span class="p">,</span> <span class="n">target_segments_without_pair</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+<div class="viewcode-block" id="treat_multiple_pairless_target_segments"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.treat_multiple_pairless_target_segments">[docs]</a><span class="k">def</span> <span class="nf">treat_multiple_pairless_target_segments</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">sorted_aligments</span><span class="p">,</span> <span class="n">target_segments_without_pair</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Align source and target segments, in case where there are multiple target segments without a pair.</span>
 
@@ -655,7 +655,7 @@
 	<span class="k">return</span> <span class="n">df</span></div>
 
 
-<div class="viewcode-block" id="align_more_segments_in_target"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.align_more_segments_in_target">[docs]</a><span class="k">def</span> <span class="nf">align_more_segments_in_target</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">sorted_aligments</span><span class="p">,</span> <span class="n">target_segments_without_pair</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+<div class="viewcode-block" id="align_more_segments_in_target"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.align_more_segments_in_target">[docs]</a><span class="k">def</span> <span class="nf">align_more_segments_in_target</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">sorted_aligments</span><span class="p">,</span> <span class="n">target_segments_without_pair</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calls the appropriate method for alignment with more segments in target dataframe, concerning the number</span>
 <span class="sd">	of pairless segments. </span>
@@ -681,7 +681,7 @@
 	<span class="k">return</span> <span class="n">df</span></div>
 
 
-<div class="viewcode-block" id="align_more_segments_in_source"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.align_more_segments_in_source">[docs]</a><span class="k">def</span> <span class="nf">align_more_segments_in_source</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">sorted_aligments</span><span class="p">,</span> <span class="n">source_segments_without_pair</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+<div class="viewcode-block" id="align_more_segments_in_source"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.align_more_segments_in_source">[docs]</a><span class="k">def</span> <span class="nf">align_more_segments_in_source</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">sorted_aligments</span><span class="p">,</span> <span class="n">source_segments_without_pair</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calls the appropriate method for alignment with more segments in source dataframe, concerning the number</span>
 <span class="sd">	of pairless segments. </span>
@@ -707,7 +707,7 @@
 	<span class="k">return</span> <span class="n">df</span></div>
 
 
-<div class="viewcode-block" id="prepare_alignment_with_more_segments_in_source"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.prepare_alignment_with_more_segments_in_source">[docs]</a><span class="k">def</span> <span class="nf">prepare_alignment_with_more_segments_in_source</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
+<div class="viewcode-block" id="prepare_alignment_with_more_segments_in_source"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.prepare_alignment_with_more_segments_in_source">[docs]</a><span class="k">def</span> <span class="nf">prepare_alignment_with_more_segments_in_source</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calls the appropriate method for alignment with more segments in source dataframe, concerning the number</span>
 <span class="sd">	of pairless segments</span>
@@ -771,7 +771,7 @@
 
 
 
-<div class="viewcode-block" id="prepare_alignment_with_more_segments_in_target"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.prepare_alignment_with_more_segments_in_target">[docs]</a><span class="k">def</span> <span class="nf">prepare_alignment_with_more_segments_in_target</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
+<div class="viewcode-block" id="prepare_alignment_with_more_segments_in_target"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.prepare_alignment_with_more_segments_in_target">[docs]</a><span class="k">def</span> <span class="nf">prepare_alignment_with_more_segments_in_target</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calls the appropriate method for alignment with more segments in target dataframe, concerning the number</span>
 <span class="sd">	of pairless segments</span>
@@ -835,7 +835,7 @@
 	<span class="k">return</span> <span class="n">df</span> </div>
 
 
-<div class="viewcode-block" id="same_source_target_index_card_instructions"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.same_source_target_index_card_instructions">[docs]</a><span class="k">def</span> <span class="nf">same_source_target_index_card_instructions</span><span class="p">(</span><span class="n">source_index</span><span class="p">,</span> <span class="n">target_index</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">,</span> <span class="n">list_source</span><span class="p">,</span><span class="n">list_target</span><span class="p">,</span><span class="n">item_type</span><span class="p">,</span><span class="n">df</span><span class="p">):</span>
+<div class="viewcode-block" id="same_source_target_index_card_instructions"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.same_source_target_index_card_instructions">[docs]</a><span class="k">def</span> <span class="nf">same_source_target_index_card_instructions</span><span class="p">(</span><span class="n">source_index</span><span class="p">,</span> <span class="n">target_index</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">,</span> <span class="n">list_source</span><span class="p">,</span><span class="n">list_target</span><span class="p">,</span><span class="n">item_type</span><span class="p">,</span><span class="n">df</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Align source and target instruction segments identified as showcard segments.</span>
 
@@ -884,7 +884,7 @@
 
 
 
-<div class="viewcode-block" id="different_source_target_index_card_instructions"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.different_source_target_index_card_instructions">[docs]</a><span class="k">def</span> <span class="nf">different_source_target_index_card_instructions</span><span class="p">(</span><span class="n">source_index</span><span class="p">,</span> <span class="n">target_index</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">,</span> <span class="n">list_source</span><span class="p">,</span><span class="n">list_target</span><span class="p">,</span><span class="n">item_type</span><span class="p">,</span><span class="n">df</span><span class="p">):</span>
+<div class="viewcode-block" id="different_source_target_index_card_instructions"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.different_source_target_index_card_instructions">[docs]</a><span class="k">def</span> <span class="nf">different_source_target_index_card_instructions</span><span class="p">(</span><span class="n">source_index</span><span class="p">,</span> <span class="n">target_index</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">,</span> <span class="n">list_source</span><span class="p">,</span><span class="n">list_target</span><span class="p">,</span><span class="n">item_type</span><span class="p">,</span><span class="n">df</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Align source and target instruction segments identified as showcard segments. For sake of simplicity,</span>
 <span class="sd">	when the source index and the target index of showcard segments are different, they are moved to the </span>
@@ -913,7 +913,7 @@
 
 
 
-<div class="viewcode-block" id="align_introduction_instruction_request"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.align_introduction_instruction_request">[docs]</a><span class="k">def</span> <span class="nf">align_introduction_instruction_request</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
+<div class="viewcode-block" id="align_introduction_instruction_request"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.align_introduction_instruction_request">[docs]</a><span class="k">def</span> <span class="nf">align_introduction_instruction_request</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Aligns introduction, instruction and requests segments. Differently from response segments, these other item types can&#39;t be</span>
 <span class="sd">	merged. There are five distinct cases to consider: 1) only source segments (df_target is empty), 2) only target segments (df_source is empty),</span>
@@ -993,7 +993,7 @@
 
 
 
-<div class="viewcode-block" id="align_responses"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.align_responses">[docs]</a><span class="k">def</span> <span class="nf">align_responses</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span><span class="p">):</span>
+<div class="viewcode-block" id="align_responses"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.align_responses">[docs]</a><span class="k">def</span> <span class="nf">align_responses</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Aligns response segments by merging them on item_value metadata.</span>
 <span class="sd">	Args:</span>
@@ -1018,7 +1018,7 @@
 	<span class="k">return</span> <span class="n">df</span></div>
 
 
-<div class="viewcode-block" id="align_on_metadata"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.align_on_metadata">[docs]</a><span class="k">def</span> <span class="nf">align_on_metadata</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span><span class="p">,</span> <span class="n">process_responses</span><span class="p">):</span>
+<div class="viewcode-block" id="align_on_metadata"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.align_on_metadata">[docs]</a><span class="k">def</span> <span class="nf">align_on_metadata</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span><span class="p">,</span> <span class="n">process_responses</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calls the appropriate method for alignment based on metadata.</span>
 <span class="sd">	Responses are aligned separately of other item types because answers are merged using the item value.</span>
@@ -1043,7 +1043,7 @@
 
 
 
-<div class="viewcode-block" id="filter_by_module"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.filter_by_module">[docs]</a><span class="k">def</span> <span class="nf">filter_by_module</span><span class="p">(</span><span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+<div class="viewcode-block" id="filter_by_module"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.filter_by_module">[docs]</a><span class="k">def</span> <span class="nf">filter_by_module</span><span class="p">(</span><span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Filters the source and target dataframes by the module that is being currently analyzed.</span>
 
@@ -1062,7 +1062,7 @@
 	<span class="k">return</span> <span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span></div>
 				
 
-<div class="viewcode-block" id="get_study_metadata"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.get_study_metadata">[docs]</a><span class="k">def</span> <span class="nf">get_study_metadata</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="get_study_metadata"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.get_study_metadata">[docs]</a><span class="k">def</span> <span class="nf">get_study_metadata</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Get study metadata embedded in filename. It can be retrieved either from </span>
 <span class="sd">	the source or the target file.</span>
@@ -1079,7 +1079,7 @@
 	<span class="k">return</span> <span class="n">study</span></div>
 
 
-<div class="viewcode-block" id="get_target_language_country_metadata"><a class="viewcode-back" href="../../alignment.html#alignment.alignment_based_on_item_structure.get_target_language_country_metadata">[docs]</a><span class="k">def</span> <span class="nf">get_target_language_country_metadata</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="get_target_language_country_metadata"><a class="viewcode-back" href="../../alignment_metadata.html#alignment.alignment_based_on_item_structure.get_target_language_country_metadata">[docs]</a><span class="k">def</span> <span class="nf">get_target_language_country_metadata</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Get target language/country metadata embedded in filename, to name the output aligned file.</span>
 

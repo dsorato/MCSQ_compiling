@@ -13,7 +13,8 @@ Contents
    EVS.rst
    ESS.rst
    SHARE.rst
-   annotation.rst
+   alignment_metadata.rst
+   tagging.rst
    db.rst
 
 
