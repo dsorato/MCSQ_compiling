@@ -1,8 +1,8 @@
 Alignment based on item structure
 ==========================================
-.. automodule:: alignment.alignment_based_on_item_structure
+.. automodule:: alignment_based_on_item_structure
    :members:
-.. automodule:: alignment.alignment_utils
+.. automodule:: alignment_utils
    :members:
-.. automodule:: alignment.countryspecificrequest
+.. automodule:: countryspecificrequest
    :members:
