@@ -1,5 +1,5 @@
 Part-of-Speech tagging annotation with Flair
 ==========================================
-.. automodule:: pos_tagging
+.. automodule:: annotation.pos_tagging
    :members:
 
