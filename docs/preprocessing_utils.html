@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Preprocessing Utils &#8212; MCSQ compiling 2 documentation</title>
+    <title>Data extraction, preprocessing and treatment methods commons &#8212; MCSQ compiling 2 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Data preprocessing and transformation methods for ESS data (plain text to spreadsheet)" href="txt2spreadsheet.html" />
-    <link rel="prev" title="Data preprocessing methods (EVS, ESS and SHARE)" href="preprocessing.html" /> 
+    <link rel="next" title="EVS data extraction, preprocessing and treatment methods" href="EVS.html" />
+    <link rel="prev" title="Contents" href="contents.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,15 +30,14 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="txt2spreadsheet.html" title="Data preprocessing and transformation methods for ESS data (plain text to spreadsheet)"
+          <a href="EVS.html" title="EVS data extraction, preprocessing and treatment methods"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="preprocessing.html" title="Data preprocessing methods (EVS, ESS and SHARE)"
+          <a href="contents.html" title="Contents"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 2 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="contents.html" >Contents</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="preprocessing.html" accesskey="U">Data preprocessing methods (EVS, ESS and SHARE)</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Preprocessing Utils</a></li> 
+          <li class="nav-item nav-item-1"><a href="contents.html" accesskey="U">Contents</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Data extraction, preprocessing and treatment methods commons</a></li> 
       </ul>
     </div>  
 
@@ -47,361 +46,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-preprocessing.preprocessing_ess_utils">
-<span id="preprocessing-utils"></span><h1>Preprocessing Utils<a class="headerlink" href="#module-preprocessing.preprocessing_ess_utils" title="Permalink to this headline">¶</a></h1>
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.check_if_answer_is_special_category">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">check_if_answer_is_special_category</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">answer_value</span></em>, <em class="sig-param"><span class="n">ess_special_answer_categories</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#check_if_answer_is_special_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.check_if_answer_is_special_category" title="Permalink to this definition">¶</a></dt>
-<dd><p>Verifies if a given answer segment is one of the special answer categories,
-by testing the answer text against the attributes of SpecialAnswerCategories object.
-This method serves the purpose of standardizing the special answer category values.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>param1</em>) – answer segment currently being analyzed.</p></li>
-<li><p><strong>answer_value</strong> (<em>param2</em>) – answer category value, defined in clean_answer() method.</p></li>
-<li><p><strong>ess_special_answer_categories</strong> (<em>param3</em>) – instance of SpecialAnswerCategories object, in accordance to the country_language.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>answer text (string) and its category value (string). When the answer is a special answer category,
-the text and category values are the ones stored in the SpecialAnswerCategories object.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.check_if_segment_is_instruction">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">check_if_segment_is_instruction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span></em>, <em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#check_if_segment_is_instruction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.check_if_segment_is_instruction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calls the appropriate instruction recognition method, according to the language.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sentence</strong> (<em>param1</em>) – sentence being analyzed in outer loop of data extraction.</p></li>
-<li><p><strong>country_language</strong> (<em>param2</em>) – country_language metadata, embedded in file name.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>bypass the return of instruction_recognition methods (boolean).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.clean_answer">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">clean_answer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">ess_special_answer_categories</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#clean_answer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.clean_answer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Cleans the answer segment, by standardizing the text (when it is a special answer category),
-and attributing an category value to it.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>param1</em>) – answer segment currently being analyzed.</p></li>
-<li><p><strong>ess_special_answer_categories</strong> (<em>param2</em>) – instance of SpecialAnswerCategories object, in accordance to the country_language.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>answer text (string) and its category value (string). When the answer is a special answer category,
-the text and category values are the ones stored in the SpecialAnswerCategories object.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.clean_text">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">clean_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#clean_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.clean_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Cleans Request, Introduction and Instruction text segments by removing
-undesired characters and standardizing some character representations.
-A string input is expected, if the input is not a string instance,
-the method returns ‘’, so the entry is ignored in the data extraction loop.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<em>param1</em>) – text to be cleaned.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>cleaned text (string).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.expand_interviewer_abbreviations">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">expand_interviewer_abbreviations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#expand_interviewer_abbreviations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.expand_interviewer_abbreviations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Switches abbreviations of the word interviewer for the full form.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>param1</em>) – sentence being analyzed.</p></li>
-<li><p><strong>country_language</strong> (<em>param2</em>) – country_language metadata embedded in file name.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>text (string) without abbreviations for the word interviewer, when applicable.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.get_country_language_and_study_info">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">get_country_language_and_study_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#get_country_language_and_study_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.get_country_language_and_study_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves the country/language and study metadata based on the input filename,
-or survey_item_ID prefix.
-The filenames respect a nomenclature rule, as follows:
-SSS_RRR_YYYY_CC_LLL
-S = study name
-R = round or wave
-Y = study year
-C = Country (ISO code with two digits, except for SOURCE)
-L = Language</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>param1</em>) – name of the input file.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>country/language (string) and study metadata (string).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.instantiate_special_answer_category_object">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">instantiate_special_answer_category_object</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#instantiate_special_answer_category_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.instantiate_special_answer_category_object" title="Permalink to this definition">¶</a></dt>
-<dd><p>Instantiates the SpecialAnswerCategories object that stores both the text
-and category values of the special answers (don’t know, refusal, not applicable
-and write down) in accordance to the country_language metadata parameter.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>country_language</strong> (<em>param1</em>) – country_language metadata parameter, embedded in file name.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>instance of SpecialAnswerCategories object (Python object), in accordance to the country_language.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.instruction_recognition_catalan_spanish">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">instruction_recognition_catalan_spanish</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#instruction_recognition_catalan_spanish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.instruction_recognition_catalan_spanish" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recognizes an instruction segment for texts written either in Spanish or Catalan,
-based on regex named groups patterns.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>param1</em>) – text (in Spanish or Catalan) currently being analyzed.</p></li>
-<li><p><strong>country_language</strong> (<em>param2</em>) – country_language metadata embedded in file name.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if the segment is an instruction or False if it is not.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.instruction_recognition_czech">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">instruction_recognition_czech</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#instruction_recognition_czech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.instruction_recognition_czech" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recognizes an instruction segment for texts written in Czech,
-based on regex named groups patterns.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>param1</em>) – text (in Czech) currently being analyzed.</p></li>
-<li><p><strong>country_language</strong> (<em>param2</em>) – country_language metadata embedded in file name.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if the segment is an instruction or False if it is not.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.instruction_recognition_english">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">instruction_recognition_english</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#instruction_recognition_english"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.instruction_recognition_english" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recognizes an instruction segment for texts written in English,
-based on regex named groups patterns.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>param1</em>) – text (in English) currently being analyzed.</p></li>
-<li><p><strong>country_language</strong> (<em>param2</em>) – country_language metadata embedded in file name.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if the segment is an instruction or False if it is not.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.instruction_recognition_french">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">instruction_recognition_french</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#instruction_recognition_french"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.instruction_recognition_french" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recognizes an instruction segment for texts written in French,
-based on regex named groups patterns.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>param1</em>) – text (in French) currently being analyzed.</p></li>
-<li><p><strong>country_language</strong> (<em>param2</em>) – country_language metadata embedded in file name.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if the segment is an instruction or False if it is not.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.instruction_recognition_german">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">instruction_recognition_german</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#instruction_recognition_german"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.instruction_recognition_german" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recognizes an instruction segment for texts written in German,
-based on regex named groups patterns.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>param1</em>) – text (in German) currently being analyzed.</p></li>
-<li><p><strong>country_language</strong> (<em>param2</em>) – country_language metadata embedded in file name.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if the segment is an instruction or False if it is not.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.instruction_recognition_norwegian">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">instruction_recognition_norwegian</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#instruction_recognition_norwegian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.instruction_recognition_norwegian" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recognizes an instruction segment for texts written in Norwegian,
-based on regex named groups patterns.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>param1</em>) – text (in Norwegian) currently being analyzed.</p></li>
-<li><p><strong>country_language</strong> (<em>param2</em>) – country_language metadata embedded in file name.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if the segment is an instruction or False if it is not.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.instruction_recognition_portuguese">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">instruction_recognition_portuguese</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#instruction_recognition_portuguese"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.instruction_recognition_portuguese" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recognizes an instruction segment for texts written in Portuguese,
-based on regex named groups patterns.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>param1</em>) – text (in Portuguese) currently being analyzed.</p></li>
-<li><p><strong>country_language</strong> (<em>param2</em>) – country_language metadata embedded in file name.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if the segment is an instruction or False if it is not.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.instruction_recognition_russian">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">instruction_recognition_russian</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#instruction_recognition_russian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.instruction_recognition_russian" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recognizes an instruction segment for texts written in Russian,
-based on regex named groups patterns.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>param1</em>) – text (in Russian) currently being analyzed.</p></li>
-<li><p><strong>country_language</strong> (<em>param2</em>) – country_language metadata embedded in file name.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if the segment is an instruction or False if it is not.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.remove_spaces_from_item_name">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">remove_spaces_from_item_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#remove_spaces_from_item_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.remove_spaces_from_item_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes spaces in item names such as A 1, because the MCSQ standard are item names without spaces (A1).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>item_name</strong> (<em>param1</em>) – item_name retrieved from the input file.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>item_name (string) withour spaces.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.retrieve_item_module">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">retrieve_item_module</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item_name</span></em>, <em class="sig-param"><span class="n">study</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#retrieve_item_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.retrieve_item_module" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves the module of the survey_item, based on information from the ESSModulesRRR objects.
-This information comes from the source questionnaires.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>item_name</strong> (<em>param1</em>) – name of survey item, retrieved in previous steps.</p></li>
-<li><p><strong>study</strong> (<em>param2</em>) – study metadata, embedded in the file name.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>module of survey_item (string).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.retrieve_supplementary_module">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">retrieve_supplementary_module</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">essmodules</span></em>, <em class="sig-param"><span class="n">item_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#retrieve_supplementary_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.retrieve_supplementary_module" title="Permalink to this definition">¶</a></dt>
-<dd><p>Matches the item_name against the dictionary stored in the ESSModulesRRR objects.
-Rotating/supplementary modules are defined by round because they may change from
-round to round.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>essmodules</strong> (<em>param1</em>) – ESSModulesRRR object, instantiated according to the round.</p></li>
-<li><p><strong>item_name</strong> (<em>param2</em>) – name of survey item, retrieved in previous steps.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>matching value for item name (string).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.standardize_study_metadata">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">standardize_study_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">study</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#standardize_study_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.standardize_study_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transforms study metadata present in the input file to the standard
-used in the MCSQ format.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>study</strong> (<em>param1</em>) – study metadata extracted from input file (Study column).</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Standardized study parameter (string).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_ess_utils.standardize_supplementary_item_name">
-<code class="sig-prename descclassname">preprocessing.preprocessing_ess_utils.</code><code class="sig-name descname">standardize_supplementary_item_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_ess_utils.html#standardize_supplementary_item_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_ess_utils.standardize_supplementary_item_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Standardizes the item name metadata of supplementary modules G, H and I</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>item_name</strong> (<em>param1</em>) – item_name metadata, extracted from input file.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Standardized item_name, when applicable.</p>
-</dd>
-</dl>
-</dd></dl>
-
+  <div class="section" id="data-extraction-preprocessing-and-treatment-methods-commons">
+<h1>Data extraction, preprocessing and treatment methods commons<a class="headerlink" href="#data-extraction-preprocessing-and-treatment-methods-commons" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-preprocessing.utils"></span><p>Python3 script with utility functions for preprocessing
 Author: Danielly Sorato
 Author contact: <a class="reference external" href="mailto:danielly&#46;sorato&#37;&#52;&#48;gmail&#46;com">danielly<span>&#46;</span>sorato<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
@@ -469,118 +115,24 @@ otherwise returns None.</p>
 </dl>
 </dd></dl>
 
-<span class="target" id="module-preprocessing.preprocessing_evs_utils"></span><dl class="py function">
-<dt id="preprocessing.preprocessing_evs_utils.clean_answer_text_evs">
-<code class="sig-prename descclassname">preprocessing.preprocessing_evs_utils.</code><code class="sig-name descname">clean_answer_text_evs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_evs_utils.html#clean_answer_text_evs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_evs_utils.clean_answer_text_evs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes undesired characters from request/response text.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>param</em>) – request/response text extracted from the input file.</p></li>
-<li><p><strong>filename</strong> (<em>param</em>) – name of the input file.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>clean request/response text (string).</p>
-</dd>
-</dl>
-</dd></dl>
-
+<span class="target" id="module-preprocessing.main_xml_files"></span><p>Main method that calls for EVS/ESS scripts to generate MCSQ spreadsheet inputs
+Author: Danielly Sorato
+Author contact: <a class="reference external" href="mailto:danielly&#46;sorato&#37;&#52;&#48;gmail&#46;com">danielly<span>&#46;</span>sorato<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
 <dl class="py function">
-<dt id="preprocessing.preprocessing_evs_utils.clean_instruction">
-<code class="sig-prename descclassname">preprocessing.preprocessing_evs_utils.</code><code class="sig-name descname">clean_instruction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_evs_utils.html#clean_instruction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_evs_utils.clean_instruction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes undesired characters from instruction text.</p>
+<dt id="preprocessing.main_xml_files.main">
+<code class="sig-prename descclassname">preprocessing.main_xml_files.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">folder_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/main_xml_files.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.main_xml_files.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>This main file calls the transformation algorithms inside evs_xml_data_extraction,
+ess_xml_data_extraction and ess_xml_data_extraction scripts.</p>
+<p>evs_xml_data_extraction is called for EVS files
+ess_xml_data_extraction is called for ESS files
+share_xml_data_extraction is called for SHARE files</p>
+<p>The algorithm transforms a XML file to a structured spreadsheet format
+with valuable metadata.</p>
+<p>Call main script using folder_path, for instance:
+reset &amp;&amp; python3 main.py /path/to/your/data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<em>param1</em>) – instruction text extracted from the input file.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>clean instruction text (string) or ‘’ when text is not an instance of a string.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_evs_utils.clean_text">
-<code class="sig-prename descclassname">preprocessing.preprocessing_evs_utils.</code><code class="sig-name descname">clean_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_evs_utils.html#clean_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_evs_utils.clean_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes undesired characters from request/response text.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>param</em>) – request/response text extracted from the input file.</p></li>
-<li><p><strong>filename</strong> (<em>param</em>) – name of the input file.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>clean request/response text (string).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_evs_utils.get_country_language_and_study_info">
-<code class="sig-prename descclassname">preprocessing.preprocessing_evs_utils.</code><code class="sig-name descname">get_country_language_and_study_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_evs_utils.html#get_country_language_and_study_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_evs_utils.get_country_language_and_study_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves the country/language and study metadata based on the input filename.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>param</em>) – name of the input file.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>country/language (string) and study (string) metadata.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_evs_utils.standardize_item_name">
-<code class="sig-prename descclassname">preprocessing.preprocessing_evs_utils.</code><code class="sig-name descname">standardize_item_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_evs_utils.html#standardize_item_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_evs_utils.standardize_item_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Standartizes a given item_name, if it is not in the standard</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>item_name</strong> (<em>param1</em>) – item name extracted from the input file.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>standardized item_name (string).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_evs_utils.standardize_special_response_category">
-<code class="sig-prename descclassname">preprocessing.preprocessing_evs_utils.</code><code class="sig-name descname">standardize_special_response_category</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_evs_utils.html#standardize_special_response_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_evs_utils.standardize_special_response_category" title="Permalink to this definition">¶</a></dt>
-<dd><p>Standartizes text of special response categories (don’t know, no answer, not applicable),
-according to the language (informed in the the filename).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>param1</em>) – name of the input file.</p></li>
-<li><p><strong>text</strong> (<em>param2</em>) – response text.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>standardized response category text (string).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="preprocessing.preprocessing_evs_utils.standardize_special_response_category_value">
-<code class="sig-prename descclassname">preprocessing.preprocessing_evs_utils.</code><code class="sig-name descname">standardize_special_response_category_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">catValu</span></em>, <em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/preprocessing_evs_utils.html#standardize_special_response_category_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.preprocessing_evs_utils.standardize_special_response_category_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Standartizes a response category value, if it is a special response category.
-Standard:
-Refusal=777
-Don’t know=888
-Does not apply=999</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>param1</em>) – name of the input file.</p></li>
-<li><p><strong>catValu</strong> (<em>param2</em>) – response category value, extracted from input file.</p></li>
-<li><p><strong>text</strong> (<em>param3</em>) – text of response category, to test against special response category patterns.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>standardized response category value (string).</p>
+<dd class="field-odd"><p><strong>folder_path</strong> (<em>param1</em>) – the path of the directory containing the files to tranform</p>
 </dd>
 </dl>
 </dd></dl>
@@ -595,11 +147,11 @@ Does not apply=999</p>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="preprocessing.html"
-                        title="previous chapter">Data preprocessing methods (EVS, ESS and SHARE)</a></p>
+  <p class="topless"><a href="contents.html"
+                        title="previous chapter">Contents</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="txt2spreadsheet.html"
-                        title="next chapter">Data preprocessing and transformation methods for ESS data (plain text to spreadsheet)</a></p>
+  <p class="topless"><a href="EVS.html"
+                        title="next chapter">EVS data extraction, preprocessing and treatment methods</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -631,15 +183,14 @@ Does not apply=999</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="txt2spreadsheet.html" title="Data preprocessing and transformation methods for ESS data (plain text to spreadsheet)"
+          <a href="EVS.html" title="EVS data extraction, preprocessing and treatment methods"
              >next</a> |</li>
         <li class="right" >
-          <a href="preprocessing.html" title="Data preprocessing methods (EVS, ESS and SHARE)"
+          <a href="contents.html" title="Contents"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="contents.html" >Contents</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="preprocessing.html" >Data preprocessing methods (EVS, ESS and SHARE)</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Preprocessing Utils</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Data extraction, preprocessing and treatment methods commons</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

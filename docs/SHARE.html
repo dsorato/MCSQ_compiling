@@ -1,0 +1,609 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SHARE data extraction, preprocessing and treatment methods &#8212; MCSQ compiling 2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data alignment and annotation methods (EVS, ESS and SHARE)" href="annotation.html" />
+    <link rel="prev" title="ESS data extraction, preprocessing and treatment methods" href="ESS.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="annotation.html" title="Data alignment and annotation methods (EVS, ESS and SHARE)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ESS.html" title="ESS data extraction, preprocessing and treatment methods"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="contents.html" accesskey="U">Contents</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SHARE data extraction, preprocessing and treatment methods</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="share-data-extraction-preprocessing-and-treatment-methods">
+<h1>SHARE data extraction, preprocessing and treatment methods<a class="headerlink" href="#share-data-extraction-preprocessing-and-treatment-methods" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-preprocessing.share_covid_data_extraction"></span><dl class="py function">
+<dt id="preprocessing.share_covid_data_extraction.get_language_country_iso_codes">
+<code class="sig-prename descclassname">preprocessing.share_covid_data_extraction.</code><code class="sig-name descname">get_language_country_iso_codes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">language_country</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_covid_data_extraction.html#get_language_country_iso_codes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_covid_data_extraction.get_language_country_iso_codes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the ISO codes for language and country based on the values retrieved from input file.
+Only for target languages of MCSQ.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>language_country</strong> (<em>param1</em>) – language and country information retrieved from input file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>language_country (string). Variable representing the language and country metadata in ISO codes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_covid_data_extraction.preprocess_answer_segment">
+<code class="sig-prename descclassname">preprocessing.share_covid_data_extraction.</code><code class="sig-name descname">preprocess_answer_segment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">row</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">splitter</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_covid_data_extraction.html#preprocess_answer_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_covid_data_extraction.preprocess_answer_segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts and processes the answer segments from the input file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> (<em>param1</em>) – dataframe row being currently analyzed.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param2</em>) – pandas dataframe to store questionnaire data.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param3</em>) – prefix of survey_item_ID.</p></li>
+<li><p><strong>splitter</strong> (<em>param4</em>) – NLTK object for sentence segmentation instantiated in accordance to the language.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>updated df_questionnaire with new valid answer segments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_covid_data_extraction.preprocess_instruction_segment">
+<code class="sig-prename descclassname">preprocessing.share_covid_data_extraction.</code><code class="sig-name descname">preprocess_instruction_segment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">row</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">splitter</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_covid_data_extraction.html#preprocess_instruction_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_covid_data_extraction.preprocess_instruction_segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts and processes the instruction segments from the input file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> (<em>param1</em>) – dataframe row being currently analyzed.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param2</em>) – pandas dataframe to store questionnaire data.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param3</em>) – prefix of survey_item_ID.</p></li>
+<li><p><strong>splitter</strong> (<em>param4</em>) – NLTK object for sentence segmentation instantiated in accordance to the language.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>updated df_questionnaire with new valid instruction segments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_covid_data_extraction.preprocess_question_segment">
+<code class="sig-prename descclassname">preprocessing.share_covid_data_extraction.</code><code class="sig-name descname">preprocess_question_segment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">row</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">splitter</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_covid_data_extraction.html#preprocess_question_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_covid_data_extraction.preprocess_question_segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts and processes the question segments from the input file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> (<em>param1</em>) – dataframe row being currently analyzed.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param2</em>) – pandas dataframe to store questionnaire data.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param3</em>) – prefix of survey_item_ID.</p></li>
+<li><p><strong>splitter</strong> (<em>param4</em>) – NLTK object for sentence segmentation instantiated in accordance to the language.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>updated df_questionnaire with new valid question segments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_covid_data_extraction.replace_abbreviations_and_fills">
+<code class="sig-prename descclassname">preprocessing.share_covid_data_extraction.</code><code class="sig-name descname">replace_abbreviations_and_fills</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_covid_data_extraction.html#replace_abbreviations_and_fills"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_covid_data_extraction.replace_abbreviations_and_fills" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces abbreviations and fills text from the text of input file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sentence</strong> (<em>param1</em>) – text segment from input file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sentence (string). Text segment without abbreviations and fills text.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_covid_data_extraction.retrieve_module_from_item_name">
+<code class="sig-prename descclassname">preprocessing.share_covid_data_extraction.</code><code class="sig-name descname">retrieve_module_from_item_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_covid_data_extraction.html#retrieve_module_from_item_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_covid_data_extraction.retrieve_module_from_item_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the module of the question based on the item_name variable.
+This information comes from <a class="reference external" href="http://www.share-project.org/special-data-sets/share-covid-19-questionnaire.html">http://www.share-project.org/special-data-sets/share-covid-19-questionnaire.html</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item_name</strong> (<em>param1</em>) – item_name information retrieved from input file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>module (string). Module of the question.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_covid_data_extraction.set_initial_structures">
+<code class="sig-prename descclassname">preprocessing.share_covid_data_extraction.</code><code class="sig-name descname">set_initial_structures</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">language_country</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_covid_data_extraction.html#set_initial_structures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_covid_data_extraction.set_initial_structures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set initial structures that are necessary for the extraction of each questionnaire.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>language_country</strong> (<em>param1</em>) – language and country of the subdataframe being analyzed</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_questionnaire to store questionnaire data (pandas dataframe),
+survey_item_prefix, which is the prefix of survey_item_ID (string),
+and sentence splitter to segment request/introduction/instruction segments when necessary (NLTK object).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-preprocessing.share_xml_data_extraction"></span><p>Python3 script to extract data from XML SHARE input files
+Author: Danielly Sorato
+Author contact: <a class="reference external" href="mailto:danielly&#46;sorato&#37;&#52;&#48;gmail&#46;com">danielly<span>&#46;</span>sorato<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.build_questionnaire_structure">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">build_questionnaire_structure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df_questions</span></em>, <em class="sig-param"><span class="n">df_answers</span></em>, <em class="sig-param"><span class="n">df_procedures</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">share_modules</span></em>, <em class="sig-param"><span class="n">special_answer_categories</span></em>, <em class="sig-param"><span class="n">study</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#build_questionnaire_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.build_questionnaire_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the final questionnaire from df_questions, df_answers and df_procedures.
+Calls the fill_extraction() and fill_unrolling() methods to replace the dynamic fills in the texts for the appropriate string definitions found in df_procedures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_questions</strong> (<em>param1</em>) – the dataframe that holds the question segments extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>df_answers</strong> (<em>param2</em>) – the dataframe that holds the answer segments extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>df_procedures</strong> (<em>param3</em>) – the dataframe that holds the procedures for fills substitution, extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param4</em>) – a dataframe to hold the final questionnaire.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param5</em>) – the prefix of survey item IDS, either embedded in the filename or hard-coded in the case of ENG_SOUCE data extraction.</p></li>
+<li><p><strong>share_modules</strong> (<em>param6</em>) – a dictionary (round dependent) with the full name of all SHARE modules.</p></li>
+<li><p><strong>special_answer_categories</strong> (<em>param7</em>) – a language-specific instantiated object that contains string definitions of special answer categories (Don’t know, Refuse, etc)</p></li>
+<li><p><strong>study</strong> (<em>param8</em>) – the study metadata, embedded in the input filename or hard-coded in the case of ENG_SOUCE data extraction.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The final SHARE questionnaire, stored in df_questionnaire (pandas dataframe).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.clean_answer_text">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">clean_answer_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">country_language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#clean_answer_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.clean_answer_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitutes HTML markups in the answer text segments with fixed values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>param1</em>) – the answer text segment.</p></li>
+<li><p><strong>country_language</strong> (<em>param2</em>) – country_language metadata, embedded in file name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the answer text (string) where the markups were replaced (if present in original string).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.clean_text_share">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">clean_text_share</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">country_language</span></em>, <em class="sig-param"><span class="n">w7flag</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#clean_text_share"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.clean_text_share" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitutes HTML markups and certain fills in the text segments with fixed values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>param1</em>) – the answer text segment.</p></li>
+<li><p><strong>country_language</strong> (<em>param2</em>) – country_language metadata, embedded in file name.</p></li>
+<li><p><strong>w7_flag</strong> (<em>param3</em>) – a boolean flag that indicates if the segment comes from a input xml file in SHARE w7.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the text (string) where the markups and fills were replaced (if present in original string).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.eliminate_showcardID_and_adjust_item_type">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">eliminate_showcardID_and_adjust_item_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">item_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#eliminate_showcardID_and_adjust_item_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.eliminate_showcardID_and_adjust_item_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitutes the SHOWCARD_ID strings with a card number (the card IDs are not available in the input XML files).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>param1</em>) – the text segment being analyzed (either request or instruction).</p></li>
+<li><p><strong>item_name</strong> (<em>param2</em>) – item_name metadata, extracted direcly from the input xml file. If ‘intro’ is in the item_name, the segment receives the introduction item_type.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>text (string) and item_type (string). The SHOWCARD_ID strings are removed from the text segment.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.extract_answers">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">extract_answers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subnode</span></em>, <em class="sig-param"><span class="n">df_answers</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">country_language</span></em>, <em class="sig-param"><span class="n">output_source_questionnaire_flag</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#extract_answers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.extract_answers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract answers text from XML nodes of SHARE w8 files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>subnode</strong> (<em>param1</em>) – child node being analyzed in outer loop.</p></li>
+<li><p><strong>df_answers</strong> (<em>param2</em>) – pandas dataframe containing answers extracted from XML file</p></li>
+<li><p><strong>name</strong> (<em>param3</em>) – name of the answer structure inside XML file</p></li>
+<li><p><strong>country_language</strong> (<em>param4</em>) – country_language metadata, embedded in file name.</p></li>
+<li><p><strong>output_source_questionnaire_flag</strong> (<em>param5</em>) – indicates if the data to be extracted in the source (1) or the target language (any other value)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_answers (pandas dataframe) filled with retrieved answer segments extracted from answer_element nodes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.extract_categories">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">extract_categories</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subnode</span></em>, <em class="sig-param"><span class="n">df_answers</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">country_language</span></em>, <em class="sig-param"><span class="n">output_source_questionnaire_flag</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#extract_categories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.extract_categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the categories (i.e., answers) from SHARE W07 XML files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>subnode</strong> (<em>param1</em>) – subnode of categories node.</p></li>
+<li><p><strong>df_answers</strong> (<em>param2</em>) – a dataframe to store answer text and its attributes</p></li>
+<li><p><strong>country_language</strong> (<em>param3</em>) – country and language metadata, contained in the filename</p></li>
+<li><p><strong>output_source_questionnaire_flag</strong> (<em>param4</em>) – indicates if the data to be extracted in the source (1) or the target language (any other value)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_answers (pandas dataframe) filled with retrieved answer segments extracted from category_element nodes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.extract_qenums">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">extract_qenums</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subnode</span></em>, <em class="sig-param"><span class="n">df_answers</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">country_language</span></em>, <em class="sig-param"><span class="n">output_source_questionnaire_flag</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#extract_qenums"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.extract_qenums" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the qenums (i.e., answers) from SHARE W07 XML files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>subnode</strong> (<em>param1</em>) – subnode of categories node.</p></li>
+<li><p><strong>df_answers</strong> (<em>param2</em>) – a dataframe to store answer text and its attributes</p></li>
+<li><p><strong>country_language</strong> (<em>param3</em>) – country and language metadata, contained in the filename</p></li>
+<li><p><strong>output_source_questionnaire_flag</strong> (<em>param4</em>) – indicates if the data to be extracted in the source (1) or the target language (any other value)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_answers (pandas dataframe) filled with retrieved answer segments extracted from qenum_element nodes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.extract_questions_and_procedures_w7">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">extract_questions_and_procedures_w7</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subnode</span></em>, <em class="sig-param"><span class="n">df_questions</span></em>, <em class="sig-param"><span class="n">df_procedures</span></em>, <em class="sig-param"><span class="n">parent_map</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">tmt_id</span></em>, <em class="sig-param"><span class="n">splitter</span></em>, <em class="sig-param"><span class="n">country_language</span></em>, <em class="sig-param"><span class="n">output_source_questionnaire_flag</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#extract_questions_and_procedures_w7"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.extract_questions_and_procedures_w7" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the questions and procedures text segments from SHARE wave 7 XML files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_questions</strong> (<em>param1</em>) – the dataframe that holds the question segments extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>df_procedures</strong> (<em>param2</em>) – the dataframe that holds the procedures for fills substitution, extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>parent_map</strong> (<em>param3</em>) – a dictionary that maps each child to its parent in the XML tree.</p></li>
+<li><p><strong>name</strong> (<em>param4</em>) – name node attribute inside XML file</p></li>
+<li><p><strong>tmt_id</strong> (<em>param5</em>) – tmt_id node attribute inside XML file</p></li>
+<li><p><strong>splitter</strong> (<em>param6</em>) – Sentence segmenter object from NLTK</p></li>
+<li><p><strong>country_language</strong> (<em>param7</em>) – country and language metadata, contained in the filename</p></li>
+<li><p><strong>output_source_questionnaire_flag</strong> (<em>param8</em>) – indicates if the data to be extracted in the source (1) or the target language (any other value)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_questions (pandas dataframe) and df_procedures (pandas dataframe) datafarmes filled with the extracted text segments from questions and procedures nodes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.extract_questions_and_procedures_w8">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">extract_questions_and_procedures_w8</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subnode</span></em>, <em class="sig-param"><span class="n">df_questions</span></em>, <em class="sig-param"><span class="n">df_procedures</span></em>, <em class="sig-param"><span class="n">parent_map</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">splitter</span></em>, <em class="sig-param"><span class="n">country_language</span></em>, <em class="sig-param"><span class="n">output_source_questionnaire_flag</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#extract_questions_and_procedures_w8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.extract_questions_and_procedures_w8" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the questions and procedures text segments from SHARE wave 8 XML files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_questions</strong> (<em>param1</em>) – the dataframe that holds the question segments extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>df_procedures</strong> (<em>param2</em>) – the dataframe that holds the procedures for fills substitution, extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>parent_map</strong> (<em>param3</em>) – a dictionary that maps each child to its parent in the XML tree.</p></li>
+<li><p><strong>name</strong> (<em>param4</em>) – name node attribute inside XML file</p></li>
+<li><p><strong>splitter</strong> (<em>param5</em>) – Sentence segmenter object from NLTK</p></li>
+<li><p><strong>country_language</strong> (<em>param6</em>) – country and language metadata, contained in the filename</p></li>
+<li><p><strong>output_source_questionnaire_flag</strong> (<em>param7</em>) – indicates if the data to be extracted in the source (1) or the target language (any other value)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_questions (pandas dataframe) and df_procedures (pandas dataframe) datafarmes filled with the extracted text segments from questions and procedures nodes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.fill_extraction">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">fill_extraction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#fill_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.fill_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves all dynamic fills (if there is any) from a given SHARE text segment,
+so later on these fills can be replaces by their natural language text definition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>param1</em>) – the text segment.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>either a list of fills (list of strings), or null if there are no matching fills in the text segment.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.fill_substitution_in_answer">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">fill_substitution_in_answer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">fills</span></em>, <em class="sig-param"><span class="n">df_procedures</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#fill_substitution_in_answer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.fill_substitution_in_answer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitutes the fills in the answer text segments. The fill is substituted only if it was found in the procedure nodes (this can
+be checked by filtering the df_procedures dataframe by the fill present in the answer segment).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>param1</em>) – the answer text segment.</p></li>
+<li><p><strong>fills</strong> (<em>param2</em>) – the list of fills that are present in the text segment. Effectivelly, for answers the fill list has just one element.</p></li>
+<li><p><strong>df_procedures</strong> (<em>param3</em>) – a dataframe that stores the contents of the procedures nodes, where the fill definitions are.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>module (string) the module name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.fill_unrolling">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">fill_unrolling</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">fills</span></em>, <em class="sig-param"><span class="n">df_procedures</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">survey_item_id</span></em>, <em class="sig-param"><span class="n">item_name</span></em>, <em class="sig-param"><span class="n">share_modules</span></em>, <em class="sig-param"><span class="n">study</span></em>, <em class="sig-param"><span class="n">item_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#fill_unrolling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.fill_unrolling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces all dynamic fills found in a given text segment by their string definitions in the df_procedures dataframe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>param1</em>) – the text segment that contains at least one dynamic fill.</p></li>
+<li><p><strong>fills</strong> (<em>param2</em>) – the list of dynamic fills found in the text segment passed as parameter.</p></li>
+<li><p><strong>df_procedures</strong> (<em>param3</em>) – the dataframe that holds the procedures for fills substitution, extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param4</em>) – a dataframe to hold the final questionnaire.</p></li>
+<li><p><strong>item_name</strong> (<em>param5</em>) – the item name metadata, extracted in previous steps.</p></li>
+<li><p><strong>share_modules</strong> (<em>param6</em>) – a dictionary (round dependent) with the full name of all SHARE modules.</p></li>
+<li><p><strong>study</strong> (<em>param7</em>) – the study metadata, embedded in the input filename or hard-coded in the case of ENG_SOUCE data extraction.</p></li>
+<li><p><strong>item_type</strong> (<em>param8</em>) – the item type metadata, extracted in previous steps.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The updated df_questionnaire (pandas dataframe). The dynamic fill(s) in the text segment was properly replaced.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.filter_items_to_build_questionnaire_structure_w7">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">filter_items_to_build_questionnaire_structure_w7</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df_questions</span></em>, <em class="sig-param"><span class="n">df_answers</span></em>, <em class="sig-param"><span class="n">df_procedures</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">share_modules</span></em>, <em class="sig-param"><span class="n">special_answer_categories</span></em>, <em class="sig-param"><span class="n">study</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#filter_items_to_build_questionnaire_structure_w7"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.filter_items_to_build_questionnaire_structure_w7" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters the question and answer dataframes by the tmt_ids.
+Only segments with the same tmt_id are considered as alignment candidates.
+Calls the build_questionnaire_structure() function to build the final questionnaire from df_questions, df_answers and df_procedures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_questions</strong> (<em>param1</em>) – the dataframe that holds the question segments extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>df_answers</strong> (<em>param2</em>) – the dataframe that holds the answer segments extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>df_procedures</strong> (<em>param3</em>) – the dataframe that holds the procedures for fills substitution, extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param4</em>) – a dataframe to hold the final questionnaire.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param5</em>) – the prefix of survey item IDS, either embedded in the filename or hard-coded in the case of ENG_SOUCE data extraction.</p></li>
+<li><p><strong>share_modules</strong> (<em>param6</em>) – a dictionary (round dependent) with the full name of all SHARE modules.</p></li>
+<li><p><strong>special_answer_categories</strong> (<em>param7</em>) – a language-specific instantiated object that contains string definitions of special answer categories (Don’t know, Refuse, etc)</p></li>
+<li><p><strong>study</strong> (<em>param8</em>) – the study metadata, embedded in the input filename or hard-coded in the case of ENG_SOUCE data extraction.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The final SHARE wave 7 questionnaire, stored in df_questionnaire (pandas dataframe), after passing through the build_questionnaire_structure() function.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.filter_items_to_build_questionnaire_structure_w8">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">filter_items_to_build_questionnaire_structure_w8</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df_questions</span></em>, <em class="sig-param"><span class="n">df_answers</span></em>, <em class="sig-param"><span class="n">df_procedures</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">survey_item_prefix</span></em>, <em class="sig-param"><span class="n">share_modules</span></em>, <em class="sig-param"><span class="n">special_answer_categories</span></em>, <em class="sig-param"><span class="n">study</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#filter_items_to_build_questionnaire_structure_w8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.filter_items_to_build_questionnaire_structure_w8" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters the question and answer dataframes by the item name.
+Only segments with the same item name are considered as alignment candidates.
+Calls the build_questionnaire_structure() function to build the final questionnaire from df_questions, df_answers and df_procedures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_questions</strong> (<em>param1</em>) – the dataframe that holds the question segments extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>df_answers</strong> (<em>param2</em>) – the dataframe that holds the answer segments extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>df_procedures</strong> (<em>param3</em>) – the dataframe that holds the procedures for fills substitution, extracted from the XML nodes in previous steps.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param4</em>) – a dataframe to hold the final questionnaire.</p></li>
+<li><p><strong>survey_item_prefix</strong> (<em>param5</em>) – the prefix of survey item IDS, either embedded in the filename or hard-coded in the case of ENG_SOUCE data extraction.</p></li>
+<li><p><strong>share_modules</strong> (<em>param6</em>) – a dictionary (round dependent) with the full name of all SHARE modules.</p></li>
+<li><p><strong>special_answer_categories</strong> (<em>param7</em>) – a language-specific instantiated object that contains string definitions of special answer categories (Don’t know, Refuse, etc)</p></li>
+<li><p><strong>study</strong> (<em>param8</em>) – the study metadata, embedded in the input filename or hard-coded in the case of ENG_SOUCE data extraction.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The final SHARE wave 8 questionnaire, stored in df_questionnaire (pandas dataframe), after passing through the build_questionnaire_structure() function.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.get_module_metadata">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">get_module_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item_name</span></em>, <em class="sig-param"><span class="n">share_modules</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#get_module_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.get_module_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the module to which a given survey item pertains. based on the survey item name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>item_name</strong> (<em>param1</em>) – item_name metadata, extracted direcly from the input xml file.</p></li>
+<li><p><strong>share_modules</strong> (<em>param2</em>) – a dictionary of module names (taken from SHARE website), encapsulated in the SHAREModules object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>module (string) the module name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.main">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag that indicates if the data to be extracted is from the source or the target questionnaire.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.replace_fill_in_answer">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">replace_fill_in_answer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#replace_fill_in_answer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.replace_fill_in_answer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitutes certain fills in the answer text segments with fixed values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>param1</em>) – the answer text segment.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the answer text (string) where the fills were replaced (if present in original string).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.replace_untranslated_instructions">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">replace_untranslated_instructions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">country_language</span></em>, <em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#replace_untranslated_instructions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.replace_untranslated_instructions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces certain dynamic fills that are not defined in the input file by language-dependent fixed values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>country_language</strong> (<em>param1</em>) – country and language metadata, contained in the filename.</p></li>
+<li><p><strong>text</strong> (<em>param2</em>) – the text segment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The text segment (string) without certain dynamic fills (if there were any).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.set_initial_structures">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">set_initial_structures</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">output_source_questionnaire_flag</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#set_initial_structures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.set_initial_structures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set initial structures that are necessary for the extraction of each questionnaire.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>param1</em>) – name of the input file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_questionnaire to store questionnaire data (pandas dataframe),
+survey_item_prefix, which is the prefix of survey_item_ID (string),
+study/country_language, which are metadata parameters embedded in the file name (string and string)
+and sentence splitter to segment request/introduction/instruction segments when necessary (NLTK object).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.share_xml_data_extraction.split_answer_text_item_value_from_categories">
+<code class="sig-prename descclassname">preprocessing.share_xml_data_extraction.</code><code class="sig-name descname">split_answer_text_item_value_from_categories</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/share_xml_data_extraction.html#split_answer_text_item_value_from_categories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.share_xml_data_extraction.split_answer_text_item_value_from_categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits the answer text and its item value in the category node</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>param1</em>) – text from category node, containing item value and answer text segment</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>item_value (string) and answer text segment (string)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-preprocessing.sharemodules"></span><dl class="py class">
+<dt id="preprocessing.sharemodules.SHAREModules">
+<em class="property">class </em><code class="sig-prename descclassname">preprocessing.sharemodules.</code><code class="sig-name descname">SHAREModules</code><a class="reference internal" href="_modules/preprocessing/sharemodules.html#SHAREModules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.sharemodules.SHAREModules" title="Permalink to this definition">¶</a></dt>
+<dd><p>SHARE modules, information taken from SHARE website</p>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ESS.html"
+                        title="previous chapter">ESS data extraction, preprocessing and treatment methods</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="annotation.html"
+                        title="next chapter">Data alignment and annotation methods (EVS, ESS and SHARE)</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/SHARE.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="annotation.html" title="Data alignment and annotation methods (EVS, ESS and SHARE)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ESS.html" title="ESS data extraction, preprocessing and treatment methods"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="contents.html" >Contents</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SHARE data extraction, preprocessing and treatment methods</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

@@ -43,7 +43,7 @@
 <span class="kn">import</span> <span class="nn">utils</span> <span class="k">as</span> <span class="nn">ut</span>
 
 
-<div class="viewcode-block" id="standardize_special_response_category_value"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.standardize_special_response_category_value">[docs]</a><span class="k">def</span> <span class="nf">standardize_special_response_category_value</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">catValu</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="standardize_special_response_category_value"><a class="viewcode-back" href="../../EVS.html#preprocessing.preprocessing_evs_utils.standardize_special_response_category_value">[docs]</a><span class="k">def</span> <span class="nf">standardize_special_response_category_value</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">catValu</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Standartizes a response category value, if it is a special response category.</span>
 <span class="sd">	Standard:</span>
@@ -68,7 +68,7 @@
 
 	<span class="k">return</span> <span class="n">catValu</span></div>
 
-<div class="viewcode-block" id="get_country_language_and_study_info"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.get_country_language_and_study_info">[docs]</a><span class="k">def</span> <span class="nf">get_country_language_and_study_info</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="get_country_language_and_study_info"><a class="viewcode-back" href="../../EVS.html#preprocessing.preprocessing_evs_utils.get_country_language_and_study_info">[docs]</a><span class="k">def</span> <span class="nf">get_country_language_and_study_info</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Retrieves the country/language and study metadata based on the input filename.</span>
 
@@ -87,7 +87,7 @@
 	<span class="k">return</span> <span class="n">study</span><span class="p">,</span> <span class="n">country_language</span></div>
 
 
-<div class="viewcode-block" id="standardize_item_name"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.standardize_item_name">[docs]</a><span class="k">def</span> <span class="nf">standardize_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">):</span>
+<div class="viewcode-block" id="standardize_item_name"><a class="viewcode-back" href="../../EVS.html#preprocessing.preprocessing_evs_utils.standardize_item_name">[docs]</a><span class="k">def</span> <span class="nf">standardize_item_name</span><span class="p">(</span><span class="n">item_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Standartizes a given item_name, if it is not in the standard</span>
 
@@ -118,7 +118,7 @@
 
 
 
-<div class="viewcode-block" id="clean_instruction"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.clean_instruction">[docs]</a><span class="k">def</span> <span class="nf">clean_instruction</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="clean_instruction"><a class="viewcode-back" href="../../EVS.html#preprocessing.preprocessing_evs_utils.clean_instruction">[docs]</a><span class="k">def</span> <span class="nf">clean_instruction</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Removes undesired characters from instruction text. </span>
 
@@ -149,7 +149,7 @@
 
 
 
-<div class="viewcode-block" id="clean_text"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.clean_text">[docs]</a><span class="k">def</span> <span class="nf">clean_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="clean_text"><a class="viewcode-back" href="../../EVS.html#preprocessing.preprocessing_evs_utils.clean_text">[docs]</a><span class="k">def</span> <span class="nf">clean_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Removes undesired characters from request/response text. </span>
 
@@ -184,7 +184,7 @@
 	<span class="k">return</span> <span class="n">text</span></div>
 
 
-<div class="viewcode-block" id="clean_answer_text_evs"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.clean_answer_text_evs">[docs]</a><span class="k">def</span> <span class="nf">clean_answer_text_evs</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="clean_answer_text_evs"><a class="viewcode-back" href="../../EVS.html#preprocessing.preprocessing_evs_utils.clean_answer_text_evs">[docs]</a><span class="k">def</span> <span class="nf">clean_answer_text_evs</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Removes undesired characters from request/response text. </span>
 <span class="sd">	</span>
@@ -222,7 +222,7 @@
 
 
 
-<div class="viewcode-block" id="standardize_special_response_category"><a class="viewcode-back" href="../../preprocessing_utils.html#preprocessing.preprocessing_evs_utils.standardize_special_response_category">[docs]</a><span class="k">def</span> <span class="nf">standardize_special_response_category</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="standardize_special_response_category"><a class="viewcode-back" href="../../EVS.html#preprocessing.preprocessing_evs_utils.standardize_special_response_category">[docs]</a><span class="k">def</span> <span class="nf">standardize_special_response_category</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Standartizes text of special response categories (don&#39;t know, no answer, not applicable),</span>
 <span class="sd">	according to the language (informed in the the filename).</span>

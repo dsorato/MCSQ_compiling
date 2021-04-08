@@ -54,7 +54,7 @@
 <span class="kn">from</span> <span class="nn">share_instructions</span> <span class="kn">import</span> <span class="o">*</span>
 
 
-<div class="viewcode-block" id="get_module_metadata"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.get_module_metadata">[docs]</a><span class="k">def</span> <span class="nf">get_module_metadata</span><span class="p">(</span><span class="n">item_name</span><span class="p">,</span> <span class="n">share_modules</span><span class="p">):</span>
+<div class="viewcode-block" id="get_module_metadata"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.get_module_metadata">[docs]</a><span class="k">def</span> <span class="nf">get_module_metadata</span><span class="p">(</span><span class="n">item_name</span><span class="p">,</span> <span class="n">share_modules</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Gets the module to which a given survey item pertains. based on the survey item name.</span>
 
@@ -72,7 +72,7 @@
 
 	<span class="k">return</span> <span class="n">module</span></div>
 
-<div class="viewcode-block" id="fill_substitution_in_answer"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.fill_substitution_in_answer">[docs]</a><span class="k">def</span> <span class="nf">fill_substitution_in_answer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">fills</span><span class="p">,</span> <span class="n">df_procedures</span><span class="p">):</span>
+<div class="viewcode-block" id="fill_substitution_in_answer"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.fill_substitution_in_answer">[docs]</a><span class="k">def</span> <span class="nf">fill_substitution_in_answer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">fills</span><span class="p">,</span> <span class="n">df_procedures</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Substitutes the fills in the answer text segments. The fill is substituted only if it was found in the procedure nodes (this can</span>
 <span class="sd">	be checked by filtering the df_procedures dataframe by the fill present in the answer segment).</span>
@@ -98,7 +98,7 @@
 
 	<span class="k">return</span> <span class="n">texts</span></div>
 
-<div class="viewcode-block" id="eliminate_showcardID_and_adjust_item_type"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.eliminate_showcardID_and_adjust_item_type">[docs]</a><span class="k">def</span> <span class="nf">eliminate_showcardID_and_adjust_item_type</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">item_name</span><span class="p">):</span>
+<div class="viewcode-block" id="eliminate_showcardID_and_adjust_item_type"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.eliminate_showcardID_and_adjust_item_type">[docs]</a><span class="k">def</span> <span class="nf">eliminate_showcardID_and_adjust_item_type</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">item_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Substitutes the SHOWCARD_ID strings with a card number (the card IDs are not available in the input XML files).</span>
 
@@ -154,7 +154,7 @@
 	<span class="k">return</span> <span class="n">text</span><span class="p">,</span> <span class="n">item_type</span>		</div>
 
 
-<div class="viewcode-block" id="fill_unrolling"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.fill_unrolling">[docs]</a><span class="k">def</span> <span class="nf">fill_unrolling</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">fills</span><span class="p">,</span> <span class="n">df_procedures</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_id</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">share_modules</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
+<div class="viewcode-block" id="fill_unrolling"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.fill_unrolling">[docs]</a><span class="k">def</span> <span class="nf">fill_unrolling</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">fills</span><span class="p">,</span> <span class="n">df_procedures</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_id</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">share_modules</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Replaces all dynamic fills found in a given text segment by their string definitions in the df_procedures dataframe.</span>
 
@@ -224,7 +224,7 @@
 
 
 
-<div class="viewcode-block" id="fill_extraction"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.fill_extraction">[docs]</a><span class="k">def</span> <span class="nf">fill_extraction</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="fill_extraction"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.fill_extraction">[docs]</a><span class="k">def</span> <span class="nf">fill_extraction</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Retrieves all dynamic fills (if there is any) from a given SHARE text segment, </span>
 <span class="sd">	so later on these fills can be replaces by their natural language text definition.</span>
@@ -261,7 +261,7 @@
 	<span class="k">else</span><span class="p">:</span>
 		<span class="k">return</span> <span class="n">fill_list</span></div>
 
-<div class="viewcode-block" id="replace_fill_in_answer"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.replace_fill_in_answer">[docs]</a><span class="k">def</span> <span class="nf">replace_fill_in_answer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="replace_fill_in_answer"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.replace_fill_in_answer">[docs]</a><span class="k">def</span> <span class="nf">replace_fill_in_answer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Substitutes certain fills in the answer text segments with fixed values.</span>
 
@@ -289,7 +289,7 @@
 	<span class="k">return</span> <span class="n">text</span></div>
 
 
-<div class="viewcode-block" id="clean_answer_text"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.clean_answer_text">[docs]</a><span class="k">def</span> <span class="nf">clean_answer_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">country_language</span><span class="p">):</span>
+<div class="viewcode-block" id="clean_answer_text"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.clean_answer_text">[docs]</a><span class="k">def</span> <span class="nf">clean_answer_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">country_language</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Substitutes HTML markups in the answer text segments with fixed values</span>
 
@@ -337,7 +337,7 @@
 
 	<span class="k">return</span> <span class="n">text</span></div>
 
-<div class="viewcode-block" id="clean_text_share"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.clean_text_share">[docs]</a><span class="k">def</span> <span class="nf">clean_text_share</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">w7flag</span><span class="p">):</span>
+<div class="viewcode-block" id="clean_text_share"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.clean_text_share">[docs]</a><span class="k">def</span> <span class="nf">clean_text_share</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">w7flag</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Substitutes HTML markups and certain fills in the text segments with fixed values.</span>
 
@@ -485,7 +485,7 @@
 	<span class="k">return</span> <span class="n">text</span></div>
 
 
-<div class="viewcode-block" id="extract_answers"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.extract_answers">[docs]</a><span class="k">def</span> <span class="nf">extract_answers</span><span class="p">(</span><span class="n">subnode</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">output_source_questionnaire_flag</span><span class="p">):</span>
+<div class="viewcode-block" id="extract_answers"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.extract_answers">[docs]</a><span class="k">def</span> <span class="nf">extract_answers</span><span class="p">(</span><span class="n">subnode</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">output_source_questionnaire_flag</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extract answers text from XML nodes of SHARE w8 files.</span>
 
@@ -519,7 +519,7 @@
 
 	<span class="k">return</span> <span class="n">df_answers</span></div>
 
-<div class="viewcode-block" id="split_answer_text_item_value_from_categories"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.split_answer_text_item_value_from_categories">[docs]</a><span class="k">def</span> <span class="nf">split_answer_text_item_value_from_categories</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="split_answer_text_item_value_from_categories"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.split_answer_text_item_value_from_categories">[docs]</a><span class="k">def</span> <span class="nf">split_answer_text_item_value_from_categories</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Splits the answer text and its item value in the category node</span>
 
@@ -544,7 +544,7 @@
 
 	<span class="k">return</span> <span class="n">item_value</span><span class="p">,</span> <span class="n">answer_text</span></div>
 
-<div class="viewcode-block" id="extract_categories"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.extract_categories">[docs]</a><span class="k">def</span> <span class="nf">extract_categories</span><span class="p">(</span><span class="n">subnode</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">output_source_questionnaire_flag</span><span class="p">):</span>
+<div class="viewcode-block" id="extract_categories"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.extract_categories">[docs]</a><span class="k">def</span> <span class="nf">extract_categories</span><span class="p">(</span><span class="n">subnode</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">output_source_questionnaire_flag</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts the categories (i.e., answers) from SHARE W07 XML files.</span>
 
@@ -585,7 +585,7 @@
 
 	<span class="k">return</span> <span class="n">df_answers</span></div>
 
-<div class="viewcode-block" id="extract_qenums"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.extract_qenums">[docs]</a><span class="k">def</span> <span class="nf">extract_qenums</span><span class="p">(</span><span class="n">subnode</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">output_source_questionnaire_flag</span><span class="p">):</span>
+<div class="viewcode-block" id="extract_qenums"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.extract_qenums">[docs]</a><span class="k">def</span> <span class="nf">extract_qenums</span><span class="p">(</span><span class="n">subnode</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">output_source_questionnaire_flag</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts the qenums (i.e., answers) from SHARE W07 XML files.</span>
 
@@ -632,7 +632,7 @@
 
 
 
-<div class="viewcode-block" id="replace_untranslated_instructions"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.replace_untranslated_instructions">[docs]</a><span class="k">def</span> <span class="nf">replace_untranslated_instructions</span><span class="p">(</span><span class="n">country_language</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="replace_untranslated_instructions"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.replace_untranslated_instructions">[docs]</a><span class="k">def</span> <span class="nf">replace_untranslated_instructions</span><span class="p">(</span><span class="n">country_language</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Replaces certain dynamic fills that are not defined in the input file by language-dependent fixed values.</span>
 
@@ -728,7 +728,7 @@
 	<span class="k">return</span> <span class="n">text</span></div>
 
 
-<div class="viewcode-block" id="extract_questions_and_procedures_w8"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.extract_questions_and_procedures_w8">[docs]</a><span class="k">def</span> <span class="nf">extract_questions_and_procedures_w8</span><span class="p">(</span><span class="n">subnode</span><span class="p">,</span> <span class="n">df_questions</span><span class="p">,</span> <span class="n">df_procedures</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">splitter</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">output_source_questionnaire_flag</span><span class="p">):</span>
+<div class="viewcode-block" id="extract_questions_and_procedures_w8"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.extract_questions_and_procedures_w8">[docs]</a><span class="k">def</span> <span class="nf">extract_questions_and_procedures_w8</span><span class="p">(</span><span class="n">subnode</span><span class="p">,</span> <span class="n">df_questions</span><span class="p">,</span> <span class="n">df_procedures</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">splitter</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">output_source_questionnaire_flag</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts the questions and procedures text segments from SHARE wave 8 XML files.</span>
 
@@ -809,7 +809,7 @@
 
 	<span class="k">return</span> <span class="n">df_questions</span><span class="p">,</span> <span class="n">df_procedures</span></div>
 
-<div class="viewcode-block" id="extract_questions_and_procedures_w7"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.extract_questions_and_procedures_w7">[docs]</a><span class="k">def</span> <span class="nf">extract_questions_and_procedures_w7</span><span class="p">(</span><span class="n">subnode</span><span class="p">,</span> <span class="n">df_questions</span><span class="p">,</span> <span class="n">df_procedures</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tmt_id</span><span class="p">,</span> <span class="n">splitter</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">output_source_questionnaire_flag</span><span class="p">):</span>
+<div class="viewcode-block" id="extract_questions_and_procedures_w7"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.extract_questions_and_procedures_w7">[docs]</a><span class="k">def</span> <span class="nf">extract_questions_and_procedures_w7</span><span class="p">(</span><span class="n">subnode</span><span class="p">,</span> <span class="n">df_questions</span><span class="p">,</span> <span class="n">df_procedures</span><span class="p">,</span> <span class="n">parent_map</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tmt_id</span><span class="p">,</span> <span class="n">splitter</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span> <span class="n">output_source_questionnaire_flag</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Extracts the questions and procedures text segments from SHARE wave 7 XML files.</span>
 
@@ -893,7 +893,7 @@
 
 
 
-<div class="viewcode-block" id="set_initial_structures"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.set_initial_structures">[docs]</a><span class="k">def</span> <span class="nf">set_initial_structures</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">output_source_questionnaire_flag</span><span class="p">):</span>
+<div class="viewcode-block" id="set_initial_structures"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.set_initial_structures">[docs]</a><span class="k">def</span> <span class="nf">set_initial_structures</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">output_source_questionnaire_flag</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Set initial structures that are necessary for the extraction of each questionnaire.</span>
 
@@ -943,7 +943,7 @@
 	
 	<span class="k">return</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">country_language</span><span class="p">,</span><span class="n">splitter</span></div>
 
-<div class="viewcode-block" id="build_questionnaire_structure"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.build_questionnaire_structure">[docs]</a><span class="k">def</span> <span class="nf">build_questionnaire_structure</span><span class="p">(</span><span class="n">df_questions</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span><span class="n">df_procedures</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">share_modules</span><span class="p">,</span> <span class="n">special_answer_categories</span><span class="p">,</span> <span class="n">study</span><span class="p">):</span>
+<div class="viewcode-block" id="build_questionnaire_structure"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.build_questionnaire_structure">[docs]</a><span class="k">def</span> <span class="nf">build_questionnaire_structure</span><span class="p">(</span><span class="n">df_questions</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span><span class="n">df_procedures</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">share_modules</span><span class="p">,</span> <span class="n">special_answer_categories</span><span class="p">,</span> <span class="n">study</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Build the final questionnaire from df_questions, df_answers and df_procedures.</span>
 <span class="sd">	Calls the fill_extraction() and fill_unrolling() methods to replace the dynamic fills in the texts for the appropriate string definitions found in df_procedures.</span>
@@ -1008,7 +1008,7 @@
 
 	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
 
-<div class="viewcode-block" id="filter_items_to_build_questionnaire_structure_w8"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.filter_items_to_build_questionnaire_structure_w8">[docs]</a><span class="k">def</span> <span class="nf">filter_items_to_build_questionnaire_structure_w8</span><span class="p">(</span><span class="n">df_questions</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span><span class="n">df_procedures</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">share_modules</span><span class="p">,</span> <span class="n">special_answer_categories</span><span class="p">,</span> <span class="n">study</span><span class="p">):</span>
+<div class="viewcode-block" id="filter_items_to_build_questionnaire_structure_w8"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.filter_items_to_build_questionnaire_structure_w8">[docs]</a><span class="k">def</span> <span class="nf">filter_items_to_build_questionnaire_structure_w8</span><span class="p">(</span><span class="n">df_questions</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span><span class="n">df_procedures</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">share_modules</span><span class="p">,</span> <span class="n">special_answer_categories</span><span class="p">,</span> <span class="n">study</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Filters the question and answer dataframes by the item name.</span>
 <span class="sd">	Only segments with the same item name are considered as alignment candidates.</span>
@@ -1036,7 +1036,7 @@
 
 	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
 
-<div class="viewcode-block" id="filter_items_to_build_questionnaire_structure_w7"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.filter_items_to_build_questionnaire_structure_w7">[docs]</a><span class="k">def</span> <span class="nf">filter_items_to_build_questionnaire_structure_w7</span><span class="p">(</span><span class="n">df_questions</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span><span class="n">df_procedures</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">share_modules</span><span class="p">,</span> <span class="n">special_answer_categories</span><span class="p">,</span> <span class="n">study</span><span class="p">):</span>
+<div class="viewcode-block" id="filter_items_to_build_questionnaire_structure_w7"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.filter_items_to_build_questionnaire_structure_w7">[docs]</a><span class="k">def</span> <span class="nf">filter_items_to_build_questionnaire_structure_w7</span><span class="p">(</span><span class="n">df_questions</span><span class="p">,</span> <span class="n">df_answers</span><span class="p">,</span><span class="n">df_procedures</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">survey_item_prefix</span><span class="p">,</span> <span class="n">share_modules</span><span class="p">,</span> <span class="n">special_answer_categories</span><span class="p">,</span> <span class="n">study</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Filters the question and answer dataframes by the tmt_ids.</span>
 <span class="sd">	Only segments with the same tmt_id are considered as alignment candidates.</span>
@@ -1074,7 +1074,7 @@
 	<span class="k">return</span> <span class="n">df</span>
 
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../xml2spreadsheet.html#preprocessing.share_xml_data_extraction.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../SHARE.html#preprocessing.share_xml_data_extraction.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Flag that indicates if the data to be extracted is from the source or the target questionnaire.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
