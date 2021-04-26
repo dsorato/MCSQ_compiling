@@ -23,17 +23,19 @@ def identify_showc_segment(list_source, list_target, item_type):
 	Returns:
 		str indicating if instructions that follow the show card segments were found.
 	"""
+	target_regex =  r"(?P<card>)(tarjeta|targeta|kartu|karta|karty|kort|kortet|carte|liste|kort|kortet|carte|karte|cartão|КАРТОЧКУ|КАРТОЧКА|KAРTOЧКА|карточкой|карточке|карточки|карте|карты)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
+	source_regex =  r"(?P<card>)(card|showcard)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
 	if item_type == 'INSTRUCTION':
 		possible_card_instruction_source = 'dummy value'
 		possible_card_instruction_target = 'dummy value'
 
 		for i, item in enumerate(list_source):
-			if re.compile(r'\s\d+\b|\s[A-Z]\b|\s[A-Z]\d+\b').search(item[-1]):
+			if re.search(source_regex, item[-1], re.IGNORECASE):
 				possible_card_instruction_source = i
 				break
 
 		for i, item in enumerate(list_target):
-			if re.compile(r'\s\d+\b|\s[A-Z]\b|\s[A-Z]\d+\b').search(item[-1]):
+			if re.search(target_regex, item[-1], re.IGNORECASE):
 				possible_card_instruction_target = i
 				break
 
@@ -1066,7 +1068,9 @@ def main(folder_path, filename_source, filename_target):
 		'source_text', 'target_text'])
 
 	study = get_study_metadata(filename_source)
+	global target_language_country
 	target_language_country = get_target_language_country_metadata(filename_target)
+
 
 	if 'EVS' in study:
 		source_language_country = 'ENG_GB'

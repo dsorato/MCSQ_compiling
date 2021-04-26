@@ -395,6 +395,10 @@ def clean_answer(text, ess_special_answer_categories):
 		text = text.split('01', 1)
 		answer_text = text[1].rstrip()
 		answer_value = '1'
+	elif re.compile(r'^012\s\w+').match(text):
+		text = text.split('012', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '12'
 	elif re.compile(r'^02\s\w+').match(text):
 		text = text.split('02', 1)
 		answer_text = text[1].rstrip()
@@ -668,12 +672,12 @@ def instruction_recognition_russian(text,country_language):
 		return True
 		 
 
-	regex= r"^(?P<again>)(СНОВА)?\s?(?P<use>)(ИСПОЛЬЗУЙТЕ)?\s?(?P<card>)(КАРТОЧКА|КАРТОЧКУ)\s(?P<number>)(Nr|\d+|\w+)"
+	regex= r"^(?P<again>)(СНОВА)?\s?(?P<use>)(ИСПОЛЬЗУЙТЕ)?\s?(?P<card>)(КАРТОЧКА|КАРТОЧКУ|KAРTOЧКА)\s(?P<number>)(Nr|\d+|\w+)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<show>)ПОДАЙТЕ\s(?P<respondent>)РЕСПОНДЕНТУ\s(?P<card>)(КАРТОЧКА|КАРТОЧКУ)\s(?P<number>)(Nr|\d+|\w+)"
+	regex= r"^(?P<show>)ПОДАЙТЕ\s(?P<respondent>)РЕСПОНДЕНТУ\s(?P<card>)(КАРТОЧКА|КАРТОЧКУ|KAРTOЧКА)\s(?P<number>)(Nr|\d+|\w+)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -2063,7 +2067,7 @@ def instruction_recognition_english(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<please>)(please)?\s?(?P<choose>)choose\s(?P<oneor>)(one|your)\s(?P<answer>)answer\s(?P<infrom>)(in|from)\s(?P<this>)this\s(?P<same>)(same)?\s?(?P<card>)card"
+	regex= r"^(?P<please>)(please)?\s?(?P<choose>)choose\s(?P<oneor>)(one|your|an)\s(?P<answer>)answer\s(?P<infrom>)(in|from)\s(?P<this>)this\s(?P<same>)(same)?\s?(?P<card>)card"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -2147,6 +2151,11 @@ def instruction_recognition_czech(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<filter>)FILTR:"
+	matches = re.search(regex, text_aux, re.IGNORECASE)
+	if matches:
+		return True
+
 	regex= r"(?P<ask>)(PTEJTE SE)?\s?(?P<if>)(POKUD)?\s?(?P<the>)(JE)?\s?(?P<respondent>)(RESPONDENT(I)?|RESPONDENTKA|RESPONDENTŮ)"
 	matches = re.search(regex, text)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'řekněte' not in text_aux:
@@ -2214,6 +2223,13 @@ def instruction_recognition_czech(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<prompt>)ZJIŠŤUJE"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+		
+
 	regex= r"^(?P<show>)(PŘEDLOŽTE|PŘEDLOŢTE)?\s?(?P<still>)(STÁLE JEŠTĚ)?\s?(?P<again>)(OPĚT)?\s?(?P<card>)kart(u|a)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -2225,7 +2241,12 @@ def instruction_recognition_czech(text,country_language):
 	if matches:
 		return True
 
-	regex= r"(?P<ineachline>)(NA KAŽDÉM ŘÁDKU)?\s?(?P<possible>)(MOŽNÁ|MOŢNÁ)\s(?P<only>)POUZE\s(?P<one>)JEDNA\s(?P<answer>)ODPOVĚĎ"
+	regex= r"(?P<ineachline>)(V|NA)?\s?(KAŽDÉM ŘÁDKU)?\s?(?P<possible>)(MOŽNÁ|MOŢNÁ)\s(?P<only>)POUZE\s(?P<one>)JEDNA\s(?P<answer>)ODPOVĚĎ"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"(?P<ineachline>)(V|NA)\sKAŽDÉM\sŘÁDKU\s(?P<choose>)VYBERTE\s(?P<one>)JEDNU\s(?P<answer>)ODPOVĚĎ"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -2272,12 +2293,19 @@ def instruction_recognition_czech(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<prompt>)ZJIŠŤUJTE"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
+
 	regex= r"^(?P<read>)(ČTĚTE|ČTETE)\s(?P<out>)NAHLAS\s(?P<each>)KAŽDÝ\s(?P<utterance>)VÝROK"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
  
-	regex= r"^(?P<again>)opět\s(?P<card>)kart(u|a)"
+	regex= r"^(?P<again>)(opět|STÁLE)\s(?P<card>)kart(u|a)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -2297,6 +2325,12 @@ def instruction_recognition_czech(text,country_language):
 	matches = re.search(regex, text_aux, re.IGNORECASE)
 	if matches:
 		return True
+
+	regex= r"^(?P<choose>)Vyberte(,)?\s(?P<please>)prosím(,)?\s(?P<youranswer>)svou\sodpověď\s(?P<accordingto>)(podle|z)\stéto\s(?P<card>)karty"
+	matches = re.search(regex, text_aux, re.IGNORECASE)
+	if matches:
+		return True
+
 
 	regex= r"(?P<choose>)Vyberte\s(?P<please>)(prosím)?\s?(?P<one>)(jen jednu|jednu)?\s?(?P<answer>)odpověď\s(?P<fromthis>)z této\s(?P<card>)(karty|kartě)"
 	matches = re.search(regex, text_aux, re.IGNORECASE)
