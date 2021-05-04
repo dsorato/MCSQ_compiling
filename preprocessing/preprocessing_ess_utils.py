@@ -1160,7 +1160,7 @@ def instruction_recognition_german(text,country_language):
 
 	regex= r"^(?P<interviewer>)(Befrager|Interviewer)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches:
+	if matches and "Interviewer ID" not in text:
 		return True
 
 	regex= r"^(?P<round>)Runden\b"
@@ -1963,7 +1963,7 @@ def instruction_recognition_english(text,country_language):
 
 	regex= r"^(?P<interviewer>)Interviewer"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches:
+	if matches and "Interviewer ID" not in text:
 		return True
 
 	regex= r"^(?P<computercode>)COMPUTER\sCODE"
