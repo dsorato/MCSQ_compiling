@@ -2417,12 +2417,33 @@ def instruction_recognition_portuguese(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<prompt>)APROFUNDAR"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
   
 	regex= r"^(?P<mark>)ASSINALAR\s(?P<only>)APENAS\s(?P<one>)UM(A)?"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
- 
+
+	regex= r"^(?P<then>)DEPOIS\s(?P<repeat>)REPETIR\s(?P<forthe>)PARA\sA\s(?P<institution>)INSTITUIÇÃO"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<code>)CODIFICAR\s(?P<only>)APENAS\s(?P<one>)UMA"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<code>)CODIFICAR\s(?P<only>)TOD(O|A)S"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+
 	regex= r"^(?P<answer>)Responda\s(?P<please>)(por favor)?\s?(?P<using>)(utilizando|com)\s(?P<theorthis>)(o|a|um|uma|esta|este)\s(?P<same>)(mesmo|mesma)?"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -2541,7 +2562,7 @@ def instruction_recognition_portuguese(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<code>)(codificar|assinalar|registrar)\s(?P<all>)(todas|todos)\s(?P<the>)(as)?\s?(?P<that>)que se\s(?P<apply>)aplicam"
+	regex= r"^(?P<code>)(codificar|assinalar|registrar)\s(?P<all>)(todas|todos)\s?(?P<the>)(as)?\s?(?P<that>)(que\sse\s)?(?P<apply>)aplicam?"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True

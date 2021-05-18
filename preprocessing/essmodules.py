@@ -70,7 +70,8 @@ class ESSSModulesR08:
 	"""
 	modules = {'D':'D - Climate change and energy, including: attitudes, perceptions and policy preferences.',
 	'E': 'E - Welfare, including attitudes towards welfare provision, size of claimant groups, attitudes towards service delivery and likely future dependence on welfare, vote intention in EU referendum.',
-	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions'}
+	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions', 
+	'X': 'SUPP_X - Catalan/Spanish National Module', 'N': 'SUPP_N - National Module (UK)', 'PT': 'SUPP_PT - National Module (Portugal)'}
 
 
 class ESSSModulesR09:
