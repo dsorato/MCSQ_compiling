@@ -491,6 +491,10 @@ def clean_answer(text, ess_special_answer_categories):
 		text = text.split('U', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'U'
+	elif re.compile(r'^G\s.+').match(text):
+		text = text.split('G', 1)
+		answer_text = text[1].rstrip()
+		answer_value = 'G'
 	elif re.compile(r'^N\s.+').match(text):
 		text = text.split('N', 1)
 		answer_text = text[1].rstrip()
@@ -523,6 +527,42 @@ def clean_answer(text, ess_special_answer_categories):
 		text = text.split('B', 1)
 		answer_text = text[1].rstrip()
 		answer_value = 'B'
+	elif re.compile(r'^55\s.+').match(text):
+		text = text.split('55', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '55'
+	elif re.compile(r'^\+4\s.+').match(text):
+		text = text.split('+4', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '+4'
+	elif re.compile(r'^\+3\s.+').match(text):
+		text = text.split('+3', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '+3'
+	elif re.compile(r'^\+2\s.+').match(text):
+		text = text.split('+2', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '+2'
+	elif re.compile(r'^\+1\s.+').match(text):
+		text = text.split('+1', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '+1'
+	elif re.compile(r'^\-4\s.+').match(text):
+		text = text.split('-4', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '-4'
+	elif re.compile(r'^\-3\s.+').match(text):
+		text = text.split('-3', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '-3'
+	elif re.compile(r'^\-2\s.+').match(text):
+		text = text.split('-2', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '-2'
+	elif re.compile(r'^\-1\s.+').match(text):
+		text = text.split('-1', 1)
+		answer_text = text[1].rstrip()
+		answer_value = '-1'
 	else:
 		answer_text = text.strip()
 		answer_value = None
@@ -1971,10 +2011,39 @@ def instruction_recognition_english(text,country_language):
 	if matches:
 		return True
 
+  
+	regex= r"^(?P<typeinduration>)TYPE\sIN\sDURATION"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"(?P<malefemalerespondents>)(ASK\sIF\sRESPONDENT\sIS\sFEMALE|FEMALE\sRESPONDENT(S)?|ASK\sIF\sRESPONDENT\sIS\sMALE|MALE\sRESPONDENT(S)?)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	
+
 	regex= r"^(?P<probeifnecessary>)probe\sif\snecessary"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
+	regex= r"^(?P<ifyouthink>)If\syou\sthink\s(?P<paymentcondition>)(this\spay|your\sincome\sfrom\s|these\sincomes|these\sdifferences)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<interviewer>)INTERVIEWER\s(?P<ifrespondent>)If\sthe\srespondent\s(?P<needadditionalinstructions>)needs\sadditional\sinstructions"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<note>)NOTE\s(?P<numbermustbeexclusive>)THIS\sNUMBER\sMUST\sBE\sEXCLUSIVE\s(?P<toindividualinterviewers>)TO\sINDIVIDUAL\sINTERVIEWERS"
+	matches = re.search(regex, text,  re.IGNORECASE)
+	if matches:
+		return True
+
 
 	regex= r"^(?P<please>)(please)?\s?(?P<answer>)answer\s(?P<using>)using\s(?P<this>)this\s(?P<card>)card\s(?P<where>)where\s(?P<zero>)0\s(?P<means>)means"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -2047,7 +2116,7 @@ def instruction_recognition_english(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<code>)code\s(?P<one>)one\s(?P<answer>)answer\s(?P<apply>)only"
+	regex= r"^(?P<code>)code\s(?P<one>)one\s(?P<answer>)(answer)?\s?(?P<apply>)only"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -2616,17 +2685,39 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		return True
 
 	if 'CAT' in country_language:
+		regex= r"^(?P<typeinduration>)ANOTAR\sDURADA"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<ask>)Preguntar:"
+		matches = re.search(regex, text_aux, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<attentioninterviewer>)ATENCIÓ\sENTREVISTADOR(/A)?:"
+		matches = re.search(regex, text_aux, re.IGNORECASE)
+		if matches:
+			return True
+
+
 		regex= r"^(?P<continue>)(continuï|continueu|continuar)?\s?(?P<show>)mostr(ar|eu|ant)\s(?P<card>)targeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
 
-		regex= r"^(?P<spontaneousanswer>)RESPOSTA\sESPONTÀNIA\s(?P<dontread>)NO\sLLEGIR"
+		regex= r"(?P<malefemalerespondents>)(SOLO\sPARA\sENTREVISTADAS\sMUJERES|ENTREVISTADAS\sMUJERES|SOLO\sPARA\sENTREVISTADOS\sHOMBRES|ENTREVISTADOS\sHOMBRES)"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
 
-		regex= r"^(?P<multipleanswer>)RESPOSTA\sMÚLTIPLE"
+		regex= r"^(?P<spontaneousanswer>)RESPOSTA\s(ESPONTÁNIA|ESPONTÀNIA)\s(?P<dontread>)NO\sLLEGIR"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+
+		regex= r"^(?P<multipleanswer>)RESPOSTA\sM(Ú|U)LTIPLE"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
@@ -2646,6 +2737,22 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 			return True
 
+		regex= r"^(?P<ifyouthink>)Si\screu\sque\s(?P<thispayis>)(la\sseva\sremuneració|els\sseus\singressos|que\saquests\singressos|aquestes\sdiferències)"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<important>)IMPORTANT:\s(?P<interviewer>)Entrevistador(/a)?"
+		matches = re.search(regex, text_aux, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"^(?P<interviewer>)ENTREVISTADOR(/A)?:\s(?P<ifrespondent>)Si\sl'entrevistat\s(?P<needadditionalinstructions>)necessita\sinstruccions\saddicionals"
+		matches = re.search(regex, text_aux, re.IGNORECASE)
+		if matches:
+			return True
+
+		   
    
 		regex= r"^(?P<ask>)FER\s(?P<if>)SI\s(?P<interviewer>)L'ENTREVISTADOR\s(?P<codified>)HA CODIFICAT"
 		matches = re.search(regex, text, re.IGNORECASE)
