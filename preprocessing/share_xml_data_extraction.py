@@ -11,6 +11,7 @@ import utils as ut
 from preprocessing_ess_utils import *
 from sharemodules import *
 from share_instructions import *
+from string import printable
 
 
 def get_module_metadata(item_name, share_modules):
@@ -311,6 +312,9 @@ def clean_text_share(text, country_language, w7flag):
 	text = text.replace('^MN015_ELIGIBLES', '')
 	text = text.replace('^MN015_Eligibles', '')
 	text = text.replace('etc.', '')
+	text = text.replace('<<', '"')
+	text = text.replace('>>', '"')
+	text = text.replace(').', '). ')
 	text = text.replace('e.g.', 'eg')
 	text = text.replace('Ex.', 'Ex:')
 	text = text.replace('ex.', 'ex:')
@@ -355,6 +359,11 @@ def clean_text_share(text, country_language, w7flag):
 	text = text.replace("'+FLNumber+", '')
 	text = text.replace("^FL_MOVED_IN_Y", '')
 	text = text.replace('^FL_LASTNAME', '')
+	text = text.replace('z.B. 13. und 14.', 'z.B. 13 und 14')
+	text = text.replace('z.B. 13., 14.', 'z.B. 13, 14')
+	text = text.replace('z. B.', 'z.B.')
+	text = text.replace('Bonus, 13.', 'Bonus, 13')
+	text = text.replace('z.B. 13.', 'z.B. 13')
 
 	
 	if w7flag:
@@ -1028,7 +1037,10 @@ def ensure_sequential_survey_item_id(df, survey_item_prefix):
 	ut.reset_initial_sufix()
 
 	for i, row in df.iterrows():
-		df.at[i,'survey_item_ID'] = ut.update_survey_item_id(survey_item_prefix)
+		if i == 0:
+			df.at[i,'survey_item_ID'] = ut.get_survey_item_id(survey_item_prefix)
+		else:
+			df.at[i,'survey_item_ID'] = ut.update_survey_item_id(survey_item_prefix)
 
 	return df
 
