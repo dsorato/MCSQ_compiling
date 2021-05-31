@@ -38,6 +38,7 @@ def get_survey_item_id(prefix):
 
 	return survey_item_id
 
+
 def decide_on_survey_item_id(prefix, old_item_name, new_item_name):
 	if old_item_name == new_item_name:
 		survey_item_id = get_survey_item_id(prefix)
