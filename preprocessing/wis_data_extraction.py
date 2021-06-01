@@ -16,10 +16,27 @@ def harmonize_item_type(wis_item_type):
 		return 'INSTRUCTION' 
 
 def simplify_item_name(wis_item_name):
-	if  re.findall(r'.*_\d+$',wis_item_name) or re.findall(r'.*_hint$',wis_item_name) or re.findall(r'.*_yn$',wis_item_name) or re.findall(r'.*_\-8$',wis_item_name) or re.findall(r'.*_\-7$',wis_item_name) or re.findall(r'.*_hint1$',wis_item_name) or re.findall(r'.*_hint2$',wis_item_name):
-		return wis_item_name.rpartition('_')[0]
-	else:
-		return wis_item_name
+	if  re.findall(r'.*_\d+$',wis_item_name) or  re.findall(r'.*_yn$',wis_item_name) or re.findall(r'.*_\-8$',wis_item_name) or re.findall(r'.*_\-7$',wis_item_name):
+		wis_item_name = wis_item_name.rpartition('_')[0]
+	if re.findall(r'.*_hint$',wis_item_name) or re.findall(r'.*_hint1$',wis_item_name) or re.findall(r'.*_hint2$',wis_item_name):
+		wis_item_name = wis_item_name.rpartition('_')[0]
+	if re.findall(r'.*_alert$',wis_item_name) or re.findall(r'.*_alert1$',wis_item_name) or re.findall(r'.*_alert2$',wis_item_name):
+		wis_item_name = wis_item_name.rpartition('_')[0]
+	if re.findall(r'.*_yn$',wis_item_name):
+		wis_item_name = wis_item_name.rpartition('_')[0]
+	if 'NOT_USED_' in wis_item_name:
+		wis_item_name = wis_item_name.replace('NOT_USED_', '')
+	if  re.findall(r'^INFO_end\d+$',wis_item_name) or wis_item_name=='textbox_end4' or wis_item_name=='INFO_endclick':
+		wis_item_name = 'INFO_end'
+	if  'introD' in wis_item_name:
+		wis_item_name = wis_item_name.replace('_introD', '')
+	if  wis_item_name == 'MNSUBS_API' or wis_item_name == 'mnsubnosay' or wis_item_name == 'mnsubother':
+		wis_item_name = 'mnsub'
+	if wis_item_name == 'supv3_alert':
+		wis_item_name = 'supv2'
+	if wis_item_name == 'jobhist5':
+		wis_item_name = 'jobhist5'
+	return wis_item_name
 
 def instantiate_survey_item_prefix(study, column_name):
 
@@ -42,54 +59,103 @@ def extract_wis_data(df, df_questionnaire, study):
 	survey_item_prefix_nor = instantiate_survey_item_prefix(study, 'no_NO')
 	survey_item_prefix_cze = instantiate_survey_item_prefix(study, 'cs_CZ')
 	
+	df['NEXT_ITEM_TYPE'] = df['ITEM_TYPE'].shift(-1)
 
 	for i, row in df.iterrows():
-		item_name = simplify_item_name(row['UNIQUE IDENTIFIER (PER SURVEY)'])
-		item_value = row['VALUES of VAR']
-		wis_item_type = row['ITEM_TYPE']
-		item_type = harmonize_item_type(wis_item_type)
+		if isinstance(row['PAGE'], str) and row['PAGE'] != 'ALERT_1' and row['PAGE'] != 'ALERT_2':
+			item_name = simplify_item_name(row['UNIQUE IDENTIFIER (PER SURVEY)'])
+			item_value = row['VALUES of VAR']
+			wis_item_type = row['ITEM_TYPE']
+			item_type = harmonize_item_type(wis_item_type)
 
-		if str(row['source']) != 'TRANSLATION IN TASK_API' and 'NO TRANSLATION' not in str(row['source']) and isinstance(row['source'], str):
-			if df_questionnaire.empty:
-				survey_item_id_source = ut.get_survey_item_id(survey_item_prefix_source)
-			else:
-				survey_item_id_source = ut.update_survey_item_id(survey_item_prefix_source)
+			if str(row['source']) != 'TRANSLATION IN TASK_API' and 'NO TRANSLATION' not in str(row['en_GB']):
+				if isinstance(row['source'], str) or isinstance(row['source'], int):
+					if wis_item_type == 'matrix question' and row['NEXT_ITEM_TYPE'] != 'matrix option':
+						df_by_item_name = df[df['UNIQUE IDENTIFIER (PER SURVEY)'] == row['UNIQUE IDENTIFIER (PER SURVEY)']]
+						df_by_item_name_responses = df_by_item_name[df_by_item_name['ITEM_TYPE']=='matrix option']
 
-			data = {'Study': study, 'module': row['PAGE'], 'item_type': item_type, 'item_name':item_name, 
-			'item_value':item_value, 'ENG_SOURCE_survey_item_ID':survey_item_id_source,  'ENG_SOURCE_text':row['source'],
-			'ENG_GB_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_eng),  'ENG_GB_text':row['en_GB'], 
-			'FRE_FR_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_fre),  'FRE_FR_text':row['fr_FR'],
-			'POR_PT_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_por),  'POR_PT_text':row['pt_PT'],
-			'RUS_RU_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_rus),  'RUS_RU_text':row['ru_RU'], 
-			'GER_DE_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_ger),  'GER_DE_text':row['de_DE'],
-			'SPA_ES_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_spa),  'SPA_ES_text':row['es_ES'],
-			'NOR_NO_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_nor),  'NOR_NO_text':row['no_NO'],
-			'CZE_CZ_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_cze),  'CZE_CZ_text':row['cs_CZ']}
-			df_questionnaire = df_questionnaire.append(data, ignore_index = True)	
+						if df_questionnaire.empty:
+							survey_item_id_source = ut.get_survey_item_id(survey_item_prefix_source)
+						else:
+							survey_item_id_source = ut.update_survey_item_id(survey_item_prefix_source)
+
+						data = {'Study': study, 'module': row['PAGE'], 'item_type': item_type, 
+						'wis_item_type': wis_item_type,'item_name':item_name,'item_value':item_value, 
+						'ENG_SOURCE_survey_item_ID':survey_item_id_source,  'ENG_SOURCE_text':row['source'],
+						'ENG_GB_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_eng),  'ENG_GB_text':row['en_GB'], 
+						'FRE_FR_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_fre),  'FRE_FR_text':row['fr_FR'],
+						'POR_PT_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_por),  'POR_PT_text':row['pt_PT'],
+						'RUS_RU_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_rus),  'RUS_RU_text':row['ru_RU'], 
+						'GER_DE_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_ger),  'GER_DE_text':row['de_DE'],
+						'SPA_ES_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_spa),  'SPA_ES_text':row['es_ES'],
+						'NOR_NO_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_nor),  'NOR_NO_text':row['no_NO'],
+						'CZE_CZ_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_cze),  'CZE_CZ_text':row['cs_CZ']}
+						df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+						for i, row in df_by_item_name_responses.iterrows():
+							survey_item_id_source = ut.update_survey_item_id(survey_item_prefix_source)
+							item_name = simplify_item_name(row['UNIQUE IDENTIFIER (PER SURVEY)'])
+							item_value = row['VALUES of VAR']
+							wis_item_type = row['ITEM_TYPE']
+							item_type = harmonize_item_type(wis_item_type)
+
+							data = {'Study': study, 'module': row['PAGE'], 'item_type': item_type, 
+							'wis_item_type': wis_item_type,'item_name':item_name,'item_value':item_value, 
+							'ENG_SOURCE_survey_item_ID':survey_item_id_source,  'ENG_SOURCE_text':row['source'],
+							'ENG_GB_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_eng),  'ENG_GB_text':row['en_GB'], 
+							'FRE_FR_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_fre),  'FRE_FR_text':row['fr_FR'],
+							'POR_PT_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_por),  'POR_PT_text':row['pt_PT'],
+							'RUS_RU_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_rus),  'RUS_RU_text':row['ru_RU'], 
+							'GER_DE_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_ger),  'GER_DE_text':row['de_DE'],
+							'SPA_ES_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_spa),  'SPA_ES_text':row['es_ES'],
+							'NOR_NO_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_nor),  'NOR_NO_text':row['no_NO'],
+							'CZE_CZ_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_cze),  'CZE_CZ_text':row['cs_CZ']}
+							df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+
+					else:
+						if df_questionnaire.empty:
+							survey_item_id_source = ut.get_survey_item_id(survey_item_prefix_source)
+						else:
+							survey_item_id_source = ut.update_survey_item_id(survey_item_prefix_source)
+
+
+						data = {'Study': study, 'module': row['PAGE'], 'item_type': item_type, 
+						'wis_item_type': wis_item_type,'item_name':item_name,'item_value':item_value, 
+						'ENG_SOURCE_survey_item_ID':survey_item_id_source,  'ENG_SOURCE_text':row['source'],
+						'ENG_GB_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_eng),  'ENG_GB_text':row['en_GB'], 
+						'FRE_FR_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_fre),  'FRE_FR_text':row['fr_FR'],
+						'POR_PT_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_por),  'POR_PT_text':row['pt_PT'],
+						'RUS_RU_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_rus),  'RUS_RU_text':row['ru_RU'], 
+						'GER_DE_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_ger),  'GER_DE_text':row['de_DE'],
+						'SPA_ES_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_spa),  'SPA_ES_text':row['es_ES'],
+						'NOR_NO_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_nor),  'NOR_NO_text':row['no_NO'],
+						'CZE_CZ_survey_item_ID': ut.get_survey_item_id(survey_item_prefix_cze),  'CZE_CZ_text':row['cs_CZ']}
+						df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+						
+
 
 	return df_questionnaire
 
 def group_wis_data(df, df_questionnaire, study):
 	list_of_question_names = []
+	df['LAST_ITEM_TYPE'] = df['ITEM_TYPE'].shift(1)
+	df['LAST_ITEM_NAME'] = df['UNIQUE IDENTIFIER (PER SURVEY)'].shift(1)
+
 	for i, row in df.iterrows():
 		item_name = row['UNIQUE IDENTIFIER (PER SURVEY)']
 		wis_item_type = row['ITEM_TYPE']
 		if wis_item_type == 'question':
 			list_of_question_names.append(item_name)
-		if row['ITEM_TYPE'] == 'heading':
-			last_row = df.iloc[-1]
-			df=df.replace(to_replace=last_row['UNIQUE IDENTIFIER (PER SURVEY)'], value=item_name+'_intro')
+		if row['LAST_ITEM_TYPE'] == 'heading':
+			df['UNIQUE IDENTIFIER (PER SURVEY)'] = df['UNIQUE IDENTIFIER (PER SURVEY)'].replace(to_replace=row['LAST_ITEM_NAME'], value=item_name+'_introD')
 		if wis_item_type == 'matrix group':
 			list_of_question_names.append(item_name)
 			m_group_name  = item_name
 		if  wis_item_type == 'matrix question' or wis_item_type == 'matrix option':
 			df=df.replace(to_replace=r'^'+row['UNIQUE IDENTIFIER (PER SURVEY)']+'$', value=m_group_name, regex=True)
 		
-
-	unique_item_names = df.ITEM_TYPE.unique()
-	for u in unique_item_names:
-		df_filtered = df.filter(regex='^'+u,axis=1)
-		df_questionnaire = extract_wis_data(df, df_questionnaire, study)
+	
+	df_questionnaire = extract_wis_data(df, df_questionnaire, study)
 
 	return df_questionnaire
 	
@@ -109,10 +175,11 @@ def post_process_questionnaire(df_questionnaire):
 			'Study': row['Study'], 'module': row['module'], 'item_type': row['item_type'], 
 			'item_name': row['item_name'], 'item_value': row['item_value'], 'source_text':row['ENG_SOURCE_text'], 'target_text':row[l+'_text']}
 			df_alignment = df_alignment.append(data, ignore_index = True)	
+			
 			study = row['Study']
 
-		df.to_csv(l+'_'+study.rpartition('_')[0]+'.csv', sep='\t', encoding='utf-8-sig', index=False)
-		df_alignment.to_csv('ENG_SOURCE'+'_'+l+'_'+study.rpartition('_')[0]+'.csv', sep='\t', encoding='utf-8-sig', index=False)
+		df.to_csv(study+'_'+l+'.csv', sep='\t', encoding='utf-8-sig', index=False)
+		df_alignment.to_csv('ENG_SOURCE'+'_'+l+'_'+study+'.csv', sep='\t', encoding='utf-8-sig', index=False)
 
 
 
@@ -134,7 +201,8 @@ def set_initial_structures(filename):
 	"""
 	A pandas dataframe to store questionnaire data.
 	"""
-	df_questionnaire = pd.DataFrame(columns=['Study', 'module', 'item_type', 'item_name', 'item_value', 'ENG_SOURCE_survey_item_ID',  'ENG_SOURCE_text',
+	df_questionnaire = pd.DataFrame(columns=['Study', 'module', 'item_type', 'wis_item_type',
+		'item_name', 'item_value', 'ENG_SOURCE_survey_item_ID',  'ENG_SOURCE_text',
 		'ENG_GB_survey_item_ID',  'ENG_GB_text', 'FRE_FR_survey_item_ID',  'FRE_FR_text', 'POR_PT_survey_item_ID',  'POR_PT_text',
 		'RUS_RU_survey_item_ID',  'RUS_RU_text', 'GER_DE_survey_item_ID',  'GER_DE_text', 'SPA_ES_survey_item_ID',  'SPA_ES_text',
 		'NOR_NO_survey_item_ID',  'NOR_NO_text', 'CZE_CZ_survey_item_ID',  'CZE_CZ_text'])
@@ -172,6 +240,9 @@ def main(folder_path):
 	for index, file in enumerate(files):
 		if file.endswith(".xlsx"):	
 			df = pd.read_excel(file, sheet_name='WIS')
+			df = df[['source', 'en_GB', 'fr_FR', 'pt_PT', 'ru_RU', 'de_DE', 'es_ES', 'no_NO', 'cs_CZ',
+			'UNIQUE IDENTIFIER (PER SURVEY)', 'VALUES of VAR', 'ITEM_TYPE','PAGE']]
+
 			df_questionnaire, study = set_initial_structures(file)
 			df_questionnaire = group_wis_data(df, df_questionnaire, study)
 			post_process_questionnaire(df_questionnaire)
