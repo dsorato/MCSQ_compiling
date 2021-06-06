@@ -64,17 +64,19 @@
 <span class="sd">	Returns:</span>
 <span class="sd">		str indicating if instructions that follow the show card segments were found.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">target_regex</span> <span class="o">=</span>  <span class="sa">r</span><span class="s2">&quot;(?P&lt;card&gt;)(tarjeta|targeta|kartu|karta|karty|kort|kortet|carte|liste|kort|kortet|carte|karte|cartão|КАРТОЧКУ|КАРТОЧКА|KAРTOЧКА|карточкой|карточке|карточки|карте|карты)\s(?P&lt;numberorletter&gt;)(\d+|\w+|\w+\d+|\d+\w+)&quot;</span>  
+	<span class="n">source_regex</span> <span class="o">=</span>  <span class="sa">r</span><span class="s2">&quot;(?P&lt;card&gt;)(card|showcard)\s(?P&lt;numberorletter&gt;)(\d+|\w+|\w+\d+|\d+\w+)&quot;</span>  
 	<span class="k">if</span> <span class="n">item_type</span> <span class="o">==</span> <span class="s1">&#39;INSTRUCTION&#39;</span><span class="p">:</span>
 		<span class="n">possible_card_instruction_source</span> <span class="o">=</span> <span class="s1">&#39;dummy value&#39;</span>
 		<span class="n">possible_card_instruction_target</span> <span class="o">=</span> <span class="s1">&#39;dummy value&#39;</span>
 
 		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_source</span><span class="p">):</span>
-			<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s\d+\b|\s[A-Z]\b|\s[A-Z]\d+\b&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+			<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">source_regex</span><span class="p">,</span> <span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">):</span>
 				<span class="n">possible_card_instruction_source</span> <span class="o">=</span> <span class="n">i</span>
 				<span class="k">break</span>
 
 		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_target</span><span class="p">):</span>
-			<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s\d+\b|\s[A-Z]\b|\s[A-Z]\d+\b&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+			<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">target_regex</span><span class="p">,</span> <span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">):</span>
 				<span class="n">possible_card_instruction_target</span> <span class="o">=</span> <span class="n">i</span>
 				<span class="k">break</span>
 
@@ -1107,7 +1109,9 @@
 		<span class="s1">&#39;source_text&#39;</span><span class="p">,</span> <span class="s1">&#39;target_text&#39;</span><span class="p">])</span>
 
 	<span class="n">study</span> <span class="o">=</span> <span class="n">get_study_metadata</span><span class="p">(</span><span class="n">filename_source</span><span class="p">)</span>
+	<span class="k">global</span> <span class="n">target_language_country</span>
 	<span class="n">target_language_country</span> <span class="o">=</span> <span class="n">get_target_language_country_metadata</span><span class="p">(</span><span class="n">filename_target</span><span class="p">)</span>
+
 
 	<span class="k">if</span> <span class="s1">&#39;EVS&#39;</span> <span class="ow">in</span> <span class="n">study</span><span class="p">:</span>
 		<span class="n">source_language_country</span> <span class="o">=</span> <span class="s1">&#39;ENG_GB&#39;</span>

@@ -436,6 +436,10 @@
 		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;01&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
 		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
+	<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^012\s\w+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;012&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;12&#39;</span>
 	<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^02\s\w+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;02&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
@@ -528,6 +532,10 @@
 		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
 		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;U&#39;</span>
+	<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^G\s.+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;G&#39;</span>
 	<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^N\s.+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
@@ -560,6 +568,42 @@
 		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
 		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;B&#39;</span>
+	<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^55\s.+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;55&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;55&#39;</span>
+	<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\+4\s.+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;+4&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;+4&#39;</span>
+	<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\+3\s.+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;+3&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;+3&#39;</span>
+	<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\+2\s.+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;+2&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;+2&#39;</span>
+	<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\+1\s.+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;+1&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;+1&#39;</span>
+	<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\-4\s.+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-4&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;-4&#39;</span>
+	<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\-3\s.+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-3&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;-3&#39;</span>
+	<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\-2\s.+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-2&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;-2&#39;</span>
+	<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\-1\s.+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-1&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+		<span class="n">answer_value</span> <span class="o">=</span> <span class="s1">&#39;-1&#39;</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">answer_text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 		<span class="n">answer_value</span> <span class="o">=</span> <span class="kc">None</span>
@@ -709,12 +753,12 @@
 		<span class="k">return</span> <span class="kc">True</span>
 		 
 
-	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;again&gt;)(СНОВА)?\s?(?P&lt;use&gt;)(ИСПОЛЬЗУЙТЕ)?\s?(?P&lt;card&gt;)(КАРТОЧКА|КАРТОЧКУ)\s(?P&lt;number&gt;)(Nr|\d+|\w+)&quot;</span>
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;again&gt;)(СНОВА)?\s?(?P&lt;use&gt;)(ИСПОЛЬЗУЙТЕ)?\s?(?P&lt;card&gt;)(КАРТОЧКА|КАРТОЧКУ|KAРTOЧКА)\s(?P&lt;number&gt;)(Nr|\d+|\w+)&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
 
-	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;show&gt;)ПОДАЙТЕ\s(?P&lt;respondent&gt;)РЕСПОНДЕНТУ\s(?P&lt;card&gt;)(КАРТОЧКА|КАРТОЧКУ)\s(?P&lt;number&gt;)(Nr|\d+|\w+)&quot;</span>
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;show&gt;)ПОДАЙТЕ\s(?P&lt;respondent&gt;)РЕСПОНДЕНТУ\s(?P&lt;card&gt;)(КАРТОЧКА|КАРТОЧКУ|KAРTOЧКА)\s(?P&lt;number&gt;)(Nr|\d+|\w+)&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
@@ -1197,7 +1241,7 @@
 
 	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;interviewer&gt;)(Befrager|Interviewer)&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
-	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+	<span class="k">if</span> <span class="n">matches</span> <span class="ow">and</span> <span class="s2">&quot;Interviewer ID&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
 
 	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;round&gt;)Runden\b&quot;</span>
@@ -2000,7 +2044,7 @@
 
 	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;interviewer&gt;)Interviewer&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
-	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+	<span class="k">if</span> <span class="n">matches</span> <span class="ow">and</span> <span class="s2">&quot;Interviewer ID&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
 
 	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;computercode&gt;)COMPUTER\sCODE&quot;</span>
@@ -2008,10 +2052,39 @@
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
 
+  
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;typeinduration&gt;)TYPE\sIN\sDURATION&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?P&lt;malefemalerespondents&gt;)(ASK\sIF\sRESPONDENT\sIS\sFEMALE|FEMALE\sRESPONDENT(S)?|ASK\sIF\sRESPONDENT\sIS\sMALE|MALE\sRESPONDENT(S)?)&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
+	
+
 	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;probeifnecessary&gt;)probe\sif\snecessary&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
+
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;ifyouthink&gt;)If\syou\sthink\s(?P&lt;paymentcondition&gt;)(this\spay|your\sincome\sfrom\s|these\sincomes|these\sdifferences)&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;interviewer&gt;)INTERVIEWER\s(?P&lt;ifrespondent&gt;)If\sthe\srespondent\s(?P&lt;needadditionalinstructions&gt;)needs\sadditional\sinstructions&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;note&gt;)NOTE\s(?P&lt;numbermustbeexclusive&gt;)THIS\sNUMBER\sMUST\sBE\sEXCLUSIVE\s(?P&lt;toindividualinterviewers&gt;)TO\sINDIVIDUAL\sINTERVIEWERS&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span>  <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
 
 	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;please&gt;)(please)?\s?(?P&lt;answer&gt;)answer\s(?P&lt;using&gt;)using\s(?P&lt;this&gt;)this\s(?P&lt;card&gt;)card\s(?P&lt;where&gt;)where\s(?P&lt;zero&gt;)0\s(?P&lt;means&gt;)means&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
@@ -2084,7 +2157,7 @@
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
 
-	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;code&gt;)code\s(?P&lt;one&gt;)one\s(?P&lt;answer&gt;)answer\s(?P&lt;apply&gt;)only&quot;</span>
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;code&gt;)code\s(?P&lt;one&gt;)one\s(?P&lt;answer&gt;)(answer)?\s?(?P&lt;apply&gt;)only&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
@@ -2104,7 +2177,7 @@
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
 
-	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;please&gt;)(please)?\s?(?P&lt;choose&gt;)choose\s(?P&lt;oneor&gt;)(one|your)\s(?P&lt;answer&gt;)answer\s(?P&lt;infrom&gt;)(in|from)\s(?P&lt;this&gt;)this\s(?P&lt;same&gt;)(same)?\s?(?P&lt;card&gt;)card&quot;</span>
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;please&gt;)(please)?\s?(?P&lt;choose&gt;)choose\s(?P&lt;oneor&gt;)(one|your|an)\s(?P&lt;answer&gt;)answer\s(?P&lt;infrom&gt;)(in|from)\s(?P&lt;this&gt;)this\s(?P&lt;same&gt;)(same)?\s?(?P&lt;card&gt;)card&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
@@ -2188,6 +2261,11 @@
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
 
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;filter&gt;)FILTR:&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text_aux</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
 	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?P&lt;ask&gt;)(PTEJTE SE)?\s?(?P&lt;if&gt;)(POKUD)?\s?(?P&lt;the&gt;)(JE)?\s?(?P&lt;respondent&gt;)(RESPONDENT(I)?|RESPONDENTKA|RESPONDENTŮ)&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span> <span class="ow">and</span> <span class="s1">&#39;?&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">text_aux</span> <span class="ow">and</span> <span class="s1">&#39;:&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">text_aux</span> <span class="ow">and</span> <span class="s1">&#39;...&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">text_aux</span> <span class="ow">and</span> <span class="s1">&#39;řekněte&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">text_aux</span><span class="p">:</span>
@@ -2255,6 +2333,13 @@
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
 
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;prompt&gt;)ZJIŠŤUJE&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
+		
+
 	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;show&gt;)(PŘEDLOŽTE|PŘEDLOŢTE)?\s?(?P&lt;still&gt;)(STÁLE JEŠTĚ)?\s?(?P&lt;again&gt;)(OPĚT)?\s?(?P&lt;card&gt;)kart(u|a)&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
@@ -2266,7 +2351,12 @@
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
 
-	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?P&lt;ineachline&gt;)(NA KAŽDÉM ŘÁDKU)?\s?(?P&lt;possible&gt;)(MOŽNÁ|MOŢNÁ)\s(?P&lt;only&gt;)POUZE\s(?P&lt;one&gt;)JEDNA\s(?P&lt;answer&gt;)ODPOVĚĎ&quot;</span>
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?P&lt;ineachline&gt;)(V|NA)?\s?(KAŽDÉM ŘÁDKU)?\s?(?P&lt;possible&gt;)(MOŽNÁ|MOŢNÁ)\s(?P&lt;only&gt;)POUZE\s(?P&lt;one&gt;)JEDNA\s(?P&lt;answer&gt;)ODPOVĚĎ&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?P&lt;ineachline&gt;)(V|NA)\sKAŽDÉM\sŘÁDKU\s(?P&lt;choose&gt;)VYBERTE\s(?P&lt;one&gt;)JEDNU\s(?P&lt;answer&gt;)ODPOVĚĎ&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
@@ -2313,12 +2403,19 @@
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
 
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;prompt&gt;)ZJIŠŤUJTE&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
+
+
 	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;read&gt;)(ČTĚTE|ČTETE)\s(?P&lt;out&gt;)NAHLAS\s(?P&lt;each&gt;)KAŽDÝ\s(?P&lt;utterance&gt;)VÝROK&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
  
-	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;again&gt;)opět\s(?P&lt;card&gt;)kart(u|a)&quot;</span>
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;again&gt;)(opět|STÁLE)\s(?P&lt;card&gt;)kart(u|a)&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
@@ -2338,6 +2435,12 @@
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text_aux</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
+
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;choose&gt;)Vyberte(,)?\s(?P&lt;please&gt;)prosím(,)?\s(?P&lt;youranswer&gt;)svou\sodpověď\s(?P&lt;accordingto&gt;)(podle|z)\stéto\s(?P&lt;card&gt;)karty&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text_aux</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
 
 	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?P&lt;choose&gt;)Vyberte\s(?P&lt;please&gt;)(prosím)?\s?(?P&lt;one&gt;)(jen jednu|jednu)?\s?(?P&lt;answer&gt;)odpověď\s(?P&lt;fromthis&gt;)z této\s(?P&lt;card&gt;)(karty|kartě)&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text_aux</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
@@ -2424,12 +2527,33 @@
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
 
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;prompt&gt;)APROFUNDAR&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
   
 	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;mark&gt;)ASSINALAR\s(?P&lt;only&gt;)APENAS\s(?P&lt;one&gt;)UM(A)?&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
- 
+
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;then&gt;)DEPOIS\s(?P&lt;repeat&gt;)REPETIR\s(?P&lt;forthe&gt;)PARA\sA\s(?P&lt;institution&gt;)INSTITUIÇÃO&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;code&gt;)CODIFICAR\s(?P&lt;only&gt;)APENAS\s(?P&lt;one&gt;)UMA&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;code&gt;)CODIFICAR\s(?P&lt;only&gt;)TOD(O|A)S&quot;</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">True</span>
+
+
 	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;answer&gt;)Responda\s(?P&lt;please&gt;)(por favor)?\s?(?P&lt;using&gt;)(utilizando|com)\s(?P&lt;theorthis&gt;)(o|a|um|uma|esta|este)\s(?P&lt;same&gt;)(mesmo|mesma)?&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
@@ -2548,7 +2672,7 @@
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
 
-	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;code&gt;)(codificar|assinalar|registrar)\s(?P&lt;all&gt;)(todas|todos)\s(?P&lt;the&gt;)(as)?\s?(?P&lt;that&gt;)que se\s(?P&lt;apply&gt;)aplicam&quot;</span>
+	<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;code&gt;)(codificar|assinalar|registrar)\s(?P&lt;all&gt;)(todas|todos)\s?(?P&lt;the&gt;)(as)?\s?(?P&lt;that&gt;)(que\sse\s)?(?P&lt;apply&gt;)aplicam?&quot;</span>
 	<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">True</span>
@@ -2602,17 +2726,39 @@
 		<span class="k">return</span> <span class="kc">True</span>
 
 	<span class="k">if</span> <span class="s1">&#39;CAT&#39;</span> <span class="ow">in</span> <span class="n">country_language</span><span class="p">:</span>
+		<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;typeinduration&gt;)ANOTAR\sDURADA&quot;</span>
+		<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+			<span class="k">return</span> <span class="kc">True</span>
+
+		<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;ask&gt;)Preguntar:&quot;</span>
+		<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text_aux</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+			<span class="k">return</span> <span class="kc">True</span>
+
+		<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;attentioninterviewer&gt;)ATENCIÓ\sENTREVISTADOR(/A)?:&quot;</span>
+		<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text_aux</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+			<span class="k">return</span> <span class="kc">True</span>
+
+
 		<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;continue&gt;)(continuï|continueu|continuar)?\s?(?P&lt;show&gt;)mostr(ar|eu|ant)\s(?P&lt;card&gt;)targeta&quot;</span>
 		<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 			<span class="k">return</span> <span class="kc">True</span>
 
-		<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;spontaneousanswer&gt;)RESPOSTA\sESPONTÀNIA\s(?P&lt;dontread&gt;)NO\sLLEGIR&quot;</span>
+		<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?P&lt;malefemalerespondents&gt;)(SOLO\sPARA\sENTREVISTADAS\sMUJERES|ENTREVISTADAS\sMUJERES|SOLO\sPARA\sENTREVISTADOS\sHOMBRES|ENTREVISTADOS\sHOMBRES)&quot;</span>
 		<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 			<span class="k">return</span> <span class="kc">True</span>
 
-		<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;multipleanswer&gt;)RESPOSTA\sMÚLTIPLE&quot;</span>
+		<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;spontaneousanswer&gt;)RESPOSTA\s(ESPONTÁNIA|ESPONTÀNIA)\s(?P&lt;dontread&gt;)NO\sLLEGIR&quot;</span>
+		<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+			<span class="k">return</span> <span class="kc">True</span>
+
+
+		<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;multipleanswer&gt;)RESPOSTA\sM(Ú|U)LTIPLE&quot;</span>
 		<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
 			<span class="k">return</span> <span class="kc">True</span>
@@ -2632,6 +2778,22 @@
 		<span class="k">if</span> <span class="n">matches</span> <span class="ow">and</span> <span class="s1">&#39;?&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">text_aux</span> <span class="ow">and</span> <span class="s1">&#39;...&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">text_aux</span> <span class="ow">and</span> <span class="s1">&#39;:&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">text_aux</span><span class="p">:</span> 
 			<span class="k">return</span> <span class="kc">True</span>
 
+		<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;ifyouthink&gt;)Si\screu\sque\s(?P&lt;thispayis&gt;)(la\sseva\sremuneració|els\sseus\singressos|que\saquests\singressos|aquestes\sdiferències)&quot;</span>
+		<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+			<span class="k">return</span> <span class="kc">True</span>
+
+		<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;important&gt;)IMPORTANT:\s(?P&lt;interviewer&gt;)Entrevistador(/a)?&quot;</span>
+		<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text_aux</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+			<span class="k">return</span> <span class="kc">True</span>
+
+		<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;interviewer&gt;)ENTREVISTADOR(/A)?:\s(?P&lt;ifrespondent&gt;)Si\sl&#39;entrevistat\s(?P&lt;needadditionalinstructions&gt;)necessita\sinstruccions\saddicionals&quot;</span>
+		<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text_aux</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+			<span class="k">return</span> <span class="kc">True</span>
+
+		   
    
 		<span class="n">regex</span><span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?P&lt;ask&gt;)FER\s(?P&lt;if&gt;)SI\s(?P&lt;interviewer&gt;)L&#39;ENTREVISTADOR\s(?P&lt;codified&gt;)HA CODIFICAT&quot;</span>
 		<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>

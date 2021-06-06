@@ -1,0 +1,426 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>preprocessing.wis_data_extraction &#8212; MCSQ compiling 2 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">preprocessing.wis_data_extraction</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for preprocessing.wis_data_extraction</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">preprocessing_ess_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">utils</span> <span class="k">as</span> <span class="nn">ut</span>
+
+<div class="viewcode-block" id="harmonize_item_type"><a class="viewcode-back" href="../../WIS.html#preprocessing.wis_data_extraction.harmonize_item_type">[docs]</a><span class="k">def</span> <span class="nf">harmonize_item_type</span><span class="p">(</span><span class="n">wis_item_type</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Translates the item type indicated in the WIS exports to the item types that are present in the MCSQ.</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 wis_item_type (string): the item type value in a give row from the WIS export.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		an item type (string) that corresponds to the MCSQ item types. Could be INTRODUCTION, RESPONSE, REQUEST or INSTRUCTION.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="s1">&#39;intro&#39;</span> <span class="ow">in</span> <span class="n">wis_item_type</span> <span class="ow">or</span> <span class="s1">&#39;heading&#39;</span> <span class="ow">in</span> <span class="n">wis_item_type</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;INTRODUCTION&#39;</span> 
+	<span class="k">elif</span> <span class="s1">&#39;option&#39;</span><span class="ow">in</span> <span class="n">wis_item_type</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;RESPONSE&#39;</span> 
+	<span class="k">elif</span> <span class="s1">&#39;question&#39;</span> <span class="ow">in</span> <span class="n">wis_item_type</span> <span class="ow">or</span> <span class="s1">&#39;matrix group&#39;</span> <span class="ow">in</span> <span class="n">wis_item_type</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;REQUEST&#39;</span> 
+	<span class="k">elif</span> <span class="s1">&#39;hint&#39;</span> <span class="ow">in</span> <span class="n">wis_item_type</span> <span class="ow">or</span> <span class="s1">&#39;alert&#39;</span> <span class="ow">in</span> <span class="n">wis_item_type</span><span class="p">:</span> 
+		<span class="k">return</span> <span class="s1">&#39;INSTRUCTION&#39;</span> </div>
+
+<div class="viewcode-block" id="simplify_item_name"><a class="viewcode-back" href="../../WIS.html#preprocessing.wis_data_extraction.simplify_item_name">[docs]</a><span class="k">def</span> <span class="nf">simplify_item_name</span><span class="p">(</span><span class="n">wis_item_name</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Simplifies the unique item names in the WIS exports to atribute unique item names for each survey item.</span>
+<span class="sd">	This makes easier to find the survey items inside the MCSQ, as you will not need to search for each unique variable name </span>
+<span class="sd">	(as it is in the WIS export).</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 wis_item_name (string): the item name value in a give row from the WIS export.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		an item name (string) that will be used for all segments concerning a given WIS survey item.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span>  <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*_\d+$&#39;</span><span class="p">,</span><span class="n">wis_item_name</span><span class="p">)</span> <span class="ow">or</span>  <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*_yn$&#39;</span><span class="p">,</span><span class="n">wis_item_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*_\-8$&#39;</span><span class="p">,</span><span class="n">wis_item_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*_\-7$&#39;</span><span class="p">,</span><span class="n">wis_item_name</span><span class="p">):</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="n">wis_item_name</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*_hint$&#39;</span><span class="p">,</span><span class="n">wis_item_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*_hint1$&#39;</span><span class="p">,</span><span class="n">wis_item_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*_hint2$&#39;</span><span class="p">,</span><span class="n">wis_item_name</span><span class="p">):</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="n">wis_item_name</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*_alert$&#39;</span><span class="p">,</span><span class="n">wis_item_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*_alert1$&#39;</span><span class="p">,</span><span class="n">wis_item_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*_alert2$&#39;</span><span class="p">,</span><span class="n">wis_item_name</span><span class="p">):</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="n">wis_item_name</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*_yn$&#39;</span><span class="p">,</span><span class="n">wis_item_name</span><span class="p">):</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="n">wis_item_name</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^HINT_&#39;</span><span class="p">,</span><span class="n">wis_item_name</span><span class="p">):</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="n">wis_item_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;HINT_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="s1">&#39;NOT_USED_&#39;</span> <span class="ow">in</span> <span class="n">wis_item_name</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="n">wis_item_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;NOT_USED_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+	<span class="k">if</span>  <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^INFO_end\d+$&#39;</span><span class="p">,</span><span class="n">wis_item_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">wis_item_name</span><span class="o">==</span><span class="s1">&#39;textbox_end4&#39;</span> <span class="ow">or</span> <span class="n">wis_item_name</span><span class="o">==</span><span class="s1">&#39;INFO_endclick&#39;</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="s1">&#39;INFO_end&#39;</span>
+	<span class="k">if</span>  <span class="s1">&#39;introD&#39;</span> <span class="ow">in</span> <span class="n">wis_item_name</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="n">wis_item_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_introD&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+	<span class="k">if</span>  <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;MNSUBS_API&#39;</span> <span class="ow">or</span> <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;mnsubnosay&#39;</span> <span class="ow">or</span> <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;mnsubother&#39;</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="s1">&#39;mnsub&#39;</span>
+	<span class="k">if</span> <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;supv3_alert&#39;</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="s1">&#39;supv2&#39;</span>
+	<span class="k">if</span> <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;jobhist5&#39;</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="s1">&#39;jobhist4&#39;</span>
+	<span class="k">if</span> <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;yyeduca_1001&#39;</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="s1">&#39;yyeduca&#39;</span>
+	<span class="k">if</span> <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;washif61&#39;</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="s1">&#39;washifts&#39;</span>
+	<span class="k">if</span> <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;wadirt61&#39;</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="s1">&#39;wadirty&#39;</span>
+	<span class="k">if</span> <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;watips61&#39;</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="s1">&#39;watips&#39;</span>
+	<span class="k">if</span> <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;waseni61&#39;</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="s1">&#39;wasenior&#39;</span>
+	<span class="k">if</span> <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;waperf61&#39;</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="s1">&#39;waperfom&#39;</span>
+	<span class="k">if</span> <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;wapers62&#39;</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="s1">&#39;waperson&#39;</span>
+	<span class="k">if</span> <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;waannu61&#39;</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="s1">&#39;waannual&#39;</span>
+	<span class="k">if</span> <span class="n">wis_item_name</span> <span class="o">==</span> <span class="s1">&#39;waothe61&#39;</span><span class="p">:</span>
+		<span class="n">wis_item_name</span> <span class="o">=</span> <span class="s1">&#39;waother&#39;</span>
+	
+	<span class="k">return</span> <span class="n">wis_item_name</span></div>
+
+<div class="viewcode-block" id="instantiate_survey_item_prefix"><a class="viewcode-back" href="../../WIS.html#preprocessing.wis_data_extraction.instantiate_survey_item_prefix">[docs]</a><span class="k">def</span> <span class="nf">instantiate_survey_item_prefix</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Maps the WIS data export text column names to the ISO standards used in MCSQ.</span>
+<span class="sd">	Then, defines the prefix of the survey item in accordance to the MCSQ standard nomenclature.</span>
+<span class="sd">	The prefix of an MCSQ survey item is study+&#39;_&#39;+language+&#39;_&#39;+country+&#39;_&#39;</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 study (string): the name of the study, embedded in the WIS export filename.</span>
+<span class="sd">		param2 column_name (string): the name of the text column, from the WIS export.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		a language specific survey item ID prefix (string).</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">language_country_pairs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;ENG_SOURCE&#39;</span><span class="p">,</span> <span class="s1">&#39;en_GB&#39;</span><span class="p">:</span> <span class="s1">&#39;ENG_GB&#39;</span><span class="p">,</span> <span class="s1">&#39;fr_FR&#39;</span><span class="p">:</span> <span class="s1">&#39;FRE_FR&#39;</span><span class="p">,</span> <span class="s1">&#39;pt_PT&#39;</span><span class="p">:</span> <span class="s1">&#39;POR_PT&#39;</span><span class="p">,</span> <span class="s1">&#39;ru_RU&#39;</span><span class="p">:</span> <span class="s1">&#39;RUS_RU&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;de_DE&#39;</span><span class="p">:</span> <span class="s1">&#39;GER_DE&#39;</span><span class="p">,</span> <span class="s1">&#39;es_ES&#39;</span><span class="p">:</span> <span class="s1">&#39;SPA_ES&#39;</span><span class="p">,</span> <span class="s1">&#39;no_NO&#39;</span><span class="p">:</span> <span class="s1">&#39;NOR_NO&#39;</span><span class="p">,</span> <span class="s1">&#39;cs_CZ&#39;</span><span class="p">:</span> <span class="s1">&#39;CZE_CZ&#39;</span><span class="p">}</span>
+
+	<span class="k">return</span> <span class="n">study</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">language_country_pairs</span><span class="p">[</span><span class="n">column_name</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span></div>
+
+<div class="viewcode-block" id="extract_wis_data"><a class="viewcode-back" href="../../WIS.html#preprocessing.wis_data_extraction.extract_wis_data">[docs]</a><span class="k">def</span> <span class="nf">extract_wis_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">study</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Extracts and preprocesses WIS data from df, attibuting MCSQ metadata (and also harmonizing metadata e.g. item names, item types, when necessary). </span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 df (pandas dataframe): the input data in a dataframe representation.</span>
+<span class="sd">		param2 df_questionnaire (pandas dataframe): a dataframe to hold the processed questionnaire data.</span>
+<span class="sd">		param3 study (string): the name of the study, embedded in the WIS export filename.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		the df_questionnaire (pandas dataframe) with the preprocessed data.</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">survey_item_prefix_source</span> <span class="o">=</span> <span class="n">instantiate_survey_item_prefix</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span>
+	<span class="n">survey_item_prefix_eng</span> <span class="o">=</span> <span class="n">instantiate_survey_item_prefix</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="s1">&#39;en_GB&#39;</span><span class="p">)</span>
+	<span class="n">survey_item_prefix_fre</span> <span class="o">=</span> <span class="n">instantiate_survey_item_prefix</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="s1">&#39;fr_FR&#39;</span><span class="p">)</span>
+	<span class="n">survey_item_prefix_por</span> <span class="o">=</span> <span class="n">instantiate_survey_item_prefix</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="s1">&#39;pt_PT&#39;</span><span class="p">)</span>
+	<span class="n">survey_item_prefix_rus</span> <span class="o">=</span> <span class="n">instantiate_survey_item_prefix</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="s1">&#39;ru_RU&#39;</span><span class="p">)</span>
+	<span class="n">survey_item_prefix_ger</span> <span class="o">=</span> <span class="n">instantiate_survey_item_prefix</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="s1">&#39;de_DE&#39;</span><span class="p">)</span>
+	<span class="n">survey_item_prefix_spa</span> <span class="o">=</span> <span class="n">instantiate_survey_item_prefix</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="s1">&#39;es_ES&#39;</span><span class="p">)</span>
+	<span class="n">survey_item_prefix_nor</span> <span class="o">=</span> <span class="n">instantiate_survey_item_prefix</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="s1">&#39;no_NO&#39;</span><span class="p">)</span>
+	<span class="n">survey_item_prefix_cze</span> <span class="o">=</span> <span class="n">instantiate_survey_item_prefix</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="s1">&#39;cs_CZ&#39;</span><span class="p">)</span>
+	
+	<span class="n">df</span><span class="p">[</span><span class="s1">&#39;NEXT_ITEM_TYPE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ITEM_TYPE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+	<span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;PAGE&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;PAGE&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;ALERT_1&#39;</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;PAGE&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;ALERT_2&#39;</span><span class="p">:</span>
+			<span class="n">item_name</span> <span class="o">=</span> <span class="n">simplify_item_name</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;UNIQUE IDENTIFIER (PER SURVEY)&#39;</span><span class="p">])</span>
+			<span class="n">item_value</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;VALUES of VAR&#39;</span><span class="p">]</span>
+			<span class="n">wis_item_type</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;ITEM_TYPE&#39;</span><span class="p">]</span>
+			<span class="n">item_type</span> <span class="o">=</span> <span class="n">harmonize_item_type</span><span class="p">(</span><span class="n">wis_item_type</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="s1">&#39;TRANSLATION IN TASK_API&#39;</span> <span class="ow">and</span> <span class="s1">&#39;NO TRANSLATION&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;en_GB&#39;</span><span class="p">]):</span>
+				<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+					<span class="k">if</span> <span class="n">wis_item_type</span> <span class="o">==</span> <span class="s1">&#39;matrix question&#39;</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;NEXT_ITEM_TYPE&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;matrix option&#39;</span><span class="p">:</span>
+						<span class="k">if</span> <span class="n">flag</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+							<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+							<span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span>
+						<span class="k">else</span><span class="p">:</span>
+							<span class="n">count</span> <span class="o">=</span> <span class="n">count</span><span class="o">+</span><span class="mi">1</span>
+
+						<span class="n">df_questionnaire</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s1">&#39;item_name&#39;</span><span class="p">)]</span> <span class="o">=</span><span class="n">item_name</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+
+
+						<span class="n">df</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;UNIQUE IDENTIFIER (PER SURVEY)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;LAST_ITEM_NAME&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">item_name</span><span class="o">+</span><span class="s1">&#39;_introD&#39;</span><span class="p">)</span>
+
+						<span class="n">df_by_item_name</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;UNIQUE IDENTIFIER (PER SURVEY)&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;UNIQUE IDENTIFIER (PER SURVEY)&#39;</span><span class="p">]]</span>
+						<span class="n">df_by_item_name_responses</span> <span class="o">=</span> <span class="n">df_by_item_name</span><span class="p">[</span><span class="n">df_by_item_name</span><span class="p">[</span><span class="s1">&#39;ITEM_TYPE&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;matrix option&#39;</span><span class="p">]</span>
+
+						<span class="k">if</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+							<span class="n">survey_item_id_source</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_source</span><span class="p">)</span>
+						<span class="k">else</span><span class="p">:</span>
+							<span class="n">survey_item_id_source</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_source</span><span class="p">)</span>
+
+						<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">study</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;PAGE&#39;</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> 
+						<span class="s1">&#39;wis_item_type&#39;</span><span class="p">:</span> <span class="n">wis_item_type</span><span class="p">,</span><span class="s1">&#39;item_name&#39;</span><span class="p">:</span><span class="n">item_name</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">count</span><span class="p">),</span><span class="s1">&#39;item_value&#39;</span><span class="p">:</span><span class="n">item_value</span><span class="p">,</span> 
+						<span class="s1">&#39;ENG_SOURCE_survey_item_ID&#39;</span><span class="p">:</span><span class="n">survey_item_id_source</span><span class="p">,</span>  <span class="s1">&#39;ENG_SOURCE_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">],</span>
+						<span class="s1">&#39;ENG_GB_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_eng</span><span class="p">),</span>  <span class="s1">&#39;ENG_GB_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;en_GB&#39;</span><span class="p">],</span> 
+						<span class="s1">&#39;FRE_FR_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_fre</span><span class="p">),</span>  <span class="s1">&#39;FRE_FR_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;fr_FR&#39;</span><span class="p">],</span>
+						<span class="s1">&#39;POR_PT_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_por</span><span class="p">),</span>  <span class="s1">&#39;POR_PT_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;pt_PT&#39;</span><span class="p">],</span>
+						<span class="s1">&#39;RUS_RU_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_rus</span><span class="p">),</span>  <span class="s1">&#39;RUS_RU_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;ru_RU&#39;</span><span class="p">],</span> 
+						<span class="s1">&#39;GER_DE_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_ger</span><span class="p">),</span>  <span class="s1">&#39;GER_DE_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;de_DE&#39;</span><span class="p">],</span>
+						<span class="s1">&#39;SPA_ES_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_spa</span><span class="p">),</span>  <span class="s1">&#39;SPA_ES_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;es_ES&#39;</span><span class="p">],</span>
+						<span class="s1">&#39;NOR_NO_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_nor</span><span class="p">),</span>  <span class="s1">&#39;NOR_NO_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;no_NO&#39;</span><span class="p">],</span>
+						<span class="s1">&#39;CZE_CZ_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_cze</span><span class="p">),</span>  <span class="s1">&#39;CZE_CZ_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;cs_CZ&#39;</span><span class="p">]}</span>
+						<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+						<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_by_item_name_responses</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+							<span class="n">survey_item_id_source</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_source</span><span class="p">)</span>
+							<span class="n">item_name</span> <span class="o">=</span> <span class="n">simplify_item_name</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;UNIQUE IDENTIFIER (PER SURVEY)&#39;</span><span class="p">])</span>
+							<span class="n">item_value</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;VALUES of VAR&#39;</span><span class="p">]</span>
+							<span class="n">wis_item_type</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;ITEM_TYPE&#39;</span><span class="p">]</span>
+							<span class="n">item_type</span> <span class="o">=</span> <span class="n">harmonize_item_type</span><span class="p">(</span><span class="n">wis_item_type</span><span class="p">)</span>
+
+							<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">study</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;PAGE&#39;</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> 
+							<span class="s1">&#39;wis_item_type&#39;</span><span class="p">:</span> <span class="n">wis_item_type</span><span class="p">,</span><span class="s1">&#39;item_name&#39;</span><span class="p">:</span><span class="n">item_name</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">count</span><span class="p">),</span><span class="s1">&#39;item_value&#39;</span><span class="p">:</span><span class="n">item_value</span><span class="p">,</span> 
+							<span class="s1">&#39;ENG_SOURCE_survey_item_ID&#39;</span><span class="p">:</span><span class="n">survey_item_id_source</span><span class="p">,</span>  <span class="s1">&#39;ENG_SOURCE_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">],</span>
+							<span class="s1">&#39;ENG_GB_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_eng</span><span class="p">),</span>  <span class="s1">&#39;ENG_GB_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;en_GB&#39;</span><span class="p">],</span> 
+							<span class="s1">&#39;FRE_FR_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_fre</span><span class="p">),</span>  <span class="s1">&#39;FRE_FR_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;fr_FR&#39;</span><span class="p">],</span>
+							<span class="s1">&#39;POR_PT_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_por</span><span class="p">),</span>  <span class="s1">&#39;POR_PT_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;pt_PT&#39;</span><span class="p">],</span>
+							<span class="s1">&#39;RUS_RU_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_rus</span><span class="p">),</span>  <span class="s1">&#39;RUS_RU_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;ru_RU&#39;</span><span class="p">],</span> 
+							<span class="s1">&#39;GER_DE_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_ger</span><span class="p">),</span>  <span class="s1">&#39;GER_DE_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;de_DE&#39;</span><span class="p">],</span>
+							<span class="s1">&#39;SPA_ES_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_spa</span><span class="p">),</span>  <span class="s1">&#39;SPA_ES_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;es_ES&#39;</span><span class="p">],</span>
+							<span class="s1">&#39;NOR_NO_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_nor</span><span class="p">),</span>  <span class="s1">&#39;NOR_NO_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;no_NO&#39;</span><span class="p">],</span>
+							<span class="s1">&#39;CZE_CZ_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_cze</span><span class="p">),</span>  <span class="s1">&#39;CZE_CZ_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;cs_CZ&#39;</span><span class="p">]}</span>
+							<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+					<span class="k">else</span><span class="p">:</span>
+						<span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span>
+						<span class="k">if</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+							<span class="n">survey_item_id_source</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_source</span><span class="p">)</span>
+						<span class="k">else</span><span class="p">:</span>
+							<span class="n">survey_item_id_source</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">update_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_source</span><span class="p">)</span>
+
+
+						<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">study</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;PAGE&#39;</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> 
+						<span class="s1">&#39;wis_item_type&#39;</span><span class="p">:</span> <span class="n">wis_item_type</span><span class="p">,</span><span class="s1">&#39;item_name&#39;</span><span class="p">:</span><span class="n">item_name</span><span class="p">,</span><span class="s1">&#39;item_value&#39;</span><span class="p">:</span><span class="n">item_value</span><span class="p">,</span> 
+						<span class="s1">&#39;ENG_SOURCE_survey_item_ID&#39;</span><span class="p">:</span><span class="n">survey_item_id_source</span><span class="p">,</span>  <span class="s1">&#39;ENG_SOURCE_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">],</span>
+						<span class="s1">&#39;ENG_GB_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_eng</span><span class="p">),</span>  <span class="s1">&#39;ENG_GB_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;en_GB&#39;</span><span class="p">],</span> 
+						<span class="s1">&#39;FRE_FR_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_fre</span><span class="p">),</span>  <span class="s1">&#39;FRE_FR_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;fr_FR&#39;</span><span class="p">],</span>
+						<span class="s1">&#39;POR_PT_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_por</span><span class="p">),</span>  <span class="s1">&#39;POR_PT_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;pt_PT&#39;</span><span class="p">],</span>
+						<span class="s1">&#39;RUS_RU_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_rus</span><span class="p">),</span>  <span class="s1">&#39;RUS_RU_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;ru_RU&#39;</span><span class="p">],</span> 
+						<span class="s1">&#39;GER_DE_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_ger</span><span class="p">),</span>  <span class="s1">&#39;GER_DE_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;de_DE&#39;</span><span class="p">],</span>
+						<span class="s1">&#39;SPA_ES_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_spa</span><span class="p">),</span>  <span class="s1">&#39;SPA_ES_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;es_ES&#39;</span><span class="p">],</span>
+						<span class="s1">&#39;NOR_NO_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_nor</span><span class="p">),</span>  <span class="s1">&#39;NOR_NO_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;no_NO&#39;</span><span class="p">],</span>
+						<span class="s1">&#39;CZE_CZ_survey_item_ID&#39;</span><span class="p">:</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_survey_item_id</span><span class="p">(</span><span class="n">survey_item_prefix_cze</span><span class="p">),</span>  <span class="s1">&#39;CZE_CZ_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;cs_CZ&#39;</span><span class="p">]}</span>
+						<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+						
+
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
+
+<div class="viewcode-block" id="prepare_df_for_data_extraction"><a class="viewcode-back" href="../../WIS.html#preprocessing.wis_data_extraction.prepare_df_for_data_extraction">[docs]</a><span class="k">def</span> <span class="nf">prepare_df_for_data_extraction</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">study</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Does preliminary editions in the input data to make the data extraction easier, such as harmonizing the item names</span>
+<span class="sd">	of matrix survey item segments.</span>
+<span class="sd">	Then, calls the data extraction method.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 df (pandas dataframe): the input data in a dataframe representation.</span>
+<span class="sd">		param2 df_questionnaire (pandas dataframe): a dataframe to hold the processed questionnaire data.</span>
+<span class="sd">		param3 study (string): the name of the study, embedded in the WIS export filename.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		the df_questionnaire (pandas dataframe) with the preprocessed data.</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">df</span><span class="p">[</span><span class="s1">&#39;LAST_ITEM_TYPE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ITEM_TYPE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+	<span class="n">df</span><span class="p">[</span><span class="s1">&#39;LAST_ITEM_NAME&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;UNIQUE IDENTIFIER (PER SURVEY)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+		<span class="n">item_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;UNIQUE IDENTIFIER (PER SURVEY)&#39;</span><span class="p">]</span>
+		<span class="n">wis_item_type</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;ITEM_TYPE&#39;</span><span class="p">]</span>
+		<span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;LAST_ITEM_TYPE&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;heading&#39;</span><span class="p">:</span>
+			<span class="n">df</span><span class="p">[</span><span class="s1">&#39;UNIQUE IDENTIFIER (PER SURVEY)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;UNIQUE IDENTIFIER (PER SURVEY)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;LAST_ITEM_NAME&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">item_name</span><span class="o">+</span><span class="s1">&#39;_introD&#39;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">wis_item_type</span> <span class="o">==</span> <span class="s1">&#39;matrix group&#39;</span><span class="p">:</span>
+			<span class="n">m_group_name</span>  <span class="o">=</span> <span class="n">item_name</span>
+		<span class="k">if</span>  <span class="n">wis_item_type</span> <span class="o">==</span> <span class="s1">&#39;matrix question&#39;</span> <span class="ow">or</span> <span class="n">wis_item_type</span> <span class="o">==</span> <span class="s1">&#39;matrix option&#39;</span><span class="p">:</span>
+			<span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;^&#39;</span><span class="o">+</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;UNIQUE IDENTIFIER (PER SURVEY)&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">m_group_name</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		
+	
+	<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">extract_wis_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">study</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span></div>
+	
+		
+<div class="viewcode-block" id="post_process_questionnaire"><a class="viewcode-back" href="../../WIS.html#preprocessing.wis_data_extraction.post_process_questionnaire">[docs]</a><span class="k">def</span> <span class="nf">post_process_questionnaire</span><span class="p">(</span><span class="n">df_questionnaire</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Loops through the language/country pairs to export questionnaire and alignment data separatedely </span>
+<span class="sd">	(one questionnaire file and one aligment per language/country pair).</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 df_questionnaire (pandas dataframe): the preprocessed questionnaire data, containing the text for all language/country pairs.</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">language_country_pairs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ENG_GB&#39;</span><span class="p">,</span> <span class="s1">&#39;FRE_FR&#39;</span><span class="p">,</span> <span class="s1">&#39;POR_PT&#39;</span><span class="p">,</span> <span class="s1">&#39;RUS_RU&#39;</span><span class="p">,</span><span class="s1">&#39;GER_DE&#39;</span><span class="p">,</span> <span class="s1">&#39;SPA_ES&#39;</span><span class="p">,</span><span class="s1">&#39;NOR_NO&#39;</span><span class="p">,</span> <span class="s1">&#39;CZE_CZ&#39;</span><span class="p">]</span>
+	<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">language_country_pairs</span><span class="p">:</span>
+		<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">])</span>
+		<span class="n">df_alignment</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;source_survey_itemID&#39;</span><span class="p">,</span> <span class="s1">&#39;target_survey_itemID&#39;</span><span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">,</span> 
+		<span class="s1">&#39;source_text&#39;</span><span class="p">,</span> <span class="s1">&#39;target_text&#39;</span><span class="p">])</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_questionnaire</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+			<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="n">l</span><span class="o">+</span><span class="s1">&#39;_survey_item_ID&#39;</span><span class="p">],</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">],</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;module&#39;</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">],</span> 
+			<span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_value&#39;</span><span class="p">],</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="n">l</span><span class="o">+</span><span class="s1">&#39;_text&#39;</span><span class="p">]}</span>
+			<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>	
+
+			<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;source_survey_itemID&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;ENG_SOURCE_survey_item_ID&#39;</span><span class="p">],</span> <span class="s1">&#39;target_survey_itemID&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="n">l</span><span class="o">+</span><span class="s1">&#39;_survey_item_ID&#39;</span><span class="p">],</span> 
+			<span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">],</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;module&#39;</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">],</span> 
+			<span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_value&#39;</span><span class="p">],</span> <span class="s1">&#39;source_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;ENG_SOURCE_text&#39;</span><span class="p">],</span> <span class="s1">&#39;target_text&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="n">l</span><span class="o">+</span><span class="s1">&#39;_text&#39;</span><span class="p">]}</span>
+			<span class="n">df_alignment</span> <span class="o">=</span> <span class="n">df_alignment</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>	
+			
+			<span class="n">study</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">]</span>
+
+		<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">study</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">l</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+		<span class="n">df_alignment</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;ENG_SOURCE&#39;</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">l</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">study</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+
+
+<div class="viewcode-block" id="set_initial_structures"><a class="viewcode-back" href="../../WIS.html#preprocessing.wis_data_extraction.set_initial_structures">[docs]</a><span class="k">def</span> <span class="nf">set_initial_structures</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Set initial structures that are necessary for the extraction of each questionnaire.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 filename (string): name of the input file.</span>
+
+<span class="sd">	Returns: </span>
+<span class="sd">		df_questionnaire to store questionnaire data (pandas dataframe) and the study (string), which is embedded in the file name.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">,</span> <span class="s1">&#39;wis_item_type&#39;</span><span class="p">,</span>
+		<span class="s1">&#39;item_name&#39;</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">,</span> <span class="s1">&#39;ENG_SOURCE_survey_item_ID&#39;</span><span class="p">,</span>  <span class="s1">&#39;ENG_SOURCE_text&#39;</span><span class="p">,</span>
+		<span class="s1">&#39;ENG_GB_survey_item_ID&#39;</span><span class="p">,</span>  <span class="s1">&#39;ENG_GB_text&#39;</span><span class="p">,</span> <span class="s1">&#39;FRE_FR_survey_item_ID&#39;</span><span class="p">,</span>  <span class="s1">&#39;FRE_FR_text&#39;</span><span class="p">,</span> <span class="s1">&#39;POR_PT_survey_item_ID&#39;</span><span class="p">,</span>  <span class="s1">&#39;POR_PT_text&#39;</span><span class="p">,</span>
+		<span class="s1">&#39;RUS_RU_survey_item_ID&#39;</span><span class="p">,</span>  <span class="s1">&#39;RUS_RU_text&#39;</span><span class="p">,</span> <span class="s1">&#39;GER_DE_survey_item_ID&#39;</span><span class="p">,</span>  <span class="s1">&#39;GER_DE_text&#39;</span><span class="p">,</span> <span class="s1">&#39;SPA_ES_survey_item_ID&#39;</span><span class="p">,</span>  <span class="s1">&#39;SPA_ES_text&#39;</span><span class="p">,</span>
+		<span class="s1">&#39;NOR_NO_survey_item_ID&#39;</span><span class="p">,</span>  <span class="s1">&#39;NOR_NO_text&#39;</span><span class="p">,</span> <span class="s1">&#39;CZE_CZ_survey_item_ID&#39;</span><span class="p">,</span>  <span class="s1">&#39;CZE_CZ_text&#39;</span><span class="p">])</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Study information from the name of the input file. </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">study</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\.xlsx&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Reset the initial survey_id sufix, because main is called iterativelly for every file in folder.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">ut</span><span class="o">.</span><span class="n">reset_initial_sufix</span><span class="p">()</span>
+
+
+	<span class="k">return</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">study</span></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../WIS.html#preprocessing.wis_data_extraction.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">folder_path</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Main method of the Wage Indicator data extraction and processing script.</span>
+<span class="sd">	The data is extracted, preprocessed and receives appropriate metadata attribution.  </span>
+
+<span class="sd">	The algorithm outputs the tsv representation of the df_questionnaire, used to store </span>
+<span class="sd">	questionnaire data (pandas dataframe).</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 folder_path: path to the folder where the WIS master file is.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
+	<span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+
+	<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.xlsx&quot;</span><span class="p">):</span>	
+			<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;WIS&#39;</span><span class="p">)</span>
+			<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;en_GB&#39;</span><span class="p">,</span> <span class="s1">&#39;fr_FR&#39;</span><span class="p">,</span> <span class="s1">&#39;pt_PT&#39;</span><span class="p">,</span> <span class="s1">&#39;ru_RU&#39;</span><span class="p">,</span> <span class="s1">&#39;de_DE&#39;</span><span class="p">,</span> <span class="s1">&#39;es_ES&#39;</span><span class="p">,</span> <span class="s1">&#39;no_NO&#39;</span><span class="p">,</span> <span class="s1">&#39;cs_CZ&#39;</span><span class="p">,</span>
+			<span class="s1">&#39;UNIQUE IDENTIFIER (PER SURVEY)&#39;</span><span class="p">,</span> <span class="s1">&#39;VALUES of VAR&#39;</span><span class="p">,</span> <span class="s1">&#39;ITEM_TYPE&#39;</span><span class="p">,</span><span class="s1">&#39;PAGE&#39;</span><span class="p">]]</span>
+
+			<span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">study</span> <span class="o">=</span> <span class="n">set_initial_structures</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+			<span class="n">df_questionnaire</span> <span class="o">=</span> <span class="n">prepare_df_for_data_extraction</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_questionnaire</span><span class="p">,</span> <span class="n">study</span><span class="p">)</span>
+			<span class="c1"># df_questionnaire.to_csv(&#39;pre.csv&#39;, sep=&#39;\t&#39;, encoding=&#39;utf-8-sig&#39;, index=False)</span>
+			<span class="n">post_process_questionnaire</span><span class="p">(</span><span class="n">df_questionnaire</span><span class="p">)</span></div>
+			
+
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="n">folder_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+	<span class="n">main</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">preprocessing.wis_data_extraction</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

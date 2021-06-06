@@ -48,6 +48,7 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
@@ -231,6 +232,8 @@
 </li>
       <li><a href="SHARE.html#preprocessing.share_xml_data_extraction.extract_questions_and_procedures_w8">extract_questions_and_procedures_w8() (in module preprocessing.share_xml_data_extraction)</a>
 </li>
+      <li><a href="WIS.html#preprocessing.wis_data_extraction.extract_wis_data">extract_wis_data() (in module preprocessing.wis_data_extraction)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -302,6 +305,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="WIS.html#preprocessing.wis_data_extraction.harmonize_item_type">harmonize_item_type() (in module preprocessing.wis_data_extraction)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -314,6 +325,8 @@
       <li><a href="alignment.html#alignment_utils.instantiate_language_stopwords_set">instantiate_language_stopwords_set() (in module alignment_utils)</a>
 </li>
       <li><a href="ESS.html#preprocessing.preprocessing_ess_utils.instantiate_special_answer_category_object">instantiate_special_answer_category_object() (in module preprocessing.preprocessing_ess_utils)</a>
+</li>
+      <li><a href="WIS.html#preprocessing.wis_data_extraction.instantiate_survey_item_prefix">instantiate_survey_item_prefix() (in module preprocessing.wis_data_extraction)</a>
 </li>
       <li><a href="ESS.html#preprocessing.preprocessing_ess_utils.instruction_recognition_catalan_spanish">instruction_recognition_catalan_spanish() (in module preprocessing.preprocessing_ess_utils)</a>
 </li>
@@ -353,6 +366,8 @@
         <li><a href="SHARE.html#preprocessing.share_xml_data_extraction.main">(in module preprocessing.share_xml_data_extraction)</a>
 </li>
         <li><a href="ESS.html#preprocessing.txt2spreadsheet.main">(in module preprocessing.txt2spreadsheet)</a>
+</li>
+        <li><a href="WIS.html#preprocessing.wis_data_extraction.main">(in module preprocessing.wis_data_extraction)</a>
 </li>
       </ul></li>
       <li>
@@ -395,6 +410,8 @@
 </li>
         <li><a href="preprocessing_utils.html#module-preprocessing.utils">preprocessing.utils</a>
 </li>
+        <li><a href="WIS.html#module-preprocessing.wis_data_extraction">preprocessing.wis_data_extraction</a>
+</li>
         <li><a href="db.html#module-retrieve_from_tables">retrieve_from_tables</a>
 </li>
       </ul></li>
@@ -425,9 +442,13 @@
         <li><a href="db.html#module-populate_tables">module</a>
 </li>
       </ul></li>
+      <li><a href="WIS.html#preprocessing.wis_data_extraction.post_process_questionnaire">post_process_questionnaire() (in module preprocessing.wis_data_extraction)</a>
+</li>
       <li><a href="alignment.html#alignment_based_on_item_structure.prepare_alignment_with_more_segments_in_source">prepare_alignment_with_more_segments_in_source() (in module alignment_based_on_item_structure)</a>
 </li>
       <li><a href="alignment.html#alignment_based_on_item_structure.prepare_alignment_with_more_segments_in_target">prepare_alignment_with_more_segments_in_target() (in module alignment_based_on_item_structure)</a>
+</li>
+      <li><a href="WIS.html#preprocessing.wis_data_extraction.prepare_df_for_data_extraction">prepare_df_for_data_extraction() (in module preprocessing.wis_data_extraction)</a>
 </li>
       <li><a href="SHARE.html#preprocessing.share_covid_data_extraction.preprocess_answer_segment">preprocess_answer_segment() (in module preprocessing.share_covid_data_extraction)</a>
 </li>
@@ -528,6 +549,13 @@
         <li><a href="preprocessing_utils.html#module-preprocessing.utils">module</a>
 </li>
       </ul></li>
+      <li>
+    preprocessing.wis_data_extraction
+
+      <ul>
+        <li><a href="WIS.html#module-preprocessing.wis_data_extraction">module</a>
+</li>
+      </ul></li>
       <li><a href="alignment.html#alignment_based_on_item_structure.preprocessing_alignment_candidates">preprocessing_alignment_candidates() (in module alignment_based_on_item_structure)</a>
 </li>
       <li><a href="ESS.html#preprocessing.ess_xml_data_extraction.process_answer_node">process_answer_node() (in module preprocessing.ess_xml_data_extraction)</a>
@@ -616,8 +644,12 @@
 </li>
         <li><a href="ESS.html#preprocessing.txt2spreadsheet.set_initial_structures">(in module preprocessing.txt2spreadsheet)</a>
 </li>
+        <li><a href="WIS.html#preprocessing.wis_data_extraction.set_initial_structures">(in module preprocessing.wis_data_extraction)</a>
+</li>
       </ul></li>
       <li><a href="SHARE.html#preprocessing.sharemodules.SHAREModules">SHAREModules (class in preprocessing.sharemodules)</a>
+</li>
+      <li><a href="WIS.html#preprocessing.wis_data_extraction.simplify_item_name">simplify_item_name() (in module preprocessing.wis_data_extraction)</a>
 </li>
       <li><a href="ESS.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesCAT">SpecialAnswerCategoriesCAT (class in preprocessing.ess_special_answer_categories)</a>
 </li>
@@ -625,10 +657,10 @@
 </li>
       <li><a href="ESS.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesENG">SpecialAnswerCategoriesENG (class in preprocessing.ess_special_answer_categories)</a>
 </li>
-      <li><a href="ESS.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesFRE">SpecialAnswerCategoriesFRE (class in preprocessing.ess_special_answer_categories)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ESS.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesFRE">SpecialAnswerCategoriesFRE (class in preprocessing.ess_special_answer_categories)</a>
+</li>
       <li><a href="ESS.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesGER">SpecialAnswerCategoriesGER (class in preprocessing.ess_special_answer_categories)</a>
 </li>
       <li><a href="ESS.html#preprocessing.ess_special_answer_categories.SpecialAnswerCategoriesNOR">SpecialAnswerCategoriesNOR (class in preprocessing.ess_special_answer_categories)</a>

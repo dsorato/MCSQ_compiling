@@ -13,6 +13,7 @@ Contents
    EVS.rst
    ESS.rst
    SHARE.rst
+   WIS.rst
    alignment.rst
    tagging.rst
    db.rst

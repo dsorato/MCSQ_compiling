@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wage Indicator Survey (WIS) data extraction and preprocessing methods &#8212; MCSQ compiling 2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Alignment based on item structure" href="alignment.html" />
+    <link rel="prev" title="SHARE data extraction, preprocessing and treatment methods" href="SHARE.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="alignment.html" title="Alignment based on item structure"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="SHARE.html" title="SHARE data extraction, preprocessing and treatment methods"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="contents.html" accesskey="U">Contents</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Wage Indicator Survey (WIS) data extraction and preprocessing methods</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="wage-indicator-survey-wis-data-extraction-and-preprocessing-methods">
+<h1>Wage Indicator Survey (WIS) data extraction and preprocessing methods<a class="headerlink" href="#wage-indicator-survey-wis-data-extraction-and-preprocessing-methods" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-preprocessing.wis_data_extraction"></span><dl class="py function">
+<dt id="preprocessing.wis_data_extraction.extract_wis_data">
+<code class="sig-prename descclassname">preprocessing.wis_data_extraction.</code><code class="sig-name descname">extract_wis_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">study</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/wis_data_extraction.html#extract_wis_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.wis_data_extraction.extract_wis_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts and preprocesses WIS data from df, attibuting MCSQ metadata (and also harmonizing metadata e.g. item names, item types, when necessary).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>param1</em>) – the input data in a dataframe representation.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param2</em>) – a dataframe to hold the processed questionnaire data.</p></li>
+<li><p><strong>study</strong> (<em>param3</em>) – the name of the study, embedded in the WIS export filename.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the df_questionnaire (pandas dataframe) with the preprocessed data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.wis_data_extraction.harmonize_item_type">
+<code class="sig-prename descclassname">preprocessing.wis_data_extraction.</code><code class="sig-name descname">harmonize_item_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wis_item_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/wis_data_extraction.html#harmonize_item_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.wis_data_extraction.harmonize_item_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translates the item type indicated in the WIS exports to the item types that are present in the MCSQ.
+:param param1 wis_item_type: the item type value in a give row from the WIS export.
+:type param1 wis_item_type: string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>an item type (string) that corresponds to the MCSQ item types. Could be INTRODUCTION, RESPONSE, REQUEST or INSTRUCTION.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.wis_data_extraction.instantiate_survey_item_prefix">
+<code class="sig-prename descclassname">preprocessing.wis_data_extraction.</code><code class="sig-name descname">instantiate_survey_item_prefix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">study</span></em>, <em class="sig-param"><span class="n">column_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/wis_data_extraction.html#instantiate_survey_item_prefix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.wis_data_extraction.instantiate_survey_item_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps the WIS data export text column names to the ISO standards used in MCSQ.
+Then, defines the prefix of the survey item in accordance to the MCSQ standard nomenclature.
+The prefix of an MCSQ survey item is study+’_’+language+’_’+country+’_’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>study</strong> (<em>param1</em>) – the name of the study, embedded in the WIS export filename.</p></li>
+<li><p><strong>column_name</strong> (<em>param2</em>) – the name of the text column, from the WIS export.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a language specific survey item ID prefix (string).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.wis_data_extraction.main">
+<code class="sig-prename descclassname">preprocessing.wis_data_extraction.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">folder_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/wis_data_extraction.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.wis_data_extraction.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main method of the Wage Indicator data extraction and processing script.
+The data is extracted, preprocessed and receives appropriate metadata attribution.</p>
+<p>The algorithm outputs the tsv representation of the df_questionnaire, used to store
+questionnaire data (pandas dataframe).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>folder_path</strong> (<em>param1</em>) – path to the folder where the WIS master file is.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.wis_data_extraction.post_process_questionnaire">
+<code class="sig-prename descclassname">preprocessing.wis_data_extraction.</code><code class="sig-name descname">post_process_questionnaire</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df_questionnaire</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/wis_data_extraction.html#post_process_questionnaire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.wis_data_extraction.post_process_questionnaire" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loops through the language/country pairs to export questionnaire and alignment data separatedely
+(one questionnaire file and one aligment per language/country pair).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_questionnaire</strong> (<em>param1</em>) – the preprocessed questionnaire data, containing the text for all language/country pairs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.wis_data_extraction.prepare_df_for_data_extraction">
+<code class="sig-prename descclassname">preprocessing.wis_data_extraction.</code><code class="sig-name descname">prepare_df_for_data_extraction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">df_questionnaire</span></em>, <em class="sig-param"><span class="n">study</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/wis_data_extraction.html#prepare_df_for_data_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.wis_data_extraction.prepare_df_for_data_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does preliminary editions in the input data to make the data extraction easier, such as harmonizing the item names
+of matrix survey item segments.
+Then, calls the data extraction method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>param1</em>) – the input data in a dataframe representation.</p></li>
+<li><p><strong>df_questionnaire</strong> (<em>param2</em>) – a dataframe to hold the processed questionnaire data.</p></li>
+<li><p><strong>study</strong> (<em>param3</em>) – the name of the study, embedded in the WIS export filename.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the df_questionnaire (pandas dataframe) with the preprocessed data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.wis_data_extraction.set_initial_structures">
+<code class="sig-prename descclassname">preprocessing.wis_data_extraction.</code><code class="sig-name descname">set_initial_structures</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/wis_data_extraction.html#set_initial_structures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.wis_data_extraction.set_initial_structures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set initial structures that are necessary for the extraction of each questionnaire.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>param1</em>) – name of the input file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_questionnaire to store questionnaire data (pandas dataframe) and the study (string), which is embedded in the file name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="preprocessing.wis_data_extraction.simplify_item_name">
+<code class="sig-prename descclassname">preprocessing.wis_data_extraction.</code><code class="sig-name descname">simplify_item_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wis_item_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocessing/wis_data_extraction.html#simplify_item_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocessing.wis_data_extraction.simplify_item_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simplifies the unique item names in the WIS exports to atribute unique item names for each survey item.
+This makes easier to find the survey items inside the MCSQ, as you will not need to search for each unique variable name
+(as it is in the WIS export).
+:param param1 wis_item_name: the item name value in a give row from the WIS export.
+:type param1 wis_item_name: string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>an item name (string) that will be used for all segments concerning a given WIS survey item.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="SHARE.html"
+                        title="previous chapter">SHARE data extraction, preprocessing and treatment methods</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="alignment.html"
+                        title="next chapter">Alignment based on item structure</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/WIS.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="alignment.html" title="Alignment based on item structure"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="SHARE.html" title="SHARE data extraction, preprocessing and treatment methods"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="contents.html" >Contents</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Wage Indicator Survey (WIS) data extraction and preprocessing methods</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
