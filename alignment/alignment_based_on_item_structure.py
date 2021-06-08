@@ -46,29 +46,6 @@ def identify_showc_segment(list_source, list_target, item_type):
 	else:
 		return 'No showc segment identified'
 
-def preprocessing_alignment_candidates(text):
-	"""
-	Preprocesses the text segment by tokenizing it, removing punctuation.
-
-	Args:
-		param1 text (string): the text segment to be preprocessed.
-
-	Returns:
-		The preprocessed tokens (a list of strings). 
-
-	"""
-	tokens = nltk.word_tokenize(text)
-	preprocessed_tokens = []
-
-	for token in tokens:
-		token = token.lower()
-		if token not in string.punctuation:
-			preprocessed_tokens.append(token)
-
-
-	return preprocessed_tokens
-
-
 
 def find_best_match(list_source, list_target, item_type):
 	"""
@@ -94,14 +71,16 @@ def find_best_match(list_source, list_target, item_type):
 
 	for i, item in enumerate(list_source):
 		print(item[-1])
-		dict_source[i] = len(preprocessing_alignment_candidates(item[-1]))
+		dict_source[i] = len(item[-1].split(' '))
 
 	for i, item in enumerate(list_target):
-		dict_target[i] = len(preprocessing_alignment_candidates(item[-1])) 
+		dict_target[i] = len(item[-1].split(' '))
+
 
 	for target_k, target_v in list(dict_target.items()):
 		for source_k, source_v in list(dict_source.items()):
 			alignment_candidates[target_k, source_k] = target_v/source_v
+	
 
 	best_candidate = min(alignment_candidates.values(), key=lambda x:abs(x-1))
 	for k, v in list(alignment_candidates.items()):
