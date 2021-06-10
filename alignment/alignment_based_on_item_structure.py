@@ -940,8 +940,6 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 					return df
 
 			else:
-				##########
-
 				if len(list_source) == 1:
 					data = {'source_survey_itemID': list_source[0][0], 'target_survey_itemID': list_target[0][0] , 'Study': list_source[0][1], 
 						'module': list_source[0][2], 'item_type': item_type, 'item_name':list_source[0][4], 'item_value': None, 
@@ -950,15 +948,15 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 					return df
 				else:
 					dict_ratios = dict()
-
+					##
 					for target in list_target:
 						for source in list_source:
-							dict_ratios[len(target[6].split(' '))/len(source[6].split(' '))] = [target[0],source[0]] 
+							t = preprocessing_alignment_candidates(target[6])
+							s = preprocessing_alignment_candidates(source[6])
+							dict_ratios[len(t)/len(s)] = [target[0],source[0]] 
 
 					best_candidate = min(dict_ratios.keys(), key=lambda x:abs(x-1))
 					values = dict_ratios[best_candidate]
-
-					print(dict_ratios)
 
 					for i, item in enumerate(list_source):
 						if item[0] == values[1]:
@@ -975,7 +973,6 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 					data = {'source_survey_itemID': source_best[0], 'target_survey_itemID': target_best[0] , 'Study': source_best[1], 
 						'module': source_best[2], 'item_type': item_type, 'item_name':source_best[4], 'item_value': None, 
 						'source_text': source_best[6], 'target_text':  target_best[6]}
-					print(data)
 					df = df.append(data, ignore_index=True)
 
 					del list_source[source_best_index]

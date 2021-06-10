@@ -3,7 +3,7 @@ class ESSCountrySpecificR01():
 	"""
 	Item names of country specific questions in ESS round 1.
 	"""
-	item_names = ['B14', 'B25b', 'B27', 'C10', 'C12', 'F6']
+	item_names = ['B14', 'B25b', 'B27', 'C10', 'C12', 'F6', 'F34', 'F45', 'F51']
 	item_names = [x.lower() for x in item_names]
 
 
