@@ -46,6 +46,23 @@ def identify_showc_segment(list_source, list_target, item_type):
 	else:
 		return 'No showc segment identified'
 
+def preprocessing_alignment_candidates(text):
+	"""
+	Preprocesses the text segment by tokenizing it, removing punctuation.
+	Args:
+		param1 text (string): the text segment to be preprocessed.
+	Returns:
+		The preprocessed tokens (a list of strings). 
+	"""
+	tokens = nltk.word_tokenize(text)
+	preprocessed_tokens = []
+
+	for token in tokens:
+		if token not in string.punctuation:
+			preprocessed_tokens.append(token)
+
+
+	return preprocessed_tokens
 
 def find_best_match(list_source, list_target, item_type):
 	"""
@@ -70,23 +87,25 @@ def find_best_match(list_source, list_target, item_type):
 
 
 	for i, item in enumerate(list_source):
-		print(item[-1])
-		dict_source[i] = len(item[-1].split(' '))
+		text = preprocessing_alignment_candidates(item[-1])
+		# text = item[-1].split(' ')
+		dict_source[i] = len(text)
+		
 
 	for i, item in enumerate(list_target):
-		dict_target[i] = len(item[-1].split(' '))
+		text = preprocessing_alignment_candidates(item[-1])
+		# text = item[-1].split(' ')
+		dict_target[i] = len(text)
+		
 
 
 	for target_k, target_v in list(dict_target.items()):
 		for source_k, source_v in list(dict_source.items()):
-			alignment_candidates[target_k, source_k] = target_v/source_v
+			alignment_candidates[target_v/source_v] = target_k, source_k
 	
 
-	best_candidate = min(alignment_candidates.values(), key=lambda x:abs(x-1))
-	for k, v in list(alignment_candidates.items()):
-		if v == best_candidate:
-			alignment = k
-			return alignment
+	best_candidate = min(alignment_candidates.keys(), key=lambda x:abs(x-1))
+	return alignment_candidates[best_candidate]
 
 
 def get_original_index(list_source, list_target, source_segment_index, target_segment_index, aux_source, aux_target):
@@ -921,12 +940,53 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 					return df
 
 			else:
-				for i, item in enumerate(list_source):
-					data = {'source_survey_itemID': item[0], 'target_survey_itemID': list_target[i][0] , 'Study': item[1], 
-					'module': item[2], 'item_type': item_type, 'item_name':item[4], 'item_value': None, 
-					'source_text': item[6], 'target_text':  list_target[i][6]}
+				##########
+
+				if len(list_source) == 1:
+					data = {'source_survey_itemID': list_source[0][0], 'target_survey_itemID': list_target[0][0] , 'Study': list_source[0][1], 
+						'module': list_source[0][2], 'item_type': item_type, 'item_name':list_source[0][4], 'item_value': None, 
+						'source_text': list_source[0][6], 'target_text':  list_target[0][6]}
 					df = df.append(data, ignore_index=True)
-				return df
+					return df
+				else:
+					dict_ratios = dict()
+
+					for target in list_target:
+						for source in list_source:
+							dict_ratios[len(target[6].split(' '))/len(source[6].split(' '))] = [target[0],source[0]] 
+
+					best_candidate = min(dict_ratios.keys(), key=lambda x:abs(x-1))
+					values = dict_ratios[best_candidate]
+
+					print(dict_ratios)
+
+					for i, item in enumerate(list_source):
+						if item[0] == values[1]:
+							source_best = list_source[i]
+							source_best_index = i
+							break
+
+					for i, item in enumerate(list_target):
+						if item[0] == values[0]:
+							target_best = list_target[i]
+							target_best_index = i
+							break
+
+					data = {'source_survey_itemID': source_best[0], 'target_survey_itemID': target_best[0] , 'Study': source_best[1], 
+						'module': source_best[2], 'item_type': item_type, 'item_name':source_best[4], 'item_value': None, 
+						'source_text': source_best[6], 'target_text':  target_best[6]}
+					print(data)
+					df = df.append(data, ignore_index=True)
+
+					del list_source[source_best_index]
+					del list_target[target_best_index]
+					if list_source:
+						for source, target in zip(list_source, list_target):
+							data = {'source_survey_itemID': source[0], 'target_survey_itemID': target[0] , 'Study': source[1], 
+							'module': source[2], 'item_type': item_type, 'item_name':source[4], 'item_value': None, 
+							'source_text': source[6], 'target_text':  target[6]}
+							df = df.append(data, ignore_index=True)
+					return df
 
 	return df
 

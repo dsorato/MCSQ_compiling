@@ -2835,7 +2835,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 			return True
 
 
-		regex= r"^(?P<continue>)(continuï|continueu|continuar)?\s?(?P<show>)mostr(ar|eu|ant)\s(?P<card>)targeta"
+		regex= r"^(?P<continue>)(continuï|continueu|continuar|seguir)?\s?(?P<show>)mostr(ar|eu|ant|ando)\s(?P<card>)targeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
@@ -2898,7 +2898,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<please>)(si us plau)?\s?(?P<use>)(utilitzi la|segueixi utilitzant|continu(ï|eu) utilitzant)\s(?P<this>)(aquesta)?\s?(?P<the>)(la)?\s?(?P<same>)(mateixa)?\s?(?P<card>)targeta"
+		regex= r"^(?P<please>)(si\sus\splau)?\s?(?P<use>)(utili(tzi|zi|tzeu|zeu)|segueixi\sutilitzant|continu(ï|eu)\sutilitzant)\s(?P<this>)(aquesta)?\s?(?P<the>)(la)?\s?(?P<same>)(mateixa)?\s?(?P<card>)targeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 			return True
@@ -2906,11 +2906,6 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		regex= r"^(?P<please>)(si us plau)?\s?(?P<answer>)respongui\s(?P<using>)utilitzant\s(?P<this>)aquesta\s(?P<same>)(mateixa)?\s?(?P<card>)targeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
-			return True
-
-		regex= r"^(?P<please>)(si us plau)?\s?(?P<use>)utilitzi\s(?P<this>)aquesta\s(?P<card>)targeta"
-		matches = re.search(regex, text, re.IGNORECASE)
-		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
 			return True
 		
 		regex= r"^(?P<suggest>)suggerir\s(?P<categories>)categories\s(?P<de>)de\s(?P<answer>)resposta"
@@ -3076,12 +3071,13 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<answer>)RESPUESTA\s(?P<multiple>)MÚLTIPLE"
+		regex= r"^(?P<answer>)RESPUESTA\s(?P<multiple>)(MÚLTIPLE|MULTIPLE)"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
 
-		regex= r"^(?P<answer>)RESPUESTA\s(?P<spontaneous>)ESPONTÁNEA"
+
+		regex= r"^(?P<answer>)RESPUESTA\s(?P<spontaneous>)(ESPONTÁNEA|ESPONTANEA)"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
