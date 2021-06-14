@@ -1778,7 +1778,7 @@ def instruction_recognition_french(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<code>)CODAGE"
+	regex= r"^(?P<code>)(CODAGE|CODER)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True

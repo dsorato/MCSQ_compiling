@@ -7,7 +7,8 @@ import string
 from alignment_utils import *
 from countryspecificrequest import *
 from string import punctuation
-
+from word2word import Word2word
+from nltk.corpus import stopwords
 
 
 def identify_showc_segment(list_source, list_target, item_type):
@@ -54,15 +55,36 @@ def preprocessing_alignment_candidates(text):
 	Returns:
 		The preprocessed tokens (a list of strings). 
 	"""
-	tokens = nltk.word_tokenize(text)
+	text =  re.sub(r"[^\w\s]+",'',text.lower()) 
+
+	tokens = text.split(' ')
 	preprocessed_tokens = []
 
 	for token in tokens:
-		if token not in string.punctuation:
+		if token != '':
 			preprocessed_tokens.append(token)
 
 
 	return preprocessed_tokens
+
+
+
+def use_bilingual_dict(source_text, target_text):
+	count = 0
+	
+	if source_text != '' and target_text != '':
+		for word in source_text:
+			if word.isdigit() == False and word not in st:
+				try:
+					a = mcsq_bi(word)
+					for a in target_text:
+						count+=1
+				except KeyError:
+					pass 
+					
+
+	return count
+
 
 def find_best_match(list_source, list_target, item_type):
 	"""
@@ -88,23 +110,33 @@ def find_best_match(list_source, list_target, item_type):
 
 	for i, item in enumerate(list_source):
 		text = preprocessing_alignment_candidates(item[-1])
-		# text = item[-1].split(' ')
-		dict_source[i] = len(text)
+		dict_source[i] = text
 		
 
 	for i, item in enumerate(list_target):
 		text = preprocessing_alignment_candidates(item[-1])
-		# text = item[-1].split(' ')
-		dict_target[i] = len(text)
+		dict_target[i] = text
 		
 
 
 	for target_k, target_v in list(dict_target.items()):
 		for source_k, source_v in list(dict_source.items()):
-			alignment_candidates[target_v/source_v] = target_k, source_k
+			if 'ENG' in target_language_country:
+				if len(target_v)/len(source_v) in alignment_candidates.keys():
+					alignment_candidates[len(target_v)/len(source_v)+0.1] = target_k, source_k 
+				else:
+					alignment_candidates[len(target_v)/len(source_v)] = target_k, source_k 
+			else:
+				print(target_v, source_v)
+				print(len(target_v)/len(source_v) - 0.05*use_bilingual_dict(source_v, target_v))
+				if len(target_v)/len(source_v) - 0.05*use_bilingual_dict(source_v, target_v) in alignment_candidates.keys():
+					alignment_candidates[len(target_v)/len(source_v) - 0.05*use_bilingual_dict(source_v, target_v)+0.1] = target_k, source_k 
+				else:
+					alignment_candidates[len(target_v)/len(source_v) - 0.05*use_bilingual_dict(source_v, target_v)] = target_k, source_k 
 	
 
-	best_candidate = min(alignment_candidates.keys(), key=lambda x:abs(x-1))
+	best_candidate = min(alignment_candidates, key=alignment_candidates.get)
+
 	return alignment_candidates[best_candidate]
 
 
@@ -870,7 +902,40 @@ def different_source_target_index_card_instructions(source_index, target_index, 
 	return df
 
 
+def b_match(list_target, list_source):
+	dict_ratios = dict()
+	##
+	for target in list_target:
+		for source in list_source:
+			t = preprocessing_alignment_candidates(target[6])
+			s = preprocessing_alignment_candidates(source[6])
+			if 'ENG' in target[0]:
+				if len(t)/len(s) in dict_ratios.keys():
+					dict_ratios[len(t)/len(s)+0.1] = [target[0],source[0]] 
+				else:
+					dict_ratios[len(t)/len(s)] = [target[0],source[0]] 
+			else:
+				if len(t)/len(s)-0.05*use_bilingual_dict(s, t) in dict_ratios.keys():
+					dict_ratios[len(t)/len(s)-0.05*use_bilingual_dict(s, t)+0.1] = [target[0],source[0]] 
+				else:
+					dict_ratios[len(t)/len(s)-0.05*use_bilingual_dict(s, t)] = [target[0],source[0]] 
 
+	best_candidate = min(dict_ratios, key=dict_ratios.get)
+	values = dict_ratios[best_candidate]
+
+	for i, item in enumerate(list_source):
+		if item[0] == values[1]:
+			source_best = list_source[i]
+			source_best_index = i
+			break
+
+	for i, item in enumerate(list_target):
+		if item[0] == values[0]:
+			target_best = list_target[i]
+			target_best_index = i
+			break
+
+	return source_best, source_best_index, target_best, target_best_index
 
 def align_introduction_instruction_request(df, df_source, df_target, item_type):
 	"""
@@ -947,42 +1012,16 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 					df = df.append(data, ignore_index=True)
 					return df
 				else:
-					dict_ratios = dict()
-					##
-					for target in list_target:
-						for source in list_source:
-							t = preprocessing_alignment_candidates(target[6])
-							s = preprocessing_alignment_candidates(source[6])
-							dict_ratios[len(t)/len(s)] = [target[0],source[0]] 
+					while list_source:
+						source_best, source_best_index, target_best, target_best_index = b_match(list_target, list_source)
+						data = {'source_survey_itemID': source_best[0], 'target_survey_itemID': target_best[0] , 'Study': source_best[1], 
+							'module': source_best[2], 'item_type': item_type, 'item_name':source_best[4], 'item_value': None, 
+							'source_text': source_best[6], 'target_text':  target_best[6]}
+						df = df.append(data, ignore_index=True)
 
-					best_candidate = min(dict_ratios.keys(), key=lambda x:abs(x-1))
-					values = dict_ratios[best_candidate]
+						del list_source[source_best_index]
+						del list_target[target_best_index]
 
-					for i, item in enumerate(list_source):
-						if item[0] == values[1]:
-							source_best = list_source[i]
-							source_best_index = i
-							break
-
-					for i, item in enumerate(list_target):
-						if item[0] == values[0]:
-							target_best = list_target[i]
-							target_best_index = i
-							break
-
-					data = {'source_survey_itemID': source_best[0], 'target_survey_itemID': target_best[0] , 'Study': source_best[1], 
-						'module': source_best[2], 'item_type': item_type, 'item_name':source_best[4], 'item_value': None, 
-						'source_text': source_best[6], 'target_text':  target_best[6]}
-					df = df.append(data, ignore_index=True)
-
-					del list_source[source_best_index]
-					del list_target[target_best_index]
-					if list_source:
-						for source, target in zip(list_source, list_target):
-							data = {'source_survey_itemID': source[0], 'target_survey_itemID': target[0] , 'Study': source[1], 
-							'module': source[2], 'item_type': item_type, 'item_name':source[4], 'item_value': None, 
-							'source_text': source[6], 'target_text':  target[6]}
-							df = df.append(data, ignore_index=True)
 					return df
 
 	return df
@@ -1107,6 +1146,10 @@ def main(folder_path, filename_source, filename_target):
 	global target_language_country
 	target_language_country = get_target_language_country_metadata(filename_target)
 
+	global mcsq_bi
+	mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/dict/")
+	global st
+	st = stopwords.words('english')
 
 	if 'EVS' in study:
 		source_language_country = 'ENG_GB'

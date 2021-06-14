@@ -2,6 +2,24 @@ from countryspecificrequest import *
 import nltk
 from nltk.corpus import stopwords
 
+def convert_iso_code(lang):
+	if lang == 'FRE':
+		return 'fr'
+	if lang == 'GER':
+		return 'de'
+	if lang == 'CAT':
+		return 'ca'
+	if lang == 'CZE':
+		return 'cz'
+	if lang == 'NOR':
+		return 'no'
+	if lang == 'RUS':
+		return 'ru'
+	if lang == 'SPA':
+		return 'es'
+	if lang == 'POR':
+		return 'pt'
+
 def instantiate_country_specific_request_object(study):
 	"""
 	Instantiates the appropriate set of country-specific requests according to the study.
