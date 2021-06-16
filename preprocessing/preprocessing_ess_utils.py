@@ -1780,9 +1780,14 @@ def instruction_recognition_french(text,country_language):
 
 	regex= r"^(?P<code>)(CODAGE|CODER)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches:
+	if matches and text != 'CODER LE SEXE':
 		return True
 
+	regex= r"^(?P<respondent>)REPONDANT\s(?P<malefemale>)(FEMININ|MASCULIN)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+	 
 
 	regex= r"^(?P<ifnecessary>)AU\sBESOIN\s(?P<chooseaccording>)CHOISIR\sSELON\s(?P<thepriority>)LA\sPRIORITE"
 	matches = re.search(regex, text, re.IGNORECASE)

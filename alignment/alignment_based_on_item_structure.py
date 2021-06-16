@@ -77,8 +77,11 @@ def use_bilingual_dict(source_text, target_text):
 			if word.isdigit() == False and word not in st:
 				try:
 					a = mcsq_bi(word)
-					for a in target_text:
+					for i in target_text:
 						count+=1
+						for item in a:
+							if item in target_text:
+								count+=1
 				except KeyError:
 					pass 
 					
