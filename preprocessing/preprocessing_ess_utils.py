@@ -1783,6 +1783,18 @@ def instruction_recognition_french(text,country_language):
 	if matches and text != 'CODER LE SEXE':
 		return True
 
+	regex= r"^(?P<code>)CITE(R|Z)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<code>)NOTE(R|Z)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+		
+
 	regex= r"^(?P<respondent>)REPONDANT\s(?P<malefemale>)(FEMININ|MASCULIN)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:

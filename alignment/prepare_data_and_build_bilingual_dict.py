@@ -63,7 +63,7 @@ def main(folder_path, lang):
 			t.close()
 
 	print(folder_path+"/"+lang+"_dict")
-	mcsq_dict = Word2word.make("en", l, folder_path+"/"+lang, savedir=folder_path+'/dict')
+	mcsq_dict = Word2word.make("en", l, folder_path+"/"+lang, savedir=folder_path)
 
 
 	

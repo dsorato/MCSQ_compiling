@@ -77,11 +77,14 @@ def use_bilingual_dict(source_text, target_text):
 			if word.isdigit() == False and word not in st:
 				try:
 					a = mcsq_bi(word)
-					for i in target_text:
-						count+=1
-						for item in a:
-							if item in target_text:
-								count+=1
+					for item in a:
+						if item in target_text:
+							count+=1
+					# for i in target_text:
+					# 	count+=1
+					# 	for item in a:
+					# 		if item in target_text:
+					# 			count+=1
 				except KeyError:
 					pass 
 					
@@ -125,20 +128,22 @@ def find_best_match(list_source, list_target, item_type):
 	for target_k, target_v in list(dict_target.items()):
 		for source_k, source_v in list(dict_source.items()):
 			if 'ENG' in target_language_country:
-				if len(target_v)/len(source_v) in alignment_candidates.keys():
-					alignment_candidates[len(target_v)/len(source_v)+0.1] = target_k, source_k 
+				if abs(len(target_v)-len(source_v)) in alignment_candidates.keys():
+					alignment_candidates[abs(len(target_v)-len(source_v))+0.1] = target_k, source_k 
 				else:
-					alignment_candidates[len(target_v)/len(source_v)] = target_k, source_k 
+					alignment_candidates[abs(len(target_v)-len(source_v))] = target_k, source_k 
 			else:
 				print(target_v, source_v)
-				print(len(target_v)/len(source_v) - 0.05*use_bilingual_dict(source_v, target_v))
-				if len(target_v)/len(source_v) - 0.05*use_bilingual_dict(source_v, target_v) in alignment_candidates.keys():
-					alignment_candidates[len(target_v)/len(source_v) - 0.05*use_bilingual_dict(source_v, target_v)+0.1] = target_k, source_k 
+				print(abs(len(target_v)-len(source_v)) - 0.05*use_bilingual_dict(source_v, target_v))
+				
+				if abs(len(target_v)-len(source_v)) - 0.05*use_bilingual_dict(source_v, target_v) in alignment_candidates.keys():
+					alignment_candidates[abs(len(target_v)-len(source_v)) - 0.05*use_bilingual_dict(source_v, target_v)+0.1] = target_k, source_k 
 				else:
-					alignment_candidates[len(target_v)/len(source_v) - 0.05*use_bilingual_dict(source_v, target_v)] = target_k, source_k 
+					alignment_candidates[abs(len(target_v)-len(source_v)) - 0.05*use_bilingual_dict(source_v, target_v)] = target_k, source_k 
 	
 
-	best_candidate = min(alignment_candidates, key=alignment_candidates.get)
+	best_candidate = min(alignment_candidates)
+	print(best_candidate)
 
 	return alignment_candidates[best_candidate]
 
@@ -913,17 +918,18 @@ def b_match(list_target, list_source):
 			t = preprocessing_alignment_candidates(target[6])
 			s = preprocessing_alignment_candidates(source[6])
 			if 'ENG' in target[0]:
-				if len(t)/len(s) in dict_ratios.keys():
-					dict_ratios[len(t)/len(s)+0.1] = [target[0],source[0]] 
+				if abs(len(t)-len(s)) in dict_ratios.keys():
+					dict_ratios[abs(len(t)-len(s))+0.1] = [target[0],source[0]] 
 				else:
-					dict_ratios[len(t)/len(s)] = [target[0],source[0]] 
+					dict_ratios[abs(len(t)-len(s))] = [target[0],source[0]] 
 			else:
-				if len(t)/len(s)-0.05*use_bilingual_dict(s, t) in dict_ratios.keys():
-					dict_ratios[len(t)/len(s)-0.05*use_bilingual_dict(s, t)+0.1] = [target[0],source[0]] 
+				if abs(len(t)-len(s))-0.05*use_bilingual_dict(s, t) in dict_ratios.keys():
+					dict_ratios[abs(len(t)-len(s))-0.05*use_bilingual_dict(s, t)+0.1] = [target[0],source[0]] 
 				else:
-					dict_ratios[len(t)/len(s)-0.05*use_bilingual_dict(s, t)] = [target[0],source[0]] 
+					dict_ratios[abs(len(t)-len(s))-0.05*use_bilingual_dict(s, t)] = [target[0],source[0]] 
 
-	best_candidate = min(dict_ratios, key=dict_ratios.get)
+	best_candidate = min(dict_ratios)
+
 	values = dict_ratios[best_candidate]
 
 	for i, item in enumerate(list_source):
@@ -1150,7 +1156,7 @@ def main(folder_path, filename_source, filename_target):
 	target_language_country = get_target_language_country_metadata(filename_target)
 
 	global mcsq_bi
-	mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/dict/")
+	mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country)
 	global st
 	st = stopwords.words('english')
 
