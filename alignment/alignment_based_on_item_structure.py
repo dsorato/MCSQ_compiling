@@ -133,8 +133,8 @@ def find_best_match(list_source, list_target, item_type):
 				else:
 					alignment_candidates[abs(len(target_v)-len(source_v))] = target_k, source_k 
 			else:
-				print(target_v, source_v)
-				print(abs(len(target_v)-len(source_v)) - 0.05*use_bilingual_dict(source_v, target_v))
+				# print(target_v, source_v)
+				# print(abs(len(target_v)-len(source_v)) - 0.05*use_bilingual_dict(source_v, target_v))
 				
 				if abs(len(target_v)-len(source_v)) - 0.05*use_bilingual_dict(source_v, target_v) in alignment_candidates.keys():
 					alignment_candidates[abs(len(target_v)-len(source_v)) - 0.05*use_bilingual_dict(source_v, target_v)+0.1] = target_k, source_k 
@@ -143,7 +143,6 @@ def find_best_match(list_source, list_target, item_type):
 	
 
 	best_candidate = min(alignment_candidates)
-	print(best_candidate)
 
 	return alignment_candidates[best_candidate]
 
@@ -834,80 +833,6 @@ def prepare_alignment_with_more_segments_in_target(df, list_source, list_target,
 	return df 
 
 
-def same_source_target_index_card_instructions(source_index, target_index, aux_source, aux_target, list_source,list_target,item_type,df):
-	"""
-	Align source and target instruction segments identified as showcard segments.
-
-	Args:
-		param1 source_index (int): source showcard segment. 
-		param2 target_index (int): target showcard segment.
-		param3 aux_source (list): auxiliary list of source segments being modified in outer loop (contains segments of same item_name and item_type).
-		param4 aux_target (list): auxiliary list of target segments being modified in outer loop (contains segments of same item_name and item_type).
-		param5 list_source (list): list of source segments (contains segments of same item_name and item_type).
-		param6 list_target (list): list of target segments (contains segments of same item_name and item_type).
-		param7 item_type (string): item_type metadata, can be REQUEST, INTRODUCTION or INSTRUCTION
-		param8 df (pandas dataframe): dataframe to store the questionnaire alignment
-
-	Returns:
-		df (pandas dataframe) with newly aligned survey item segments.
-	"""
-	if source_index == 0 and target_index == 0:
-		data = {'source_survey_itemID': list_source[0][0], 'target_survey_itemID': list_target[0][0], 
-		'Study': list_source[0][1], 'module': list_source[0][2], 'item_type': item_type, 
-		'item_name':list_source[0][4], 'item_value': None, 'source_text': list_source[0][6], 
-		'target_text':  list_target[0][6]}
-		df = df.append(data, ignore_index=True)
-
-		for i, item in enumerate(aux_source):
-			data = {'source_survey_itemID': item[0], 'target_survey_itemID': aux_target[i][0] , 'Study': item[1], 
-			'module': item[2], 'item_type': item_type, 'item_name':item[4], 'item_value': None, 
-			'source_text': item[6], 'target_text':  aux_target[i][6]}
-			df = df.append(data, ignore_index=True)
-
-		return df
-
-	elif source_index == len(list_source)-1 and target_index == len(list_target)-1:
-		for i, item in enumerate(aux_source):
-			data = {'source_survey_itemID': item[0], 'target_survey_itemID': aux_target[i][0] , 'Study': item[1], 
-			'module': item[2], 'item_type': item_type, 'item_name':item[4], 'item_value': None, 
-			'source_text': item[6], 'target_text':  aux_target[i][6]}
-			df = df.append(data, ignore_index=True)
-
-		data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0] , 
-		'Study': list_source[source_index][1], 'module': list_source[source_index][2], 'item_type': item_type, 
-		'item_name':list_source[source_index][4], 'item_value': None, 
-		'source_text': list_source[source_index][6], 'target_text':  list_target[target_index][6]}
-		df = df.append(data, ignore_index=True)
-
-	return df
-
-
-
-def different_source_target_index_card_instructions(source_index, target_index, aux_source, aux_target, list_source,list_target,item_type,df):
-	"""
-	Align source and target instruction segments identified as showcard segments. For sake of simplicity,
-	when the source index and the target index of showcard segments are different, they are moved to the 
-	first position in the isntruction list.
-
-	Args:
-		param1 source_index (int): source showcard segment. 
-		param2 target_index (int): target showcard segment.
-		param3 aux_source (list): auxiliary list of source segments being modified in outer loop (contains segments of same item_name and item_type).
-		param4 aux_target (list): auxiliary list of target segments being modified in outer loop (contains segments of same item_name and item_type).
-		param5 list_source (list): list of source segments (contains segments of same item_name and item_type).
-		param6 list_target (list): list of target segments (contains segments of same item_name and item_type).
-		param7 item_type (string): item_type metadata, can be REQUEST, INTRODUCTION or INSTRUCTION
-		param8 df (pandas dataframe): dataframe to store the questionnaire alignment
-
-	Returns:
-		df (pandas dataframe) with newly aligned survey item segments.
-	"""
-	list_source[source_index], list_source[0] = list_source[0], list_source[source_index]
-	list_target[target_index], list_target[0] = list_target[0], list_target[target_index]
-
-	df = same_source_target_index_card_instructions(0, 0, aux_source, aux_target, list_source,list_target,item_type,df)
-
-	return df
 
 
 def b_match(list_target, list_source):
@@ -944,6 +869,7 @@ def b_match(list_target, list_source):
 			target_best_index = i
 			break
 
+
 	return source_best, source_best_index, target_best, target_best_index
 
 def align_introduction_instruction_request(df, df_source, df_target, item_type):
@@ -964,6 +890,7 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 	"""
 	df_source = df_source[df_source['item_type']==item_type]
 	df_target = df_target[df_target['item_type']==item_type]
+
 
 	if df_source.empty:
 		for i,row in df_target.iterrows():
@@ -1004,34 +931,31 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 				aux_target = list_target.copy()
 				del aux_target[target_index]
 
-				if target_index == source_index:
-					df = same_source_target_index_card_instructions(source_index, target_index, aux_source, aux_target, 
-						list_source,list_target,item_type,df)
-					return df
-				else:
-					df = different_source_target_index_card_instructions(source_index, target_index, aux_source, aux_target, 
-						list_source,list_target,item_type,df)
-					return df
+				data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0] , 
+					'Study': list_source[source_index][1], 'module': list_source[source_index][2], 'item_type': item_type, 
+					'item_name':list_source[source_index][4], 'item_value': None, 'source_text': list_source[source_index][6], 
+					'target_text':  list_target[target_index][6]}
+				df = df.append(data, ignore_index=True)
+
+				del list_source[source_index]
+				del list_target[target_index]
+
+			if len(list_source) == 1:
+				data = {'source_survey_itemID': list_source[0][0], 'target_survey_itemID': list_target[0][0] , 'Study': list_source[0][1], 
+					'module': list_source[0][2], 'item_type': item_type, 'item_name':list_source[0][4], 'item_value': None, 
+					'source_text': list_source[0][6], 'target_text':  list_target[0][6]}
+				df = df.append(data, ignore_index=True)
 
 			else:
-				if len(list_source) == 1:
-					data = {'source_survey_itemID': list_source[0][0], 'target_survey_itemID': list_target[0][0] , 'Study': list_source[0][1], 
-						'module': list_source[0][2], 'item_type': item_type, 'item_name':list_source[0][4], 'item_value': None, 
-						'source_text': list_source[0][6], 'target_text':  list_target[0][6]}
+				while list_source:
+					source_best, source_best_index, target_best, target_best_index = b_match(list_target, list_source)
+					data = {'source_survey_itemID': source_best[0], 'target_survey_itemID': target_best[0] , 'Study': source_best[1], 
+						'module': source_best[2], 'item_type': item_type, 'item_name':source_best[4], 'item_value': None, 
+						'source_text': source_best[6], 'target_text':  target_best[6]}
 					df = df.append(data, ignore_index=True)
-					return df
-				else:
-					while list_source:
-						source_best, source_best_index, target_best, target_best_index = b_match(list_target, list_source)
-						data = {'source_survey_itemID': source_best[0], 'target_survey_itemID': target_best[0] , 'Study': source_best[1], 
-							'module': source_best[2], 'item_type': item_type, 'item_name':source_best[4], 'item_value': None, 
-							'source_text': source_best[6], 'target_text':  target_best[6]}
-						df = df.append(data, ignore_index=True)
 
-						del list_source[source_best_index]
-						del list_target[target_best_index]
-
-					return df
+					del list_source[source_best_index]
+					del list_target[target_best_index]
 
 	return df
 

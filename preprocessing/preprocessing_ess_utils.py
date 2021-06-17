@@ -2607,7 +2607,13 @@ def instruction_recognition_portuguese(text,country_language):
 	if matches:
 		return True
 
+
 	regex= r"^(?P<respondent>)INQUIRIDOS\s(?P<sex>)DO\sSEXO\s(?P<one>)(FEMININO|masculino)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"(?P<part>)parte\s(?P<lower>)inferior\sdo\s(?P<card>)cartão"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -2649,7 +2655,7 @@ def instruction_recognition_portuguese(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<forthis>)Para\sisso\s(?P<youwilluse>)utilizará\s(?P<thefollowing>)o\sseguinte\s(?P<card>)cartão"
+	regex= r"^(?P<forthis>)Para\sisso\s(?P<youwilluse>)(utilizará|utilize)\s(?P<please>)(por favor)?\s?(?P<thefollowing>)o\sseguinte\s(?P<card>)cartão"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
