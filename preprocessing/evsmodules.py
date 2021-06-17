@@ -135,7 +135,59 @@ class EVSModules1999():
 
 
 	
+class EVSModules1990():
+	"""
+	Class encapsulating variables that compose the following modules in EVS 1990:
+	There is no indication of the module names in the files. 
+	"""
+	perceptions_of_life = ['Q1a','Q1b','Q1c','Q1d','Q1e','Q1f','Q5','Q4e','Q4f','Q5','Q6a','Q6b','Q6c','Q6d','Q6e','Q6f','Q6g','Q6h','Q6i','Q6j',
+	'Q6k','Q6l','Q6m','Q6n','Q6o','Q6p','Q7a','Q7a','Q7a','Q7b','Q7c','Q7d','Q7e','Q7f','Q7g','Q7h','Q7i','Q7j','Q7k','Q7l','Q7m',
+	'Q7n','Q8a','Q8a','Q8a','Q8a','Q8b','Q8c','Q8d','Q8e','Q8f','Q8g','Q8h','Q8i','Q8j','Q8k','Q8l','Q8m','Q8n',
+	'Q9','Q10a','Q10b','Q10c','Q10d','Q10e','Q10f','Q10g','Q10h','Q10i','Q10j','Q11','Q12','Q12','Q13','Q14a','Q14b',
+	'Q25','Q26','Q26','Q27a','Q27a','Q27a','Q27b','Q27c','Q27d','Q27e','Q27f','Q27g','Q28', 'Q63', 'Q71a','Q71b','Q71c','Q71d','Q71e','Q71f','Q71g','Q72',
+	'Q78a', 'Q78b', 'Q78c', 'Q79', 'Q81a', 'Q81b']
+	perceptions_of_life = [x.lower() for x in perceptions_of_life]
 
+
+
+	politics_and_society = ['Q2', 'Q3', 'Q6a','Q6b','Q6c','Q6d','Q6e','Q6f','Q6g','Q6h','Q6i','Q6j','Q6j','Q6j','Q6k','Q6l',
+	'Q6m','Q6n','Q6o','Q6p', 'Q8a','Q8b','Q8c','Q8d','Q8e','Q8f','Q8g','Q8h','Q8i','Q8j','Q8k','Q8l','Q8m','Q8n',
+	'Q62a', 'Q62b','Q62c','Q62d','Q62e', 'Q64','Q65','Q66a','Q66b','Q66c','Q66d','Q66e','Q66f','Q66g','Q67a','Q67b','Q68a','Q68b','Q69a','Q69b','Q70',
+	'Q73a','Q73b','Q73c','Q73d','Q73e','Q73f','Q73g','Q73h','Q73i','Q73j','Q73k','Q73l','Q73m','Q74a','Q74a','Q74a','Q74a','Q74b','Q74c','Q74d','Q74e','Q74f',
+	'Q83a', 'Q83b', 'Q83c', 'Q80a', 'Q80b', 'Q80c', 'Q80d', 'Q80e']
+	politics_and_society = [x.lower() for x in politics_and_society]
+
+	environment = ['Q4a', 'Q4b', 'Q4c', 'Q4d', 'Q4e', 'Q4f']
+	environment = [x.lower() for x in environment]
+
+
+	family = ['Q42','Q43','Q44','Q45','Q46','Q46','Q47','Q48a','Q48b','Q48c','Q48d','Q48e','Q48f',
+	'Q48g','Q48h','Q48i','Q48j','Q48k','Q48l','Q48m','Q49','Q50','Q51','Q52','Q53','Q54','Q55',
+	'Q56a','Q56b','Q56c','Q56d','Q56e','Q56f','Q57','Q58','Q59']
+	family = [x.lower() for x in family]
+
+	work = ['Q15','Q15','Q16','Q16_N','Q17','Q18','Q19','Q19','Q20','Q20','Q20','Q20','Q21',
+	'Q21','Q22','Q22','Q22','Q22','Q23a','Q23a','Q23b','Q23c','Q23d','Q24', 'ES1']
+	work = [x.lower() for x in work]
+
+	religion_and_morale = ['Q7a','Q7b','Q7c','Q7d','Q7e','Q7f','Q7g','Q7h','Q7i','Q7j','Q7k',
+	'Q7l','Q7m','Q7n', 'Q29a','Q29b','Q29c','Q30','Q31','Q31','Q32a','Q32b','Q32c','Q33','Q34a',
+	'Q34b','Q34c','Q34d','Q35a','Q35b','Q35c','Q35d','Q35e','Q35f','Q35g','Q35h','Q35i','Q35j',
+	'Q36a','Q36a','Q36b','Q36c','Q36d','Q36e','Q36f','Q36g','Q36h','Q36i','Q37','Q38','Q39','Q40','Q41','Q41',
+	'Q60a', 'Q60b', 'Q60c', 'Q60d', 'Q61', 'Q75a','Q75b','Q75c','Q75d','Q75e','Q75f','Q75g','Q75h','Q73i','Q75j',
+	'Q75k', 'Q75i','Q75l','Q75m','Q75n','Q75o','Q75p','Q75q','Q75r','Q75s','Q75t','Q75u','Q75v','Q75w','Q75x']
+	religion_and_morale = [x.lower() for x in religion_and_morale]
+
+
+	national_identity = ['Q77', 'Q82']
+	national_identity = [x.lower() for x in national_identity]
+
+	socio_demographics = ['Q76a', 'Q76b',
+	'Q84', 'Q85','Q86','Q87','Q87','Q88','Q89a','Q89b','Q90',
+	'Q91a','Q91b','Q92','Q93','Q94','Q95','Q96','Q96','Q97','Q98','Q99',
+	'Q100','Q101','Q102','Q103','Q103','Q104','Q104','Q105','Q106','Q106','Q106','Q107','Q108', 'SPA02',
+	'FR2', 'FR1', 'FR3']
+	socio_demographics = [x.lower() for x in socio_demographics]
 
 
 

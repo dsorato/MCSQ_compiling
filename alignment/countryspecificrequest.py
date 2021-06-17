@@ -70,9 +70,17 @@ class ESSCountrySpecificR09():
 	item_names = [x.lower() for x in item_names]
 
 
+class EVSCountrySpecificR02():
+	"""
+	Item names of country specific questions in EVS wave 2.
+	"""
+	item_names = ['Q29b', 'Q29c','Q83a','Q83b', 'Q83c', 'Q103', 'Q104', 'Q91a']
+	item_names = [x.lower() for x in item_names]
+
+
 class EVSCountrySpecificR03():
 	"""
-	Item names of country specific questions in EVS round 3.
+	Item names of country specific questions in EVS wave 3.
 	"""
 	item_names = ['Q21', 'Q72','Q73','Q93', 'Q114']
 	item_names = [x.lower() for x in item_names]
@@ -80,14 +88,14 @@ class EVSCountrySpecificR03():
 
 class EVSCountrySpecificR04():
 	"""
-	Item names of country specific questions in EVS round 4.
+	Item names of country specific questions in EVS wave 4.
 	"""
 	item_names = ['Q23a', 'Q24a', 'Q75a', 'Q75b', 'Q110', 'Q116', 'Q127', 'Q134', 'Q140']
 	item_names = [x.lower() for x in item_names]
 
 class EVSCountrySpecificR05():
 	"""
-	Item names of country specific questions in EVS round 5.
+	Item names of country specific questions in EVS wave 5.
 	"""
 	item_names = ['Q13a', 'Q106', 'Q98', 'Q49']
 	item_names = [x.lower() for x in item_names]

@@ -24,7 +24,7 @@ def identify_showc_segment(list_source, list_target, item_type):
 	Returns:
 		str indicating if instructions that follow the show card segments were found.
 	"""
-	target_regex =  r"(?P<card>)(tarjeta|targeta|kartu|karta|karty|kort|kortet|carte|liste|kort|kortet|carte|karte|cartão|КАРТОЧКУ|КАРТОЧКА|KAРTOЧКА|карточкой|карточке|карточки|карте|карты)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
+	target_regex =  r"(?P<card>)(card|showcard|tarjeta|targeta|kartu|karta|karty|kort|kortet|carte|liste|kort|kortet|carte|karte|cartão|КАРТОЧКУ|КАРТОЧКА|KAРTOЧКА|карточкой|карточке|карточки|карте|карты)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
 	source_regex =  r"(?P<card>)(card|showcard)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
 	if item_type == 'INSTRUCTION':
 		possible_card_instruction_source = 'dummy value'
@@ -80,11 +80,7 @@ def use_bilingual_dict(source_text, target_text):
 					for item in a:
 						if item in target_text:
 							count+=1
-					# for i in target_text:
-					# 	count+=1
-					# 	for item in a:
-					# 		if item in target_text:
-					# 			count+=1
+					
 				except KeyError:
 					pass 
 					
@@ -848,13 +844,15 @@ def b_match(list_target, list_source):
 				else:
 					dict_ratios[abs(len(t)-len(s))] = [target[0],source[0]] 
 			else:
+				print(t, s)
+				print(abs(len(t)-len(s))-0.05*use_bilingual_dict(s, t))
 				if abs(len(t)-len(s))-0.05*use_bilingual_dict(s, t) in dict_ratios.keys():
 					dict_ratios[abs(len(t)-len(s))-0.05*use_bilingual_dict(s, t)+0.1] = [target[0],source[0]] 
 				else:
 					dict_ratios[abs(len(t)-len(s))-0.05*use_bilingual_dict(s, t)] = [target[0],source[0]] 
 
 	best_candidate = min(dict_ratios)
-
+	print(best_candidate)
 	values = dict_ratios[best_candidate]
 
 	for i, item in enumerate(list_source):
@@ -1079,8 +1077,9 @@ def main(folder_path, filename_source, filename_target):
 	global target_language_country
 	target_language_country = get_target_language_country_metadata(filename_target)
 
-	global mcsq_bi
-	mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country)
+	if 'ENG' not in target_language_country:
+		global mcsq_bi
+		mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country)
 	global st
 	st = stopwords.words('english')
 

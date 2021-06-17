@@ -2,6 +2,7 @@ import re
 import string
 from ess_special_answer_categories import * 
 from essmodules import * 
+from evsmodules import * 
 
 
 
@@ -125,59 +126,80 @@ def retrieve_item_module(item_name, study):
 	Returns: 
 		module of survey_item (string).
 	"""
-	if re.compile(r'A').match(item_name):
-		return 'A - Media; social trust'
-	elif re.compile(r'B').match(item_name):
-		return 'B - Politics, including: political interest, efficacy, trust, electoral and other forms of participation, party allegiance, socio-political evaluations/orientations, multi-level governance'
-	elif re.compile(r'C').match(item_name):
-		return 'C - Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity'
-	elif re.compile(r'F').match(item_name):
-		return 'F - Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status'
+	if 'ESS' in study:
+		if re.compile(r'A').match(item_name):
+			return 'A - Media; social trust'
+		elif re.compile(r'B').match(item_name):
+			return 'B - Politics, including: political interest, efficacy, trust, electoral and other forms of participation, party allegiance, socio-political evaluations/orientations, multi-level governance'
+		elif re.compile(r'C').match(item_name):
+			return 'C - Subjective well-being and social exclusion; religion; perceived discrimination; national and ethnic identity'
+		elif re.compile(r'F').match(item_name):
+			return 'F - Socio-demographic profile, including: Household composition, sex, age, type of area, Education & occupation details of respondent, partner, parents, union membership, household income, marital status'
+		else:
+			if 'R01' in study:
+				essmodules = ESSSModulesR01()
+				v = retrieve_supplementary_module(essmodules,item_name) 
+				return v
+
+			elif 'R02' in study:
+				essmodules = ESSSModulesR02()
+				v = retrieve_supplementary_module(essmodules,item_name) 
+				return v
+
+			elif 'R03' in study:
+				essmodules = ESSSModulesR03()
+				v = retrieve_supplementary_module(essmodules,item_name) 
+				return v
+
+			elif 'R04' in study:
+				essmodules = ESSSModulesR04()
+				v = retrieve_supplementary_module(essmodules,item_name) 
+				return v
+
+			elif 'R05' in study:
+				essmodules = ESSSModulesR05()
+				v = retrieve_supplementary_module(essmodules,item_name) 
+				return v
+
+			elif 'R06' in study:
+				essmodules = ESSSModulesR06()
+				v = retrieve_supplementary_module(essmodules,item_name) 
+				return v
+
+			elif 'R07' in study:
+				essmodules = ESSSModulesR07()
+				v = retrieve_supplementary_module(essmodules,item_name) 
+				return v
+
+			elif 'R08' in study:
+				essmodules = ESSSModulesR08()
+				v = retrieve_supplementary_module(essmodules,item_name) 
+				return v
+
+			elif 'R09' in study:
+				essmodules = ESSSModulesR09()
+				v = retrieve_supplementary_module(essmodules,item_name) 
+				return v
 	else:
-		if 'R01' in study:
-			essmodules = ESSSModulesR01()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
-
-		elif 'R02' in study:
-			essmodules = ESSSModulesR02()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
-
-		elif 'R03' in study:
-			essmodules = ESSSModulesR03()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
-
-		elif 'R04' in study:
-			essmodules = ESSSModulesR04()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
-
-		elif 'R05' in study:
-			essmodules = ESSSModulesR05()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
-
-		elif 'R06' in study:
-			essmodules = ESSSModulesR06()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
-
-		elif 'R07' in study:
-			essmodules = ESSSModulesR07()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
-
-		elif 'R08' in study:
-			essmodules = ESSSModulesR08()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
-
-		elif 'R09' in study:
-			essmodules = ESSSModulesR09()
-			v = retrieve_supplementary_module(essmodules,item_name) 
-			return v
+		evsmodules = EVSModules1990()
+		if item_name.lower() in evsmodules.perceptions_of_life:
+				return 'Perceptions of Life'
+		elif item_name.lower() in evsmodules.politics_and_society:
+				return 'Politics and Society'
+		elif item_name.lower() in evsmodules.environment:
+				return 'Environment'
+		elif item_name.lower() in evsmodules.family:
+				return 'Family'
+		elif item_name.lower() in evsmodules.work:
+				return 'Work'
+		elif item_name.lower() in evsmodules.religion_and_morale:
+				return 'Religion and Morale'
+		elif item_name.lower() in evsmodules.national_identity:
+				return 'National Identity'
+		elif item_name.lower() in evsmodules.socio_demographics:
+				return 'Socio Demographics and Interview Characteristics'
+		else:
+			return None
 
 
 def clean_text(text):
@@ -1811,7 +1833,7 @@ def instruction_recognition_french(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<ask>)(demandez|poser)\s(?P<all>)(a|á)\stous"
+	regex= r"^(?P<ask>)(demandez|poser)?\s?(?P<all>)(a|á)\stous"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -1883,15 +1905,21 @@ def instruction_recognition_french(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<codeormark>)(code(r|z)|note(r|z))?\s?(?P<one>)UNE\s(?P<only>)SEULE\s(?P<answer>)(REPONSE|RÉPONSE)\s(?P<possible>)(possible)?"
+	regex= r"(?P<codeormark>)(code(r|z)|note(r|z))?\s?(?P<one>)UNE\s(?P<only>)SEULE\s(?P<answer>)(REPONSE|RÉPONSE)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<codeormark>)(code(r|z)|note(r|z))?\s?(?P<only>)SEULEMENT\s(?P<one>)(UNE)?\s?(?P<answer>)(REPONSE|RÉPONSE)"
+	regex= r"(?P<codeormark>)(code(r|z)|note(r|z))?\s?(?P<only>)SEULEMENT\s(?P<one>)(UNE)?\s?(?P<answer>)(REPONSE|RÉPONSE)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
+	regex= r"(?P<one>)UNE\s(?P<answer>)(REPONSE|RÉPONSE)(?P<forline>)par\sligne"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 
 	regex= r"^(?P<choose>)choix\s(?P<multiple>)multiple\s?(?P<possible>)(possible)?"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -2134,16 +2162,20 @@ def instruction_recognition_english(text,country_language):
 	if matches:
 		return True
 
-	regex= r"(?P<zeromeans>)0\smeans\s(?P<anything>).*(?P<and>)and\s(?P<tenmeans>)10\smeans"
+	regex= r"(?P<nmeans>)\d\smeans\s(?P<anything>).*(?P<and>)(and)?\s?(?P<xmeans>)\d+\smeans"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
 		return True
 
-	regex= r"(?P<zeromeans>)0\sis\s(?P<anything>).*(?P<and>)and\s(?P<tenmeans>)10\sis"
+	regex= r"(?P<nmeans>)\d\sis\s(?P<anything>).*(?P<and>)and\s(?P<xmeans>)\d+\sis"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
 		return True
 
+	regex= r"(?P<nmeans>)WHERE\s\d\smeans\s(?P<anything>).*(?P<and>)and\s(?P<xmeans>)\d+"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+		return True
 
 	regex= r"(?P<give>)give\s(?P<ascoreof>)a\sscore\sof\s(?P<number>)\d+\b"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -2172,7 +2204,7 @@ def instruction_recognition_english(text,country_language):
 
 	regex= r"^(?P<show>)(show|still)\s(?P<card>)card\s?(?P<again>)(again)?"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches:
+	if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
 		return True
 
 	regex= r"^(?P<ask>)ask\s(?P<all>)all"
@@ -2185,6 +2217,11 @@ def instruction_recognition_english(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<code>)code\s(?P<one>)(one|under|five)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 	regex= r"^(?P<prompt>)prompt"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -2193,6 +2230,16 @@ def instruction_recognition_english(text,country_language):
 	regex= r"^(?P<insist>)insist"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
+		return True
+
+	regex= r"^(?P<please>)Please\s(?P<use>)use\s(?P<the>)the\s(?P<responses>)responses\s(?P<onthis>)on\sthis\s(?P<card>)card"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"(?P<look>)look\s(?P<atthis>)at\sthis\s(?P<card>)card"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
 		return True
 
 
@@ -2210,6 +2257,12 @@ def instruction_recognition_english(text,country_language):
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
+	regex= r"^(?P<code>)code\s(?P<ab>)AN\s(?P<answer>)(answer)?\s?(?P<foreach>)FOR\sEACH"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 
 	regex= r"^(?P<codeorselect>)(code|select)\s(?P<all>)all\s(?P<that>)that\s(?P<apply>)(apply|applies)"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -2347,6 +2400,11 @@ def instruction_recognition_czech(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<codeall>)KODUJTE\sVŠECHNY"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
 	regex= r"^(?P<mainwork>)HLAVNÍ PRÁCE"
 	matches = re.search(regex, text)
 	if matches:
@@ -2354,7 +2412,7 @@ def instruction_recognition_czech(text,country_language):
 
 	regex= r"^(?P<record>)ZAZNAMENEJTE"
 	matches = re.search(regex, text)
-	if matches:
+	if matches and text != 'ZAZNAMENEJTE POHLAVÍ':
 		return True
 
 	regex= r"^(?P<askrespondent>)POŽÁDEJTE RESPONDENTA"
@@ -2422,6 +2480,11 @@ def instruction_recognition_czech(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<respondent>)RESPONDENKY\s(?P<malefemale>)(ŽENY|MUŽI)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 	regex= r"(?P<ineachline>)(V|NA)?\s?(KAŽDÉM ŘÁDKU)?\s?(?P<possible>)(MOŽNÁ|MOŢNÁ)\s(?P<only>)POUZE\s(?P<one>)JEDNA\s(?P<answer>)ODPOVĚĎ"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -2464,7 +2527,7 @@ def instruction_recognition_czech(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<choose>)VYBERTE\s(?P<only>)POUZE\s(?P<one>)JEDNU\s(?P<answer>)ODPOVĚĎ"
+	regex= r"^(?P<choose>)VYBERTE\s(?P<please>)(prosím)?\s?(?P<only>)(POUZE|jen)\s(?P<one>)JEDNU\s(?P<answer>)(ODPOVĚĎ)?"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -3077,6 +3140,11 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
+ 
+		regex= r"^(?P<mark>)(CIRCUNDAR|marcar|ANOTAR)\s(?P<all>)(SOLO|TODOS|UNA|BAJO|cinco)"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
 
 		regex= r"^(?P<show>)preguntar:"
 		matches = re.search(regex, text_aux, re.IGNORECASE)
@@ -3099,7 +3167,11 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-
+		regex= r"^(?P<choose>)ELEGIR\s(?P<only>)SOLO\s(?P<one>)UNA"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+  
 		regex= r"^(?P<answer>)RESPUESTA\s(?P<spontaneous>)(ESPONTÁNEA|ESPONTANEA)"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
@@ -3141,6 +3213,11 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
+		regex= r"^(?P<use>)(utilice|use)\s(?P<again>)(otra vez)?\s?(?P<this>)(esta)?\s?(?P<card>)tarjeta(?P<please>)(por favor)?\s?(?P<toindicate>)para\sindicarlo"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux and 'para indicar' not in text_aux and 'afirmaciones' not in text_aux:
+			return True
+
 		regex= r"^(?P<please>)(por favor)?\s?(?P<use>)(utilice|use)\s(?P<again>)(otra vez)?\s?(?P<this>)(esta)?\s?(?P<thesame>)(la misma)?\s?(?P<card>)tarjeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux and 'para indicar' not in text_aux and 'afirmaciones' not in text_aux:
@@ -3160,7 +3237,17 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
-		
+
+		regex= r"(?P<look>)examinase(?P<this>)esta\s(?P<card>)tarjeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux and 'para indicar' not in text_aux and 'afirmaciones' not in text_aux:
+			return True
+
+		regex= r"(?P<answers>)respuestas\s(?P<thatshow>)que\saparecen\s(?P<inthis>)en\sesta\s(?P<card>)tarjeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux and 'para indicar' not in text_aux and 'afirmaciones' not in text_aux:
+			return True
+
 		regex= r"^(?P<please>)(por favor)?\s?(?P<choose>)(escoja|elija)\s(?P<youranswer>)(su|una)\srespuesta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux and 'para indicar' not in text_aux and 'afirmaciones' not in text_aux:
@@ -3182,12 +3269,12 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux and 'para indicar' not in text_aux and 'afirmaciones' not in text_aux:
 			return True
 
-		regex= r"(?P<thenmeans>)\d\s(significa\sque|quiere\sdecir)\s(?P<anything>).*\s(?P<andthenmeans>)y\s(el)?\s?\d+\s(significa\sque|quiere\sdecir)?"
+		regex= r"(?P<thenmeans>)\d\s(significa\sque|quiere\sdecir)\s(?P<anything>).*\s(?P<andthenmeans>)(y)?\s?(el)?\s?\d+\s(significa\sque|quiere\sdecir|és|es)?"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux and 'para indicar' not in text_aux and 'afirmaciones' not in text_aux:
 			return True
 
-		regex= r"(?P<thenmeans>)\d\ssignifica\s(?P<anything>).*\s(?P<andthenmeans>)y\s(el)?\s?\d+\ssignifica"
+		regex= r"(?P<thenmeans>)\d\ssignifica\s(?P<anything>).*\s(?P<andthenmeans>)y\s(el)?\s?\d+\s(significa)?"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux and 'para indicar' not in text_aux and 'afirmaciones' not in text_aux:
 			return True
@@ -3214,7 +3301,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 			return True   
 
 
-		regex= r"^(?P<note>)ANOT(AR|E)\s(?P<onlyone>)(UNA\sSOLA|SÓLO\sUNA|SOLO\sUNA)\s(?P<answer>)RESPUESTA"
+		regex= r"^(?P<note>)(ANOT(AR|E))?\s?(?P<onlyone>)(UNA\sSOLA|SÓLO\sUNA|SOLO\sUNA)\s(?P<answer>)RESPUESTA"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True
@@ -3254,7 +3341,7 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux and 'para indicar' not in text_aux and 'afirmaciones' not in text_aux:
 			return True
 
-		regex= r"^(?P<markorcode>)(Marcar|codificar)\s(?P<all>)tod(a|o)s\s(l(a|o)s)?\s?(RESPUESTAS)?\s?(?P<that>)que\s(?P<apply>)corresponda(n)?"
+		regex= r"^(?P<markorcode>)(Marcar|codificar)\s(?P<all>)tod(a|o)s\s(l(a|o)s)?\s?(RESPUESTAS)?\s?(?P<that>)que\s(se)?\s?(?P<apply>)(corresponda(n)?|MENCIONE(n)?)"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
 			return True

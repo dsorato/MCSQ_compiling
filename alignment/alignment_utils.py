@@ -51,6 +51,8 @@ def instantiate_country_specific_request_object(study):
 		country_specific_requests = ESSCountrySpecificR08()
 	elif 'ESS_R09' in study:
 		country_specific_requests = ESSCountrySpecificR09()
+	elif 'EVS_R02' in study:
+		country_specific_requests = EVSCountrySpecificR02()
 	elif 'EVS_R03' in study:
 		country_specific_requests = EVSCountrySpecificR03()
 	elif 'EVS_R04' in study:
