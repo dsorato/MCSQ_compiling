@@ -186,7 +186,7 @@ class EVSModules1990():
 	'Q84', 'Q85','Q86','Q87','Q87','Q88','Q89a','Q89b','Q90',
 	'Q91a','Q91b','Q92','Q93','Q94','Q95','Q96','Q96','Q97','Q98','Q99',
 	'Q100','Q101','Q102','Q103','Q103','Q104','Q104','Q105','Q106','Q106','Q106','Q107','Q108', 'SPA02',
-	'FR2', 'FR1', 'FR3']
+	'FR2', 'FR1', 'FR3', 'PT1','PT2', 'PT3', 'PT4', 'PT5', 'PT6']
 	socio_demographics = [x.lower() for x in socio_demographics]
 
 

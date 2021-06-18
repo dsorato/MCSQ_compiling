@@ -24,7 +24,7 @@ def identify_showc_segment(list_source, list_target, item_type):
 	Returns:
 		str indicating if instructions that follow the show card segments were found.
 	"""
-	target_regex =  r"(?P<card>)(card|showcard|tarjeta|targeta|kartu|karta|karty|kort|kortet|carte|liste|kort|kortet|carte|karte|cartão|КАРТОЧКУ|КАРТОЧКА|KAРTOЧКА|карточкой|карточке|карточки|карте|карты)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
+	target_regex =  r"(?P<card>)(card|showcard|tarjeta|targeta|kartu|karta|karty|kort|kortet|carte|liste|kort|kortet|carte|karte|cartão|lista|КАРТОЧКУ|КАРТОЧКА|KAРTOЧКА|карточкой|карточке|карточки|карте|карты)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
 	source_regex =  r"(?P<card>)(card|showcard)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
 	if item_type == 'INSTRUCTION':
 		possible_card_instruction_source = 'dummy value'

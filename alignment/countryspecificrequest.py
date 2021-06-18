@@ -74,7 +74,7 @@ class EVSCountrySpecificR02():
 	"""
 	Item names of country specific questions in EVS wave 2.
 	"""
-	item_names = ['Q29b', 'Q29c','Q83a','Q83b', 'Q83c', 'Q103', 'Q104', 'Q91a']
+	item_names = ['Q29b', 'Q29c','Q83a','Q83b', 'Q83c', 'Q103', 'Q104', 'Q91a', 'Q102']
 	item_names = [x.lower() for x in item_names]
 
 
