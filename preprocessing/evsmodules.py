@@ -142,10 +142,10 @@ class EVSModules1990():
 	"""
 	perceptions_of_life = ['Q1a','Q1b','Q1c','Q1d','Q1e','Q1f','Q5','Q4e','Q4f','Q5','Q6a','Q6b','Q6c','Q6d','Q6e','Q6f','Q6g','Q6h','Q6i','Q6j',
 	'Q6k','Q6l','Q6m','Q6n','Q6o','Q6p','Q7a','Q7a','Q7a','Q7b','Q7c','Q7d','Q7e','Q7f','Q7g','Q7h','Q7i','Q7j','Q7k','Q7l','Q7m',
-	'Q7n','Q8a','Q8a','Q8a','Q8a','Q8b','Q8c','Q8d','Q8e','Q8f','Q8g','Q8h','Q8i','Q8j','Q8k','Q8l','Q8m','Q8n',
+	'Q7n','Q8a','Q8a','Q8a','Q8a','Q8b','Q8c','Q8d','Q8e','Q8f','Q8g','Q8h','Q8i','Q8j','Q8k','Q8l','Q8m','Q8n', 'Q8o', 'Q8p',
 	'Q9','Q10a','Q10b','Q10c','Q10d','Q10e','Q10f','Q10g','Q10h','Q10i','Q10j','Q11','Q12','Q12','Q13','Q14a','Q14b',
 	'Q25','Q26','Q26','Q27a','Q27a','Q27a','Q27b','Q27c','Q27d','Q27e','Q27f','Q27g','Q28', 'Q63', 'Q71a','Q71b','Q71c','Q71d','Q71e','Q71f','Q71g','Q72',
-	'Q78a', 'Q78b', 'Q78c', 'Q79', 'Q81a', 'Q81b']
+	'Q78a', 'Q78b', 'Q78c', 'Q79', 'Q81a', 'Q81b', 'Q81c']
 	perceptions_of_life = [x.lower() for x in perceptions_of_life]
 
 
@@ -179,16 +179,15 @@ class EVSModules1990():
 	religion_and_morale = [x.lower() for x in religion_and_morale]
 
 
-	national_identity = ['Q77', 'Q82']
+	national_identity = ['Q77', 'Q82', 'IE1']
 	national_identity = [x.lower() for x in national_identity]
 
 	socio_demographics = ['Q76a', 'Q76b',
 	'Q84', 'Q85','Q86','Q87','Q87','Q88','Q89a','Q89b','Q90',
-	'Q91a','Q91b','Q92','Q93','Q94','Q95','Q96','Q96','Q97','Q98','Q99',
+	'Q91a','Q91b','Q91c', 'Q92','Q93','Q94','Q95', 'Q95b', 'Q95c', 'Q96','Q97','Q98','Q99',
 	'Q100','Q101','Q102','Q103','Q103','Q104','Q104','Q105','Q106','Q106','Q106','Q107','Q108', 'SPA02',
-	'FR2', 'FR1', 'FR3', 'PT1','PT2', 'PT3', 'PT4', 'PT5', 'PT6']
+	'FR2', 'FR1', 'FR3', 'PT1','PT2', 'PT3', 'PT4', 'PT5', 'PT6', 'IE7', 'IE2a', 'IE2b', 'IE2c', 'IE2d', 
+	'IE2e', 'IE2f', 'IE2g', 'IE2h', 'IE2i', 'IE3a', 'IE3b', 'IE3c', 'IE3d', 'IE4', 'IE5', 'IE6', 'IE8',
+	'EI9', 'EI10', 'EI11', 'EI12', 'EI13', 'EI14']
 	socio_demographics = [x.lower() for x in socio_demographics]
-
-
-
 

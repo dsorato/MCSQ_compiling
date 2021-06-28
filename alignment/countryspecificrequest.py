@@ -66,7 +66,7 @@ class ESSCountrySpecificR09():
 	"""
 	Item names of country specific questions in ESS round 9.
 	"""
-	item_names = ['B13a', 'B14', 'B24', 'C12', 'C14', 'F15', 'F44', 'F52','F56', 'F61', 'G8a', 'G8b', 'G8c']
+	item_names = ['B13a', 'B14', 'B24', 'C12', 'C14', 'F15', 'F34a', 'F44', 'F52','F56', 'F61', 'G8a', 'G8b', 'G8c']
 	item_names = [x.lower() for x in item_names]
 
 
@@ -74,7 +74,7 @@ class EVSCountrySpecificR02():
 	"""
 	Item names of country specific questions in EVS wave 2.
 	"""
-	item_names = ['Q29b', 'Q29c','Q83a','Q83b', 'Q83c', 'Q103', 'Q104', 'Q91a', 'Q102']
+	item_names = ['Q29b', 'Q29c','Q83a','Q83b', 'Q83c', 'Q103', 'Q104', 'Q91a', 'Q95', 'Q102']
 	item_names = [x.lower() for x in item_names]
 
 

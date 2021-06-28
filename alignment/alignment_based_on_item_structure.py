@@ -1079,7 +1079,11 @@ def main(folder_path, filename_source, filename_target):
 
 	if 'ENG' not in target_language_country:
 		global mcsq_bi
-		mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country)
+		if 'RUS' in target_language_country:
+			mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country.split('_')[0])
+		else:
+			mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country)
+
 	global st
 	st = stopwords.words('english')
 
