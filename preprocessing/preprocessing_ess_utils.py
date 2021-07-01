@@ -2024,12 +2024,12 @@ def instruction_recognition_french(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<show>)(montrer|montrez)\s(?P<again>)(encore|toujours|A NOUVEAU)?\s?(?P<the>)(la)?\s?(?P<card>)(carte|liste)"
+	regex= r"^(?P<show>)(montrer|montrez|LAISSER)\s(?P<again>)(encore|toujours|A NOUVEAU)?\s?(?P<the>)(la)?\s?(?P<card>)(carte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-	regex= r"^(?P<show>)(montrer|montrez)?\s?(?P<again>)(encore|toujours|A NOUVEAU)?\s?(?P<the>)(la)?\s?(?P<card>)(carte|liste)"
+	regex= r"^(?P<show>)(montrer|montrez|LAISSER)?\s?(?P<again>)(encore|toujours|A NOUVEAU)?\s?(?P<the>)(la)?\s?(?P<card>)(carte|liste)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True

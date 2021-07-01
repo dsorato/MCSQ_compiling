@@ -10,84 +10,6 @@ from string import punctuation
 from word2word import Word2word
 from nltk.corpus import stopwords
 
-
-def identify_showc_segment(list_source, list_target, item_type):
-	"""
-	Searches in list_source, list_target if there are intructions that seem to be show card segments that should be aligned together.
-	This method was implemented as an additional strategy to align correctly instruction segments.
-
-	Args:
-		param1 list_source (list): list of source segments (contains segments of same item_name and item_type)
-		param2 list_target (list): list of target segments (contains segments of same item_name and item_type)
-		param3 item_type (string): item_type metadata being analyzed. In this method we want to consider only instruction segments.
-
-	Returns:
-		str indicating if instructions that follow the show card segments were found.
-	"""
-	target_regex =  r"(?P<card>)(card|showcard|tarjeta|targeta|kartu|karta|karty|kort|kortet|carte|liste|kort|kortet|carte|karte|cartão|lista|КАРТОЧКУ|КАРТОЧКА|KAРTOЧКА|карточкой|карточке|карточки|карте|карты)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
-	source_regex =  r"(?P<card>)(card|showcard)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
-	if item_type == 'INSTRUCTION':
-		possible_card_instruction_source = 'dummy value'
-		possible_card_instruction_target = 'dummy value'
-
-		for i, item in enumerate(list_source):
-			if re.search(source_regex, item[-1], re.IGNORECASE):
-				possible_card_instruction_source = i
-				break
-
-		for i, item in enumerate(list_target):
-			if re.search(target_regex, item[-1], re.IGNORECASE):
-				possible_card_instruction_target = i
-				break
-
-		if possible_card_instruction_target !='dummy value' and possible_card_instruction_source!='dummy value':
-			return (possible_card_instruction_target,possible_card_instruction_source)
-		else:
-			return 'No showc segment identified'
-	else:
-		return 'No showc segment identified'
-
-def preprocessing_alignment_candidates(text):
-	"""
-	Preprocesses the text segment by tokenizing it, removing punctuation.
-	Args:
-		param1 text (string): the text segment to be preprocessed.
-	Returns:
-		The preprocessed tokens (a list of strings). 
-	"""
-	text =  re.sub(r"[^\w\s]+",'',text.lower()) 
-
-	tokens = text.split(' ')
-	preprocessed_tokens = []
-
-	for token in tokens:
-		if token != '':
-			preprocessed_tokens.append(token)
-
-
-	return preprocessed_tokens
-
-
-
-def use_bilingual_dict(source_text, target_text):
-	count = 0
-	
-	if source_text != '' and target_text != '':
-		for word in source_text:
-			if word.isdigit() == False and word not in st:
-				try:
-					a = mcsq_bi(word)
-					for item in a:
-						if item in target_text:
-							count+=1
-					
-				except KeyError:
-					pass 
-					
-
-	return count
-
-
 def find_best_match(list_source, list_target, item_type):
 	"""
 	Finds the best match for source and target segments (same item_type) based on the lenght of the segments.
@@ -141,6 +63,97 @@ def find_best_match(list_source, list_target, item_type):
 	best_candidate = min(alignment_candidates)
 
 	return alignment_candidates[best_candidate]
+
+def preprocessing_alignment_candidates(text):
+	"""
+	Preprocesses the text segment by tokenizing it, removing punctuation.
+	Args:
+		param1 text (string): the text segment to be preprocessed.
+	Returns:
+		The preprocessed tokens (a list of strings). 
+	"""
+	text =  re.sub(r"[^\w\s]+",'',text.lower()) 
+
+	tokens = text.split(' ')
+	preprocessed_tokens = []
+
+	for token in tokens:
+		if token != '':
+			preprocessed_tokens.append(token)
+
+
+	return preprocessed_tokens
+
+def identify_showc_segment(list_source, list_target, item_type):
+	"""
+	Searches in list_source, list_target if there are intructions that seem to be show card segments that should be aligned together.
+	This method was implemented as an additional strategy to align correctly instruction segments.
+
+	Args:
+		param1 list_source (list): list of source segments (contains segments of same item_name and item_type)
+		param2 list_target (list): list of target segments (contains segments of same item_name and item_type)
+		param3 item_type (string): item_type metadata being analyzed. In this method we want to consider only instruction segments.
+
+	Returns:
+		str indicating if instructions that follow the show card segments were found.
+	"""
+	target_regex =  r"(?P<card>)(card|showcard|tarjeta|targeta|kartu|karta|karty|kort|kortet|carte|liste|kort|kortet|carte|karte|cartão|lista|КАРТОЧКУ|КАРТОЧКА|KAРTOЧКА|карточкой|карточке|карточки|карте|карты)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
+	source_regex =  r"(?P<card>)(card|showcard)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
+	if item_type == 'INSTRUCTION':
+
+		source_candidates = []
+		target_candidates = []
+
+		for item in list_source:
+			if re.findall(source_regex, item[-1], re.IGNORECASE):
+				source_candidates.append(item)
+
+		for item in list_target:
+			if re.findall(target_regex, item[-1], re.IGNORECASE):
+				target_candidates.append(item)
+
+		if source_candidates and target_candidates:
+			best_candidate = 999
+			for source in source_candidates:
+				for target in target_candidates:
+					source_text = preprocessing_alignment_candidates(source[-1])
+					target_text = preprocessing_alignment_candidates(target[-1])
+
+					if abs(len(target_text)-len(source_text)) < best_candidate:
+						best_candidate = abs(len(target_text)-len(source_text))
+						chosen_source = source
+						chosen_target = target
+
+			return list_target.index(chosen_target), list_source.index(chosen_source)
+		else:
+			return 'No showc segment identified'
+
+	else:
+		return 'No showc segment identified'
+
+
+
+
+
+def use_bilingual_dict(source_text, target_text):
+	count = 0
+	
+	if source_text != '' and target_text != '':
+		for word in source_text:
+			if word.isdigit() == False and word not in st:
+				try:
+					a = mcsq_bi(word)
+					for item in a:
+						if item in target_text:
+							count+=1
+					
+				except KeyError:
+					pass 
+					
+
+	return count
+
+
 
 
 def get_original_index(list_source, list_target, source_segment_index, target_segment_index, aux_source, aux_target):
@@ -920,6 +933,7 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 		elif len(list_target) == len(list_source):
 			showc = identify_showc_segment(list_source, list_target, item_type)
 			if item_type == 'INSTRUCTION' and showc != 'No showc segment identified':
+				print(showc)
 				target_index = showc[0]
 				source_index = showc[1]
 
@@ -1066,6 +1080,7 @@ def get_target_language_country_metadata(filename):
 
 
 def main(folder_path, filename_source, filename_target):
+
 	path = os.chdir(folder_path)
 	df_source = pd.read_csv(filename_source,  dtype=str, sep='\t')
 	df_target = pd.read_csv(filename_target,  dtype=str, sep='\t')
