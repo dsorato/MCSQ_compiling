@@ -188,6 +188,6 @@ class EVSModules1990():
 	'Q100','Q101','Q102','Q103','Q103','Q104','Q104','Q105','Q106','Q106','Q106','Q107','Q108', 'SPA02',
 	'FR2', 'FR1', 'FR3', 'PT1','PT2', 'PT3', 'PT4', 'PT5', 'PT6', 'IE7', 'IE2a', 'IE2b', 'IE2c', 'IE2d', 
 	'IE2e', 'IE2f', 'IE2g', 'IE2h', 'IE2i', 'IE3a', 'IE3b', 'IE3c', 'IE3d', 'IE4', 'IE5', 'IE6', 'IE8',
-	'EI9', 'EI10', 'EI11', 'EI12', 'EI13', 'EI14']
+	'EI9', 'EI10', 'EI11', 'EI12', 'EI13', 'EI14', 'DE5a', 'DE5b', 'DE5c', 'DE4', 'DE3', 'DE2', 'DE1']
 	socio_demographics = [x.lower() for x in socio_demographics]
 

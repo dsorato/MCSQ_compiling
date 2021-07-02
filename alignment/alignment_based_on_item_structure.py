@@ -97,7 +97,7 @@ def identify_showc_segment(list_source, list_target, item_type):
 	Returns:
 		str indicating if instructions that follow the show card segments were found.
 	"""
-	target_regex =  r"(?P<card>)(card|showcard|tarjeta|targeta|kartu|karta|karty|kort|kortet|carte|liste|kort|kortet|carte|karte|cartão|lista|КАРТОЧКУ|КАРТОЧКА|KAРTOЧКА|карточкой|карточке|карточки|карте|карты)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
+	target_regex =  r"(?P<card>)(card|showcard|tarjeta|targeta|kartu|karta|karty|kort|kortet|carte|liste|kort|kortet|carte|karte|Bildblatt|cartão|lista|КАРТОЧКУ|КАРТОЧКА|KAРTOЧКА|карточкой|карточке|карточки|карте|карты)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
 	source_regex =  r"(?P<card>)(card|showcard)\s(?P<numberorletter>)(\d+|\w+|\w+\d+|\d+\w+)"  
 	if item_type == 'INSTRUCTION':
 
@@ -933,7 +933,6 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 		elif len(list_target) == len(list_source):
 			showc = identify_showc_segment(list_source, list_target, item_type)
 			if item_type == 'INSTRUCTION' and showc != 'No showc segment identified':
-				print(showc)
 				target_index = showc[0]
 				source_index = showc[1]
 
@@ -1096,6 +1095,10 @@ def main(folder_path, filename_source, filename_target):
 		global mcsq_bi
 		if 'RUS' in target_language_country:
 			mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country.split('_')[0])
+		elif target_language_country == 'FRE_LU':
+			mcsq_bi = Word2word.load("en", convert_iso_code('FRE'), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/FRE_CH")
+		elif target_language_country == 'GER_LU':
+			mcsq_bi = Word2word.load("en", convert_iso_code('GER'), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/GER_CH")
 		else:
 			mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country)
 
