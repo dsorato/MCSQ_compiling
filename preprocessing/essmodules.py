@@ -80,5 +80,6 @@ class ESSSModulesR09:
 	"""
 	modules = {'D':'D - Timing  of  life;  the  life  course;  timing  of  key  life  events, attitudes  to  ideal  age,  youngest  age  and  oldest  age  of  life events, life planning',
 	'G': 'G - Political  procedural  justice,fairness  of  income,fairness  of educational  and  job  opportunities,fairness  of the  distribution of  resources,attitudes  toward  normative  principles,social closure,belief in a just world',
-	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions', 'X': 'SUPP_X - Catalan/Spanish National Module'}
+	'H': 'SUPP_H - Human values scale', 'I': 'SUPP_I - Test questions', 'J': 'SUPP_J - Interviewer self-completion questions', 'X': 'SUPP_X - Catalan/Spanish National Module',
+	'N': 'SUPP_N - National Module'}
 

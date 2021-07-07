@@ -650,6 +650,12 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<note>)ПРИМЕЧАНИЕ\b"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+		
+
 	regex= r"^(?P<readout>)(ЗАЧИТАТЬ|ЗАЧИТАЙТЕ|ЗАЧИТАЙТЕ|ЗАЧИТАЙТ)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -687,10 +693,11 @@ def instruction_recognition_russian(text,country_language):
 		return True
 
 
-	regex= r"^(?P<checkall>)(ОТМЕТЬТЕ|ВЫБЕРИТЕ)\sВСЕ\s(?P<thatapplies>)ЧТО\sПОДХОДИТ"
+	regex= r"^(?P<checkall>)(ОТМЕТЬТЕ|ВЫБЕРИТЕ|КОДИРУЕТЕ|Назовите)\sВСЕ\s(?P<thatapplies>)(ЧТО\sПОДХОДИТ|КОТОРЫЕ\sПОДХОДЯТ)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
 
 	regex= r"^(?P<name>)НАЗЫВАЙТЕ\s(?P<groups>)ГРУППЫ\s(?P<peopleororganization>)ЛЮДЕЙ ИЛИ ОРГАНИЗАЦИИ "
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -724,12 +731,11 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<ifyouthink>)Если\sВы\sсчитаете\s(?P<thatthis>)что\s(эти|Ваш|Ваша|эта)\s(?P<income>)(доходы|различия|доход|зарплата)"
+	regex= r"^(?P<ifyouthink>)Если\s(Вы|вы)\sсчитаете\s(?P<thatthis>)(что)?\s?(эти|Ваш|Ваша|эта|этот|свой)\s(?P<income>)(неттодоход|доходы|разница|различия|доход|зарплата|заработок)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
-		 
  
 	regex= r"^(?P<one>)ОДИН\s(?P<answer>)ОТВЕТ\s?(?P<in>)(В)?\s?(?P<each>)(КАЖДОЙ)?\s?(?P<line>)(СТРОКЕ)?"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -754,23 +760,23 @@ def instruction_recognition_russian(text,country_language):
 
 	regex= r"^(?P<please>)Пожалуйста\s(?P<choose>)выберите\s(?P<nomorethantwo>)не\sболее\sдвух"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
 	regex= r"^(?P<please>)Пожалуйста\s(?P<choose>)выберите\s(?P<optionclosesttoyourview>)мнение\sнаиболее\sблизкое\sвашим\sвзглядам"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"(?P<again>)(СНОВА|CHOBA)?\s?(?P<use>)(ИСПОЛЬЗУЙТЕ)?\s?(?P<card>)(КАРТОЧКА|КАРТОЧКУ|KAРTOЧКА)\s(?P<number>)(Nr|\d+|\w+)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<show>)ПОДАЙТЕ\s(?P<respondent>)РЕСПОНДЕНТУ\s(?P<card>)(КАРТОЧКА|КАРТОЧКУ|KAРTOЧКА)\s(?P<number>)(Nr|\d+|\w+)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<next>)ДАЛЕЕ\s(?P<ask>)ЗАДАЙТЕ\s(?P<question>)ВОПРОСЫ\s(?P<all>)ВСЕМ\s(?P<respondents>)РЕСПОНДЕНТАМ"
@@ -780,7 +786,7 @@ def instruction_recognition_russian(text,country_language):
 
 	regex= r"^(?P<choose>)Выберите\s(?P<youranswer>)ответ\sпо\sследующей\sскале\s(?P<card>)карточке"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 		  
 
@@ -811,17 +817,18 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<insist>)(УТОЧНИТЕ|Спросите)"
+	regex= r"^(?P<insist>)(УТОЧНИТЕ|Спросите|ВЫЯСНИТЕ)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 		  
 
-	regex= r"^(?P<ask>)(СПАШИВАТЬ|СПРАШИВАТЬ|СПРОСИТЬ|СПРАШИВАЙТЕ|СПРОСИТЕ|СПРАШИВАИТE)\s(?P<to>)(У)?\s?(?P<all>)(ВСЕХ)?"
+	regex= r"^(?P<ask>)(СПАШИВАТЬ|СПРАШИВАТЬ|СПРОСИТЬ|СПРАШИВАЙТЕ|СПРОСИТЕ|СПРАШИВАИТE|ЗАДАВАТЬ)\s(?P<to>)(У)?\s?(?P<all>)(ВСЕХ|ВСЕМ)?"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
 
+		 
 	regex= r"^(?P<code>)КОДИРОВАТЬ\s(?P<all>)ВСЕХ"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -829,7 +836,7 @@ def instruction_recognition_russian(text,country_language):
 
 	regex= r"^(?P<please>)Пожалуйста\s(?P<selectyouranswer>)выберите\s(свой)?\s?ответ\s(?P<fromoptions>)(среди|из)\s(вариантовт|вариантов)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
@@ -850,7 +857,7 @@ def instruction_recognition_russian(text,country_language):
 
 	regex= r"^(?P<use>)Воспользуйтесь\s(?P<thesame>)той же\s(?P<card>)(карточкой|карточку)\s?(?P<toanswer>)(Для ответа|Для ответов)?"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<use>)Используйте\s(?P<please>)пожалуйста\s(?P<this>)эту\s(?P<card>)карточку\s(?P<toanswer>)(Для ответа|Для ответов)"
@@ -861,64 +868,69 @@ def instruction_recognition_russian(text,country_language):
 
 	regex= r"^(?P<please>)пожалуйста\s(?P<use>)Используйте\s(?P<this>)эту\s(?P<card>)карточку"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
-	regex= r"^(?P<toanswer>)(Для ответа|Для ответов)\s(?P<again>)(снова)?\s?(?P<use>)используйте\s(?P<please>)(пожалуйста)?\s?(?P<this>)эту\s(?P<card>)карточку"
+	regex= r"^(?P<toanswer>)(Для ответа|Для ответов)?\s?(?P<again>)(снова)?\s?(?P<use>)используйте\s(?P<please>)(пожалуйста)?\s?(?P<this>)эту\s(?P<card>)карточку"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
 	regex= r"^(?P<toanswer>)(Для ответа|Для ответов)\s(?P<again>)(снова)?\s?(?P<use>)(воспользуйтесь|пользуйтесь)\s(?P<please>)(пожалуйста)?\s?(?P<this>)(этой)?\s?(?P<thesame>)(той же)?\s?(?P<card>)(карточкой|карточку)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
 	regex= r"^(?P<toanswer>)(Для ответа|Для ответов)?\s?(?P<please>)(Пожалуйста)?\s?(?P<use>)(воспользуйтесь|пользуйтесь)\s(?P<this>)(этой|шкалой)\s(?P<on>)(на)?\s?(?P<card>)(карточки|карточкой|карты|карточке)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
+	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<select>)Выберите\s(?P<your>)(свой)?\s?(?P<one>)(один)?\s?(?P<answer>)ответ\s(?P<of>)из\s(?P<this>)этой\s(?P<card>)(карточки|карточкой|карты|карточке|карте)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
+		return True
+
 	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<select>)Выберите\s(?P<your>)(свой)?\s?(?P<one>)(один)?\s?(?P<answer>)ответ\s(?P<this>)(этой)?\s?(?P<of>)(из)?\s?(?P<proposed>)(предложенных)?\s?(?P<on>)(на)?\s?(?P<card>)(карточки|карточкой|карты|карточке|карте)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<select>)Выберите\s(?P<answer>)ответ\s(?P<of>)из\s(?P<proposed>)предложенных\s(?P<on>)на\s(?P<this>)этой\s(?P<card>)карточке"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
    
 
 
 	regex= r"^(?P<select>)Выберите\s(?P<your>)свой\s(?P<answer>)ответ\s(?P<on>)на\s(?P<this>)этой\s(?P<card>)карте"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
 	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<select>)Выберите\s(?P<answer>)ответ\s(?P<of>)из\s(?P<proposedat>)(предложенных на)?\s?(?P<this>)этой\s(?P<card>)карточки"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<select>)Выберите\s(?P<please>)(пожалуйста)?\s?(?P<of>)из\s(?P<this>)этой\s(?P<card>)карточки"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
 	regex= r"^(?P<select>)Выберите\s(?P<please>)(пожалуйста)?\s?(?P<answer>)ответ\s(?P<of>)из\s(?P<card>)карточки"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<select>)(Выберите|выберите)\s(?P<your>)(свой)?\s?(?P<answer>)ответ\s(?P<of>)из\s(?P<options>)вариантов\s(?P<proposed>)(предложенных)?\s?(?P<on>)на\s(?P<tjis>)(этой)?\s?(?P<card>)(карточки|карточке)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<select>)(ОТМЕТЬТЕ|Выберите)\s(?P<all>)(ВСЕ|все)\s(?P<that>)(ПОХОДЯЩИЕ|которые)\s(?P<applies>)(ВАРИАНТЫ|подходят)"
@@ -926,46 +938,47 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<select>)Выберите\s(?P<please>)(Пожалуйста)?\s?(?P<answer>)ответ\s(?P<of>)из\s(?P<this>)этой\s(?P<card>)карточки"
+	regex= r"^(?P<select>)(Выберите|ОТМЕТЬЕ)\s(?P<please>)(Пожалуйста)?\s?(?P<answer>)ответ\s(?P<of>)из\s(?P<this>)этой\s(?P<card>)карточки"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
-	regex= r"^(?P<select>)Выберите\s(?P<please>)(Пожалуйста)?\s?(?P<only>)(только)?\s?(?P<one>)один\s(?P<option>)(вариант)?"
+	regex= r"^(?P<select>)(Выберите|ОТМЕТЬЕ)\s(?P<please>)(Пожалуйста)?\s?(?P<only>)(только)?\s?(?P<one>)один\s(?P<option>)(вариант)?"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
+
 
 	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<select>)(отметьте|выберите)\s(?P<only>)только\s(?P<one>)один\s(?P<option>)(вариант)?"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
 	regex= r"^(?P<select>)Отметить\s(?P<please>)(Пожалуйста)?\s?(?P<only>)(только)?\s?(?P<one>)один\s(?P<option>)вариант"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<select>)выберите\s(?P<all>)все\s(?P<options>)варианты\s(?P<answer>)ответа\s(?P<on>)на\s(?P<card>)(карточки|карточкой|карты|карточке)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<select>)Выберите\s(?P<on>)на\s(?P<card>)(карточки|карточкой|карты|карточке)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<use>)используйте\s(?P<toanswer>)(Для ответа|Для ответов)\s(?P<this>)эту\s(?P<card>)(карточки|карточкой|карточку|карточке)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
 	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<mark>)отметьте\s(?P<one>)один\s(?P<option>)квадрат"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
@@ -982,47 +995,47 @@ def instruction_recognition_russian(text,country_language):
 
 	regex= r"^(?P<toanswer>)(Для ответа|Для ответов)?\s?(?P<please>)(Пожалуйста)?\s?(?P<now>)(Теперь)?\s?(?P<use>)используйте\s(?P<this>)эту\s(?P<card>)карточку"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
 
 	regex= r"^(?P<toanswer>)(Для ответа|Для ответов)?\s?(?P<please>)(пожалуйста)?\s?(?P<now>)(Теперь)?\s?(?P<use>)(Используйте|используйте|используйте)\s(?P<this>)(эту|ту)\s(?P<same>)(же)\s?(?P<card>)карточку"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<please>)(пожалуйста)?\s?(?P<now>)(Теперь)?\s?(?P<use>)(Используйте|используйте|используйте)\s(?P<toanswer>)(Для ответа|Для ответов)?\s?(?P<this>)(эту|ту)\s(?P<same>)(же)\s?(?P<card>)карточку"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
 	regex= r"^(?P<toanswer>)(Для ответа|Для ответов)\s(?P<use>)(используйте|пользуйтесь)\s(?P<please>)(пожалуйста)?\s?(?P<card>)(карточку|карточкой)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
 	regex= r"^(?P<check>)(Заполните|Отметьте)\s(?P<please>)(пожауйста|пожалуйста|пожалуйста)?\s?(?P<only>)(только)?\s?(?P<one>)(один|одну)\s(?P<box>)(ячейку|клетку|ответ)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
 	regex= r"^(?P<please>)(пожалуйста)?\s?(?P<check>)отметьте\s(?P<one>)один\s(?P<box>)квадрат"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<use>)Используйте\s(?P<please>)(пожалуйста|пожалуйста)?\s?(?P<this>)(эту)?\s?(?P<card>)карточку"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<please>)(пожалуйста|пожалуйста)?\s?(?P<use>)Используйте\s(?P<toanswer>)(Для ответа|Для ответов)\s(?P<this>)эту\s(?P<card>)карточку"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
   
@@ -1033,17 +1046,17 @@ def instruction_recognition_russian(text,country_language):
 
 	regex= r"^(?P<toanswer>)(Для ответа|Для ответов)\s(?P<please>)(пожалуйста)?\s?(?P<use>)используйте\s(?P<this>)(эту)?\s?(?P<card>)карточку"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<possible>)МОЖНО\s(?P<check>)ОТМЕТИТЬ\s(?P<more>)БОЛЬШЕ\s(?P<than>)ЧЕМ\s(?P<one>)ОДИН\s(?P<answer>)ОТВЕТ"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<mark>)(Заполните|Отметьте)\s(?P<please>)(пожалуйста)?\s?(?P<one>)одну\s(?P<box>)клетку"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<read>)(ПРОЧИТАЙТЕ|ЗАЧИТАТЬ)\s(?P<each>)КАЖДОЕ\s(?P<utterance>)УТВЕРЖДЕНИЕ"
@@ -1055,6 +1068,12 @@ def instruction_recognition_russian(text,country_language):
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
+	regex= r"^(?P<write>)ВПИШИТЕ\s(?P<only>)ТОЛЬКО\s(?P<one>)ОДИН"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
 
 	regex= r"^(?P<readout>)ЗАЧИТЫВАЙТЕ\s(?P<by>)ПО\s(?P<each>)КАЖДОЙ\s(?P<line>)СТРОКЕ"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -1078,7 +1097,7 @@ def instruction_recognition_russian(text,country_language):
 
 	regex= r"^(?P<use>)Используйте\s(?P<the>)ту\s(?P<same>)(же|самую)\s(?P<card>)карту"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<check>)ОТМЕЧАТЬ\s(?P<all>)ВСЕ\s(?P<that>)КОТОРЫЕ\s(?P<apply>)ПОДХОДЯТ"
@@ -1093,7 +1112,7 @@ def instruction_recognition_russian(text,country_language):
 
 	regex= r"^(?P<the>)ТА\s(?P<same>)ЖЕ\s(?P<card>)(КАРТОЧКУ|карточка)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
   
 	regex= r"^(?P<ask>)(ЗАДАЙТЕ|ЗАДАВАТЬ|ЗАДАВАЙТЕ)\s(?P<questions>)(ВОПРОСЫ|ВОПРОС)\s?(?P<everyone>)(ВСЕМ)?"
@@ -1114,23 +1133,23 @@ def instruction_recognition_russian(text,country_language):
 
 	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<select>)выберите\s(?P<one>)один\s(?P<answer>)ответ\s(?P<on>)(на|из)\s(?P<this>)этой\s(?P<card>)(карточке|карточки)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<select>)(Выберите|Выбирите)?\s?(?P<your>)(Ваш)?\s?(?P<please>)(пожалуйста)?\s?(?P<answer>)ответ\s(?P<from>)из\s(?P<this>)этой\s(?P<card>)(карточке|карточки)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 
 	regex= r"^(?P<use>)Используйте\s(?P<still>)(все еще)?\s?(?P<toanswer>)(Для ответа|Для ответов)?\s?(?P<this>)(эту)?\s?(?P<card>)(карточке|карточки|карточку)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<select>)Выберите\s(?P<your>)(Ваш|свой)\s(?P<answer>)ответ\s(?P<on>)на\s(?P<this>)(этой)?\s?(?P<card>)(карточке|карточки|карточку)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<select>)Выберите\s(?P<please>)пожалуйста\s(?P<one>)один\s(?P<answer>)ответ"
@@ -1141,22 +1160,22 @@ def instruction_recognition_russian(text,country_language):
 
 	regex= r"^(?P<still>)Все еще\s(?P<use>)используйте\s(?P<card>)(карточке|карточки|карточку)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<toanswer>)(Для ответа|Для ответов)\s(?P<use>)используйте\s(?P<please>)(Пожалуйста)?\s?(?P<card>)(карточке|карточки|карточку)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<please>)Пожалуйста\s(?P<use>)используйте\s(?P<this>)(эту)?\s?(?P<card>)карточку"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
 	regex= r"^(?P<please>)(Пожалуйста)?\s?(?P<use>)используйте\s(?P<thesame>)(ту же|ту же самую)?\s?(?P<card>)(карточку|карту)"
 	matches = re.search(regex, text, re.IGNORECASE)
-	if matches and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+	if matches and 'оцените' not in text and 'чтобы показать' not in text and 'где бы Вы поместили себя' not in text and 'которые я назову' not in text and 'скажите' not in text and 'ответьте' not in text and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux: 
 		return True
 
  

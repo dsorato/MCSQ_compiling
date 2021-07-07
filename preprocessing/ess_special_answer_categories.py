@@ -93,8 +93,8 @@ class SpecialAnswerCategoriesRUS_LV():
 	"""
 	Class encapsulating special answer categories for Russian from Latvia
 	"""
-	dont_know = ["GP", '888']
-	refuse = ['Отказ', '777']
+	dont_know = ["НЕ ЗНАЕТ", '888']
+	refuse = ['Отказ от ответа', '777']
 	dontapply =  ["нет ответа", '999']
 	write_down = ['ВПИШИТЕ', None]
 
