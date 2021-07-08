@@ -16,8 +16,10 @@ class Instruction(Base):
     instructionid = Column(Integer, Sequence('instruction_id_seq'), primary_key=True)
     text = Column(String)
     pos_tagged_text = Column(String)
+    ner_tagged_text = Column(String)
    
 
-    def __init__(self, text, pos_tagged_text):
+    def __init__(self, text, pos_tagged_text, ner_tagged_text):
         self.text = text
         self.pos_tagged_text = pos_tagged_text
+        self.ner_tagged_text = ner_tagged_text

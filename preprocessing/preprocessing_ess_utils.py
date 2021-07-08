@@ -2179,6 +2179,11 @@ def instruction_recognition_french(text,country_language):
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'dites-moi' not in text_aux:
 		return True
 
+	regex= r"(?P<choosetheoption>)vous\schoisissez\sle\s(chiffre|nombre)\s\d+"
+	matches = re.search(regex, text_aux, re.IGNORECASE)
+	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and 'dites-moi' not in text_aux:
+		return True
+
 	regex= r"^(?P<choose>)choix\s(?P<multiple>)multiple\s?(?P<possible>)(possible)?"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
@@ -2356,9 +2361,13 @@ def instruction_recognition_english(text,country_language):
 	matches = re.search(regex, text)
 	if matches:
 		return True
-		
   
 	regex= r"^(?P<typeinduration>)TYPE\sIN\sDURATION"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
+	regex= r"^(?P<writeinnumber>)write\sIN\snumber"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -2436,10 +2445,26 @@ def instruction_recognition_english(text,country_language):
 	if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
 		return True
 
+	regex= r"(?P<nmeans>)\d\smeans\s(?P<anything>).*(?P<and>)(and)?\s?(?P<xmeans>)\d+\smeans"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+		return True
+
 	regex= r"(?P<nmeans>)\d\sis\s(?P<anything>).*(?P<and>)and\s(?P<xmeans>)\d+\sis"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
 		return True
+
+	regex= r"(?P<nmeans>)WHERE\s\d\s?=\s?(?P<anything>).*(?P<and>)and\s(?P<xmeans>)\d+\s?=\s?"
+	matches = re.search(regex, text_aux, re.IGNORECASE)
+	if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+		return True
+
+	regex= r"(?P<nmeans>)On\sa\sscale\sfrom\s\d\sto\s\d+\s(?P<pleaseindicate>)please\sindicate"
+	matches = re.search(regex, text_aux, re.IGNORECASE)
+	if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux:
+		return True
+
 
 	regex= r"(?P<nmeans>)WHERE\s\d\smeans\s(?P<anything>).*(?P<and>)and\s(?P<xmeans>)\d+"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -2679,6 +2704,17 @@ def instruction_recognition_czech(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<chooseuptofive>)Vyznačte\spouze\spět"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
+	regex= r"^(?P<selectuptofive>)Prosím\svyberte\snejvýše\spět"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
+
 	regex= r"^(?P<mainwork>)HLAVNÍ PRÁCE"
 	matches = re.search(regex, text)
 	if matches:
@@ -2713,14 +2749,18 @@ def instruction_recognition_czech(text,country_language):
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
-  
-
-	regex= r"^(?P<now>)(A nyní|Nyní)?\s?(?P<use>)(Použijte|použijte)\s(?P<again>)(znovu)?\s?(?P<this>)(tuto)?\s?(?P<card>)kart(u|a)"
+	
+	regex= r"^(?P<markwiththiscard>)S\spomocí\stéto\skarty\sprosím\soznačte"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and not re.findall('řekněte', text_aux, re.IGNORECASE):
 		return True
 
-	regex= r"^(?P<toanswer>)(K odpovědi|Při odpovědích)\s(?P<use>)(použijte|pouţijte)\s(?P<please>)(prosím)?\s?(?P<this>)tuto\s(?P<card>)kart(u|a)"
+	regex= r"^(?P<now>)(A nyní|Nyní)?\s?(?P<use>)(Použijte|použijte)\s(?P<again>)(znovu)?\s?(?P<graduate>)(stupnici)?\s?(?P<this>)(tuto|této)?\s?(?P<card>)kart(u|a|y)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and not re.findall('řekněte', text_aux, re.IGNORECASE):
+		return True
+
+	regex= r"^(?P<toanswer>)(K odpovědi|Při odpovědích)\s(?P<use>)(použijte|pouţijte)\s(?P<please>)(prosím)?\s?(?P<this>)tuto\s(?P<card>)kart(u|a|y)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches and '?' not in text_aux and ':' not in text_aux and '...' not in text_aux and not re.findall('řekněte', text_aux, re.IGNORECASE):
 		return True
@@ -3461,7 +3501,11 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
- 
+		regex= r"^(?P<writewith>)ESCRIBIR\sCON\s(?P<details>)DETALLE(s)?"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
 		regex= r"^(?P<mark>)(CIRCUNDAR|marcar|ANOTAR)\s(?P<all>)(SOLO|TODOS|UNA|BAJO|cinco)"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
@@ -3534,10 +3578,21 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
-		regex= r"^(?P<use>)(utilice|use)\s(?P<again>)(otra vez)?\s?(?P<this>)(esta)?\s?(?P<card>)tarjeta(?P<please>)(por favor)?\s?(?P<toindicate>)para\sindicarlo"
+		regex= r"^(?P<now>)Ahora\s(?P<idlikeyouto>)querría\sque\s(?P<lookatthis>)examinase\sesta\s(?P<card>)tarjeta"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux and 'para indicar' not in text_aux and 'afirmaciones' not in text_aux:
 			return True
+
+		regex= r"^(?P<use>)(utilice|use)\s(?P<again>)(otra vez)?\s?(?P<please>)(por favor)?\s?(?P<theanswers>)las\srespuestas\s(?P<ofthis>)de\sesta\s(?P<card>)tarjeta"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux and 'para indicar' not in text_aux and 'afirmaciones' not in text_aux:
+			return True
+
+		regex= r"^(?P<use>)(utilice|use)\s(?P<again>)(otra vez)?\s?(?P<this>)esta\s(?P<card>)tarjeta(?P<please>)(por favor)?\s?(?P<toindicate>)para\sindicar(lo)?"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches and '?' not in text_aux and '...' not in text_aux and ':' not in text_aux and 'afirmaciones' not in text_aux:
+			return True
+
 
 		regex= r"^(?P<use>)(utilice|use)\s(?P<toanswer>)para\scontestar"
 		matches = re.search(regex, text, re.IGNORECASE)

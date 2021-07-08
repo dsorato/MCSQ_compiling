@@ -17,11 +17,20 @@ class Alignment(Base):
     target_text = Column(String)
     source_survey_itemid = Column(String)
     target_survey_itemid = Column(String)
+    source_pos_tagged_text = Column(String)
+    target_pos_tagged_text = Column(String)
+    source_ner_tagged_text = Column(String)
+    target_ner_tagged_text = Column(String)
 
    
 
-    def __init__(self,source_text, target_text, source_survey_itemid,target_survey_itemid):
+    def __init__(self,source_text, target_text, source_survey_itemid,target_survey_itemid, source_pos_tagged_text,target_pos_tagged_text,
+        source_ner_tagged_text,target_ner_tagged_text):
         self.source_text = source_text
         self.target_text = target_text
         self.source_survey_itemid = source_survey_itemid
         self.target_survey_itemid = target_survey_itemid
+        self.source_pos_tagged_text = source_pos_tagged_text
+        self.target_pos_tagged_text = target_pos_tagged_text
+        self.source_ner_tagged_text = source_ner_tagged_text
+        self.target_ner_tagged_text = target_ner_tagged_text

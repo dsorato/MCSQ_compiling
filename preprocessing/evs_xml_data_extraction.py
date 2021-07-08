@@ -2,6 +2,7 @@ import pandas as pd
 import xml.etree.ElementTree as ET
 import utils as ut
 from preprocessing_evs_utils import *
+import preprocessing_ess_utils as u_ess
 from evsmodules import * 
 
 """
@@ -177,10 +178,19 @@ def process_qstnLit_node(filename, qstnLit, survey_item_prefix, study, item_name
 
 	item_type = 'REQUEST'
 	text = clean_text(qstnLit.text, filename)
+	if 'si. usted' in text:
+		text = text.replace('si. usted', 'si usted')
+	if 'ptas. más' in text:
+		text = text.replace('ptas. más', 'ptas más')
 	
 	sentences = splitter.tokenize(text)
 
 	for sentence in sentences:
+		if u_ess.check_if_segment_is_instruction(sentence, filename):
+			item_type = 'INSTRUCTION'
+		else:
+			item_type = 'REQUEST'
+
 		if df_questionnaire.empty:
 			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
 		else:
@@ -215,10 +225,19 @@ def process_txt_node(filename, txt, survey_item_prefix, study, item_name, module
 
 	item_type = 'REQUEST'
 	text = clean_text(txt.text, filename)
+	if 'Tercer Mundo! Derechos' in text:
+		text = text.replace('Tercer Mundo! Derechos', 'Tercer Mundo o Derechos')
+	if 'haga justicia. en general debe' in text:
+		text = text.replace('haga justicia. en general debe', 'haga justicia, en general debe')
 	
 	sentences = splitter.tokenize(text)
 
 	for sentence in sentences:
+		if u_ess.check_if_segment_is_instruction(sentence, filename):
+			item_type = 'INSTRUCTION'
+		else:
+			item_type = 'REQUEST'
+
 		if df_questionnaire.empty:
 			survey_item_id = ut.get_survey_item_id(survey_item_prefix)
 		else:

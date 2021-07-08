@@ -26,6 +26,7 @@ class Survey_item(Base):
     item_name = Column(String)
     item_type = Column(String)
     pos_tagged_text = Column(String)
+    ner_tagged_text = Column(String)
 
     survey = relationship("Survey", backref=backref("survey_item", uselist=False))
     module = relationship("Module", backref="module")
@@ -37,7 +38,7 @@ class Survey_item(Base):
 
 
     def __init__(self, survey_itemid, surveyid, text, item_value, moduleid, requestid, responseid, instructionid, introductionid, 
-        country_language, item_is_source, item_name, item_type, pos_tagged_text):
+        country_language, item_is_source, item_name, item_type, pos_tagged_text, ner_tagged_text):
         
         self.survey_itemid = survey_itemid
         self.surveyid = surveyid
@@ -53,6 +54,7 @@ class Survey_item(Base):
         self.item_name = item_name
         self.item_type = item_type
         self.pos_tagged_text = pos_tagged_text
+        self.ner_tagged_text = ner_tagged_text
 
        
 
