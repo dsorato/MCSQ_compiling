@@ -51,12 +51,23 @@ def fill_substitution_in_answer(text, fills, df_procedures):
 		last_text = None
 		for i, row in df_procedure_filtered.iterrows():
 			text_var = text.replace(fills[0], row['text'])
+			text_var = re.sub('^\\\s?', '', text_var)
 			text_var = text_var.replace('^', ' ')
 			if last_text is None or text_var != last_text:
 				texts.append(text_var)
 				last_text = text_var
 
 	return texts
+
+def remove_pishowcardid(text):
+	if "'+piSHOWCARD_ID+'" in text:
+		text = text.replace("'+piSHOWCARD_ID+'", 'X') 
+	elif '+piSHOWCARD_ID+' in text:
+		text = text.replace('+piSHOWCARD_ID+', 'X')  
+	elif 'piSHOWCARD_ID' in text:
+		text = text.replace('piSHOWCARD_ID', 'X') 
+
+	return text
 
 def eliminate_showcardID_and_adjust_item_type(text, item_name):
 	"""
@@ -143,6 +154,7 @@ def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id,
 
 				if last_text is None or text_var != last_text:
 					if '{empty}' not in text_var and 'empty' not in text_var:
+						text_var = remove_pishowcardid(text_var)
 						data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': get_module_metadata(item_name, share_modules), 
 						'item_type':item_type, 'item_name':item_name, 
 						'item_value':None, 'text': re.sub(' +', ' ', text_var)}
@@ -174,6 +186,7 @@ def fill_unrolling(text, fills, df_procedures, df_questionnaire, survey_item_id,
 
 		for i, text in enumerate(texts):
 			if '{empty}' not in text and 'empty' not in text:
+				text = remove_pishowcardid(text)
 				data = {'survey_item_ID':survey_item_id, 'Study': study, 'module': get_module_metadata(item_name, share_modules), 
 				'item_type':item_type, 'item_name':item_name, 'item_value':None, 'text':re.sub(' +', ' ', text)}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
@@ -233,6 +246,7 @@ def replace_fill_in_answer(text):
 	"""
 	text = re.sub('\^FLCurr', 'euros', text)
 	text = re.sub('\^FLCURR', 'euros', text)
+	text = re.sub('\^FLCUrr', 'euros', text)
 	text = re.sub('\^img_infinity_correct_copy', '', text)
 	text = re.sub('\^img_infinity_incorrect_copy', '', text)
 	text = re.sub('\^CH004_FirstNameOfChild', 'Tom/Maria', text)
@@ -244,6 +258,7 @@ def replace_fill_in_answer(text):
 	text = re.sub('\^FL_MEMBER', 'Tom/Maria', text)
 	text = text.replace('\^FL_PARTNER', 'Tom/Maria')
 	text = text.replace('^FL_PARTNER', 'Tom/Maria')
+	text = re.sub('^\\\s?', '', text)
 
 
 	return text
@@ -268,6 +283,8 @@ def clean_answer_text(text, country_language):
 	text = text.replace(' ?', '?')
 	text = text.replace('<b>', '')
 	text = text.replace('.?', '?')
+	text = text.replace('<u>', '')
+	text = text.replace('</u>', '')
 	text = text.replace('</b>', '')
 	text = text.replace('<B>', '')
 	text = text.replace('</B>', '')
@@ -287,6 +304,7 @@ def clean_answer_text(text, country_language):
 	text = text.replace('[br]', '')
 	text = re.sub('\sR\s', ' respondent ', text)
 	text = re.sub('\sR\s?\.', ' respondent.', text)
+	text = re.sub('^\\\s?', '', text)
 
 	text = text.rstrip()
 	text = text.lstrip()
@@ -312,10 +330,13 @@ def clean_text_share(text, country_language, w7flag):
 	text = text.replace('^MN015_ELIGIBLES', '')
 	text = text.replace('^MN015_Eligibles', '')
 	text = text.replace('etc.', '')
+	text = text.replace('i.e.', 'i.e')
+	text = re.sub('^:', '', text)
 	text = text.replace('<<', '"')
 	text = text.replace('>>', '"')
 	text = text.replace(').', '). ')
-	text = text.replace('e.g.', 'eg')
+	text = text.replace('E.G.', 'E.G')
+	text = text.replace('e.g.', 'e.g')
 	text = text.replace('Ex.', 'Ex:')
 	text = text.replace('ex.', 'ex:')
 	text = text.replace('@B', '')
@@ -323,6 +344,8 @@ def clean_text_share(text, country_language, w7flag):
 	text = text.replace('<b>', '')
 	text = text.replace('.?', '?')
 	text = text.replace('</b>', '')
+	text = text.replace('<u>', '')
+	text = text.replace('</u>', '')
 	text = text.replace('<B>', '')
 	text = text.replace('</B>', '')
 	text = text.replace('<br>', '')
@@ -397,6 +420,7 @@ def clean_text_share(text, country_language, w7flag):
 	text = re.sub('\^DN002_MoBirth', '', text)
 	text = re.sub('\^FLCurr', 'euros', text)
 	text = re.sub('\^FLCURR', 'euros', text)
+	text = re.sub('\^FLCUrr', 'euros', text)
 	text = re.sub('\^img_infinity_correct_copy', '', text)
 	text = re.sub('\^img_infinity_incorrect_copy', '', text)
 	text = re.sub('\^CH004_FirstNameOfChild', 'Tommy/Mary', text)
@@ -810,6 +834,8 @@ def extract_questions_and_procedures_w7(subnode, df_questions, df_procedures, pa
 					if output_source_questionnaire_flag == '1':
 						if text_node.attrib['translation_id'] == '1' and text_node.text is not None:
 							text = clean_text_share(text_node.text, country_language, True)
+							if text is not None and 'No.' in text:
+								text = text.replace('No.', 'nº')
 					else:
 						if text_node.attrib['translation_id'] != '1' and text_node.text is not None:
 							text = clean_text_share(text_node.text, country_language, True)
@@ -953,8 +979,8 @@ def build_questionnaire_structure(df_questions, df_answers,df_procedures, df_que
 
 		
 	if last_row['item_type'] != 'INTRODUCTION':
-		for i, row in df_answers.iterrows():
-					
+		j=0
+		for i, row in df_answers.iterrows():		
 			survey_item_id = ut.update_survey_item_id(survey_item_prefix)	
 			text = replace_fill_in_answer(row['text'])
 
@@ -966,13 +992,17 @@ def build_questionnaire_structure(df_questions, df_answers,df_procedures, df_que
 					for text in texts:
 						data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': last_module, 
 						'item_type':'RESPONSE', 'item_name':last_item_name, 
-						'item_value':row['item_value'], 'text':re.sub(' +', ' ', text)}
+						'item_value':j, 'text':re.sub(' +', ' ', text)}
 						df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+						j=j+1
+						
 			else:
 				data = {'survey_item_ID':survey_item_id, 'Study':study, 'module': last_module, 
 				'item_type':'RESPONSE', 'item_name':last_item_name, 
-				'item_value':row['item_value'], 'text':re.sub(' +', ' ', text)}
+				'item_value':j, 'text':re.sub(' +', ' ', text)}
 				df_questionnaire = df_questionnaire.append(data, ignore_index = True)
+				j=j+1
+				
 
 	return df_questionnaire
 

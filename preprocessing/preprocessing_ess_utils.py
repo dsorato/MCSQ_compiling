@@ -800,6 +800,11 @@ def instruction_recognition_russian(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<respondent>)Отвечают\s(?P<malefemale>)(женщины|мужчины)"
+	matches = re.search(regex, text, re.IGNORECASE)
+	if matches:
+		return True
+
   
 	regex= r"^(?P<mark>)ОТМЕТЬТЕ\s(?P<one>)ОДНО\s(?P<option>)ЧИСЛО"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -829,10 +834,11 @@ def instruction_recognition_russian(text,country_language):
 		return True
 
 		 
-	regex= r"^(?P<code>)КОДИРОВАТЬ\s(?P<all>)ВСЕХ"
+	regex= r"^(?P<code>)КОДИРОВАТЬ\s(?P<all>)ВСЕ(Х)?"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
+
 
 	regex= r"^(?P<please>)Пожалуйста\s(?P<selectyouranswer>)выберите\s(свой)?\s?ответ\s(?P<fromoptions>)(среди|из)\s(вариантовт|вариантов)"
 	matches = re.search(regex, text, re.IGNORECASE)
@@ -1390,7 +1396,7 @@ def instruction_recognition_german(text,country_language):
 	if matches:
 		return True
 
-	regex= r"^(?P<a>)(AN)?\s?(?P<male>)(MÄNNLICHE)\s(?P<respondent>)BEFRAGTE"
+	regex= r"^(?P<a>)(AN)?\s?(?P<male>)(MÄNNLICHE|Weibliche)\s(?P<respondent>)BEFRAGTE"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -1712,7 +1718,7 @@ def instruction_recognition_norwegian(text,country_language):
 	if matches and 'Intervjuer ID' not in text:
 		return True
 
-	regex= r"^(?P<malefemale>)(MANNLIGE|KVINNELIGE)\s(?P<respondent>)IO"
+	regex= r"^(?P<malefemale>)(MANNLIGE|KVINNELIGE)\s(?P<respondent>)(IO|intervjuobjekter)"
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
@@ -2714,6 +2720,16 @@ def instruction_recognition_czech(text,country_language):
 	if matches:
 		return True
 
+	regex= r"^(?P<registerestimations>)ZAZNAMENEJTE\sI\sODHADY"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
+	regex= r"^(?P<roundup>)ZAOKROUHLETE"
+	matches = re.search(regex, text)
+	if matches:
+		return True
+
 
 	regex= r"^(?P<mainwork>)HLAVNÍ PRÁCE"
 	matches = re.search(regex, text)
@@ -2740,7 +2756,7 @@ def instruction_recognition_czech(text,country_language):
 	if matches:
 		return True
 
-	regex= r"(?P<includeadoptions>)ZAHRNUJTE ADOPCE"
+	regex= r"(?P<includeadoptions>)ZAHRNUJTE\sADOPCE"
 	matches = re.search(regex, text)
 	if matches:
 		return True
