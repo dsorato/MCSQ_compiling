@@ -2062,13 +2062,6 @@ def instruction_recognition_french(text,country_language):
 	matches = re.search(regex, text, re.IGNORECASE)
 	if matches:
 		return True
-
-		
-
-	regex= r"^(?P<respondent>)REPONDANT\s(?P<malefemale>)(FEMININ|MASCULIN)"
-	matches = re.search(regex, text, re.IGNORECASE)
-	if matches:
-		return True
 	 
 
 	regex= r"^(?P<ifnecessary>)AU\sBESOIN\s(?P<chooseaccording>)CHOISIR\sSELON\s(?P<thepriority>)LA\sPRIORITE"
@@ -3303,6 +3296,12 @@ def instruction_recognition_catalan_spanish(text,country_language):
 		if matches:
 			return True
 
+		regex= r"(?P<versionfor>)VERSIÓ\sPER\sA\s(?P<respondent>)ENTREVISTATS\s(DONES|HOMES)?"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+  
 		regex= r"(?P<malefemalerespondents>)(SOLO|SÓLO)\s(PARA|A)\sENTREVISTAD(A|O)S\s?(MUJERES|HOMBRES)?"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
@@ -3506,6 +3505,16 @@ def instruction_recognition_catalan_spanish(text,country_language):
 			return True
 
 	elif 'SPA' in country_language:
+		regex= r"(?P<malefemalerespondents>)(SOLO|SÓLO|VERSIÓN\sPARA)\s(PARA|A)\sENTREVISTAD(A|O)S\s?(MUJERES|HOMBRES)?"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
+		regex= r"(?P<malefemalerespondents>)ENTREVISTAD(A|O)S\s?(MUJERES|HOMBRES)?"
+		matches = re.search(regex, text, re.IGNORECASE)
+		if matches:
+			return True
+
 		regex= r"^(?P<card>)tarjeta\s(?P<numberorletter>)(\d+|\w+)"
 		matches = re.search(regex, text, re.IGNORECASE)
 		if matches:
