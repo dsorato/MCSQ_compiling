@@ -17,7 +17,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Part-of-Speech tagging annotation with Flair" href="tagging.html" /> 
+    <link rel="prev" title="Part-of-Speech and Named Entity Recognition annotations in MCSQ" href="tagging.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,7 +29,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tagging.html" title="Part-of-Speech tagging annotation with Flair"
+          <a href="tagging.html" title="Part-of-Speech and Named Entity Recognition annotations in MCSQ"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="contents.html" accesskey="U">Contents</a> &#187;</li>
@@ -42,209 +42,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-retrieve_from_tables">
-<span id="database-retrieval-and-population-methods"></span><h1>Database retrieval and population methods<a class="headerlink" href="#module-retrieve_from_tables" title="Permalink to this headline">¶</a></h1>
-<p>Python3 script for retrieving data from MCSQ database
-Before running the script, install requirements: pandas, numpy, SQLAlchemy, psycopg2
-Author: Danielly Sorato
-Author contact: <a class="reference external" href="mailto:danielly&#46;sorato&#37;&#52;&#48;gmail&#46;com">danielly<span>&#46;</span>sorato<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
-<dl class="py function">
-<dt id="retrieve_from_tables.build_id_dicts_per_language">
-<code class="sig-prename descclassname">retrieve_from_tables.</code><code class="sig-name descname">build_id_dicts_per_language</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/retrieve_from_tables.html#build_id_dicts_per_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#retrieve_from_tables.build_id_dicts_per_language" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets all text segments and their IDs and builds a dictionary by item type.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>language</strong> (<em>param1</em>) – target language.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Four different dictionaries (one for each item type). The IDs are the keys and the text segments are the values.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="retrieve_from_tables.create_tagged_text_dict">
-<code class="sig-prename descclassname">retrieve_from_tables.</code><code class="sig-name descname">create_tagged_text_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/retrieve_from_tables.html#create_tagged_text_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#retrieve_from_tables.create_tagged_text_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the survey_itemid and the POS tagged text from the survey_item table and creates a dictionary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>id_list</strong> (<em>param1</em>) – a language specific list of the target segment IDs in the alignment table.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A dictionary with target survey_itemids as keys and POS tagged text as values.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="retrieve_from_tables.get_ids_from_alignment_table">
-<code class="sig-prename descclassname">retrieve_from_tables.</code><code class="sig-name descname">get_ids_from_alignment_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">survey_itemid</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/retrieve_from_tables.html#get_ids_from_alignment_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#retrieve_from_tables.get_ids_from_alignment_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets all IDs (either source or target) from the alignment table.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>survey_itemid</strong> (<em>param1</em>) – name of the column indicating if the desired IDs to be retrived are from source or from target.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of survey_itemids.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="retrieve_from_tables.get_ids_from_alignment_table_per_language">
-<code class="sig-prename descclassname">retrieve_from_tables.</code><code class="sig-name descname">get_ids_from_alignment_table_per_language</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/retrieve_from_tables.html#get_ids_from_alignment_table_per_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#retrieve_from_tables.get_ids_from_alignment_table_per_language" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets all target IDs from the alignment table based on the language.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>language</strong> (<em>param1</em>) – target language.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of all target_survey_itemids in the alignment table.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="retrieve_from_tables.get_instruction_id">
-<code class="sig-prename descclassname">retrieve_from_tables.</code><code class="sig-name descname">get_instruction_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/retrieve_from_tables.html#get_instruction_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#retrieve_from_tables.get_instruction_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets an instruction segment ID based on its text.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<em>param1</em>) – the instruction segment text.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>instruction segment ID (int).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="retrieve_from_tables.get_introduction_id">
-<code class="sig-prename descclassname">retrieve_from_tables.</code><code class="sig-name descname">get_introduction_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/retrieve_from_tables.html#get_introduction_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#retrieve_from_tables.get_introduction_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets an introduction segment ID based on its text.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<em>param1</em>) – the introduction segment text.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>introduction segment ID (int).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="retrieve_from_tables.get_module_id">
-<code class="sig-prename descclassname">retrieve_from_tables.</code><code class="sig-name descname">get_module_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">module_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/retrieve_from_tables.html#get_module_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#retrieve_from_tables.get_module_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets an module ID based on its name.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>module_name</strong> (<em>param1</em>) – the name of the module.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>response module ID (int).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="retrieve_from_tables.get_request_id">
-<code class="sig-prename descclassname">retrieve_from_tables.</code><code class="sig-name descname">get_request_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/retrieve_from_tables.html#get_request_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#retrieve_from_tables.get_request_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets an request segment ID based on its text.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<em>param1</em>) – the request segment text.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>request segment ID (int).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="retrieve_from_tables.get_response_id">
-<code class="sig-prename descclassname">retrieve_from_tables.</code><code class="sig-name descname">get_response_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">item_value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/retrieve_from_tables.html#get_response_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#retrieve_from_tables.get_response_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets an response segment ID based on its text.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<em>param1</em>) – the response segment text.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>response segment ID (int).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="retrieve_from_tables.get_tagged_text_from_survey_item_table">
-<code class="sig-prename descclassname">retrieve_from_tables.</code><code class="sig-name descname">get_tagged_text_from_survey_item_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/retrieve_from_tables.html#get_tagged_text_from_survey_item_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#retrieve_from_tables.get_tagged_text_from_survey_item_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the survey_itemid and the POS tagged text from the survey_item table and creates a dictionary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A dictionary with survey_itemids as keys and POS tagged text as values.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<span class="target" id="module-populate_tables"></span><p>Python3 script for ESS dataset inclusion in the MCSQ database
-Before running the script, install requirements: pandas, numpy, SQLAlchemy, psycopg2
-Author: Danielly Sorato
-Author contact: <a class="reference external" href="mailto:danielly&#46;sorato&#37;&#52;&#48;gmail&#46;com">danielly<span>&#46;</span>sorato<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
-<dl class="py function">
-<dt id="populate_tables.tag_alignment_table">
-<code class="sig-prename descclassname">populate_tables.</code><code class="sig-name descname">tag_alignment_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dictionary</span></em>, <em class="sig-param"><span class="n">id_list</span></em>, <em class="sig-param"><span class="n">column_name</span></em>, <em class="sig-param"><span class="n">source_or_target_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/populate_tables.html#tag_alignment_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#populate_tables.tag_alignment_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Inserts the POS alignment annotation either on the target or the source text column.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dictionary</strong> (<em>param1</em>) – a dictionary where the keys are the survey_itemids and the values are the pos tagged text segments.</p></li>
-<li><p><strong>id_list</strong> (<em>param2</em>) – list of the IDs that refers to the text to be annotated.</p></li>
-<li><p><strong>column_name</strong> (<em>param3</em>) – defines if the column to be tagged is the source or the target</p></li>
-<li><p><strong>source_or_target_id</strong> (<em>param4</em>) – name of the ID (either target_survey_itemid or source_survey_itemid)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="populate_tables.tag_item_type_table">
-<code class="sig-prename descclassname">populate_tables.</code><code class="sig-name descname">tag_item_type_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dictionary</span></em>, <em class="sig-param"><span class="n">table_name</span></em>, <em class="sig-param"><span class="n">table_id_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/populate_tables.html#tag_item_type_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#populate_tables.tag_item_type_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Inserts the POS alignment annotation in item type specific table.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dictionary</strong> (<em>param1</em>) – a dictionary where the keys are the survey_itemids and the values are the pos tagged text segments.</p></li>
-<li><p><strong>table_name</strong> (<em>param2</em>) – name of the table to be tagged (introduction, instruction, request or response).</p></li>
-<li><p><strong>table_id_name</strong> (<em>param3</em>) – name of the ID of the table.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="populate_tables.tag_survey_item">
-<code class="sig-prename descclassname">populate_tables.</code><code class="sig-name descname">tag_survey_item</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dictionary</span></em>, <em class="sig-param"><span class="n">table_id_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/populate_tables.html#tag_survey_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#populate_tables.tag_survey_item" title="Permalink to this definition">¶</a></dt>
-<dd><p>Inserts the POS alignment annotation in survey_item table.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dictionary</strong> (<em>param1</em>) – an item type specific dictionary where the keys are the IDs and the values are the pos tagged text segments.</p></li>
-<li><p><strong>table_id_name</strong> (<em>param2</em>) – name of the ID of item type specific the table.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="populate_tables.tag_target_alignment_table">
-<code class="sig-prename descclassname">populate_tables.</code><code class="sig-name descname">tag_target_alignment_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dictionary</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/populate_tables.html#tag_target_alignment_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#populate_tables.tag_target_alignment_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Inserts the POS alignment annotation on the target text column.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dictionary</strong> (<em>param1</em>) – a dictionary where the keys are the target_survey_itemids and the values are the pos tagged text segments.</p>
-</dd>
-</dl>
-</dd></dl>
-
+  <div class="section" id="database-retrieval-and-population-methods">
+<h1>Database retrieval and population methods<a class="headerlink" href="#database-retrieval-and-population-methods" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -256,7 +55,7 @@ Author contact: <a class="reference external" href="mailto:danielly&#46;sorato&#
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
   <p class="topless"><a href="tagging.html"
-                        title="previous chapter">Part-of-Speech tagging annotation with Flair</a></p>
+                        title="previous chapter">Part-of-Speech and Named Entity Recognition annotations in MCSQ</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -288,7 +87,7 @@ Author contact: <a class="reference external" href="mailto:danielly&#46;sorato&#
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tagging.html" title="Part-of-Speech tagging annotation with Flair"
+          <a href="tagging.html" title="Part-of-Speech and Named Entity Recognition annotations in MCSQ"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="contents.html" >Contents</a> &#187;</li>

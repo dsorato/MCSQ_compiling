@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Part-of-Speech tagging annotation with Flair &#8212; MCSQ compiling 2 documentation</title>
+    <title>Part-of-Speech and Named Entity Recognition annotations in MCSQ &#8212; MCSQ compiling 2 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -37,7 +37,7 @@
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="contents.html" accesskey="U">Contents</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Part-of-Speech tagging annotation with Flair</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Part-of-Speech and Named Entity Recognition annotations in MCSQ</a></li> 
       </ul>
     </div>  
 
@@ -46,78 +46,58 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="part-of-speech-tagging-annotation-with-flair">
-<h1>Part-of-Speech tagging annotation with Flair<a class="headerlink" href="#part-of-speech-tagging-annotation-with-flair" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-annotation.pos_tagging"></span><dl class="py function">
-<dt id="annotation.pos_tagging.from_tagged_dict_to_table">
-<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">from_tagged_dict_to_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dicts</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#from_tagged_dict_to_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.from_tagged_dict_to_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uses the tagged dictionaries containing the tagged data from each table to
-update the respective pos_tagged_text columns in the database.
-The survey_item table is also updated using the same IDs</p>
+  <div class="section" id="part-of-speech-and-named-entity-recognition-annotations-in-mcsq">
+<h1>Part-of-Speech and Named Entity Recognition annotations in MCSQ<a class="headerlink" href="#part-of-speech-and-named-entity-recognition-annotations-in-mcsq" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-annotation.mcsq_annotation"></span><dl class="py function">
+<dt id="annotation.mcsq_annotation.ner_annotation">
+<code class="sig-prename descclassname">annotation.mcsq_annotation.</code><code class="sig-name descname">ner_annotation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">ner</span></em>, <em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/mcsq_annotation.html#ner_annotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.mcsq_annotation.ner_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through the preprocessed and POS tag annotated ENG, CAT, GER, FRE, POR, NOR and SPA spreadsheets, adding the NER annotation.
+:param param1 df: the dataframe that holds the preprocessed and POS tag annotated questionnaire.
+:type param1 df: pandas dataframe
+:param param2 ner: pretrained NER model provided by Spacy or FlairNLP.
+:type param2 ner: spacy or pythorch</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dicts</strong> (<em>param1</em>) – the dictionary name corresponds to the table name (key),</p></li>
-<li><p><strong>the dictionary</strong> (<em>and</em>) – </p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>df_tagged (pandas dataframe), the questionnaire with added NER annotations.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="annotation.pos_tagging.load_dict">
-<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">load_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#load_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.load_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads a dictionary stored as a picke object.</p>
+<dt id="annotation.mcsq_annotation.pos_tag_annotation">
+<code class="sig-prename descclassname">annotation.mcsq_annotation.</code><code class="sig-name descname">pos_tag_annotation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">pos</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/mcsq_annotation.html#pos_tag_annotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.mcsq_annotation.pos_tag_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through the preprocessed spreadsheets, adding the POS tag annotation.
+:param param1 df: the dataframe that holds the preprocessed questionnaire.
+:type param1 df: pandas dataframe
+:param param2 pos: pretrained or in-house trained (CAT, POR, rUS) model provided by FlairNLP.
+:type param2 pos: Pytorch object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>df_tagged (pandas dataframe), the questionnaire with added POS tag annotations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="annotation.mcsq_annotation.select_ner_model">
+<code class="sig-prename descclassname">annotation.mcsq_annotation.</code><code class="sig-name descname">select_ner_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/mcsq_annotation.html#select_ner_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.mcsq_annotation.select_ner_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects the appropriate named entity recognition (NER) model based on the language.
+ENG, GER, FRE, SPA language use pretrained models provided by Flair.
+CZE and RUS languages use multilingual pretrained model provided by Deeppavlov.
+CAT, NOR and POR languages use pretrained models provided by SpaCy</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>path</strong> (<em>param1</em>) – the path to the dictionary</p>
+<dd class="field-odd"><p><strong>language</strong> (<em>param1</em>) – 3-digit language ISO code.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the loaded dictionary.</p>
+<dd class="field-even"><p>NER tagging model (Spacy or FlairNLP model).</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="annotation.pos_tagging.output_language_specific_dictionaries">
-<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">output_language_specific_dictionaries</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">languages</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#output_language_specific_dictionaries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.output_language_specific_dictionaries" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets each text segment and its ID from the database, building 4 dictionaries (request, response, instruction, introduction).
-After, saves the dictionaries as a pickle dump.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>languages</strong> (<em>param1</em>) – list of 3-digit language ISO codes.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="annotation.pos_tagging.save_dictionaries">
-<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">save_dictionaries</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">dicts</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#save_dictionaries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.save_dictionaries" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves a dictionary as a picke object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>param1</em>) – the path to the dictionary</p></li>
-<li><p><strong>dicts</strong> (<em>param2</em>) – the dictionary name corresponds to the table name (key),</p></li>
-<li><p><strong>the dictionary</strong> (<em>and</em>) – </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="annotation.pos_tagging.save_tagged_dictionary">
-<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">save_tagged_dictionary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tagger</span></em>, <em class="sig-param"><span class="n">language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#save_tagged_dictionary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.save_tagged_dictionary" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads a given untagged dictionary, calls the tagging method and saves the tagged dictionary.
-:param param1 part-of-speech tagging model: language specific (or multilingual) pos tagging model
-:type param1 part-of-speech tagging model: Pytorch object
-:param param2 language: 3-digit language ISO code.
-:type param2 language: string</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="annotation.pos_tagging.select_pos_model">
-<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">select_pos_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#select_pos_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.select_pos_model" title="Permalink to this definition">¶</a></dt>
+<dt id="annotation.mcsq_annotation.select_pos_model">
+<code class="sig-prename descclassname">annotation.mcsq_annotation.</code><code class="sig-name descname">select_pos_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">language</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/mcsq_annotation.html#select_pos_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.mcsq_annotation.select_pos_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects the appropriate pos tagging model based on the language.
 ENG language uses a pretrained model provided by Flair.
 NOR, SPA, GER, CZE, and FRE languages use multilingual pretrained model provided by Flair.
@@ -132,19 +112,23 @@ CAT, RUS and POR languages use models trained by me.</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt id="annotation.pos_tagging.tag_dictionary">
-<code class="sig-prename descclassname">annotation.pos_tagging.</code><code class="sig-name descname">tag_dictionary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tagger</span></em>, <em class="sig-param"><span class="n">dictionary</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/pos_tagging.html#tag_dictionary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.pos_tagging.tag_dictionary" title="Permalink to this definition">¶</a></dt>
-<dd><p>Tags each sentence of the untagged dictionary and updates its value to the tagged sentence.</p>
+<span class="target" id="module-annotation.ner_annotation_cze_rus"></span><dl class="py function">
+<dt id="annotation.ner_annotation_cze_rus.ner_annotation">
+<code class="sig-prename descclassname">annotation.ner_annotation_cze_rus.</code><code class="sig-name descname">ner_annotation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">ner</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/ner_annotation_cze_rus.html#ner_annotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.ner_annotation_cze_rus.ner_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through the preprocessed and POS tag annotated RUS and CZE spreadsheets, adding the NER annotation.
+POS tag is done in the mcsq_annotation script.
+CZE and RUS languages use multilingual pretrained model provided by Deeppavlov.</p>
+<p>The Slavic-BERT-NER from Deeppavlov uses lib versions that are imcompatible with the ones from the mcsq_annotation script,
+therefore this script should be run using a separate virtual environment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>part-of-speech tagging model</strong> (<em>param1</em>) – language specific (or multilingual) pos tagging model</p></li>
-<li><p><strong>dictionary</strong> (<em>param2</em>) – has the IDs and the untagged text.</p></li>
+<li><p><strong>df</strong> (<em>param1</em>) – the dataframe that holds the preprocessed and POS tag annotated questionnaire.</p></li>
+<li><p><strong>ner</strong> (<em>param2</em>) – pretrained NER model provided by Deeppavlov.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A dictionary with the text segment IDs and the tagged text.</p>
+<dd class="field-even"><p>df_tagged (pandas dataframe), the questionnaire with added NER annotations.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -202,7 +186,7 @@ CAT, RUS and POR languages use models trained by me.</p>
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">MCSQ compiling 2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="contents.html" >Contents</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Part-of-Speech tagging annotation with Flair</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Part-of-Speech and Named Entity Recognition annotations in MCSQ</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -17,7 +17,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Part-of-Speech tagging annotation with Flair" href="tagging.html" />
+    <link rel="next" title="Part-of-Speech and Named Entity Recognition annotations in MCSQ" href="tagging.html" />
     <link rel="prev" title="Wage Indicator Survey (WIS) data extraction and preprocessing methods" href="WIS.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,7 +30,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tagging.html" title="Part-of-Speech tagging annotation with Flair"
+          <a href="tagging.html" title="Part-of-Speech and Named Entity Recognition annotations in MCSQ"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="WIS.html" title="Wage Indicator Survey (WIS) data extraction and preprocessing methods"
@@ -151,31 +151,6 @@ Responses are aligned separately of other item types because answers are merged 
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>df (pandas dataframe) with newly aligned response segments.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="alignment_based_on_item_structure.different_source_target_index_card_instructions">
-<code class="sig-prename descclassname">alignment_based_on_item_structure.</code><code class="sig-name descname">different_source_target_index_card_instructions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source_index</span></em>, <em class="sig-param"><span class="n">target_index</span></em>, <em class="sig-param"><span class="n">aux_source</span></em>, <em class="sig-param"><span class="n">aux_target</span></em>, <em class="sig-param"><span class="n">list_source</span></em>, <em class="sig-param"><span class="n">list_target</span></em>, <em class="sig-param"><span class="n">item_type</span></em>, <em class="sig-param"><span class="n">df</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/alignment_based_on_item_structure.html#different_source_target_index_card_instructions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#alignment_based_on_item_structure.different_source_target_index_card_instructions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Align source and target instruction segments identified as showcard segments. For sake of simplicity,
-when the source index and the target index of showcard segments are different, they are moved to the
-first position in the isntruction list.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source_index</strong> (<em>param1</em>) – source showcard segment.</p></li>
-<li><p><strong>target_index</strong> (<em>param2</em>) – target showcard segment.</p></li>
-<li><p><strong>aux_source</strong> (<em>param3</em>) – auxiliary list of source segments being modified in outer loop (contains segments of same item_name and item_type).</p></li>
-<li><p><strong>aux_target</strong> (<em>param4</em>) – auxiliary list of target segments being modified in outer loop (contains segments of same item_name and item_type).</p></li>
-<li><p><strong>list_source</strong> (<em>param5</em>) – list of source segments (contains segments of same item_name and item_type).</p></li>
-<li><p><strong>list_target</strong> (<em>param6</em>) – list of target segments (contains segments of same item_name and item_type).</p></li>
-<li><p><strong>item_type</strong> (<em>param7</em>) – item_type metadata, can be REQUEST, INTRODUCTION or INSTRUCTION</p></li>
-<li><p><strong>df</strong> (<em>param8</em>) – dataframe to store the questionnaire alignment</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>df (pandas dataframe) with newly aligned survey item segments.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -385,36 +360,12 @@ of pairless segments</p>
 <dl class="py function">
 <dt id="alignment_based_on_item_structure.preprocessing_alignment_candidates">
 <code class="sig-prename descclassname">alignment_based_on_item_structure.</code><code class="sig-name descname">preprocessing_alignment_candidates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/alignment_based_on_item_structure.html#preprocessing_alignment_candidates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#alignment_based_on_item_structure.preprocessing_alignment_candidates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Preprocesses the text segment by tokenizing it, removing punctuation.</p>
+<dd><p>Preprocesses the text segment by tokenizing it, removing punctuation.
+:param param1 text: the text segment to be preprocessed.
+:type param1 text: string</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<em>param1</em>) – the text segment to be preprocessed.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The preprocessed tokens (a list of strings).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="alignment_based_on_item_structure.same_source_target_index_card_instructions">
-<code class="sig-prename descclassname">alignment_based_on_item_structure.</code><code class="sig-name descname">same_source_target_index_card_instructions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source_index</span></em>, <em class="sig-param"><span class="n">target_index</span></em>, <em class="sig-param"><span class="n">aux_source</span></em>, <em class="sig-param"><span class="n">aux_target</span></em>, <em class="sig-param"><span class="n">list_source</span></em>, <em class="sig-param"><span class="n">list_target</span></em>, <em class="sig-param"><span class="n">item_type</span></em>, <em class="sig-param"><span class="n">df</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/alignment_based_on_item_structure.html#same_source_target_index_card_instructions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#alignment_based_on_item_structure.same_source_target_index_card_instructions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Align source and target instruction segments identified as showcard segments.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source_index</strong> (<em>param1</em>) – source showcard segment.</p></li>
-<li><p><strong>target_index</strong> (<em>param2</em>) – target showcard segment.</p></li>
-<li><p><strong>aux_source</strong> (<em>param3</em>) – auxiliary list of source segments being modified in outer loop (contains segments of same item_name and item_type).</p></li>
-<li><p><strong>aux_target</strong> (<em>param4</em>) – auxiliary list of target segments being modified in outer loop (contains segments of same item_name and item_type).</p></li>
-<li><p><strong>list_source</strong> (<em>param5</em>) – list of source segments (contains segments of same item_name and item_type).</p></li>
-<li><p><strong>list_target</strong> (<em>param6</em>) – list of target segments (contains segments of same item_name and item_type).</p></li>
-<li><p><strong>item_type</strong> (<em>param7</em>) – item_type metadata, can be REQUEST, INTRODUCTION or INSTRUCTION</p></li>
-<li><p><strong>df</strong> (<em>param8</em>) – dataframe to store the questionnaire alignment</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>df (pandas dataframe) with newly aligned survey item segments.</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The preprocessed tokens (a list of strings).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -587,21 +538,27 @@ the country specific questions.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt id="countryspecificrequest.EVSCountrySpecificR02">
+<em class="property">class </em><code class="sig-prename descclassname">countryspecificrequest.</code><code class="sig-name descname">EVSCountrySpecificR02</code><a class="reference internal" href="_modules/countryspecificrequest.html#EVSCountrySpecificR02"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#countryspecificrequest.EVSCountrySpecificR02" title="Permalink to this definition">¶</a></dt>
+<dd><p>Item names of country specific questions in EVS wave 2.</p>
+</dd></dl>
+
+<dl class="py class">
 <dt id="countryspecificrequest.EVSCountrySpecificR03">
 <em class="property">class </em><code class="sig-prename descclassname">countryspecificrequest.</code><code class="sig-name descname">EVSCountrySpecificR03</code><a class="reference internal" href="_modules/countryspecificrequest.html#EVSCountrySpecificR03"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#countryspecificrequest.EVSCountrySpecificR03" title="Permalink to this definition">¶</a></dt>
-<dd><p>Item names of country specific questions in EVS round 3.</p>
+<dd><p>Item names of country specific questions in EVS wave 3.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt id="countryspecificrequest.EVSCountrySpecificR04">
 <em class="property">class </em><code class="sig-prename descclassname">countryspecificrequest.</code><code class="sig-name descname">EVSCountrySpecificR04</code><a class="reference internal" href="_modules/countryspecificrequest.html#EVSCountrySpecificR04"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#countryspecificrequest.EVSCountrySpecificR04" title="Permalink to this definition">¶</a></dt>
-<dd><p>Item names of country specific questions in EVS round 4.</p>
+<dd><p>Item names of country specific questions in EVS wave 4.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt id="countryspecificrequest.EVSCountrySpecificR05">
 <em class="property">class </em><code class="sig-prename descclassname">countryspecificrequest.</code><code class="sig-name descname">EVSCountrySpecificR05</code><a class="reference internal" href="_modules/countryspecificrequest.html#EVSCountrySpecificR05"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#countryspecificrequest.EVSCountrySpecificR05" title="Permalink to this definition">¶</a></dt>
-<dd><p>Item names of country specific questions in EVS round 5.</p>
+<dd><p>Item names of country specific questions in EVS wave 5.</p>
 </dd></dl>
 
 </div>
@@ -618,7 +575,7 @@ the country specific questions.</p>
                         title="previous chapter">Wage Indicator Survey (WIS) data extraction and preprocessing methods</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="tagging.html"
-                        title="next chapter">Part-of-Speech tagging annotation with Flair</a></p>
+                        title="next chapter">Part-of-Speech and Named Entity Recognition annotations in MCSQ</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -650,7 +607,7 @@ the country specific questions.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tagging.html" title="Part-of-Speech tagging annotation with Flair"
+          <a href="tagging.html" title="Part-of-Speech and Named Entity Recognition annotations in MCSQ"
              >next</a> |</li>
         <li class="right" >
           <a href="WIS.html" title="Wage Indicator Survey (WIS) data extraction and preprocessing methods"

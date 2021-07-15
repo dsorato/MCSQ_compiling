@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>annotation.mcsq_annotation &#8212; MCSQ compiling 2 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">annotation.mcsq_annotation</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for annotation.mcsq_annotation</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">flair.models</span> <span class="kn">import</span> <span class="n">SequenceTagger</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">flair.data</span> <span class="kn">import</span> <span class="n">Sentence</span>
+<span class="kn">import</span> <span class="nn">flair.datasets</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">spacy</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<div class="viewcode-block" id="select_pos_model"><a class="viewcode-back" href="../../tagging.html#annotation.mcsq_annotation.select_pos_model">[docs]</a><span class="k">def</span> <span class="nf">select_pos_model</span><span class="p">(</span><span class="n">language</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Selects the appropriate pos tagging model based on the language.</span>
+<span class="sd">	ENG language uses a pretrained model provided by Flair.</span>
+<span class="sd">	NOR, SPA, GER, CZE, and FRE languages use multilingual pretrained model provided by Flair.</span>
+<span class="sd">	CAT, RUS and POR languages use models trained by me.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 language (string): 3-digit language ISO code.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		part-of-speech tagging model (Pytorch object).  </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="s1">&#39;ENG&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;upos&#39;</span><span class="p">)</span> 
+	<span class="k">elif</span> <span class="s1">&#39;CAT&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/home/danielly/workspace/trained_pos_models/cat_150ep.pt&#39;</span><span class="p">)</span> 
+	<span class="k">elif</span> <span class="s1">&#39;RUS&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/home/danielly/workspace/trained_pos_models/rus_150ep.pt&#39;</span><span class="p">)</span> 
+	<span class="k">elif</span> <span class="s1">&#39;POR&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/home/danielly/workspace/trained_pos_models/por_150ep.pt&#39;</span><span class="p">)</span> 
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;pos-multi&#39;</span><span class="p">)</span> </div>
+
+<div class="viewcode-block" id="select_ner_model"><a class="viewcode-back" href="../../tagging.html#annotation.mcsq_annotation.select_ner_model">[docs]</a><span class="k">def</span> <span class="nf">select_ner_model</span><span class="p">(</span><span class="n">language</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Selects the appropriate named entity recognition (NER) model based on the language.</span>
+<span class="sd">	ENG, GER, FRE, SPA language use pretrained models provided by Flair.</span>
+<span class="sd">	CZE and RUS languages use multilingual pretrained model provided by Deeppavlov.</span>
+<span class="sd">	CAT, NOR and POR languages use pretrained models provided by SpaCy</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 language (string): 3-digit language ISO code.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		NER tagging model (Spacy or FlairNLP model).  </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="s1">&#39;ENG&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;flair/ner-english&#39;</span><span class="p">)</span>
+	<span class="k">elif</span> <span class="s1">&#39;CAT&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;ca_core_news_lg&#39;</span><span class="p">)</span>
+	<span class="k">elif</span> <span class="s1">&#39;GER&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;flair/ner-german&#39;</span><span class="p">)</span> 
+	<span class="k">elif</span> <span class="s1">&#39;FRE&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;flair/ner-french&#39;</span><span class="p">)</span> 
+	<span class="k">elif</span> <span class="s1">&#39;SPA&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">SequenceTagger</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;flair/ner-spanish-large&#39;</span><span class="p">)</span> 
+	<span class="k">elif</span> <span class="s1">&#39;NOR&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;nb_core_news_lg&quot;</span><span class="p">)</span>
+	<span class="k">elif</span> <span class="s1">&#39;POR&#39;</span> <span class="ow">in</span> <span class="n">language</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;pt_core_news_lg&quot;</span><span class="p">)</span></div>
+	
+	
+
+
+<div class="viewcode-block" id="ner_annotation"><a class="viewcode-back" href="../../tagging.html#annotation.mcsq_annotation.ner_annotation">[docs]</a><span class="k">def</span> <span class="nf">ner_annotation</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ner</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Iterates through the preprocessed and POS tag annotated ENG, CAT, GER, FRE, POR, NOR and SPA spreadsheets, adding the NER annotation. </span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 df (pandas dataframe): the dataframe that holds the preprocessed and POS tag annotated questionnaire.</span>
+<span class="sd">		param2 ner (spacy or pythorch): pretrained NER model provided by Spacy or FlairNLP.</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		df_tagged (pandas dataframe), the questionnaire with added NER annotations. </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">df_tagged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">,</span>  <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;ner_tagged_text&#39;</span><span class="p">,</span> <span class="s1">&#39;pos_tagged_text&#39;</span><span class="p">])</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+		<span class="k">if</span> <span class="s1">&#39;ENG&#39;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">or</span> <span class="s1">&#39;GER&#39;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">or</span> <span class="s1">&#39;FRE&#39;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">or</span> <span class="s1">&#39;SPA&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+			<span class="n">sentence</span> <span class="o">=</span> <span class="n">Sentence</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+			<span class="n">ner</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+			<span class="n">tagged_sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">to_tagged_string</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&lt;.*&gt;&#39;</span><span class="p">,</span> <span class="n">tagged_sentence</span><span class="p">):</span>
+				<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">],</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">],</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;module&#39;</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">],</span> 
+				<span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_value&#39;</span><span class="p">],</span>  <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> 
+				<span class="s1">&#39;ner_tagged_text&#39;</span><span class="p">:</span> <span class="n">tagged_sentence</span><span class="p">,</span> <span class="s1">&#39;pos_tagged_text&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;pos_tagged_text&#39;</span><span class="p">]}</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">],</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">],</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;module&#39;</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">],</span> 
+				<span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_value&#39;</span><span class="p">],</span>  <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="s1">&#39;ner_tagged_text&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;pos_tagged_text&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;pos_tagged_text&#39;</span><span class="p">]}</span>
+
+			<span class="n">df_tagged</span> <span class="o">=</span> <span class="n">df_tagged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+		<span class="k">elif</span> <span class="s1">&#39;POR&#39;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">or</span> <span class="s1">&#39;NOR&#39;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">or</span> <span class="s1">&#39;CAT&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+			<span class="n">doc</span> <span class="o">=</span> <span class="n">ner</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+			<span class="n">entities</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="k">for</span> <span class="n">ent</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">ents</span><span class="p">:</span>
+				<span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ent</span><span class="o">.</span><span class="n">text</span><span class="o">+</span><span class="s1">&#39;&lt;&#39;</span><span class="o">+</span><span class="n">ent</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">entities</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+				<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">],</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">],</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;module&#39;</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">],</span> 
+				<span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_value&#39;</span><span class="p">],</span>  <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> 
+				<span class="s1">&#39;ner_tagged_text&#39;</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">entities</span><span class="p">),</span> <span class="s1">&#39;pos_tagged_text&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;pos_tagged_text&#39;</span><span class="p">]}</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">],</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">],</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;module&#39;</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">],</span> 
+				<span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_value&#39;</span><span class="p">],</span>  <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> 
+				<span class="s1">&#39;ner_tagged_text&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;pos_tagged_text&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;pos_tagged_text&#39;</span><span class="p">]}</span>
+
+			<span class="n">df_tagged</span> <span class="o">=</span> <span class="n">df_tagged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df_tagged</span></div>
+
+<div class="viewcode-block" id="pos_tag_annotation"><a class="viewcode-back" href="../../tagging.html#annotation.mcsq_annotation.pos_tag_annotation">[docs]</a><span class="k">def</span> <span class="nf">pos_tag_annotation</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Iterates through the preprocessed spreadsheets, adding the POS tag annotation. </span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 df (pandas dataframe): the dataframe that holds the preprocessed questionnaire.</span>
+<span class="sd">		param2 pos (Pytorch object): pretrained or in-house trained (CAT, POR, rUS) model provided by FlairNLP.</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		df_tagged (pandas dataframe), the questionnaire with added POS tag annotations. </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">df_tagged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">,</span> <span class="s1">&#39;item_type&#39;</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">,</span>  <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;ner_tagged_text&#39;</span><span class="p">,</span> <span class="s1">&#39;pos_tagged_text&#39;</span><span class="p">])</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+		<span class="n">sentence</span> <span class="o">=</span> <span class="n">Sentence</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+		<span class="n">pos</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+		<span class="n">tagged_sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">to_tagged_string</span><span class="p">()</span>
+		
+		<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;survey_item_ID&#39;</span><span class="p">],</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">],</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;module&#39;</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">],</span> 
+		<span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_value&#39;</span><span class="p">],</span>  <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="s1">&#39;ner_tagged_text&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;pos_tagged_text&#39;</span><span class="p">:</span> <span class="n">tagged_sentence</span><span class="p">}</span>
+		<span class="n">df_tagged</span> <span class="o">=</span> <span class="n">df_tagged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df_tagged</span></div>
+		
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">folder_path</span><span class="p">):</span>
+	<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
+	<span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+
+	<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.csv&quot;</span><span class="p">):</span>
+			<span class="nb">print</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+			<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span>  <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+			<span class="n">pos</span> <span class="o">=</span> <span class="n">select_pos_model</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+			<span class="n">df_tagged</span> <span class="o">=</span> <span class="n">pos_tag_annotation</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="s1">&#39;CZE&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">file</span> <span class="ow">and</span> <span class="s1">&#39;RUS&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+				<span class="n">ner</span> <span class="o">=</span> <span class="n">select_ner_model</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+				<span class="n">df_tagged</span> <span class="o">=</span> <span class="n">ner_annotation</span><span class="p">(</span><span class="n">df_tagged</span><span class="p">,</span> <span class="n">ner</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+		
+			<span class="n">df_tagged</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="n">folder_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+	<span class="n">main</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">annotation.mcsq_annotation</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

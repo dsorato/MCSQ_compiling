@@ -17,6 +17,7 @@ def select_pos_model(language):
 
 	Args:
 		param1 language (string): 3-digit language ISO code.
+
 	Returns:
 		part-of-speech tagging model (Pytorch object).  
 	"""
@@ -40,8 +41,9 @@ def select_ner_model(language):
 
 	Args:
 		param1 language (string): 3-digit language ISO code.
+
 	Returns:
-		NER tagging model.  
+		NER tagging model (Spacy or FlairNLP model).  
 	"""
 	if 'ENG' in language:
 		return SequenceTagger.load('flair/ner-english')
@@ -54,14 +56,22 @@ def select_ner_model(language):
 	elif 'SPA' in language:
 		return SequenceTagger.load('flair/ner-spanish-large') 
 	elif 'NOR' in language:
-		return spacy.load("nb_core_news_sm")
+		return spacy.load("nb_core_news_lg")
 	elif 'POR' in language:
-		return spacy.load("pt_core_news_sm")
+		return spacy.load("pt_core_news_lg")
 	
 	
 
 
 def ner_annotation(df, ner, filename):
+	"""
+	Iterates through the preprocessed and POS tag annotated ENG, CAT, GER, FRE, POR, NOR and SPA spreadsheets, adding the NER annotation. 
+	Args:
+		param1 df (pandas dataframe): the dataframe that holds the preprocessed and POS tag annotated questionnaire.
+		param2 ner (spacy or pythorch): pretrained NER model provided by Spacy or FlairNLP.
+	Returns:
+		df_tagged (pandas dataframe), the questionnaire with added NER annotations. 
+	"""
 	df_tagged = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value',  'text', 'ner_tagged_text', 'pos_tagged_text'])
 	for i, row in df.iterrows():
 		if 'ENG' in filename or 'GER' in filename or 'FRE' in filename or 'SPA' in filename:
@@ -96,7 +106,15 @@ def ner_annotation(df, ner, filename):
 
 	return df_tagged
 
-def pos_tag_annotation(df, pos, filename):
+def pos_tag_annotation(df, pos):
+	"""
+	Iterates through the preprocessed spreadsheets, adding the POS tag annotation. 
+	Args:
+		param1 df (pandas dataframe): the dataframe that holds the preprocessed questionnaire.
+		param2 pos (Pytorch object): pretrained or in-house trained (CAT, POR, rUS) model provided by FlairNLP.
+	Returns:
+		df_tagged (pandas dataframe), the questionnaire with added POS tag annotations. 
+	"""
 	df_tagged = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value',  'text', 'ner_tagged_text', 'pos_tagged_text'])
 	for i, row in df.iterrows():
 		sentence = Sentence(row['text'])
@@ -119,7 +137,7 @@ def main(folder_path):
 			print(file)
 			df = pd.read_csv(file,  dtype=str, sep='\t')
 			pos = select_pos_model(file)
-			df_tagged = pos_tag_annotation(df, pos, file)
+			df_tagged = pos_tag_annotation(df, pos)
 
 			if 'CZE' not in file and 'RUS' not in file:
 				ner = select_ner_model(file)

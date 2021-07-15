@@ -5,7 +5,18 @@ import pandas as pd
 
 def ner_annotation(df, ner):
 	"""
+	Iterates through the preprocessed and POS tag annotated RUS and CZE spreadsheets, adding the NER annotation. 
+	POS tag is done in the mcsq_annotation script.
 	CZE and RUS languages use multilingual pretrained model provided by Deeppavlov.
+
+	The Slavic-BERT-NER from Deeppavlov uses lib versions that are imcompatible with the ones from the mcsq_annotation script,
+	therefore this script should be run using a separate virtual environment.
+
+	Args:
+		param1 df (pandas dataframe): the dataframe that holds the preprocessed and POS tag annotated questionnaire.
+		param2 ner (BERT model): pretrained NER model provided by Deeppavlov.
+	Returns:
+		df_tagged (pandas dataframe), the questionnaire with added NER annotations. 
 	"""
 	df_tagged = pd.DataFrame(columns=['survey_itemID', 'Study', 'module', 'item_type', 'item_name', 'item_value',  'text', 'ner_tagged_text', 'pos_tagged_text'])
 	for i, row in df.iterrows():

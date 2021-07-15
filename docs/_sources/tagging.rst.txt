@@ -1,5 +1,7 @@
-Part-of-Speech tagging annotation with Flair
+Part-of-Speech and Named Entity Recognition annotations in MCSQ
 ==========================================
-.. automodule:: annotation.pos_tagging
+.. automodule:: annotation.mcsq_annotation
+   :members:
+.. automodule:: annotation.ner_annotation_cze_rus
    :members:
 

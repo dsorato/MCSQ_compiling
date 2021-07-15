@@ -48,68 +48,8 @@
 <span class="kn">from</span> <span class="nn">alignment_utils</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">countryspecificrequest</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">punctuation</span>
-
-
-
-<div class="viewcode-block" id="identify_showc_segment"><a class="viewcode-back" href="../alignment.html#alignment_based_on_item_structure.identify_showc_segment">[docs]</a><span class="k">def</span> <span class="nf">identify_showc_segment</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Searches in list_source, list_target if there are intructions that seem to be show card segments that should be aligned together.</span>
-<span class="sd">	This method was implemented as an additional strategy to align correctly instruction segments.</span>
-
-<span class="sd">	Args:</span>
-<span class="sd">		param1 list_source (list): list of source segments (contains segments of same item_name and item_type)</span>
-<span class="sd">		param2 list_target (list): list of target segments (contains segments of same item_name and item_type)</span>
-<span class="sd">		param3 item_type (string): item_type metadata being analyzed. In this method we want to consider only instruction segments.</span>
-
-<span class="sd">	Returns:</span>
-<span class="sd">		str indicating if instructions that follow the show card segments were found.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="n">target_regex</span> <span class="o">=</span>  <span class="sa">r</span><span class="s2">&quot;(?P&lt;card&gt;)(tarjeta|targeta|kartu|karta|karty|kort|kortet|carte|liste|kort|kortet|carte|karte|cartão|КАРТОЧКУ|КАРТОЧКА|KAРTOЧКА|карточкой|карточке|карточки|карте|карты)\s(?P&lt;numberorletter&gt;)(\d+|\w+|\w+\d+|\d+\w+)&quot;</span>  
-	<span class="n">source_regex</span> <span class="o">=</span>  <span class="sa">r</span><span class="s2">&quot;(?P&lt;card&gt;)(card|showcard)\s(?P&lt;numberorletter&gt;)(\d+|\w+|\w+\d+|\d+\w+)&quot;</span>  
-	<span class="k">if</span> <span class="n">item_type</span> <span class="o">==</span> <span class="s1">&#39;INSTRUCTION&#39;</span><span class="p">:</span>
-		<span class="n">possible_card_instruction_source</span> <span class="o">=</span> <span class="s1">&#39;dummy value&#39;</span>
-		<span class="n">possible_card_instruction_target</span> <span class="o">=</span> <span class="s1">&#39;dummy value&#39;</span>
-
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_source</span><span class="p">):</span>
-			<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">source_regex</span><span class="p">,</span> <span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">):</span>
-				<span class="n">possible_card_instruction_source</span> <span class="o">=</span> <span class="n">i</span>
-				<span class="k">break</span>
-
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_target</span><span class="p">):</span>
-			<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">target_regex</span><span class="p">,</span> <span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">):</span>
-				<span class="n">possible_card_instruction_target</span> <span class="o">=</span> <span class="n">i</span>
-				<span class="k">break</span>
-
-		<span class="k">if</span> <span class="n">possible_card_instruction_target</span> <span class="o">!=</span><span class="s1">&#39;dummy value&#39;</span> <span class="ow">and</span> <span class="n">possible_card_instruction_source</span><span class="o">!=</span><span class="s1">&#39;dummy value&#39;</span><span class="p">:</span>
-			<span class="k">return</span> <span class="p">(</span><span class="n">possible_card_instruction_target</span><span class="p">,</span><span class="n">possible_card_instruction_source</span><span class="p">)</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="k">return</span> <span class="s1">&#39;No showc segment identified&#39;</span>
-	<span class="k">else</span><span class="p">:</span>
-		<span class="k">return</span> <span class="s1">&#39;No showc segment identified&#39;</span></div>
-
-<div class="viewcode-block" id="preprocessing_alignment_candidates"><a class="viewcode-back" href="../alignment.html#alignment_based_on_item_structure.preprocessing_alignment_candidates">[docs]</a><span class="k">def</span> <span class="nf">preprocessing_alignment_candidates</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Preprocesses the text segment by tokenizing it, removing punctuation.</span>
-
-<span class="sd">	Args:</span>
-<span class="sd">		param1 text (string): the text segment to be preprocessed.</span>
-
-<span class="sd">	Returns:</span>
-<span class="sd">		The preprocessed tokens (a list of strings). </span>
-
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="n">tokens</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-	<span class="n">preprocessed_tokens</span> <span class="o">=</span> <span class="p">[]</span>
-
-	<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
-		<span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-		<span class="k">if</span> <span class="n">token</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">:</span>
-			<span class="n">preprocessed_tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
-
-
-	<span class="k">return</span> <span class="n">preprocessed_tokens</span></div>
-
-
+<span class="kn">from</span> <span class="nn">word2word</span> <span class="kn">import</span> <span class="n">Word2word</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
 
 <div class="viewcode-block" id="find_best_match"><a class="viewcode-back" href="../alignment.html#alignment_based_on_item_structure.find_best_match">[docs]</a><span class="k">def</span> <span class="nf">find_best_match</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -134,21 +74,127 @@
 
 
 	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_source</span><span class="p">):</span>
-		<span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-		<span class="n">dict_source</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">preprocessing_alignment_candidates</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">preprocessing_alignment_candidates</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">dict_source</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+		
 
 	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_target</span><span class="p">):</span>
-		<span class="n">dict_target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">preprocessing_alignment_candidates</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> 
+		<span class="n">text</span> <span class="o">=</span> <span class="n">preprocessing_alignment_candidates</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">dict_target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+		
+
 
 	<span class="k">for</span> <span class="n">target_k</span><span class="p">,</span> <span class="n">target_v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dict_target</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
 		<span class="k">for</span> <span class="n">source_k</span><span class="p">,</span> <span class="n">source_v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dict_source</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-			<span class="n">alignment_candidates</span><span class="p">[</span><span class="n">target_k</span><span class="p">,</span> <span class="n">source_k</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_v</span><span class="o">/</span><span class="n">source_v</span>
+			<span class="k">if</span> <span class="s1">&#39;ENG&#39;</span> <span class="ow">in</span> <span class="n">target_language_country</span><span class="p">:</span>
+				<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_v</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">source_v</span><span class="p">))</span> <span class="ow">in</span> <span class="n">alignment_candidates</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+					<span class="n">alignment_candidates</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_v</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">source_v</span><span class="p">))</span><span class="o">+</span><span class="mf">0.1</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_k</span><span class="p">,</span> <span class="n">source_k</span> 
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">alignment_candidates</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_v</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">source_v</span><span class="p">))]</span> <span class="o">=</span> <span class="n">target_k</span><span class="p">,</span> <span class="n">source_k</span> 
+			<span class="k">else</span><span class="p">:</span>
+				<span class="c1"># print(target_v, source_v)</span>
+				<span class="c1"># print(abs(len(target_v)-len(source_v)) - 0.05*use_bilingual_dict(source_v, target_v))</span>
+				
+				<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_v</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">source_v</span><span class="p">))</span> <span class="o">-</span> <span class="mf">0.05</span><span class="o">*</span><span class="n">use_bilingual_dict</span><span class="p">(</span><span class="n">source_v</span><span class="p">,</span> <span class="n">target_v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">alignment_candidates</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+					<span class="n">alignment_candidates</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_v</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">source_v</span><span class="p">))</span> <span class="o">-</span> <span class="mf">0.05</span><span class="o">*</span><span class="n">use_bilingual_dict</span><span class="p">(</span><span class="n">source_v</span><span class="p">,</span> <span class="n">target_v</span><span class="p">)</span><span class="o">+</span><span class="mf">0.1</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_k</span><span class="p">,</span> <span class="n">source_k</span> 
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">alignment_candidates</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_v</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">source_v</span><span class="p">))</span> <span class="o">-</span> <span class="mf">0.05</span><span class="o">*</span><span class="n">use_bilingual_dict</span><span class="p">(</span><span class="n">source_v</span><span class="p">,</span> <span class="n">target_v</span><span class="p">)]</span> <span class="o">=</span> <span class="n">target_k</span><span class="p">,</span> <span class="n">source_k</span> 
+	
 
-	<span class="n">best_candidate</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">alignment_candidates</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-	<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">alignment_candidates</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-		<span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">best_candidate</span><span class="p">:</span>
-			<span class="n">alignment</span> <span class="o">=</span> <span class="n">k</span>
-			<span class="k">return</span> <span class="n">alignment</span></div>
+	<span class="n">best_candidate</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">alignment_candidates</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">alignment_candidates</span><span class="p">[</span><span class="n">best_candidate</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="preprocessing_alignment_candidates"><a class="viewcode-back" href="../alignment.html#alignment_based_on_item_structure.preprocessing_alignment_candidates">[docs]</a><span class="k">def</span> <span class="nf">preprocessing_alignment_candidates</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Preprocesses the text segment by tokenizing it, removing punctuation.</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 text (string): the text segment to be preprocessed.</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		The preprocessed tokens (a list of strings). </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">text</span> <span class="o">=</span>  <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[^\w\s]+&quot;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> 
+
+	<span class="n">tokens</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+	<span class="n">preprocessed_tokens</span> <span class="o">=</span> <span class="p">[]</span>
+
+	<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+			<span class="n">preprocessed_tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+
+
+	<span class="k">return</span> <span class="n">preprocessed_tokens</span></div>
+
+<div class="viewcode-block" id="identify_showc_segment"><a class="viewcode-back" href="../alignment.html#alignment_based_on_item_structure.identify_showc_segment">[docs]</a><span class="k">def</span> <span class="nf">identify_showc_segment</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Searches in list_source, list_target if there are intructions that seem to be show card segments that should be aligned together.</span>
+<span class="sd">	This method was implemented as an additional strategy to align correctly instruction segments.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		param1 list_source (list): list of source segments (contains segments of same item_name and item_type)</span>
+<span class="sd">		param2 list_target (list): list of target segments (contains segments of same item_name and item_type)</span>
+<span class="sd">		param3 item_type (string): item_type metadata being analyzed. In this method we want to consider only instruction segments.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		str indicating if instructions that follow the show card segments were found.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">target_regex</span> <span class="o">=</span>  <span class="sa">r</span><span class="s2">&quot;(?P&lt;card&gt;)(card|showcard|tarjeta|targeta|kartu|karta|karty|kort|kortet|carte|liste|kort|kortet|carte|karte|Bildblatt|cartão|lista|КАРТОЧКУ|КАРТОЧКА|KAРTOЧКА|карточкой|карточке|карточки|карте|карты)\s(?P&lt;numberorletter&gt;)(\d+|\w+|\w+\d+|\d+\w+)&quot;</span>  
+	<span class="n">source_regex</span> <span class="o">=</span>  <span class="sa">r</span><span class="s2">&quot;(?P&lt;card&gt;)(card|showcard)\s(?P&lt;numberorletter&gt;)(\d+|\w+|\w+\d+|\d+\w+)&quot;</span>  
+	<span class="k">if</span> <span class="n">item_type</span> <span class="o">==</span> <span class="s1">&#39;INSTRUCTION&#39;</span><span class="p">:</span>
+
+		<span class="n">source_candidates</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">target_candidates</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">list_source</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">source_regex</span><span class="p">,</span> <span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">):</span>
+				<span class="n">source_candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+		<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">list_target</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">target_regex</span><span class="p">,</span> <span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">):</span>
+				<span class="n">target_candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">source_candidates</span> <span class="ow">and</span> <span class="n">target_candidates</span><span class="p">:</span>
+			<span class="n">best_candidate</span> <span class="o">=</span> <span class="mi">999</span>
+			<span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">source_candidates</span><span class="p">:</span>
+				<span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">target_candidates</span><span class="p">:</span>
+					<span class="n">source_text</span> <span class="o">=</span> <span class="n">preprocessing_alignment_candidates</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+					<span class="n">target_text</span> <span class="o">=</span> <span class="n">preprocessing_alignment_candidates</span><span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+					<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_text</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">source_text</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">best_candidate</span><span class="p">:</span>
+						<span class="n">best_candidate</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_text</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">source_text</span><span class="p">))</span>
+						<span class="n">chosen_source</span> <span class="o">=</span> <span class="n">source</span>
+						<span class="n">chosen_target</span> <span class="o">=</span> <span class="n">target</span>
+
+			<span class="k">return</span> <span class="n">list_target</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">chosen_target</span><span class="p">),</span> <span class="n">list_source</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">chosen_source</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="s1">&#39;No showc segment identified&#39;</span>
+
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s1">&#39;No showc segment identified&#39;</span></div>
+
+
+
+
+
+<span class="k">def</span> <span class="nf">use_bilingual_dict</span><span class="p">(</span><span class="n">source_text</span><span class="p">,</span> <span class="n">target_text</span><span class="p">):</span>
+	<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+	
+	<span class="k">if</span> <span class="n">source_text</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="n">target_text</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">source_text</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="n">a</span> <span class="o">=</span> <span class="n">mcsq_bi</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+					<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+						<span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">target_text</span><span class="p">:</span>
+							<span class="n">count</span><span class="o">+=</span><span class="mi">1</span>
+					
+				<span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+					<span class="k">pass</span> 
+					
+
+	<span class="k">return</span> <span class="n">count</span>
+
+
 
 
 <div class="viewcode-block" id="get_original_index"><a class="viewcode-back" href="../alignment.html#alignment_based_on_item_structure.get_original_index">[docs]</a><span class="k">def</span> <span class="nf">get_original_index</span><span class="p">(</span><span class="n">list_source</span><span class="p">,</span> <span class="n">list_target</span><span class="p">,</span> <span class="n">source_segment_index</span><span class="p">,</span> <span class="n">target_segment_index</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">):</span>
@@ -837,83 +883,46 @@
 	<span class="k">return</span> <span class="n">df</span> </div>
 
 
-<div class="viewcode-block" id="same_source_target_index_card_instructions"><a class="viewcode-back" href="../alignment.html#alignment_based_on_item_structure.same_source_target_index_card_instructions">[docs]</a><span class="k">def</span> <span class="nf">same_source_target_index_card_instructions</span><span class="p">(</span><span class="n">source_index</span><span class="p">,</span> <span class="n">target_index</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">,</span> <span class="n">list_source</span><span class="p">,</span><span class="n">list_target</span><span class="p">,</span><span class="n">item_type</span><span class="p">,</span><span class="n">df</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Align source and target instruction segments identified as showcard segments.</span>
-
-<span class="sd">	Args:</span>
-<span class="sd">		param1 source_index (int): source showcard segment. </span>
-<span class="sd">		param2 target_index (int): target showcard segment.</span>
-<span class="sd">		param3 aux_source (list): auxiliary list of source segments being modified in outer loop (contains segments of same item_name and item_type).</span>
-<span class="sd">		param4 aux_target (list): auxiliary list of target segments being modified in outer loop (contains segments of same item_name and item_type).</span>
-<span class="sd">		param5 list_source (list): list of source segments (contains segments of same item_name and item_type).</span>
-<span class="sd">		param6 list_target (list): list of target segments (contains segments of same item_name and item_type).</span>
-<span class="sd">		param7 item_type (string): item_type metadata, can be REQUEST, INTRODUCTION or INSTRUCTION</span>
-<span class="sd">		param8 df (pandas dataframe): dataframe to store the questionnaire alignment</span>
-
-<span class="sd">	Returns:</span>
-<span class="sd">		df (pandas dataframe) with newly aligned survey item segments.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">if</span> <span class="n">source_index</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">target_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-		<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;source_survey_itemID&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;target_survey_itemID&#39;</span><span class="p">:</span> <span class="n">list_target</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> 
-		<span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> 
-		<span class="s1">&#39;item_name&#39;</span><span class="p">:</span><span class="n">list_source</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;source_text&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">6</span><span class="p">],</span> 
-		<span class="s1">&#39;target_text&#39;</span><span class="p">:</span>  <span class="n">list_target</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">6</span><span class="p">]}</span>
-		<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">aux_source</span><span class="p">):</span>
-			<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;source_survey_itemID&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;target_survey_itemID&#39;</span><span class="p">:</span> <span class="n">aux_target</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
-			<span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span><span class="n">item</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> 
-			<span class="s1">&#39;source_text&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="s1">&#39;target_text&#39;</span><span class="p">:</span>  <span class="n">aux_target</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">6</span><span class="p">]}</span>
-			<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-		<span class="k">return</span> <span class="n">df</span>
-
-	<span class="k">elif</span> <span class="n">source_index</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_source</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">target_index</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_target</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">aux_source</span><span class="p">):</span>
-			<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;source_survey_itemID&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;target_survey_itemID&#39;</span><span class="p">:</span> <span class="n">aux_target</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
-			<span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span><span class="n">item</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> 
-			<span class="s1">&#39;source_text&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="s1">&#39;target_text&#39;</span><span class="p">:</span>  <span class="n">aux_target</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">6</span><span class="p">]}</span>
-			<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-		<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;source_survey_itemID&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="n">source_index</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;target_survey_itemID&#39;</span><span class="p">:</span> <span class="n">list_target</span><span class="p">[</span><span class="n">target_index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> 
-		<span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="n">source_index</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="n">source_index</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> 
-		<span class="s1">&#39;item_name&#39;</span><span class="p">:</span><span class="n">list_source</span><span class="p">[</span><span class="n">source_index</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> 
-		<span class="s1">&#39;source_text&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="n">source_index</span><span class="p">][</span><span class="mi">6</span><span class="p">],</span> <span class="s1">&#39;target_text&#39;</span><span class="p">:</span>  <span class="n">list_target</span><span class="p">[</span><span class="n">target_index</span><span class="p">][</span><span class="mi">6</span><span class="p">]}</span>
-		<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-	<span class="k">return</span> <span class="n">df</span></div>
 
 
+<span class="k">def</span> <span class="nf">b_match</span><span class="p">(</span><span class="n">list_target</span><span class="p">,</span> <span class="n">list_source</span><span class="p">):</span>
+	<span class="n">dict_ratios</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+	<span class="c1">##</span>
+	<span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">list_target</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">list_source</span><span class="p">:</span>
+			<span class="n">t</span> <span class="o">=</span> <span class="n">preprocessing_alignment_candidates</span><span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+			<span class="n">s</span> <span class="o">=</span> <span class="n">preprocessing_alignment_candidates</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+			<span class="k">if</span> <span class="s1">&#39;ENG&#39;</span> <span class="ow">in</span> <span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+				<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="ow">in</span> <span class="n">dict_ratios</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+					<span class="n">dict_ratios</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span><span class="o">+</span><span class="mf">0.1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> 
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">dict_ratios</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))]</span> <span class="o">=</span> <span class="p">[</span><span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> 
+			<span class="k">else</span><span class="p">:</span>
+				<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+				<span class="nb">print</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span><span class="o">-</span><span class="mf">0.05</span><span class="o">*</span><span class="n">use_bilingual_dict</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+				<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span><span class="o">-</span><span class="mf">0.05</span><span class="o">*</span><span class="n">use_bilingual_dict</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="n">dict_ratios</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+					<span class="n">dict_ratios</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span><span class="o">-</span><span class="mf">0.05</span><span class="o">*</span><span class="n">use_bilingual_dict</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="mf">0.1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> 
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">dict_ratios</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span><span class="o">-</span><span class="mf">0.05</span><span class="o">*</span><span class="n">use_bilingual_dict</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> 
 
-<div class="viewcode-block" id="different_source_target_index_card_instructions"><a class="viewcode-back" href="../alignment.html#alignment_based_on_item_structure.different_source_target_index_card_instructions">[docs]</a><span class="k">def</span> <span class="nf">different_source_target_index_card_instructions</span><span class="p">(</span><span class="n">source_index</span><span class="p">,</span> <span class="n">target_index</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">,</span> <span class="n">list_source</span><span class="p">,</span><span class="n">list_target</span><span class="p">,</span><span class="n">item_type</span><span class="p">,</span><span class="n">df</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Align source and target instruction segments identified as showcard segments. For sake of simplicity,</span>
-<span class="sd">	when the source index and the target index of showcard segments are different, they are moved to the </span>
-<span class="sd">	first position in the isntruction list.</span>
+	<span class="n">best_candidate</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">dict_ratios</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="n">best_candidate</span><span class="p">)</span>
+	<span class="n">values</span> <span class="o">=</span> <span class="n">dict_ratios</span><span class="p">[</span><span class="n">best_candidate</span><span class="p">]</span>
 
-<span class="sd">	Args:</span>
-<span class="sd">		param1 source_index (int): source showcard segment. </span>
-<span class="sd">		param2 target_index (int): target showcard segment.</span>
-<span class="sd">		param3 aux_source (list): auxiliary list of source segments being modified in outer loop (contains segments of same item_name and item_type).</span>
-<span class="sd">		param4 aux_target (list): auxiliary list of target segments being modified in outer loop (contains segments of same item_name and item_type).</span>
-<span class="sd">		param5 list_source (list): list of source segments (contains segments of same item_name and item_type).</span>
-<span class="sd">		param6 list_target (list): list of target segments (contains segments of same item_name and item_type).</span>
-<span class="sd">		param7 item_type (string): item_type metadata, can be REQUEST, INTRODUCTION or INSTRUCTION</span>
-<span class="sd">		param8 df (pandas dataframe): dataframe to store the questionnaire alignment</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_source</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+			<span class="n">source_best</span> <span class="o">=</span> <span class="n">list_source</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+			<span class="n">source_best_index</span> <span class="o">=</span> <span class="n">i</span>
+			<span class="k">break</span>
 
-<span class="sd">	Returns:</span>
-<span class="sd">		df (pandas dataframe) with newly aligned survey item segments.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="n">list_source</span><span class="p">[</span><span class="n">source_index</span><span class="p">],</span> <span class="n">list_source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">list_source</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">list_source</span><span class="p">[</span><span class="n">source_index</span><span class="p">]</span>
-	<span class="n">list_target</span><span class="p">[</span><span class="n">target_index</span><span class="p">],</span> <span class="n">list_target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">list_target</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">list_target</span><span class="p">[</span><span class="n">target_index</span><span class="p">]</span>
-
-	<span class="n">df</span> <span class="o">=</span> <span class="n">same_source_target_index_card_instructions</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">,</span> <span class="n">list_source</span><span class="p">,</span><span class="n">list_target</span><span class="p">,</span><span class="n">item_type</span><span class="p">,</span><span class="n">df</span><span class="p">)</span>
-
-	<span class="k">return</span> <span class="n">df</span></div>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_target</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+			<span class="n">target_best</span> <span class="o">=</span> <span class="n">list_target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+			<span class="n">target_best_index</span> <span class="o">=</span> <span class="n">i</span>
+			<span class="k">break</span>
 
 
-
+	<span class="k">return</span> <span class="n">source_best</span><span class="p">,</span> <span class="n">source_best_index</span><span class="p">,</span> <span class="n">target_best</span><span class="p">,</span> <span class="n">target_best_index</span>
 
 <div class="viewcode-block" id="align_introduction_instruction_request"><a class="viewcode-back" href="../alignment.html#alignment_based_on_item_structure.align_introduction_instruction_request">[docs]</a><span class="k">def</span> <span class="nf">align_introduction_instruction_request</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span><span class="p">,</span> <span class="n">item_type</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -933,6 +942,7 @@
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">df_source</span> <span class="o">=</span> <span class="n">df_source</span><span class="p">[</span><span class="n">df_source</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">item_type</span><span class="p">]</span>
 	<span class="n">df_target</span> <span class="o">=</span> <span class="n">df_target</span><span class="p">[</span><span class="n">df_target</span><span class="p">[</span><span class="s1">&#39;item_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">item_type</span><span class="p">]</span>
+
 
 	<span class="k">if</span> <span class="n">df_source</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
 		<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">row</span> <span class="ow">in</span> <span class="n">df_target</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
@@ -973,22 +983,31 @@
 				<span class="n">aux_target</span> <span class="o">=</span> <span class="n">list_target</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 				<span class="k">del</span> <span class="n">aux_target</span><span class="p">[</span><span class="n">target_index</span><span class="p">]</span>
 
-				<span class="k">if</span> <span class="n">target_index</span> <span class="o">==</span> <span class="n">source_index</span><span class="p">:</span>
-					<span class="n">df</span> <span class="o">=</span> <span class="n">same_source_target_index_card_instructions</span><span class="p">(</span><span class="n">source_index</span><span class="p">,</span> <span class="n">target_index</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">,</span> 
-						<span class="n">list_source</span><span class="p">,</span><span class="n">list_target</span><span class="p">,</span><span class="n">item_type</span><span class="p">,</span><span class="n">df</span><span class="p">)</span>
-					<span class="k">return</span> <span class="n">df</span>
-				<span class="k">else</span><span class="p">:</span>
-					<span class="n">df</span> <span class="o">=</span> <span class="n">different_source_target_index_card_instructions</span><span class="p">(</span><span class="n">source_index</span><span class="p">,</span> <span class="n">target_index</span><span class="p">,</span> <span class="n">aux_source</span><span class="p">,</span> <span class="n">aux_target</span><span class="p">,</span> 
-						<span class="n">list_source</span><span class="p">,</span><span class="n">list_target</span><span class="p">,</span><span class="n">item_type</span><span class="p">,</span><span class="n">df</span><span class="p">)</span>
-					<span class="k">return</span> <span class="n">df</span>
+				<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;source_survey_itemID&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="n">source_index</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;target_survey_itemID&#39;</span><span class="p">:</span> <span class="n">list_target</span><span class="p">[</span><span class="n">target_index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> 
+					<span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="n">source_index</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="n">source_index</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> 
+					<span class="s1">&#39;item_name&#39;</span><span class="p">:</span><span class="n">list_source</span><span class="p">[</span><span class="n">source_index</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;source_text&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="n">source_index</span><span class="p">][</span><span class="mi">6</span><span class="p">],</span> 
+					<span class="s1">&#39;target_text&#39;</span><span class="p">:</span>  <span class="n">list_target</span><span class="p">[</span><span class="n">target_index</span><span class="p">][</span><span class="mi">6</span><span class="p">]}</span>
+				<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+				<span class="k">del</span> <span class="n">list_source</span><span class="p">[</span><span class="n">source_index</span><span class="p">]</span>
+				<span class="k">del</span> <span class="n">list_target</span><span class="p">[</span><span class="n">target_index</span><span class="p">]</span>
+
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_source</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+				<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;source_survey_itemID&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;target_survey_itemID&#39;</span><span class="p">:</span> <span class="n">list_target</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> 
+					<span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span><span class="n">list_source</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> 
+					<span class="s1">&#39;source_text&#39;</span><span class="p">:</span> <span class="n">list_source</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">6</span><span class="p">],</span> <span class="s1">&#39;target_text&#39;</span><span class="p">:</span>  <span class="n">list_target</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">6</span><span class="p">]}</span>
+				<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 			<span class="k">else</span><span class="p">:</span>
-				<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_source</span><span class="p">):</span>
-					<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;source_survey_itemID&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;target_survey_itemID&#39;</span><span class="p">:</span> <span class="n">list_target</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
-					<span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span><span class="n">item</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> 
-					<span class="s1">&#39;source_text&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="s1">&#39;target_text&#39;</span><span class="p">:</span>  <span class="n">list_target</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">6</span><span class="p">]}</span>
+				<span class="k">while</span> <span class="n">list_source</span><span class="p">:</span>
+					<span class="n">source_best</span><span class="p">,</span> <span class="n">source_best_index</span><span class="p">,</span> <span class="n">target_best</span><span class="p">,</span> <span class="n">target_best_index</span> <span class="o">=</span> <span class="n">b_match</span><span class="p">(</span><span class="n">list_target</span><span class="p">,</span> <span class="n">list_source</span><span class="p">)</span>
+					<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;source_survey_itemID&#39;</span><span class="p">:</span> <span class="n">source_best</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;target_survey_itemID&#39;</span><span class="p">:</span> <span class="n">target_best</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="n">source_best</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
+						<span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="n">source_best</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;item_type&#39;</span><span class="p">:</span> <span class="n">item_type</span><span class="p">,</span> <span class="s1">&#39;item_name&#39;</span><span class="p">:</span><span class="n">source_best</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;item_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> 
+						<span class="s1">&#39;source_text&#39;</span><span class="p">:</span> <span class="n">source_best</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="s1">&#39;target_text&#39;</span><span class="p">:</span>  <span class="n">target_best</span><span class="p">[</span><span class="mi">6</span><span class="p">]}</span>
 					<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-				<span class="k">return</span> <span class="n">df</span>
+
+					<span class="k">del</span> <span class="n">list_source</span><span class="p">[</span><span class="n">source_best_index</span><span class="p">]</span>
+					<span class="k">del</span> <span class="n">list_target</span><span class="p">[</span><span class="n">target_best_index</span><span class="p">]</span>
 
 	<span class="k">return</span> <span class="n">df</span></div>
 
@@ -1101,6 +1120,7 @@
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">filename_source</span><span class="p">,</span> <span class="n">filename_target</span><span class="p">):</span>
+
 	<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
 	<span class="n">df_source</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename_source</span><span class="p">,</span>  <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
 	<span class="n">df_target</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename_target</span><span class="p">,</span>  <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -1112,6 +1132,21 @@
 	<span class="k">global</span> <span class="n">target_language_country</span>
 	<span class="n">target_language_country</span> <span class="o">=</span> <span class="n">get_target_language_country_metadata</span><span class="p">(</span><span class="n">filename_target</span><span class="p">)</span>
 
+	<span class="k">if</span> <span class="s1">&#39;ENG&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">target_language_country</span><span class="p">:</span>
+		<span class="k">global</span> <span class="n">mcsq_bi</span>
+		<span class="k">if</span> <span class="s1">&#39;RUS&#39;</span> <span class="ow">in</span> <span class="n">target_language_country</span><span class="p">:</span>
+			<span class="n">mcsq_bi</span> <span class="o">=</span> <span class="n">Word2word</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="n">convert_iso_code</span><span class="p">(</span><span class="n">target_language_country</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span> <span class="s2">&quot;/home/danielly/workspace/MCSQ_compiling/data/bilingual/&quot;</span><span class="o">+</span><span class="n">target_language_country</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+		<span class="k">elif</span> <span class="n">target_language_country</span> <span class="o">==</span> <span class="s1">&#39;FRE_LU&#39;</span><span class="p">:</span>
+			<span class="n">mcsq_bi</span> <span class="o">=</span> <span class="n">Word2word</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="n">convert_iso_code</span><span class="p">(</span><span class="s1">&#39;FRE&#39;</span><span class="p">),</span> <span class="s2">&quot;/home/danielly/workspace/MCSQ_compiling/data/bilingual/FRE_CH&quot;</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">target_language_country</span> <span class="o">==</span> <span class="s1">&#39;GER_LU&#39;</span><span class="p">:</span>
+			<span class="n">mcsq_bi</span> <span class="o">=</span> <span class="n">Word2word</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="n">convert_iso_code</span><span class="p">(</span><span class="s1">&#39;GER&#39;</span><span class="p">),</span> <span class="s2">&quot;/home/danielly/workspace/MCSQ_compiling/data/bilingual/GER_CH&quot;</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">target_language_country</span> <span class="o">==</span> <span class="s1">&#39;POR_LU&#39;</span><span class="p">:</span>
+			<span class="n">mcsq_bi</span> <span class="o">=</span> <span class="n">Word2word</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="n">convert_iso_code</span><span class="p">(</span><span class="s1">&#39;POR&#39;</span><span class="p">),</span> <span class="s2">&quot;/home/danielly/workspace/MCSQ_compiling/data/bilingual/POR_PT&quot;</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">mcsq_bi</span> <span class="o">=</span> <span class="n">Word2word</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="n">convert_iso_code</span><span class="p">(</span><span class="n">target_language_country</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span> <span class="s2">&quot;/home/danielly/workspace/MCSQ_compiling/data/bilingual/&quot;</span><span class="o">+</span><span class="n">target_language_country</span><span class="p">)</span>
+
+	<span class="k">global</span> <span class="n">st</span>
+	<span class="n">st</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">)</span>
 
 	<span class="k">if</span> <span class="s1">&#39;EVS&#39;</span> <span class="ow">in</span> <span class="n">study</span><span class="p">:</span>
 		<span class="n">source_language_country</span> <span class="o">=</span> <span class="s1">&#39;ENG_GB&#39;</span>
@@ -1128,25 +1163,32 @@
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">intersection_modules</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">df_source</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df_target</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
 	<span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">intersection_modules</span><span class="p">):</span>
-		<span class="n">df_source_filtered</span><span class="p">,</span> <span class="n">df_target_filtered</span> <span class="o">=</span> <span class="n">filter_by_module</span><span class="p">(</span><span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
-		
-		<span class="n">unique_item_names_source</span> <span class="o">=</span> <span class="n">df_source_filtered</span><span class="o">.</span><span class="n">item_name</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
-		<span class="n">unique_item_names_target</span> <span class="o">=</span> <span class="n">df_target_filtered</span><span class="o">.</span><span class="n">item_name</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
-		
-		<span class="k">for</span> <span class="n">unique_item_name</span> <span class="ow">in</span> <span class="n">unique_item_names_source</span><span class="p">:</span>
-			<span class="n">process_responses</span> <span class="o">=</span> <span class="kc">True</span>
-			<span class="k">if</span> <span class="s1">&#39;EVS&#39;</span> <span class="ow">in</span> <span class="n">study</span> <span class="ow">or</span> <span class="s1">&#39;ESS&#39;</span> <span class="ow">in</span> <span class="n">study</span><span class="p">:</span>
-				<span class="k">if</span> <span class="n">unique_item_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">country_specific_requests</span><span class="o">.</span><span class="n">item_names</span><span class="p">:</span>
-					<span class="n">process_responses</span> <span class="o">=</span> <span class="kc">False</span>
+		<span class="k">if</span> <span class="s1">&#39;EVS_R03&#39;</span> <span class="ow">in</span> <span class="n">filename_source</span> <span class="ow">and</span> <span class="s1">&#39;Socio Demographics&#39;</span> <span class="ow">in</span> <span class="n">module</span><span class="p">:</span>
 			<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">			Computes the intersection between the item names of source and target questionnaires.</span>
-<span class="sd">			We are only interested in aligning questions that are present in both files.</span>
+<span class="sd">			Unfortunately the Socio Demographics section of the EVS wave 3 files have many inconsistencies concerning the item names.</span>
+<span class="sd">			This module won&#39;t be aligned because of the risk of creating many wrongly aligned segments.</span>
 <span class="sd">			&quot;&quot;&quot;</span>
-			<span class="n">df_source_by_item_name</span> <span class="o">=</span> <span class="n">df_source_filtered</span><span class="p">[</span><span class="n">df_source_filtered</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">==</span><span class="n">unique_item_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
-			<span class="n">df_target_by_item_name</span> <span class="o">=</span> <span class="n">df_target_filtered</span><span class="p">[</span><span class="n">df_target_filtered</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">==</span><span class="n">unique_item_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+			<span class="k">pass</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">df_source_filtered</span><span class="p">,</span> <span class="n">df_target_filtered</span> <span class="o">=</span> <span class="n">filter_by_module</span><span class="p">(</span><span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
 			
-			<span class="k">if</span> <span class="n">df_target_by_item_name</span><span class="o">.</span><span class="n">empty</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">df_source_by_item_name</span><span class="o">.</span><span class="n">empty</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-				<span class="n">df</span> <span class="o">=</span> <span class="n">align_on_metadata</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_source_by_item_name</span><span class="p">,</span> <span class="n">df_target_by_item_name</span><span class="p">,</span> <span class="n">process_responses</span><span class="p">)</span>
+			<span class="n">unique_item_names_source</span> <span class="o">=</span> <span class="n">df_source_filtered</span><span class="o">.</span><span class="n">item_name</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+			<span class="n">unique_item_names_target</span> <span class="o">=</span> <span class="n">df_target_filtered</span><span class="o">.</span><span class="n">item_name</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+			
+			<span class="k">for</span> <span class="n">unique_item_name</span> <span class="ow">in</span> <span class="n">unique_item_names_source</span><span class="p">:</span>
+				<span class="n">process_responses</span> <span class="o">=</span> <span class="kc">True</span>
+				<span class="k">if</span> <span class="s1">&#39;EVS&#39;</span> <span class="ow">in</span> <span class="n">study</span> <span class="ow">or</span> <span class="s1">&#39;ESS&#39;</span> <span class="ow">in</span> <span class="n">study</span><span class="p">:</span>
+					<span class="k">if</span> <span class="n">unique_item_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">country_specific_requests</span><span class="o">.</span><span class="n">item_names</span><span class="p">:</span>
+						<span class="n">process_responses</span> <span class="o">=</span> <span class="kc">False</span>
+				<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">				Computes the intersection between the item names of source and target questionnaires.</span>
+<span class="sd">				We are only interested in aligning questions that are present in both files.</span>
+<span class="sd">				&quot;&quot;&quot;</span>
+				<span class="n">df_source_by_item_name</span> <span class="o">=</span> <span class="n">df_source_filtered</span><span class="p">[</span><span class="n">df_source_filtered</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">==</span><span class="n">unique_item_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+				<span class="n">df_target_by_item_name</span> <span class="o">=</span> <span class="n">df_target_filtered</span><span class="p">[</span><span class="n">df_target_filtered</span><span class="p">[</span><span class="s1">&#39;item_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">==</span><span class="n">unique_item_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+				
+				<span class="k">if</span> <span class="n">df_target_by_item_name</span><span class="o">.</span><span class="n">empty</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">df_source_by_item_name</span><span class="o">.</span><span class="n">empty</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+					<span class="n">df</span> <span class="o">=</span> <span class="n">align_on_metadata</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_source_by_item_name</span><span class="p">,</span> <span class="n">df_target_by_item_name</span><span class="p">,</span> <span class="n">process_responses</span><span class="p">)</span>
 				
 	
 	<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">source_language_country</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">target_language_country</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">study</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
