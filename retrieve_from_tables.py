@@ -18,52 +18,6 @@ import pandas as pd
 from sqlalchemy.sql import select
 
 
-def get_tagged_text_from_survey_item_table():
-	"""
-	Gets the survey_itemid and the POS tagged text from the survey_item table and creates a dictionary.
-
-	Returns: 
-		A dictionary with survey_itemids as keys and POS tagged text as values.
-	"""	
-	session = session_factory()
-
-	tagged_text_dict = dict()
-	result = session.execute("select survey_itemid, pos_tagged_text from survey_item;")
-
-	for i in result:
-		if i[0] is not None:
-			survey_itemid = i[0]
-			tagged_text_dict[survey_itemid] = i[1]
-
-
-	session.close()
-
-	return tagged_text_dict
-
-def create_tagged_text_dict(id_list):
-	"""
-	Gets the survey_itemid and the POS tagged text from the survey_item table and creates a dictionary.
-	
-	Args:
-		param1 id_list (list of strings): a language specific list of the target segment IDs in the alignment table. 
-
-	Returns: 
-		A dictionary with target survey_itemids as keys and POS tagged text as values.
-	"""	
-	session = session_factory()
-
-	tagged_text_dict = dict()
-	result = session.execute("select survey_itemid, pos_tagged_text from survey_item;")
-
-	for i in result:
-		if i[0] is not None and i[0] in id_list:
-			survey_itemid = i[0]
-			tagged_text_dict[survey_itemid] = i[1]
-
-
-	session.close()
-
-	return tagged_text_dict
 
 def get_ids_from_alignment_table(survey_itemid):
 	"""
@@ -113,46 +67,6 @@ def get_ids_from_alignment_table_per_language(language):
 
 	return survey_itemid_list
 
-
-
-def build_id_dicts_per_language(language):
-	"""
-	Gets all text segments and their IDs and builds a dictionary by item type.
-	
-	Args:
-		param1 language (string): target language.
-		
-	Returns: 
-		Four different dictionaries (one for each item type). The IDs are the keys and the text segments are the values.
-	"""	
-	session = session_factory()
-
-	result = session.execute("select requestid, responseid, instructionid, introductionid, text from survey_item where country_language ilike '"+language+"%'")
-	
-	session.close()
-	request = dict()
-	response = dict()
-	instruction = dict()
-	introduction = dict()
-
-	for i in result:
-		requestid = i[0]  
-		responseid = i[1] 
-		instructionid = i[2] 
-		introductionid = i[3] 
-		text = i[4] 
-
-
-		if requestid is not None and isinstance(requestid, int):
-			request[requestid] = text
-		elif responseid is not None and isinstance(responseid, int):
-			response[responseid] = text
-		elif instructionid is not None and isinstance(instructionid, int):
-			instruction[instructionid] = text
-		elif introductionid is not None and isinstance(introductionid, int):
-			introduction[introductionid] = text
-
-	return request, response, instruction, introduction
 
 def get_introduction_id(text):
 	"""

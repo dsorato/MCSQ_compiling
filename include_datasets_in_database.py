@@ -90,10 +90,8 @@ def populate_survey_item(df, d_surveys, d_modules, d_introductions, d_instructio
 				item_is_source = False
 
 			
-			write_survey_item_table(row['survey_item_ID'], surveyid, row['text'], item_value, module_id, request_id, response_id, 
-				instruction_id, introduction_id, country_language, item_is_source, row['item_name'], row['item_type'])
-
-
+			write_survey_item_table(row['survey_item_ID'], surveyid, row['text'], item_value, module_id, request_id, response_id, instruction_id, introduction_id,
+				country_language, item_is_source, row['item_name'], row['item_type'], row['pos_tagged_text'], row['ner_tagged_text'])
 
 def populate_introduction_table(df):
 	"""
@@ -112,7 +110,7 @@ def populate_introduction_table(df):
 	for i, row in df_introduction.iterrows(): 
 		if isinstance(row['text'], str): 
 			write_introduction_table(row['text'])
-			introduction_id = get_introduction_id(row['text'])
+			introduction_id = get_introduction_id(row['text'], row['pos_tagged_text'], row['ner_tagged_text'])
 			dictionary_introductions[row['text']] = introduction_id
 
 	return dictionary_introductions
@@ -136,7 +134,7 @@ def populate_instruction_table(df):
 	for i, row in df_instructions.iterrows(): 
 		if isinstance(row['text'], str): 
 			write_instruction_table(row['text'])
-			instruction_id = get_instruction_id(row['text'])
+			instruction_id = get_instruction_id(row['text'], row['pos_tagged_text'], row['ner_tagged_text'])
 			dictionary_instructions[row['text']] = instruction_id
 
 	return dictionary_instructions
@@ -159,7 +157,7 @@ def populate_request_table(df):
 	dictionary_requests = dict()
 	for i, row in df_request.iterrows(): 
 		if isinstance(row['text'], str): 
-			write_request_table(row['text'])
+			write_request_table(row['text'], row['pos_tagged_text'], row['ner_tagged_text'])
 			request_id = get_request_id(row['text'])
 			dictionary_requests[row['text']] = request_id
 

@@ -22,14 +22,14 @@ def populate_alignment_table(df):
 	"""
 	for i, row in df.iterrows():
 		if pd.isnull(row['source_text']):
-			write_alignment_table(None, row['target_text'], None, row['target_survey_itemID'])
+			write_alignment_table(None, row['target_text'], None, row['target_survey_itemID'], None, row['target_pos_tagged_text'], None, row['target_ner_tagged_text'])
 
 		elif pd.isnull(row['target_text']):
-			write_alignment_table(row['source_text'], None, row['source_survey_itemID'], None)
+			write_alignment_table(row['source_text'], None, row['source_survey_itemID'], None, row['source_pos_tagged_text'], None, row['source_ner_tagged_text'], None)
 		
 		else:
-			write_alignment_table(row['source_text'], row['target_text'], row['source_survey_itemID'], row['target_survey_itemID'])
-
+			write_alignment_table(row['source_text'], row['target_text'], row['source_survey_itemID'], row['target_survey_itemID'], 
+				row['source_pos_tagged_text'], row['target_pos_tagged_text'], row['source_ner_tagged_text'], row['target_ner_tagged_text'])
 
 
 def main(folder_path):
