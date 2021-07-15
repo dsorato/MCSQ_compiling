@@ -105,11 +105,11 @@ def identify_showc_segment(list_source, list_target, item_type):
 		target_candidates = []
 
 		for item in list_source:
-			if re.findall(source_regex, item[-1], re.IGNORECASE):
+			if re.search(source_regex, item[-1], re.IGNORECASE):
 				source_candidates.append(item)
 
 		for item in list_target:
-			if re.findall(target_regex, item[-1], re.IGNORECASE):
+			if re.search(target_regex, item[-1], re.IGNORECASE):
 				target_candidates.append(item)
 
 		if source_candidates and target_candidates:
@@ -208,14 +208,17 @@ def only_one_segment_in_source_align(alignment, source_segment, target_segment, 
 	if alignment[0] == 0:
 		data = {'source_survey_itemID':source_segment[0], 'target_survey_itemID': target_segment[0], 
 		'Study': target_segment[1], 'module': target_segment[2], 'item_type': target_segment[3], 
-		'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[-1], 
-		'target_text': target_segment[-1]}
+		'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[6], 'target_text': target_segment[6],
+		'source_ner_tagged_text': source_segment[7],'target_ner_tagged_text': target_segment[7],
+		'source_pos_tagged_text': source_segment[8], 'target_pos_tagged_text': target_segment[8]}
 		df = df.append(data, ignore_index=True)
 
 		for i, item in enumerate(aux_target):
 			data = {'source_survey_itemID': None, 'target_survey_itemID': item[0] , 'Study': item[1], 
 			'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
-			'source_text': None, 'target_text':  item[6]}
+			'source_text': None, 'target_text':  item[6],
+			'source_ner_tagged_text': None,'target_ner_tagged_text': item[7],
+			'source_pos_tagged_text': None, 'target_pos_tagged_text': item[8]}
 			df = df.append(data, ignore_index=True)
 
 	#If the index of the target list that was first aligned is the last segment on the list then it goes after all other segments.
@@ -223,13 +226,16 @@ def only_one_segment_in_source_align(alignment, source_segment, target_segment, 
 		for i, item in enumerate(aux_target):
 			data = {'source_survey_itemID': None, 'target_survey_itemID': item[0] , 'Study': item[1], 
 			'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
-			'source_text': None, 'target_text':  item[6]}
+			'source_text': None, 'target_text':  item[6],
+			'source_ner_tagged_text': None,'target_ner_tagged_text': item[7],
+			'source_pos_tagged_text': None, 'target_pos_tagged_text': item[8]}
 			df = df.append(data, ignore_index=True)
 
 		data = {'source_survey_itemID': source_segment[0], 'target_survey_itemID': target_segment[0], 
 		'Study': target_segment[1], 'module': target_segment[2], 'item_type': target_segment[3], 
-		'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[-1], 
-		'target_text': target_segment[-1]}
+		'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[6], 'target_text': target_segment[6],
+		'source_ner_tagged_text': source_segment[7],'target_ner_tagged_text': target_segment[7],
+		'source_pos_tagged_text': source_segment[8], 'target_pos_tagged_text': target_segment[8]}
 		df = df.append(data, ignore_index=True)
 	# If the index of the target list that was first aligned is neither the first nor the last segment, we have to find its place using the index.
 	else:
@@ -237,13 +243,16 @@ def only_one_segment_in_source_align(alignment, source_segment, target_segment, 
 			if i != alignment[0]:
 				data = {'source_survey_itemID': None, 'target_survey_itemID': item[0] , 'Study': item[1], 
 				'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
-				'source_text': None, 'target_text':  item[6]}
+				'source_text': None, 'target_text':  item[6],
+				'source_ner_tagged_text': None,'target_ner_tagged_text': item[7],
+				'source_pos_tagged_text': None, 'target_pos_tagged_text': item[8]}
 				df = df.append(data, ignore_index=True)
 			elif i == alignment[0]:
 				data = {'source_survey_itemID': source_segment[0], 'target_survey_itemID': target_segment[0], 
 				'Study': target_segment[1], 'module': target_segment[2], 'item_type': target_segment[3], 
-				'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[-1], 
-				'target_text': target_segment[-1]}
+				'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[6], 'target_text': target_segment[6],
+				'source_ner_tagged_text': source_segment[7],'target_ner_tagged_text': target_segment[7],
+				'source_pos_tagged_text': source_segment[8], 'target_pos_tagged_text': target_segment[8]}
 				df = df.append(data, ignore_index=True)
 
 	return df
@@ -274,14 +283,17 @@ def only_one_segment_in_target_align(alignment, source_segment, target_segment, 
 	if alignment[1] == 0:
 		data = {'source_survey_itemID':source_segment[0], 'target_survey_itemID': target_segment[0], 
 		'Study': target_segment[1], 'module': target_segment[2], 'item_type': target_segment[3], 
-		'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[-1], 
-		'target_text': target_segment[-1]}
+		'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[6], 'target_text': target_segment[6],
+		'source_ner_tagged_text': source_segment[7],'target_ner_tagged_text': target_segment[7],
+		'source_pos_tagged_text': source_segment[8], 'target_pos_tagged_text': target_segment[8]}
 		df = df.append(data, ignore_index=True)
 
 		for i, item in enumerate(aux_source):
 			data = {'source_survey_itemID': item[0], 'target_survey_itemID':  None, 'Study': item[1], 
 			'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
-			'source_text': item[6], 'target_text': None}
+			'source_text': item[6], 'target_text': None, 
+			'source_ner_tagged_text': item[7],'target_ner_tagged_text': None,
+			'source_pos_tagged_text': item[8], 'target_pos_tagged_text':None}
 			df = df.append(data, ignore_index=True)
 
 	#If the index of the source list that was first aligned is the last segment on the list then it goes after all other segments.
@@ -289,13 +301,16 @@ def only_one_segment_in_target_align(alignment, source_segment, target_segment, 
 		for i, item in enumerate(aux_source):
 			data = {'source_survey_itemID': item[0], 'target_survey_itemID':  None, 'Study': item[1], 
 			'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
-			'source_text': item[6], 'target_text': None}
+			'source_text': item[6], 'target_text': None, 
+			'source_ner_tagged_text': item[7],'target_ner_tagged_text': None,
+			'source_pos_tagged_text': item[8], 'target_pos_tagged_text':None}
 			df = df.append(data, ignore_index=True)
 
 		data = {'source_survey_itemID': source_segment[0], 'target_survey_itemID': target_segment[0], 
 		'Study': target_segment[1], 'module': target_segment[2], 'item_type': target_segment[3], 
-		'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[-1], 
-		'target_text': target_segment[-1]}
+		'item_name':target_segment[4], 'item_value': None,'source_text': source_segment[6], 'target_text': target_segment[6],
+		'source_ner_tagged_text': source_segment[7],'target_ner_tagged_text': target_segment[7],
+		'source_pos_tagged_text': source_segment[8], 'target_pos_tagged_text': target_segment[8]}
 		df = df.append(data, ignore_index=True)
 	# If the index of the source list that was first aligned is neither the first nor the last segment, we have to find its place using the index.
 	else:
@@ -303,13 +318,16 @@ def only_one_segment_in_target_align(alignment, source_segment, target_segment, 
 			if i != alignment[1]:
 				data = {'source_survey_itemID': item[0], 'target_survey_itemID': None , 'Study': item[1], 
 				'module': item[2], 'item_type': item[3], 'item_name':item[4], 'item_value': None, 
-				'source_text': item[6], 'target_text': None}
+				'source_text': item[6], 'target_text': None, 
+				'source_ner_tagged_text': item[7],'target_ner_tagged_text': None,
+				'source_pos_tagged_text': item[8], 'target_pos_tagged_text':None}
 				df = df.append(data, ignore_index=True)
 			elif i == alignment[1]:
 				data = {'source_survey_itemID': source_segment[0], 'target_survey_itemID': target_segment[0], 
 				'Study': target_segment[1], 'module': target_segment[2], 'item_type': target_segment[3], 
-				'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[-1], 
-				'target_text': target_segment[-1]}
+				'item_name':target_segment[4], 'item_value': None, 'source_text': source_segment[6], 'target_text': target_segment[6],
+				'source_ner_tagged_text': source_segment[7],'target_ner_tagged_text': target_segment[7],
+				'source_pos_tagged_text': source_segment[8], 'target_pos_tagged_text': target_segment[8]}
 				df = df.append(data, ignore_index=True)
 
 	return df
@@ -333,8 +351,9 @@ def treat_a_single_pairless_target(list_source, list_target, sorted_aligments, t
 		data = {'source_survey_itemID': None, 'target_survey_itemID': list_target[target_segments_without_pair][0], 
 		'Study': list_target[target_segments_without_pair][1], 'module': list_target[target_segments_without_pair][2], 
 		'item_type': list_target[target_segments_without_pair][3], 'item_name':list_target[target_segments_without_pair][4], 
-		'item_value': None, 'source_text': None, 
-		'target_text': list_target[target_segments_without_pair][-1]}
+		'item_value': None, 'source_text': None,'target_text': list_target[target_segments_without_pair][6],
+		'source_ner_tagged_text': None, 'target_ner_tagged_text': list_target[target_segments_without_pair][7], 
+		'source_pos_tagged_text': None, 'target_pos_tagged_text': list_target[target_segments_without_pair][8]}
 		df = df.append(data, ignore_index=True)
 
 		for alignment in sorted_aligments:
@@ -343,8 +362,9 @@ def treat_a_single_pairless_target(list_source, list_target, sorted_aligments, t
 			data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 			'Study': list_target[target_index][1], 'module': list_target[target_index][2], 
 			'item_type': list_target[target_index][3], 'item_name':list_target[target_index][4], 
-			'item_value': None, 'source_text': list_source[source_index][-1], 
-			'target_text': list_target[target_index][-1]}
+			'item_value': None, 'source_text': list_source[source_index][6],'target_text': list_target[target_index][6],
+			'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+			'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 			df = df.append(data, ignore_index=True)
 
 	elif target_segments_without_pair == len(list_target)-1:
@@ -354,14 +374,16 @@ def treat_a_single_pairless_target(list_source, list_target, sorted_aligments, t
 			data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 			'Study': list_target[target_index][1], 'module': list_target[target_index][2], 
 			'item_type': list_target[target_index][3], 'item_name':list_target[target_index][4], 
-			'item_value': None, 'source_text': list_source[source_index][-1], 
-			'target_text': list_target[target_index][-1]}
+			'item_value': None, 'source_text': list_source[source_index][6],'target_text': list_target[target_index][6],
+			'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+			'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 			df = df.append(data, ignore_index=True)
 		data = {'source_survey_itemID': None, 'target_survey_itemID': list_target[target_segments_without_pair][0], 
 		'Study': list_target[target_segments_without_pair][1], 'module': list_target[target_segments_without_pair][2], 
 		'item_type': list_target[target_segments_without_pair][3], 'item_name':list_target[target_segments_without_pair][4], 
-		'item_value': None, 'source_text': None, 
-		'target_text': list_target[target_segments_without_pair][-1]}
+		'item_value': None, 'source_text': None, 'target_text': list_target[target_segments_without_pair][6],
+		'source_ner_tagged_text': None, 'target_ner_tagged_text': list_target[target_segments_without_pair][7], 
+		'source_pos_tagged_text': None, 'target_pos_tagged_text': list_target[target_segments_without_pair][8]}
 		df = df.append(data, ignore_index=True)
 
 
@@ -375,23 +397,26 @@ def treat_a_single_pairless_target(list_source, list_target, sorted_aligments, t
 				data = {'source_survey_itemID': None, 'target_survey_itemID': list_target[target_segments_without_pair][0], 
 				'Study': list_target[target_segments_without_pair][1], 'module': list_target[target_segments_without_pair][2], 
 				'item_type': list_target[target_segments_without_pair][3], 'item_name':list_target[target_segments_without_pair][4], 
-				'item_value': None, 'source_text': None, 
-				'target_text': list_target[target_segments_without_pair][-1]}
+				'item_value': None, 'source_text': None,'target_text': list_target[target_segments_without_pair][6],
+				'source_ner_tagged_text': None, 'target_ner_tagged_text': list_target[target_segments_without_pair][7], 
+				'source_pos_tagged_text': None, 'target_pos_tagged_text': list_target[target_segments_without_pair][8]}
 				df = df.append(data, ignore_index=True)
 
 				data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 				'Study': list_target[target_index][1], 'module': list_target[target_index][2], 
 				'item_type': list_target[target_index][3], 'item_name':list_target[target_index][4], 
-				'item_value': None, 'source_text': list_source[source_index][-1], 
-				'target_text': list_target[target_index][-1]}
+				'item_value': None, 'source_text': list_source[source_index][6],'target_text': list_target[target_index][6],
+				'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+				'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 				df = df.append(data, ignore_index=True)
 
 			else:
 				data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 				'Study': list_target[target_index][1], 'module': list_target[target_index][2], 
 				'item_type': list_target[target_index][3], 'item_name':list_target[target_index][4], 
-				'item_value': None, 'source_text': list_source[source_index][-1], 
-				'target_text': list_target[target_index][-1]}
+				'item_value': None, 'source_text': list_source[source_index][6],'target_text': list_target[target_index][6],
+				'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+				'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 				df = df.append(data, ignore_index=True)
 
 	return df
@@ -416,8 +441,9 @@ def treat_a_single_pairless_source(list_source, list_target, sorted_aligments, s
 		data = {'source_survey_itemID': list_source[source_segments_without_pair][0], 'target_survey_itemID': None, 
 		'Study': list_source[source_segments_without_pair][1], 'module': list_source[source_segments_without_pair][2], 
 		'item_type': list_source[source_segments_without_pair][3], 'item_name':list_source[source_segments_without_pair][4], 
-		'item_value': None, 'source_text': list_source[source_segments_without_pair][-1], 
-		'target_text': None}
+		'item_value': None, 'source_text': list_source[source_segments_without_pair][6],'target_text': None, 
+		'source_ner_tagged_text': list_source[source_segments_without_pair][7],'target_ner_tagged_text': None,
+		'source_pos_tagged_text': list_source[source_segments_without_pair][8], 'target_pos_tagged_text':None}
 		df = df.append(data, ignore_index=True)
 
 		for alignment in sorted_aligments:
@@ -426,8 +452,9 @@ def treat_a_single_pairless_source(list_source, list_target, sorted_aligments, s
 			data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 			'Study': list_source[source_index][1], 'module': list_source[source_index][2], 
 			'item_type': list_source[source_index][3], 'item_name':list_source[source_index][4], 
-			'item_value': None, 'source_text': list_source[source_index][-1], 
-			'target_text': list_target[target_index][-1]}
+			'item_value': None, 'source_text': list_source[source_index][6],'target_text': list_target[target_index][6],
+			'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+			'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 			df = df.append(data, ignore_index=True)
 
 	elif source_segments_without_pair == len(list_source)-1:
@@ -437,15 +464,17 @@ def treat_a_single_pairless_source(list_source, list_target, sorted_aligments, s
 			data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 			'Study': list_source[source_index][1], 'module': list_source[source_index][2], 
 			'item_type': list_source[source_index][3], 'item_name':list_source[source_index][4], 
-			'item_value': None, 'source_text': list_source[source_index][-1], 
-			'target_text': list_target[target_index][-1]}
+			'item_value': None, 'source_text': list_source[source_index][6],'target_text': list_target[target_index][6],
+			'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+			'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 			df = df.append(data, ignore_index=True)
 
 		data = {'source_survey_itemID': list_source[source_segments_without_pair][0], 'target_survey_itemID': None, 
 		'Study': list_source[source_segments_without_pair][1], 'module': list_source[source_segments_without_pair][2], 
 		'item_type': list_source[source_segments_without_pair][3], 'item_name':list_source[source_segments_without_pair][4], 
-		'item_value': None, 'source_text': list_source[source_segments_without_pair][-1], 
-		'target_text': None}
+		'item_value': None, 'source_text': list_source[source_segments_without_pair][6],'target_text': None, 
+		'source_ner_tagged_text': list_source[source_segments_without_pair][7],'target_ner_tagged_text': None,
+		'source_pos_tagged_text': list_source[source_segments_without_pair][8], 'target_pos_tagged_text':None}
 		df = df.append(data, ignore_index=True)
 
 
@@ -458,15 +487,17 @@ def treat_a_single_pairless_source(list_source, list_target, sorted_aligments, s
 				data = {'source_survey_itemID': list_source[source_segments_without_pair][0], 'target_survey_itemID': None, 
 				'Study': list_source[source_segments_without_pair][1], 'module': list_source[source_segments_without_pair][2], 
 				'item_type': list_source[source_segments_without_pair][3], 'item_name':list_source[source_segments_without_pair][4], 
-				'item_value': None, 'source_text': list_source[source_segments_without_pair][-1], 
-				'target_text': None}
+				'item_value': None, 'source_text': list_source[source_segments_without_pair][6],'target_text': None, 
+				'source_ner_tagged_text': list_source[source_segments_without_pair][7],'target_ner_tagged_text': None,
+				'source_pos_tagged_text': list_source[source_segments_without_pair][8], 'target_pos_tagged_text':None}
 				df = df.append(data, ignore_index=True)
 
 				data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 				'Study': list_source[source_index][1], 'module': list_source[source_index][2], 
 				'item_type': list_source[source_index][3], 'item_name':list_source[source_index][4], 
-				'item_value': None, 'source_text': list_source[source_index][-1], 
-				'target_text': list_target[target_index][-1]}
+				'item_value': None, 'source_text': list_source[source_index][6],'target_text': list_target[target_index][6],
+				'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+				'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 				df = df.append(data, ignore_index=True)
 
 
@@ -474,8 +505,9 @@ def treat_a_single_pairless_source(list_source, list_target, sorted_aligments, s
 				data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 				'Study': list_source[source_index][1], 'module': list_source[source_index][2], 
 				'item_type': list_source[source_index][3], 'item_name':list_source[source_index][4], 
-				'item_value': None, 'source_text': list_source[source_index][-1], 
-				'target_text': list_target[target_index][-1]}
+				'item_value': None, 'source_text': list_source[source_index][6],'target_text': list_target[target_index][6],
+				'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+				'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 				df = df.append(data, ignore_index=True)
 				
 
@@ -505,16 +537,18 @@ def treat_multiple_pairless_source_segments(list_source, list_target, sorted_ali
 				data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 				'Study': list_source[source_index][1], 'module': list_source[source_index][2], 
 				'item_type': list_source[source_index][3], 'item_name':list_source[source_index][4], 
-				'item_value': None, 'source_text': list_source[source_index][-1], 
-				'target_text': list_target[target_index][-1]}
+				'item_value': None, 'source_text': list_source[source_index][6],'target_text': list_target[target_index][6],
+				'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+				'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 				df = df.append(data, ignore_index=True)
 
 			for pairless in source_segments_without_pair:
 				data = {'source_survey_itemID': list_source[pairless][0], 'target_survey_itemID': None, 
 				'Study': list_source[pairless][1], 'module': list_source[pairless][2], 
 				'item_type': list_source[pairless][3], 'item_name':list_source[pairless][4], 
-				'item_value': None, 'source_text': list_source[pairless][-1], 
-				'target_text': None}
+				'item_value': None, 'source_text': list_source[pairless][6],'target_text': None, 
+				'source_ner_tagged_text': list_source[pairless][7],'target_ner_tagged_text': None,
+				'source_pos_tagged_text': list_source[pairless][8], 'target_pos_tagged_text':None}
 				df = df.append(data, ignore_index=True)
 
 		elif source_segments_without_pair[0] < sorted_aligments[0][0]:
@@ -522,8 +556,9 @@ def treat_multiple_pairless_source_segments(list_source, list_target, sorted_ali
 				data = {'source_survey_itemID': list_source[pairless][0], 'target_survey_itemID': None, 
 				'Study': list_source[pairless][1], 'module': list_source[pairless][2], 
 				'item_type': list_source[pairless][3], 'item_name':list_source[pairless][4], 
-				'item_value': None, 'source_text': list_source[pairless][-1], 
-				'target_text': None}
+				'item_value': None, 'source_text': list_source[pairless][6], 'target_text': None, 
+				'source_ner_tagged_text': list_source[pairless][7],'target_ner_tagged_text': None,
+				'source_pos_tagged_text': list_source[pairless][8], 'target_pos_tagged_text':None}
 				df = df.append(data, ignore_index=True)
 
 			for alignment in sorted_aligments:
@@ -533,8 +568,9 @@ def treat_multiple_pairless_source_segments(list_source, list_target, sorted_ali
 				data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 				'Study': list_source[source_index][1], 'module': list_source[source_index][2], 
 				'item_type': list_source[source_index][3], 'item_name':list_source[source_index][4], 
-				'item_value': None, 'source_text': list_source[source_index][-1], 
-				'target_text': list_target[target_index][-1]}
+				'item_value': None, 'source_text': list_source[source_index][6],'target_text': list_target[target_index][6],
+				'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+				'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 				df = df.append(data, ignore_index=True)
 
 	else:
@@ -547,8 +583,9 @@ def treat_multiple_pairless_source_segments(list_source, list_target, sorted_ali
 					data = {'source_survey_itemID': list_source[pairless][0], 'target_survey_itemID': None, 
 					'Study': list_source[pairless][1], 'module': list_source[pairless][2], 
 					'item_type': list_source[pairless][3], 'item_name':list_source[pairless][4], 
-					'item_value': None, 'source_text': list_source[pairless][-1], 
-					'target_text': None}
+					'item_value': None, 'source_text': list_source[pairless][6], 'target_text': None, 
+					'source_ner_tagged_text': list_source[pairless][7],'target_ner_tagged_text': None,
+					'source_pos_tagged_text': list_source[pairless][8], 'target_pos_tagged_text':None}
 					df = df.append(data, ignore_index=True)
 
 					source_segments_without_pair.remove(pairless)
@@ -556,8 +593,9 @@ def treat_multiple_pairless_source_segments(list_source, list_target, sorted_ali
 			data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 			'Study': list_source[source_index][1], 'module': list_source[source_index][2], 
 			'item_type': list_source[source_index][3], 'item_name':list_source[source_index][4], 
-			'item_value': None, 'source_text': list_source[source_index][-1], 
-			'target_text': list_target[target_index][-1]}
+			'item_value': None, 'source_text': list_source[source_index][6],'target_text': list_target[target_index][6],
+			'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+			'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 			df = df.append(data, ignore_index=True)
 
 		if source_segments_without_pair:
@@ -565,8 +603,9 @@ def treat_multiple_pairless_source_segments(list_source, list_target, sorted_ali
 			data = {'source_survey_itemID': list_source[index][0], 'target_survey_itemID': None, 
 			'Study': list_source[index][1], 'module': list_source[index][2], 
 			'item_type': list_source[index][3], 'item_name':list_source[index][4], 
-			'item_value': None, 'source_text': list_source[index][-1], 
-			'target_text': None}
+			'item_value': None, 'source_text': list_source[index][6], 'target_text': None, 
+			'source_ner_tagged_text': list_source[index][7],'target_ner_tagged_text': None,
+			'source_pos_tagged_text': list_source[index][8], 'target_pos_tagged_text':None}
 			df = df.append(data, ignore_index=True)
 
 	return df
@@ -595,16 +634,18 @@ def treat_multiple_pairless_target_segments(list_source, list_target, sorted_ali
 				data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 				'Study': list_target[target_index][1], 'module': list_target[target_index][2], 
 				'item_type': list_target[target_index][3], 'item_name':list_target[target_index][4], 
-				'item_value': None, 'source_text': list_source[source_index][-1], 
-				'target_text': list_target[target_index][-1]}
+				'item_value': None, 'source_text': list_source[source_index][6],'target_text': list_target[target_index][6],
+				'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+				'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 				df = df.append(data, ignore_index=True)
 
 			for pairless in target_segments_without_pair:
 				data = {'source_survey_itemID': None, 'target_survey_itemID': list_target[pairless][0], 
 				'Study': list_target[pairless][1], 'module': list_target[pairless][2], 
 				'item_type': list_target[pairless][3], 'item_name':list_target[pairless][4], 
-				'item_value': None, 'source_text': None, 
-				'target_text': list_target[pairless][-1]}
+				'item_value': None, 'source_text': None, 'target_text': list_target[pairless][6],
+				'source_ner_tagged_text': None, 'target_ner_tagged_text': list_target[pairless][7], 
+				'source_pos_tagged_text': None, 'target_pos_tagged_text': list_target[pairless][8]}
 				df = df.append(data, ignore_index=True)
 
 		elif target_segments_without_pair[0] < sorted_aligments[0][0]:
@@ -612,8 +653,9 @@ def treat_multiple_pairless_target_segments(list_source, list_target, sorted_ali
 				data = {'source_survey_itemID': None, 'target_survey_itemID': list_target[pairless][0], 
 				'Study': list_target[pairless][1], 'module': list_target[pairless][2], 
 				'item_type': list_target[pairless][3], 'item_name':list_target[pairless][4], 
-				'item_value': None, 'source_text': None, 
-				'target_text': list_target[pairless][-1]}
+				'item_value': None, 'source_text': None, 'target_text': list_target[pairless][6],
+				'source_ner_tagged_text': None, 'target_ner_tagged_text': list_target[pairless][7], 
+				'source_pos_tagged_text': None, 'target_pos_tagged_text': list_target[pairless][8]}
 				df = df.append(data, ignore_index=True)
 
 			for alignment in sorted_aligments:
@@ -623,8 +665,9 @@ def treat_multiple_pairless_target_segments(list_source, list_target, sorted_ali
 				data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 				'Study': list_target[target_index][1], 'module': list_target[target_index][2], 
 				'item_type': list_target[target_index][3], 'item_name':list_target[target_index][4], 
-				'item_value': None, 'source_text': list_source[source_index][-1], 
-				'target_text': list_target[target_index][-1]}
+				'item_value': None, 'source_text': list_source[source_index][6], 'target_text': list_target[target_index][6],
+				'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+				'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 				df = df.append(data, ignore_index=True)
 
 	else:
@@ -637,8 +680,9 @@ def treat_multiple_pairless_target_segments(list_source, list_target, sorted_ali
 					data = {'source_survey_itemID': None, 'target_survey_itemID': list_target[pairless][0], 
 					'Study': list_target[pairless][1], 'module': list_target[pairless][2], 
 					'item_type': list_target[pairless][3], 'item_name':list_target[pairless][4], 
-					'item_value': None, 'source_text': None, 
-					'target_text': list_target[pairless][-1]}
+					'item_value': None, 'source_text': None, 'target_text': list_target[pairless][6],
+					'source_ner_tagged_text': None, 'target_ner_tagged_text': list_target[pairless][7], 
+					'source_pos_tagged_text': None, 'target_pos_tagged_text': list_target[pairless][8]}
 					df = df.append(data, ignore_index=True)
 
 					target_segments_without_pair.remove(pairless)
@@ -646,8 +690,9 @@ def treat_multiple_pairless_target_segments(list_source, list_target, sorted_ali
 			data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0], 
 			'Study': list_target[target_index][1], 'module': list_target[target_index][2], 
 			'item_type': list_target[target_index][3], 'item_name':list_target[target_index][4], 
-			'item_value': None, 'source_text': list_source[source_index][-1], 
-			'target_text': list_target[target_index][-1]}
+			'item_value': None, 'source_text': list_source[source_index][6], 'target_text': list_target[target_index][6],
+			'source_ner_tagged_text': list_source[source_index][7], 'target_ner_tagged_text': list_target[target_index][7], 
+			'source_pos_tagged_text': list_source[source_index][8], 'target_pos_tagged_text': list_target[target_index][8]}
 			df = df.append(data, ignore_index=True)
 
 		if target_segments_without_pair:
@@ -655,8 +700,9 @@ def treat_multiple_pairless_target_segments(list_source, list_target, sorted_ali
 			data = {'source_survey_itemID': None, 'target_survey_itemID': list_target[index][0], 
 			'Study': list_target[index][1], 'module': list_target[index][2], 
 			'item_type': list_target[index][3], 'item_name':list_target[index][4], 
-			'item_value': None, 'source_text': None, 
-			'target_text': list_target[index][-1]}
+			'item_value': None, 'source_text': None, 'target_text': list_target[index][6],
+			'source_ner_tagged_text': None, 'target_ner_tagged_text': list_target[index][7], 
+			'source_pos_tagged_text': None, 'target_pos_tagged_text': list_target[index][8]}
 			df = df.append(data, ignore_index=True)
 
 	return df
@@ -907,7 +953,8 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 		for i,row in df_target.iterrows():
 			data = {'source_survey_itemID': None, 'target_survey_itemID': row['survey_item_ID'], 'Study': row['Study'], 
 			'module': row['module'], 'item_type': item_type, 'item_name':row['item_name'], 'item_value': None, 
-			'source_text': None, 'target_text': row['text']}
+			'source_text': None, 'target_text': row['text'], 'source_ner_tagged_text': None, 
+			'target_ner_tagged_text': row['ner_tagged_text'], 'source_pos_tagged_text': None, 'target_pos_tagged_text': row['pos_tagged_text']}
 			df = df.append(data, ignore_index=True)
 		return df
 
@@ -915,7 +962,8 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 		for i,row in df_source.iterrows():
 			data = {'source_survey_itemID': row['survey_item_ID'], 'target_survey_itemID': None , 'Study': row['Study'], 
 			'module': row['module'], 'item_type': item_type, 'item_name':row['item_name'], 'item_value': None, 
-			'source_text': row['text'], 'target_text': None}
+			'source_text': row['text'], 'target_text': None, 'source_ner_tagged_text': row['ner_tagged_text'], 
+			'target_ner_tagged_text': None, 'source_pos_tagged_text': row['pos_tagged_text'], 'target_pos_tagged_text':None}
 			df = df.append(data, ignore_index=True)
 		return df
 	else:
@@ -945,7 +993,9 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 				data = {'source_survey_itemID': list_source[source_index][0], 'target_survey_itemID': list_target[target_index][0] , 
 					'Study': list_source[source_index][1], 'module': list_source[source_index][2], 'item_type': item_type, 
 					'item_name':list_source[source_index][4], 'item_value': None, 'source_text': list_source[source_index][6], 
-					'target_text':  list_target[target_index][6]}
+					'target_text':  list_target[target_index][6], 'source_ner_tagged_text': list_source[source_index][7], 
+					'target_ner_tagged_text': list_target[target_index][7], 'source_pos_tagged_text': list_source[source_index][8], 
+					'target_pos_tagged_text':list_target[target_index][8]}
 				df = df.append(data, ignore_index=True)
 
 				del list_source[source_index]
@@ -954,7 +1004,9 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 			if len(list_source) == 1:
 				data = {'source_survey_itemID': list_source[0][0], 'target_survey_itemID': list_target[0][0] , 'Study': list_source[0][1], 
 					'module': list_source[0][2], 'item_type': item_type, 'item_name':list_source[0][4], 'item_value': None, 
-					'source_text': list_source[0][6], 'target_text':  list_target[0][6]}
+					'source_text': list_source[0][6], 'target_text':  list_target[0][6], 'source_ner_tagged_text': list_source[0][7], 
+					'target_ner_tagged_text': list_target[0][7], 'source_pos_tagged_text': list_source[0][8], 
+					'target_pos_tagged_text': list_target[0][8]}
 				df = df.append(data, ignore_index=True)
 
 			else:
@@ -962,7 +1014,9 @@ def align_introduction_instruction_request(df, df_source, df_target, item_type):
 					source_best, source_best_index, target_best, target_best_index = b_match(list_target, list_source)
 					data = {'source_survey_itemID': source_best[0], 'target_survey_itemID': target_best[0] , 'Study': source_best[1], 
 						'module': source_best[2], 'item_type': item_type, 'item_name':source_best[4], 'item_value': None, 
-						'source_text': source_best[6], 'target_text':  target_best[6]}
+						'source_text': source_best[6], 'target_text':  target_best[6], 'source_ner_tagged_text': source_best[7], 
+						'target_ner_tagged_text': target_best[7], 'source_pos_tagged_text': source_best[8], 
+						'target_pos_tagged_text': target_best[8]}
 					df = df.append(data, ignore_index=True)
 
 					del list_source[source_best_index]
@@ -992,7 +1046,8 @@ def align_responses(df, df_source, df_target):
 	for i, row in df_merge.iterrows():
 		data = {'source_survey_itemID': row['survey_item_ID_x'], 'target_survey_itemID':  row['survey_item_ID_y'], 'Study': row['Study_x'], 
 		'module': row['module_x'], 'item_type': 'RESPONSE', 'item_name':row['item_name_x'], 'item_value': row['item_value'], 
-		'source_text': row['text_x'], 'target_text': row['text_y']}
+		'source_text': row['text_x'], 'target_text': row['text_y'], 'source_ner_tagged_text': row['ner_tagged_text_x'], 
+		'target_ner_tagged_text': row['ner_tagged_text_y'], 'source_pos_tagged_text': row['pos_tagged_text_x'], 'target_pos_tagged_text': row['pos_tagged_text_y']}
 		df = df.append(data, ignore_index=True)
 
 	return df
@@ -1085,7 +1140,8 @@ def main(folder_path, filename_source, filename_target):
 	df_target = pd.read_csv(filename_target,  dtype=str, sep='\t')
 
 	df = pd.DataFrame(columns=['source_survey_itemID', 'target_survey_itemID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 
-		'source_text', 'target_text'])
+		'source_text', 'target_text', 'source_ner_tagged_text', 'source_pos_tagged_text', 'target_ner_tagged_text', 'target_pos_tagged_text'])
+
 
 	study = get_study_metadata(filename_source)
 	global target_language_country

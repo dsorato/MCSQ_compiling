@@ -51,14 +51,16 @@
 <span class="target" id="module-annotation.mcsq_annotation"></span><dl class="py function">
 <dt id="annotation.mcsq_annotation.ner_annotation">
 <code class="sig-prename descclassname">annotation.mcsq_annotation.</code><code class="sig-name descname">ner_annotation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">ner</span></em>, <em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/mcsq_annotation.html#ner_annotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.mcsq_annotation.ner_annotation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Iterates through the preprocessed and POS tag annotated ENG, CAT, GER, FRE, POR, NOR and SPA spreadsheets, adding the NER annotation.
-:param param1 df: the dataframe that holds the preprocessed and POS tag annotated questionnaire.
-:type param1 df: pandas dataframe
-:param param2 ner: pretrained NER model provided by Spacy or FlairNLP.
-:type param2 ner: spacy or pythorch</p>
+<dd><p>Iterates through the preprocessed and POS tag annotated ENG, CAT, GER, FRE, POR, NOR and SPA spreadsheets, adding the NER annotation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>df_tagged (pandas dataframe), the questionnaire with added NER annotations.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>param1</em>) – the dataframe that holds the preprocessed and POS tag annotated questionnaire.</p></li>
+<li><p><strong>ner</strong> (<em>param2</em>) – pretrained NER model provided by Spacy or FlairNLP.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_tagged (pandas dataframe), the questionnaire with added NER annotations.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -66,14 +68,16 @@
 <dl class="py function">
 <dt id="annotation.mcsq_annotation.pos_tag_annotation">
 <code class="sig-prename descclassname">annotation.mcsq_annotation.</code><code class="sig-name descname">pos_tag_annotation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">pos</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/mcsq_annotation.html#pos_tag_annotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.mcsq_annotation.pos_tag_annotation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Iterates through the preprocessed spreadsheets, adding the POS tag annotation.
-:param param1 df: the dataframe that holds the preprocessed questionnaire.
-:type param1 df: pandas dataframe
-:param param2 pos: pretrained or in-house trained (CAT, POR, rUS) model provided by FlairNLP.
-:type param2 pos: Pytorch object</p>
+<dd><p>Iterates through the preprocessed spreadsheets, adding the POS tag annotation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>df_tagged (pandas dataframe), the questionnaire with added POS tag annotations.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>param1</em>) – the dataframe that holds the preprocessed questionnaire.</p></li>
+<li><p><strong>pos</strong> (<em>param2</em>) – pretrained or in-house trained (CAT, POR, rUS) model provided by FlairNLP.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_tagged (pandas dataframe), the questionnaire with added POS tag annotations.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -129,6 +133,26 @@ therefore this script should be run using a separate virtual environment.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>df_tagged (pandas dataframe), the questionnaire with added NER annotations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-annotation.wis_annotated_text_to_alignment"></span><dl class="py function">
+<dt id="annotation.wis_annotated_text_to_alignment.add_annotation">
+<code class="sig-prename descclassname">annotation.wis_annotated_text_to_alignment.</code><code class="sig-name descname">add_annotation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df_source</span></em>, <em class="sig-param"><span class="n">df_target</span></em>, <em class="sig-param"><span class="n">df_alignment</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/annotation/wis_annotated_text_to_alignment.html#add_annotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#annotation.wis_annotated_text_to_alignment.add_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds NER/POS annotations in the alignment files by copying the annotations from the spreadsheets.
+Differently from the EVS, ESS and SHARE files, all the WIS files have 1-1 correspondences and come prealigned,
+therefore these files do not have to go through the Alignment algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_source</strong> (<em>param1</em>) – the dataframe that holds the preprocessed annotated source questionnaire.</p></li>
+<li><p><strong>df_target</strong> (<em>param2</em>) – the dataframe that holds the preprocessed annotated target questionnaire.</p></li>
+<li><p><strong>df_alignment</strong> (<em>param3</em>) – the dataframe that holds the alignment questionnaire, without annotations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_alignment (pandas dataframe) with added NER and POS annotations that were copied from the df_source and df_target.</p>
 </dd>
 </dl>
 </dd></dl>

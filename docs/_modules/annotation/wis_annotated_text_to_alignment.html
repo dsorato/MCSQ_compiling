@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>annotation.wis_annotated_text_to_alignment &#8212; MCSQ compiling 2 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">annotation.wis_annotated_text_to_alignment</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for annotation.wis_annotated_text_to_alignment</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span> 
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<div class="viewcode-block" id="add_annotation"><a class="viewcode-back" href="../../tagging.html#annotation.wis_annotated_text_to_alignment.add_annotation">[docs]</a><span class="k">def</span> <span class="nf">add_annotation</span><span class="p">(</span><span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span><span class="p">,</span> <span class="n">df_alignment</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Adds NER/POS annotations in the alignment files by copying the annotations from the spreadsheets.</span>
+<span class="sd">	Differently from the EVS, ESS and SHARE files, all the WIS files have 1-1 correspondences and come prealigned,</span>
+<span class="sd">	therefore these files do not have to go through the Alignment algorithm.  </span>
+<span class="sd">	</span>
+<span class="sd">	Args:</span>
+<span class="sd">		param1 df_source (pandas dataframe): the dataframe that holds the preprocessed annotated source questionnaire.</span>
+<span class="sd">		param2 df_target (pandas dataframe): the dataframe that holds the preprocessed annotated target questionnaire.</span>
+<span class="sd">		param3 df_alignment (pandas dataframe): the dataframe that holds the alignment questionnaire, without annotations.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		df_alignment (pandas dataframe) with added NER and POS annotations that were copied from the df_source and df_target. </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">df_alignment</span><span class="p">[</span><span class="s1">&#39;source_ner_tagged_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_source</span><span class="p">[</span><span class="s1">&#39;ner_tagged_text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> 
+	<span class="n">df_alignment</span><span class="p">[</span><span class="s1">&#39;source_pos_tagged_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_source</span><span class="p">[</span><span class="s1">&#39;pos_tagged_text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> 
+
+	<span class="n">df_alignment</span><span class="p">[</span><span class="s1">&#39;target_ner_tagged_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_target</span><span class="p">[</span><span class="s1">&#39;ner_tagged_text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> 
+	<span class="n">df_alignment</span><span class="p">[</span><span class="s1">&#39;target_pos_tagged_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_target</span><span class="p">[</span><span class="s1">&#39;pos_tagged_text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> 
+
+
+	<span class="k">return</span> <span class="n">df_alignment</span></div>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">filename_source</span><span class="p">,</span> <span class="n">filename_target</span><span class="p">,</span> <span class="n">filename_alignment</span><span class="p">):</span>
+	<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
+	<span class="n">df_source</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename_source</span><span class="p">,</span>  <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+	<span class="n">df_target</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename_target</span><span class="p">,</span>  <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+	<span class="n">df_alignment</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename_alignment</span><span class="p">,</span>  <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+
+	<span class="n">df</span> <span class="o">=</span> <span class="n">add_annotation</span><span class="p">(</span><span class="n">df_source</span><span class="p">,</span> <span class="n">df_target</span><span class="p">,</span> <span class="n">df_alignment</span><span class="p">)</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename_alignment</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="n">folder_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+	<span class="n">filename_source</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+	<span class="n">filename_target</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+	<span class="n">filename_alignment</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+	<span class="n">main</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">filename_source</span><span class="p">,</span> <span class="n">filename_target</span><span class="p">,</span> <span class="n">filename_alignment</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCSQ compiling 2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">annotation.wis_annotated_text_to_alignment</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Danielly Sorato.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

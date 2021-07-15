@@ -257,14 +257,14 @@ def post_process_questionnaire(df_questionnaire):
 	language_country_pairs = ['ENG_GB', 'FRE_FR', 'POR_PT', 'RUS_RU','GER_DE', 'SPA_ES','NOR_NO', 'CZE_CZ']
 	for l in language_country_pairs:
 		df = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 'text'])
-		df_alignment = pd.DataFrame(columns=['source_survey_itemID', 'target_survey_itemID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 
+		df_alignment = pd.DataFrame(columns=['source_survey_item_ID', 'target_survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 
 		'source_text', 'target_text'])
 		for i, row in df_questionnaire.iterrows():
 			data = {'survey_item_ID': row[l+'_survey_item_ID'], 'Study': row['Study'], 'module': row['module'], 'item_type': row['item_type'], 
 			'item_name': row['item_name'], 'item_value': row['item_value'], 'text':row[l+'_text']}
 			df = df.append(data, ignore_index = True)	
 
-			data = {'source_survey_itemID': row['ENG_SOURCE_survey_item_ID'], 'target_survey_itemID': row[l+'_survey_item_ID'], 
+			data = {'source_survey_item_ID': row['ENG_SOURCE_survey_item_ID'], 'target_survey_item_ID': row[l+'_survey_item_ID'], 
 			'Study': row['Study'], 'module': row['module'], 'item_type': row['item_type'], 
 			'item_name': row['item_name'], 'item_value': row['item_value'], 'source_text':row['ENG_SOURCE_text'], 'target_text':row[l+'_text']}
 			df_alignment = df_alignment.append(data, ignore_index = True)	

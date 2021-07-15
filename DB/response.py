@@ -20,7 +20,7 @@ class Response(Base):
     ner_tagged_text = Column(String)
    
     def __init__(self, text, item_value, pos_tagged_text, ner_tagged_text):
-    	self.text = text
-    	self.item_value = item_value
-    	self.pos_tagged_text = pos_tagged_text
+        self.text = text
+        self.item_value = item_value
+        self.pos_tagged_text = pos_tagged_text
         self.ner_tagged_text = ner_tagged_text

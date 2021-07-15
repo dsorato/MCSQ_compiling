@@ -15,10 +15,11 @@ def ner_annotation(df, ner):
 	Args:
 		param1 df (pandas dataframe): the dataframe that holds the preprocessed and POS tag annotated questionnaire.
 		param2 ner (BERT model): pretrained NER model provided by Deeppavlov.
+		
 	Returns:
 		df_tagged (pandas dataframe), the questionnaire with added NER annotations. 
 	"""
-	df_tagged = pd.DataFrame(columns=['survey_itemID', 'Study', 'module', 'item_type', 'item_name', 'item_value',  'text', 'ner_tagged_text', 'pos_tagged_text'])
+	df_tagged = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value',  'text', 'ner_tagged_text', 'pos_tagged_text'])
 	for i, row in df.iterrows():
 		tagged = ner([row['text']])
 		flat_list = [item for sublist in tagged for item in sublist]

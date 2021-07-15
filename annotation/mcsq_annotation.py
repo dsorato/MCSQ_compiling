@@ -66,9 +66,11 @@ def select_ner_model(language):
 def ner_annotation(df, ner, filename):
 	"""
 	Iterates through the preprocessed and POS tag annotated ENG, CAT, GER, FRE, POR, NOR and SPA spreadsheets, adding the NER annotation. 
+
 	Args:
 		param1 df (pandas dataframe): the dataframe that holds the preprocessed and POS tag annotated questionnaire.
 		param2 ner (spacy or pythorch): pretrained NER model provided by Spacy or FlairNLP.
+
 	Returns:
 		df_tagged (pandas dataframe), the questionnaire with added NER annotations. 
 	"""
@@ -109,9 +111,11 @@ def ner_annotation(df, ner, filename):
 def pos_tag_annotation(df, pos):
 	"""
 	Iterates through the preprocessed spreadsheets, adding the POS tag annotation. 
+	
 	Args:
 		param1 df (pandas dataframe): the dataframe that holds the preprocessed questionnaire.
 		param2 pos (Pytorch object): pretrained or in-house trained (CAT, POR, rUS) model provided by FlairNLP.
+
 	Returns:
 		df_tagged (pandas dataframe), the questionnaire with added POS tag annotations. 
 	"""

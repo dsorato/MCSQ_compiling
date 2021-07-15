@@ -107,9 +107,11 @@
 <div class="viewcode-block" id="ner_annotation"><a class="viewcode-back" href="../../tagging.html#annotation.mcsq_annotation.ner_annotation">[docs]</a><span class="k">def</span> <span class="nf">ner_annotation</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ner</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Iterates through the preprocessed and POS tag annotated ENG, CAT, GER, FRE, POR, NOR and SPA spreadsheets, adding the NER annotation. </span>
+
 <span class="sd">	Args:</span>
 <span class="sd">		param1 df (pandas dataframe): the dataframe that holds the preprocessed and POS tag annotated questionnaire.</span>
 <span class="sd">		param2 ner (spacy or pythorch): pretrained NER model provided by Spacy or FlairNLP.</span>
+
 <span class="sd">	Returns:</span>
 <span class="sd">		df_tagged (pandas dataframe), the questionnaire with added NER annotations. </span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -150,9 +152,11 @@
 <div class="viewcode-block" id="pos_tag_annotation"><a class="viewcode-back" href="../../tagging.html#annotation.mcsq_annotation.pos_tag_annotation">[docs]</a><span class="k">def</span> <span class="nf">pos_tag_annotation</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Iterates through the preprocessed spreadsheets, adding the POS tag annotation. </span>
+<span class="sd">	</span>
 <span class="sd">	Args:</span>
 <span class="sd">		param1 df (pandas dataframe): the dataframe that holds the preprocessed questionnaire.</span>
 <span class="sd">		param2 pos (Pytorch object): pretrained or in-house trained (CAT, POR, rUS) model provided by FlairNLP.</span>
+
 <span class="sd">	Returns:</span>
 <span class="sd">		df_tagged (pandas dataframe), the questionnaire with added POS tag annotations. </span>
 <span class="sd">	&quot;&quot;&quot;</span>
