@@ -1133,80 +1133,86 @@ def get_target_language_country_metadata(filename):
 
 
 
-def main(folder_path, filename_source, filename_target):
+def main(folder_path, filename_source):
 
 	path = os.chdir(folder_path)
+	files = os.listdir(path)
 	df_source = pd.read_csv(filename_source,  dtype=str, sep='\t')
-	df_target = pd.read_csv(filename_target,  dtype=str, sep='\t')
 
-	df = pd.DataFrame(columns=['source_survey_itemID', 'target_survey_itemID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 
-		'source_text', 'target_text', 'source_ner_tagged_text', 'source_pos_tagged_text', 'target_ner_tagged_text', 'target_pos_tagged_text'])
-
-
-	study = get_study_metadata(filename_source)
-	global target_language_country
-	target_language_country = get_target_language_country_metadata(filename_target)
-
-	if 'ENG' not in target_language_country:
-		global mcsq_bi
-		if 'RUS' in target_language_country:
-			mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country.split('_')[0])
-		elif target_language_country == 'FRE_LU':
-			mcsq_bi = Word2word.load("en", convert_iso_code('FRE'), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/FRE_CH")
-		elif target_language_country == 'GER_LU':
-			mcsq_bi = Word2word.load("en", convert_iso_code('GER'), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/GER_CH")
-		elif target_language_country == 'POR_LU':
-			mcsq_bi = Word2word.load("en", convert_iso_code('POR'), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/POR_PT")
-		else:
-			mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country)
-
-	global st
-	st = stopwords.words('english')
-
-	if 'EVS' in study:
-		source_language_country = 'ENG_GB'
-	else:
-		source_language_country = 'ENG_SOURCE'
-
-	if 'EVS' in study or 'ESS' in study:
-		country_specific_requests = instantiate_country_specific_request_object(study)
-
-
-	"""
-	Computes the intersection between the modules of source and target questionnaires.
-	We are only interested in aligning modules that are present in both files.
-	"""
-	intersection_modules = set(df_source.module.unique()).intersection(set(df_target.module.unique()))
-	for module in sorted(intersection_modules):
-		if 'EVS_R03' in filename_source and 'Socio Demographics' in module:
-			"""
-			Unfortunately the Socio Demographics section of the EVS wave 3 files have many inconsistencies concerning the item names.
-			This module won't be aligned because of the risk of creating many wrongly aligned segments.
-			"""
-			pass
-		else:
-			df_source_filtered, df_target_filtered = filter_by_module(df_source, df_target, module)
-			
-			unique_item_names_source = df_source_filtered.item_name.unique()
-			unique_item_names_target = df_target_filtered.item_name.unique()
-			
-			for unique_item_name in unique_item_names_source:
-				process_responses = True
-				if 'EVS' in study or 'ESS' in study:
-					if unique_item_name.lower() in country_specific_requests.item_names:
-						process_responses = False
-				"""
-				Computes the intersection between the item names of source and target questionnaires.
-				We are only interested in aligning questions that are present in both files.
-				"""
-				df_source_by_item_name = df_source_filtered[df_source_filtered['item_name'].str.lower()==unique_item_name.lower()]
-				df_target_by_item_name = df_target_filtered[df_target_filtered['item_name'].str.lower()==unique_item_name.lower()]
-				
-				if df_target_by_item_name.empty == False and df_source_by_item_name.empty == False:
-					df = align_on_metadata(df, df_source_by_item_name, df_target_by_item_name, process_responses)
-				
+	for index, filename_target in enumerate(files):
+		if filename_target.endswith(".csv"):
+			if filename_target != filename_source:
 	
-	df.to_csv(source_language_country+'_'+target_language_country+'_'+study+'.csv', encoding='utf-8', sep='\t', index=False)
+				df_target = pd.read_csv(filename_target,  dtype=str, sep='\t')
+
+				df = pd.DataFrame(columns=['source_survey_itemID', 'target_survey_itemID', 'Study', 'module', 'item_type', 'item_name', 'item_value', 
+					'source_text', 'target_text', 'source_ner_tagged_text', 'source_pos_tagged_text', 'target_ner_tagged_text', 'target_pos_tagged_text'])
+
+
+				study = get_study_metadata(filename_source)
+				global target_language_country
+				target_language_country = get_target_language_country_metadata(filename_target)
+
+				if 'ENG' not in target_language_country:
+					global mcsq_bi
+					if 'RUS' in target_language_country:
+						mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country.split('_')[0])
+					elif target_language_country == 'FRE_LU':
+						mcsq_bi = Word2word.load("en", convert_iso_code('FRE'), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/FRE_CH")
+					elif target_language_country == 'GER_LU':
+						mcsq_bi = Word2word.load("en", convert_iso_code('GER'), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/GER_CH")
+					elif target_language_country == 'POR_LU':
+						mcsq_bi = Word2word.load("en", convert_iso_code('POR'), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/POR_PT")
+					else:
+						mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country)
+
+				global st
+				st = stopwords.words('english')
+
+				if 'EVS' in study:
+					source_language_country = 'ENG_GB'
+				else:
+					source_language_country = 'ENG_SOURCE'
+
+				if 'EVS' in study or 'ESS' in study:
+					country_specific_requests = instantiate_country_specific_request_object(study)
+
+
+				"""
+				Computes the intersection between the modules of source and target questionnaires.
+				We are only interested in aligning modules that are present in both files.
+				"""
+				intersection_modules = set(df_source.module.unique()).intersection(set(df_target.module.unique()))
+				for module in sorted(intersection_modules):
+					if 'EVS_R03' in filename_source and 'Socio Demographics' in module:
+						"""
+						Unfortunately the Socio Demographics section of the EVS wave 3 files have many inconsistencies concerning the item names.
+						This module won't be aligned because of the risk of creating many wrongly aligned segments.
+						"""
+						pass
+					else:
+						df_source_filtered, df_target_filtered = filter_by_module(df_source, df_target, module)
+						
+						unique_item_names_source = df_source_filtered.item_name.unique()
+						unique_item_names_target = df_target_filtered.item_name.unique()
+						
+						for unique_item_name in unique_item_names_source:
+							process_responses = True
+							if 'EVS' in study or 'ESS' in study:
+								if unique_item_name.lower() in country_specific_requests.item_names:
+									process_responses = False
+							"""
+							Computes the intersection between the item names of source and target questionnaires.
+							We are only interested in aligning questions that are present in both files.
+							"""
+							df_source_by_item_name = df_source_filtered[df_source_filtered['item_name'].str.lower()==unique_item_name.lower()]
+							df_target_by_item_name = df_target_filtered[df_target_filtered['item_name'].str.lower()==unique_item_name.lower()]
+							
+							if df_target_by_item_name.empty == False and df_source_by_item_name.empty == False:
+								df = align_on_metadata(df, df_source_by_item_name, df_target_by_item_name, process_responses)
+							
+				
+				df.to_csv(source_language_country+'_'+target_language_country+'_'+study+'.csv', encoding='utf-8', sep='\t', index=False)
 	
 
 
@@ -1215,5 +1221,4 @@ def main(folder_path, filename_source, filename_target):
 if __name__ == "__main__":
 	folder_path = str(sys.argv[1])
 	filename_source = str(sys.argv[2])
-	filename_target = str(sys.argv[3])
-	main(folder_path, filename_source,filename_target)
+	main(folder_path, filename_source)
