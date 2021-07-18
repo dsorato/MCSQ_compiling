@@ -1156,15 +1156,15 @@ def main(folder_path, filename_source):
 				if 'ENG' not in target_language_country:
 					global mcsq_bi
 					if 'RUS' in target_language_country:
-						mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country.split('_')[0])
+						mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/resources/bilingual/"+target_language_country.split('_')[0])
 					elif target_language_country == 'FRE_LU':
-						mcsq_bi = Word2word.load("en", convert_iso_code('FRE'), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/FRE_CH")
+						mcsq_bi = Word2word.load("en", convert_iso_code('FRE'), "/home/danielly/workspace/MCSQ_compiling/resources/bilingual/FRE_CH")
 					elif target_language_country == 'GER_LU':
-						mcsq_bi = Word2word.load("en", convert_iso_code('GER'), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/GER_CH")
+						mcsq_bi = Word2word.load("en", convert_iso_code('GER'), "/home/danielly/workspace/MCSQ_compiling/resources/bilingual/GER_CH")
 					elif target_language_country == 'POR_LU':
-						mcsq_bi = Word2word.load("en", convert_iso_code('POR'), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/POR_PT")
+						mcsq_bi = Word2word.load("en", convert_iso_code('POR'), "/home/danielly/workspace/MCSQ_compiling/resources/bilingual/POR_PT")
 					else:
-						mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/data/bilingual/"+target_language_country)
+						mcsq_bi = Word2word.load("en", convert_iso_code(target_language_country.split('_')[0]), "/home/danielly/workspace/MCSQ_compiling/resources/bilingual/"+target_language_country)
 
 				global st
 				st = stopwords.words('english')

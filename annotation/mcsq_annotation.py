@@ -121,6 +121,7 @@ def pos_tag_annotation(df, pos):
 	"""
 	df_tagged = pd.DataFrame(columns=['survey_item_ID', 'Study', 'module', 'item_type', 'item_name', 'item_value',  'text', 'ner_tagged_text', 'pos_tagged_text'])
 	for i, row in df.iterrows():
+		print(row['text'])
 		sentence = Sentence(row['text'])
 		pos.predict(sentence)
 		tagged_sentence = sentence.to_tagged_string()

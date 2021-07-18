@@ -64,9 +64,9 @@ def write_request_table(request, request_pos, request_ner):
 	session.close()
 
 
-def write_response_table(text, item_value):
+def write_response_table(text, item_value, response_pos, response_ner):
 	session = session_factory()
-	item = Response(text, item_value)
+	item = Response(text, item_value, response_pos, response_ner)
 	session.add(item)
 	session.commit()
 	session.close()

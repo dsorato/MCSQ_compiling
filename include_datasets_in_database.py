@@ -109,8 +109,8 @@ def populate_introduction_table(df):
 	dictionary_introductions = dict()
 	for i, row in df_introduction.iterrows(): 
 		if isinstance(row['text'], str): 
-			write_introduction_table(row['text'])
-			introduction_id = get_introduction_id(row['text'], row['pos_tagged_text'], row['ner_tagged_text'])
+			write_introduction_table(row['text'], row['pos_tagged_text'], row['ner_tagged_text'])
+			introduction_id = get_introduction_id(row['text'])
 			dictionary_introductions[row['text']] = introduction_id
 
 	return dictionary_introductions
@@ -133,8 +133,8 @@ def populate_instruction_table(df):
 	dictionary_instructions = dict()
 	for i, row in df_instructions.iterrows(): 
 		if isinstance(row['text'], str): 
-			write_instruction_table(row['text'])
-			instruction_id = get_instruction_id(row['text'], row['pos_tagged_text'], row['ner_tagged_text'])
+			write_instruction_table(row['text'], row['pos_tagged_text'], row['ner_tagged_text'])
+			instruction_id = get_instruction_id(row['text'])
 			dictionary_instructions[row['text']] = instruction_id
 
 	return dictionary_instructions
@@ -180,22 +180,24 @@ def populate_response_table(df):
 	unique_values = []
 	for i, row in df_response.iterrows():
 		if [row['text'], row['item_value']] not in unique_values:
-			unique_values.append([row['text'], row['item_value']])
+			unique_values.append([row['text'], row['item_value'], row['pos_tagged_text'], row['ner_tagged_text']])
 
 	for value in unique_values:
 		text = value[0]
 		item_value = value[1]
+		pos_tagged_text = value[2]
+		ner_tagged_text = value[3]
 		if isinstance(item_value, str):
 			if str(item_value)[-2:] == '.0':
 				item_value = item_value[:-2]
 
 			if isinstance(text, str): 
-				write_response_table(text, item_value)
+				write_response_table(text, item_value, pos_tagged_text, ner_tagged_text)
 				response_id = get_response_id(text, item_value)
 				dictionary_responses[text+item_value] = response_id
 		else:
 			if isinstance(text, str): 
-				write_response_table(text, None)
+				write_response_table(text, None, pos_tagged_text, ner_tagged_text)
 				response_id = get_response_id(text, None)
 				dictionary_responses[text+'None'] = response_id
 
