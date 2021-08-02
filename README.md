@@ -1,6 +1,5 @@
 # Multilingual Corpus of Survey Questionnaires (MCSQ) Compiling
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4572930.svg)](https://doi.org/10.5281/zenodo.4572930)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4628097.svg)](https://doi.org/10.5281/zenodo.4628097)
+[![DOI](https://zenodo.org/badge/206563769.svg)](https://zenodo.org/badge/latestdoi/206563769)
 
 The Multilingual Corpus of Survey Questionnaires (MCSQ) is the first publicly available corpus of survey questionnaires, comprising survey items from large-scale comparative survey projects that provide cross-national and cross-cultural data to the Social Sciences and Humanities.
 Namely, the European Social Survey (ESS)S<sup>[1](#ess)</sup> (rounds 1 to 9), the European Values Study (EVS)<sup>[2](#evs)</sup> (waves 2, 3, 4 and 5), the Survey of Health Ageing and Retirement in Europe (SHARE)<sup>[3](#share)</sup> (waves 7, 8 and COVID questionnaires) and, the Wage Indicator <sup>[4](#wis)</sup> (wave 1 and COVID questionnaires). 
