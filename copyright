@@ -1,15 +1,16 @@
-Copyright (c) 2021 Danielly Sorato
+All the source code in this repository is licensed under the EUPL-1.2 (European Union Public License).  
+Authors: Danielly Sorato
 All rights reserved
 
 Multilingual Corpus of Survey Questionnaires (MCSQ) Compiling
 
 Version 3.0 - Rosalind Franklin: Multilingual Corpus of Survey Questionnaires (MCSQ)
 
-This project is funded from the EU Horizon 2020 Research and Innovation Programme (2014-2020) 
-under Grant Agreement  No. 823782
+This project is funded from the EU Horizon 2020 Research and Innovation Programme (2014-2020) under Grant Agreement  No. 823782
 
 The use of this software is licensed under under EUPL-1.2 (European Union Public Licence) 
 
 When using the material and content (code, datasets, etc.) in any way the article must be cited:
+Zavala-Rojas, D., Sorato, D., Hareide, L., & Hofland, K. (forthcoming 2021). [MCSQ] Multilingual Corpus of Survey Questionnaires. Meta: Journal Des Traducteurs. @article{Zavala-Rojas,author = {Zavala-Rojas, Diana and Sorato, Danielly and Hareide, Lidun and Hofland, Knut},journal = {Meta: Journal des traducteurs},
+title = {{[MCSQ] Multilingual Corpus of Survey Questionnaires}}}
 
-Zavala-Rojas, D., Sorato, D., Hareide, L., & Hofland, K. (forthcoming). The Multilingual Corpus of Survey Questionnaires: a tool for refining survey translation. Meta: Journal Des Traduceurs.
