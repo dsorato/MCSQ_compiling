@@ -15,6 +15,8 @@ The Figure below depicts the framework applied to compile and publish the MCSQ.
 ![alt text](framework_v3.jpg)
 
 The [MCSQ]: Multilingual Corpus of Survey Questionnaires is an open-access research resource. 
+The MCSQ is permanently preserved in the CLARINO repository<sup>[5](#clarino)</sup>, where it can be freely downloaded.
+
 If you use part of the code, datasets, and/or findings to inspire your own scientific work, please cite the article:
 
 Zavala-Rojas, D., Sorato, D., Hareide, L., & Hofland, K. (forthcoming 2021). [MCSQ] Multilingual Corpus of Survey Questionnaires. Meta: Journal Des Traducteurs.
@@ -24,10 +26,11 @@ Zavala-Rojas, D., Sorato, D., Hareide, L., & Hofland, K. (forthcoming 2021). [MC
 * MCSQ interface prototype http://easy.mcsq.upf.edu/
 * For more implementation details, see code documentation in: https://mcsq-compiling.readthedocs.io/en/latest/
 
-The MCSQ was developed in the Social Sciences and Humanities Open Cloud (SSHOC)<sup>[5](#sshoc)</sup> project. SSHOC has received funding from the European Union's Horizon 2020 project call H2020-INFRAEOSC-04-2018, grant agreement #823782.
+The MCSQ was developed in the Social Sciences and Humanities Open Cloud (SSHOC)<sup>[6](#sshoc)</sup> project. SSHOC has received funding from the European Union's Horizon 2020 project call H2020-INFRAEOSC-04-2018, grant agreement #823782.
 
 <a name="ess">1</a>: https://www.europeansocialsurvey.org/
 <a name="evs">2</a>: https://europeanvaluesstudy.eu/
 <a name="share">3</a>: http://www.share-project.org/home0.html
 <a name="wis">4</a>: https://wageindicator.org/Wageindicatorfoundation/researchlab/wageindicator-survey-and-data
-<a name="sshoc">5</a>: https://sshopencloud.eu/
+<a name="clarino">5</a>: https://repo.clarino.uib.no/xmlui/handle/11509/142
+<a name="sshoc">6</a>: https://sshopencloud.eu/
